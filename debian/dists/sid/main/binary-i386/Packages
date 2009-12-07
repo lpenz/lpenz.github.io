@@ -1,0 +1,37 @@
+Package: execpermfix
+Version: 1.0.2
+Architecture: i386
+Maintainer: Leandro Lisboa Penz <lpenz@terra.com.br>
+Installed-Size: 68
+Depends: libc6 (>= 2.4)
+Homepage: http://github.com/lpenz/execpermfix
+Priority: extra
+Section: utils
+Filename: pool/main/e/execpermfix/execpermfix_1.0.2_i386.deb
+Size: 6422
+SHA256: 20f8d9ee7d82378872e5deea9479645d882f137900f8548e586a04ae4e24c9d2
+SHA1: 0b0049f1f738fd082be4b817c4537a7062179ca5
+MD5sum: 1052e4ff9c3da31a94cf41cfe4343c56
+Description: Fixes executable permissions
+ execpermfix sets or resets the executable permission of a file based on its
+ name and contents. When setting the permission, only users that can read the
+ file will be able to execute it.
+
+Package: ftpsync
+Version: 1.0
+Architecture: all
+Maintainer: Leandro Lisboa Penz <lpenz@terra.com.br>
+Installed-Size: 56
+Depends: python
+Homepage: http://github.com/lpenz/ftpsync
+Priority: extra
+Section: python
+Filename: pool/main/f/ftpsync/ftpsync_1.0_all.deb
+Size: 4834
+SHA256: 5b6b9c5ee406dbcc6be25c81fe4ae81ca250f3cf84ecc05d8cb1c8f684c32201
+SHA1: 4a6e565f4bc8e49af7c3eccf65e09effc2174663
+MD5sum: 3c090588675af63efcca274d5997115a
+Description: Efficient FTP synchronization
+ This utility maintains a hashes.txt file in the remote server, and uses it
+ to recognize which files need to be updated when re-synchornizing.
+

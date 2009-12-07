@@ -1,0 +1,65 @@
+Origin: Leandro Penz
+Label: Penz unstable packets
+Suite: unstable
+Codename: sid
+Date: Sun, 06 Dec 2009 23:18:57 UTC
+Architectures: i386
+Components: main non-free contrib
+Description: Packets from Leandro Penz
+MD5Sum:
+ e5766b710d599b150b2a444621c6f678 1313 main/binary-i386/Packages
+ 3c77bb8a3db48af63aca4809d5c48cb6 727 main/binary-i386/Packages.gz
+ 9481360cf0b76785325b655f2372a008 142 main/binary-i386/Release
+ 3224515211dee2906bc23fa07573ee2e 1658 main/source/Sources
+ a3504b33e187f5a272446e60c5e80a82 781 main/source/Sources.gz
+ 6b1dad691220041c4e17d4bb22e6843b 144 main/source/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 non-free/binary-i386/Packages
+ 7029066c27ac6f5ef18d660d5741979a 20 non-free/binary-i386/Packages.gz
+ 13be6a3704b73bb322932bc7bb24f89f 146 non-free/binary-i386/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 non-free/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 non-free/source/Sources.gz
+ 97b5b9e7b03497e20706ff917583a355 148 non-free/source/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 contrib/binary-i386/Packages
+ 7029066c27ac6f5ef18d660d5741979a 20 contrib/binary-i386/Packages.gz
+ 650819c419b98589fa64d4da2bd8fca7 145 contrib/binary-i386/Release
+ d41d8cd98f00b204e9800998ecf8427e 0 contrib/source/Sources
+ 7029066c27ac6f5ef18d660d5741979a 20 contrib/source/Sources.gz
+ c150deefad87bfb5abba8ebe23d67cf1 147 contrib/source/Release
+SHA1:
+ 5ceacc74193227d5263e9864f8c42454e1bbd711 1313 main/binary-i386/Packages
+ 0a10644f605c11ffc025e615658b2c85f255707c 727 main/binary-i386/Packages.gz
+ 1bfd572863e5fc3fdcf266e7c7a316c65d0a4ffd 142 main/binary-i386/Release
+ e74b88a5ddfc74fc7a63e31df6afc80dab382f5a 1658 main/source/Sources
+ a3c9accdbf1f605208a01623269a57a5f57a17ff 781 main/source/Sources.gz
+ 3ee0e8c16b80c7b8d4c50c7df3ffe88a1617a1af 144 main/source/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 non-free/binary-i386/Packages
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 non-free/binary-i386/Packages.gz
+ 4dd596c05b7969b270f8dd23e4c61cef422bdb9d 146 non-free/binary-i386/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 non-free/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 non-free/source/Sources.gz
+ 6b7476247117c729cc0a68a4482a04cb60828a0d 148 non-free/source/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 contrib/binary-i386/Packages
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 contrib/binary-i386/Packages.gz
+ 8ee59a0295b0aee7f92811f7a7b675b36227cd51 145 contrib/binary-i386/Release
+ da39a3ee5e6b4b0d3255bfef95601890afd80709 0 contrib/source/Sources
+ 46c6643f07aa7f6bfe7118de926b86defc5087c4 20 contrib/source/Sources.gz
+ 4fd4a5a53e61bf9792063d317c14e5ab3aeda391 147 contrib/source/Release
+SHA256:
+ 6c3646b1d6c816199cc4bc1f92fe427ab21cf9fe8b13b92a9ada01cf3940042a 1313 main/binary-i386/Packages
+ d998e835aed0811f9c62a102b80f01857e395c9b3cf69a69153d213fa41ecc1f 727 main/binary-i386/Packages.gz
+ 23660b8b431becd3fe1e7e39a79d03617e2729d9ad69384fe3a04845d627b819 142 main/binary-i386/Release
+ 74aeebf40fa05ccfa1b7d5b0c494a8eab82a766ae69cd70368689e475c227063 1658 main/source/Sources
+ abb6e8cab933bb7562d88324542b4038b86281eb2433f4e660800cc05fe89bfa 781 main/source/Sources.gz
+ 9546863a5666570837d59063a08f1c3f3c3578d0daf8fb6001951dd5019c1020 144 main/source/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 non-free/binary-i386/Packages
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 non-free/binary-i386/Packages.gz
+ 3e5edaec612a67f86e18571b2e2702a3eae387b7e417064731df7406942c63c0 146 non-free/binary-i386/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 non-free/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 non-free/source/Sources.gz
+ 06bd848fa5733da6887fbee9afc9ddb3253cd19db10b4d35b6224ee21328f850 148 non-free/source/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 contrib/binary-i386/Packages
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 contrib/binary-i386/Packages.gz
+ c8aac41dc8e300f16663a8f64dcd94d4124f4382a878b6b33028d1a3848f3c9f 145 contrib/binary-i386/Release
+ e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 0 contrib/source/Sources
+ 59869db34853933b239f1e2219cf7d431da006aa919635478511fabbfc8849d2 20 contrib/source/Sources.gz
+ 489acded2e2afee3d755ebfb1ccd8fca7ad702e5fc4aed87ddd87500df34a7f9 147 contrib/source/Release

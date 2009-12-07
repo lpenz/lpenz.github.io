@@ -1,0 +1,7 @@
+Origin: Leandro Penz
+Label: Penz unstable packets
+Suite: unstable
+Codename: sid
+Architectures: i386 source
+Components: main non-free contrib
+Description: Packets from Leandro Penz
