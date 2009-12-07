@@ -35,3 +35,23 @@ Description: Efficient FTP synchronization
  This utility maintains a hashes.txt file in the remote server, and uses it
  to recognize which files need to be updated when re-synchornizing.
 
+Package: gkrellexec
+Version: 1.0
+Architecture: i386
+Maintainer: Leandro Lisboa Penz <lpenz@terra.com.br>
+Installed-Size: 60
+Depends: libatk1.0-0 (>= 1.20.0), libc6 (>= 2.7), libcairo2 (>= 1.2.4), libfontconfig1 (>= 2.4.0), libfreetype6 (>= 2.2.1), libglib2.0-0 (>= 2.16.0), libgtk2.0-0 (>= 2.8.0), libpango1.0-0 (>= 1.14.0)
+Homepage: http://github.com/lpenz/gkrellexec
+Priority: extra
+Section: utils
+Filename: pool/main/g/gkrellexec/gkrellexec_1.0_i386.deb
+Size: 8192
+SHA256: 484d6ba3540831a10d94be23b5a0c2462d57d2fad4d0380ed189618e42b95bf6
+SHA1: c793c6c99531b675783abf1b8ac3fcec49692e6e
+MD5sum: bc5faf5e2796540fde1610fa79d13560
+Description: gkrellm plugin that displays the return status of arbitrary shell commands
+ gkellexec displays a panel in gkrellm, with one line per process, showing its
+ last exit status (T for timeout, O for ok, E for error) and its name.
+ Up to 10 shell commands can be specified, each with a name, timeout and
+ different times to sleep after a success or a failure.
+
