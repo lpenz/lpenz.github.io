@@ -1,11 +1,11 @@
- dpkg-buildpackage -rfakeroot -D -us -uc -i.git/ -I.git
+ dpkg-buildpackage -rfakeroot -D -us -uc
 dpkg-buildpackage: set CFLAGS to default value: -g -O2
 dpkg-buildpackage: set CPPFLAGS to default value: 
 dpkg-buildpackage: set LDFLAGS to default value: 
 dpkg-buildpackage: set FFLAGS to default value: -g -O2
 dpkg-buildpackage: set CXXFLAGS to default value: -g -O2
 dpkg-buildpackage: source package execpermfix
-dpkg-buildpackage: source version 1.0.2
+dpkg-buildpackage: source version 1.0.3
 dpkg-buildpackage: source changed by Leandro Lisboa Penz <lpenz@terra.com.br>
 dpkg-buildpackage: host architecture i386
  fakeroot debian/rules clean
@@ -18,11 +18,11 @@ make[1]: Entering directory `/home/lpenz/projs/execpermfix'
 rm -f execpermfix.o execpermfix
 make[1]: Leaving directory `/home/lpenz/projs/execpermfix'
 dh_clean 
- dpkg-source -i.git/ -I.git -b execpermfix
-dpkg-source: warning: source directory 'execpermfix' is not <sourcepackage>-<upstreamversion> 'execpermfix-1.0.2'
+ dpkg-source -b execpermfix
+dpkg-source: warning: source directory 'execpermfix' is not <sourcepackage>-<upstreamversion> 'execpermfix-1.0.3'
 dpkg-source: info: using source format `1.0'
-dpkg-source: info: building execpermfix in execpermfix_1.0.2.tar.gz
-dpkg-source: info: building execpermfix in execpermfix_1.0.2.dsc
+dpkg-source: info: building execpermfix in execpermfix_1.0.3.tar.gz
+dpkg-source: info: building execpermfix in execpermfix_1.0.3.dsc
  debian/rules build
 dh_testdir
 # Add here commands to configure the package.
@@ -33,8 +33,6 @@ dh_testdir
 make[1]: Entering directory `/home/lpenz/projs/execpermfix'
 cc -Wall -Werror   -c -o execpermfix.o execpermfix.c
 cc   execpermfix.o   -o execpermfix
-txt2tags -t man -i manual.t2t -o execpermfix.1
-txt2tags wrote /home/lpenz/projs/execpermfix/execpermfix.1
 make[1]: Leaving directory `/home/lpenz/projs/execpermfix'
 #docbook-to-man debian/execpermfix.sgml > execpermfix.1
 touch build-stamp
@@ -44,10 +42,12 @@ dh_testroot
 dh_prep  
 dh_installdirs
 # Add here commands to install the package into debian/execpermfix.
-/usr/bin/make DESTDIR=/home/lpenz/projs/execpermfix/debian/execpermfix install
+/usr/bin/make DESTDIR=/home/lpenz/projs/execpermfix/debian/execpermfix/usr install
 make[1]: Entering directory `/home/lpenz/projs/execpermfix'
-mkdir -p /home/lpenz/projs/execpermfix/debian/execpermfix/bin
-install execpermfix /home/lpenz/projs/execpermfix/debian/execpermfix/bin/execpermfix
+mkdir -p /home/lpenz/projs/execpermfix/debian/execpermfix/usr/bin
+install execpermfix /home/lpenz/projs/execpermfix/debian/execpermfix/usr/bin/execpermfix
+mkdir -p /home/lpenz/projs/execpermfix/debian/execpermfix/usr/share/man/man1
+install execpermfix.1 /home/lpenz/projs/execpermfix/debian/execpermfix/usr/share/man/man1/execpermfix.1
 make[1]: Leaving directory `/home/lpenz/projs/execpermfix'
 dh_testdir
 dh_testroot
@@ -64,16 +64,10 @@ dh_shlibdeps
 dh_gencontrol
 dh_md5sums
 dh_builddeb
-dpkg-deb: building package `execpermfix' in `../execpermfix_1.0.2_i386.deb'.
- dpkg-genchanges  >../execpermfix_1.0.2_i386.changes
+dpkg-deb: building package `execpermfix' in `../execpermfix_1.0.3_i386.deb'.
+ dpkg-genchanges  >../execpermfix_1.0.3_i386.changes
 dpkg-genchanges: including full source code in upload
 dpkg-buildpackage: full upload; Debian-native package (full source is included)
 Now running lintian...
-W: execpermfix source: out-of-date-standards-version 3.8.2 (current is 3.8.3)
+W: execpermfix source: diff-contains-git-control-dir .git
 Finished running lintian.
-Now signing changes and any dsc files...
- signfile execpermfix_1.0.2.dsc Leandro Lisboa Penz <lpenz@terra.com.br>
-
- signfile execpermfix_1.0.2_i386.changes Leandro Lisboa Penz <lpenz@terra.com.br>
-
-Successfully signed dsc and changes files

@@ -1,0 +1,29 @@
+Format: 1.8
+Date: Tue, 08 Dec 2009 22:08:07 -0200
+Source: execpermfix
+Binary: execpermfix
+Architecture: source i386
+Version: 1.0.3
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <lpenz@terra.com.br>
+Changed-By: Leandro Lisboa Penz <lpenz@terra.com.br>
+Description: 
+ execpermfix - Fixes executable permissions
+Changes: 
+ execpermfix (1.0.3) unstable; urgency=low
+ .
+   * Install in /usr/bin instead of in /
+   * Conform to standard 3.8.3, no change necessary.
+Checksums-Sha1: 
+ 6470513f1d2aefb1dd1bcbb18769b32e7b71a1e3 621 execpermfix_1.0.3.dsc
+ 743feb7995fa2a84b60f8d976526cb17653a01d2 72713 execpermfix_1.0.3.tar.gz
+ cd19255cfe7186736a9f4125e4f6a49af74c6fad 6494 execpermfix_1.0.3_i386.deb
+Checksums-Sha256: 
+ 442c1691ea2d4d08c9d2f545623d7f02040c20de1d384dd299ea682f64989964 621 execpermfix_1.0.3.dsc
+ 440539060f708bb8ea2f2c62c188a1c33d7359456868aee2f3a23c2cb3499019 72713 execpermfix_1.0.3.tar.gz
+ 6fab5d8ed695bd2f955633f5f0ca6d4f7e2385264781511a26dafd4d4a9ead5a 6494 execpermfix_1.0.3_i386.deb
+Files: 
+ 0cbd4963dd35c5ae1ef86c6f8e6d223a 621 utils extra execpermfix_1.0.3.dsc
+ 9862c016c2b058b7861258fa0a96b350 72713 utils extra execpermfix_1.0.3.tar.gz
+ 5902693f573f0f8bf035939b15859538 6494 utils extra execpermfix_1.0.3_i386.deb
