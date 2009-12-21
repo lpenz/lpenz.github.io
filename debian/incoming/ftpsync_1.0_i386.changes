@@ -1,6 +1,3 @@
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA1
-
 Format: 1.8
 Date: Sun, 04 Oct 2009 20:44:32 -0300
 Source: ftpsync
@@ -18,22 +15,14 @@ Changes:
  .
    * Initial Release.
 Checksums-Sha1: 
- d37724025ba337397fc11f90cd567c1d9fcbe7a2 730 ftpsync_1.0.dsc
- 4d68d445e32372563261a8557eff67abb1e585c3 4495 ftpsync_1.0.tar.gz
- 4a6e565f4bc8e49af7c3eccf65e09effc2174663 4834 ftpsync_1.0_all.deb
+ 4aea1b3a48113159995206e42c2c68fb6c900b2c 485 ftpsync_1.0.dsc
+ 02dd5bf45b425954be58d3709336028818e5f07f 4484 ftpsync_1.0.tar.gz
+ 6655584fb391d5fd3b3b41a1b4373a713030097d 4836 ftpsync_1.0_all.deb
 Checksums-Sha256: 
- 2cab8e21c7f57677b1fc7b1696b203c933e73394bb0015e0ac4a3891a641f792 730 ftpsync_1.0.dsc
- 6e7b5e6435313edbb29033fa9ef40389e2866110f25c8e2e04defb657e9fcae5 4495 ftpsync_1.0.tar.gz
- 5b6b9c5ee406dbcc6be25c81fe4ae81ca250f3cf84ecc05d8cb1c8f684c32201 4834 ftpsync_1.0_all.deb
+ 819bc7279070510439785eecda5189ee816e5131a126136074e4262b8dde673a 485 ftpsync_1.0.dsc
+ f8c10febbc089a537431fd539cb129572001d313da25974f3c7feb3362fee277 4484 ftpsync_1.0.tar.gz
+ a879f986f0eeb9c4739f95a2e01e2e4083d1efe99a680cd16abf1da33507b876 4836 ftpsync_1.0_all.deb
 Files: 
- 789f45ce92606dedcc09442dd8e39d07 730 python extra ftpsync_1.0.dsc
- 2c105fa526e2a92920cc335fa6abbc14 4495 python extra ftpsync_1.0.tar.gz
- 3c090588675af63efcca274d5997115a 4834 python extra ftpsync_1.0_all.deb
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1.4.9 (GNU/Linux)
-
-iEYEARECAAYFAkrJO64ACgkQHdIfqN0/iTss4gCdEAGiTwFgb6x7jIMMavsh9QwA
-RHUAoKFGx7OS0EHu0+HtXPuEy9DEAJeN
-=sReC
------END PGP SIGNATURE-----
+ a7b16296f879f7faf9a5f96478aff50b 485 python extra ftpsync_1.0.dsc
+ c08881c0ae439db3fba20890b45c3f1f 4484 python extra ftpsync_1.0.tar.gz
+ 966a185c1273d46135d8a41e6212a04a 4836 python extra ftpsync_1.0_all.deb
