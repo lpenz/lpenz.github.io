@@ -1,5 +1,5 @@
 
-.PHONY: debian
+.PHONY: all debian clean
 
 all: index.html debian
 

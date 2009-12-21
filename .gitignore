@@ -1,4 +1,6 @@
 /debian/db
 /debian/dists
 /debian/pool
+/debian/index.html
+/debian/index.t2t
 /index.html
