@@ -1,4 +1,4 @@
 
-deb     http://lpenz.github.com/debian/ sid main non-free contrib
-deb-src http://lpenz.github.com/debian/ sid main non-free contrib
+deb     http://lpenz.github.com/debian/ lpenz main non-free contrib
+deb-src http://lpenz.github.com/debian/ lpenz main non-free contrib
 

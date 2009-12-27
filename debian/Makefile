@@ -10,7 +10,7 @@ index.t2t: indexbuild incoming/*.changes lpenz.list
 	./indexbuild $@
 
 repo:
-	set -x; for i in incoming/*.changes; do reprepro -Vb . include sid $$i; done
+	set -x; for i in incoming/*.changes; do reprepro --ignore=wrongdistribution -Vb . include lpenz $$i; done
 
 clean:
 	rm -rf db dists pool
