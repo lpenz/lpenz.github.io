@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Sun, 27 Dec 2009 15:39:22 -0200
+Source: gkrellexec
+Binary: gkrellexec
+Architecture: source i386
+Version: 1.0.1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <lpenz@terra.com.br>
+Changed-By: Leandro Lisboa Penz <lpenz@terra.com.br>
+Description: 
+ gkrellexec - gkrellm plugin that displays the return status of arbitrary shell
+Changes: 
+ gkrellexec (1.0.1) unstable; urgency=low
+ .
+   * Fixed instalation path.
+Checksums-Sha1: 
+ f7174f0de3bc3e6bc848f078dc464b21ba5d3c74 742 gkrellexec_1.0.1.dsc
+ 2b87dec1f156a41e47e1c5ad94621a2190fa1c03 6678 gkrellexec_1.0.1.tar.gz
+ 3d8ea154ec67c2978167476cfed37585b018945d 8260 gkrellexec_1.0.1_i386.deb
+Checksums-Sha256: 
+ 4b658a3c3292444dbaae0f0bb2123a979a12403f051b7bc37c427bc13087f729 742 gkrellexec_1.0.1.dsc
+ d0c6ca9ff6e98b4d306b3c20408a49a6429f95546b36ffb9344f22b8b2a04cff 6678 gkrellexec_1.0.1.tar.gz
+ 2012d848a06974f8bf5d401024af96b7bcb0be695a9a116c08c7072954537e1b 8260 gkrellexec_1.0.1_i386.deb
+Files: 
+ bac50985da17a784c0fb64df8e3a4c04 742 utils extra gkrellexec_1.0.1.dsc
+ b45c6af7a3582251ac38f1130083fb80 6678 utils extra gkrellexec_1.0.1.tar.gz
+ eac423e1b9580e0ffb9899c8a138a03d 8260 utils extra gkrellexec_1.0.1_i386.deb
