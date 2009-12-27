@@ -1,10 +1,14 @@
 
 .PHONY: all debian clean
 
-all: index.html debian
+all: index.html aboutme.html debian
+
+%.html: %.t2t
+	txt2tags -t html -i $^ -o $@
 
 index.html: index.t2t
-	txt2tags -t html -i $^ -o $@
+
+aboutme.html: aboutme.t2t
 
 debian:
 	$(MAKE) -C $@
