@@ -3,13 +3,24 @@
 D=$1
 shift
 
-cat <<END > $D
+echo -n > $D
+
+cat <<END >> $D
 lpenz Debian packages
 
 
 
-The following utilities are available in my github repository page:
-http://github.com/lpenz/:
+To use the debian repository behind this page, add the following line in 
+///etc/apt/sources.list//:
+
+END
+echo '```' >> $D
+sed '/^$/d' lpenz.list >> $D
+echo '```' >> $D
+
+cat <<END >> $D
+
+The following utilities are available:
 
 END
 
@@ -22,15 +33,8 @@ done
 cat <<END >> $D
 
 
-They are also available in a debian repository, you can use it by including the
-following line in ///etc/apt/sources.list//:
-
-\`\`\`
-END
-sed '/^$/d' lpenz.list >> $D
-cat <<-END >> $D
-\`\`\`
-
+They are all free software. Their source code can be found in
+http://github.com/lpenz, along with other projects that are not debianizable.
 
 END
 
