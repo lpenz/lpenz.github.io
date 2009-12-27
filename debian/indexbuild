@@ -6,7 +6,7 @@ shift
 echo -n > $D
 
 cat <<END >> $D
-lpenz Debian packages
+lpenz: Debian packages
 
 
 
