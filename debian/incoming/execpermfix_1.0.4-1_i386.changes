@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sat, 02 Jan 2010 11:51:20 -0200
+Source: execpermfix
+Binary: execpermfix
+Architecture: source i386
+Version: 1.0.4-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ execpermfix - Fixes executable permissions
+Changes: 
+ execpermfix (1.0.4-1) unstable; urgency=low
+ .
+   * Initial release.
+Checksums-Sha1: 
+ 80055382402e01a5829bc3a62337cc767ba0b937 1259 execpermfix_1.0.4-1.dsc
+ f6a3fc6709ba9e8f2e32110e76e8d37b9e05618c 10469 execpermfix_1.0.4.orig.tar.gz
+ 41ddf9bbba2f3820bf971a40b77facee03e26ca4 1463 execpermfix_1.0.4-1.diff.gz
+ 8bd1184f55b57ff953b2c50999bfb6155c23b958 6314 execpermfix_1.0.4-1_i386.deb
+Checksums-Sha256: 
+ 0bf5fb8d3e32ac29153d42450028223fd8071120b16b29caf688143854f2b581 1259 execpermfix_1.0.4-1.dsc
+ 4071a7cc3d44274d508cba3b2184616a0859613b343d4459b5a33e3e2b718706 10469 execpermfix_1.0.4.orig.tar.gz
+ 286401d3eef4bfa249ebc1efe1775e7650f1bfcad438ef667d51b6f1df39d02d 1463 execpermfix_1.0.4-1.diff.gz
+ 91542a92aedacfc10546fe1d74926b10b7991d0383c56d3aeccdd9f53ad26cbb 6314 execpermfix_1.0.4-1_i386.deb
+Files: 
+ 47ff0befd164811db0b9cb9979824ebd 1259 utils extra execpermfix_1.0.4-1.dsc
+ 2b43a62203f47d20b615869b213d4934 10469 utils extra execpermfix_1.0.4.orig.tar.gz
+ a1c3ddf562f197fcf795958dd8e485f0 1463 utils extra execpermfix_1.0.4-1.diff.gz
+ d3fd1a855374328e5d907fda318feb67 6314 utils extra execpermfix_1.0.4-1_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAks/UgIACgkQQKPFnwyVxRJYOQEAp3qkuuQL5vsd/x4yCnmhyFU4
+SDVtlSmSDfotBBNOA0AA/3bFZldMSTJjEB5609kXy4QMCIwPZNpEFfohnGc9WEqq
+=MdDq
+-----END PGP SIGNATURE-----
