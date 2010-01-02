@@ -22,7 +22,12 @@ echo '```' >> $D
 
 cat <<END >> $D
 
-The following utilities are available:
+If you really trust me, you can add the GPG key I sign the repository with by issuing:
+```
+wget -o - http://lpenz.github.com/lpenz_2010.asc | apt-key add -
+```
+
+The following utilities are available in the repository:
 
 END
 
