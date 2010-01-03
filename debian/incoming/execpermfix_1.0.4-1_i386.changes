@@ -18,25 +18,25 @@ Changes:
  .
    * Initial release.
 Checksums-Sha1: 
- 80055382402e01a5829bc3a62337cc767ba0b937 1259 execpermfix_1.0.4-1.dsc
+ 7e844e23ad9b85c0d95a6bf81b3a045a9ae5e82b 1259 execpermfix_1.0.4-1.dsc
  f6a3fc6709ba9e8f2e32110e76e8d37b9e05618c 10469 execpermfix_1.0.4.orig.tar.gz
- 41ddf9bbba2f3820bf971a40b77facee03e26ca4 1463 execpermfix_1.0.4-1.diff.gz
- 8bd1184f55b57ff953b2c50999bfb6155c23b958 6314 execpermfix_1.0.4-1_i386.deb
+ d492b2d8289a7ac0e1d50b86b9f3d9b93a77c7e2 1831 execpermfix_1.0.4-1.diff.gz
+ c8c458053ae059f97868add9d23b4e0f1c20618a 6306 execpermfix_1.0.4-1_i386.deb
 Checksums-Sha256: 
- 0bf5fb8d3e32ac29153d42450028223fd8071120b16b29caf688143854f2b581 1259 execpermfix_1.0.4-1.dsc
+ dc56ba2ea7743a4c9f2dd51d7cddfeb0ef4cd51129f8c9e2e7e9c4ed665d9cdc 1259 execpermfix_1.0.4-1.dsc
  4071a7cc3d44274d508cba3b2184616a0859613b343d4459b5a33e3e2b718706 10469 execpermfix_1.0.4.orig.tar.gz
- 286401d3eef4bfa249ebc1efe1775e7650f1bfcad438ef667d51b6f1df39d02d 1463 execpermfix_1.0.4-1.diff.gz
- 91542a92aedacfc10546fe1d74926b10b7991d0383c56d3aeccdd9f53ad26cbb 6314 execpermfix_1.0.4-1_i386.deb
+ 2a500ab83a05a40d5d843cae902d09b0fca97a2597a1f8d430e6ba344b53ed30 1831 execpermfix_1.0.4-1.diff.gz
+ 9315a88ee95ebb2c91d483ef2e4aa091c612bee62ee1416e2182b9484688d6b6 6306 execpermfix_1.0.4-1_i386.deb
 Files: 
- 47ff0befd164811db0b9cb9979824ebd 1259 utils extra execpermfix_1.0.4-1.dsc
+ 9a073f0be7bcd9226dd1cdfe1afcb38a 1259 utils extra execpermfix_1.0.4-1.dsc
  2b43a62203f47d20b615869b213d4934 10469 utils extra execpermfix_1.0.4.orig.tar.gz
- a1c3ddf562f197fcf795958dd8e485f0 1463 utils extra execpermfix_1.0.4-1.diff.gz
- d3fd1a855374328e5d907fda318feb67 6314 utils extra execpermfix_1.0.4-1_i386.deb
+ dd0b453987a47605a1e831dab1fa15b3 1831 utils extra execpermfix_1.0.4-1.diff.gz
+ 41ff43a373737900f5e037c89a18edce 6306 utils extra execpermfix_1.0.4-1_i386.deb
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iF4EAREIAAYFAks/UgIACgkQQKPFnwyVxRJYOQEAp3qkuuQL5vsd/x4yCnmhyFU4
-SDVtlSmSDfotBBNOA0AA/3bFZldMSTJjEB5609kXy4QMCIwPZNpEFfohnGc9WEqq
-=MdDq
+iF4EAREIAAYFAktAAIkACgkQQKPFnwyVxRIIGwEAr5sj/9gAr1WOxlhznDL1UTDv
+/K7j4SRvt9cti6beUzQA/iXphSJP3ZQF3SPG02AYYKzc1u+rLRr2CNDX5ZBSIvQb
+=ksPJ
 -----END PGP SIGNATURE-----

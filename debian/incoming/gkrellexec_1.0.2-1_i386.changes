@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 06 Dec 2009 22:35:12 -0200
+Source: gkrellexec
+Binary: gkrellexec
+Architecture: source i386
+Version: 1.0.2-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ gkrellexec - gkrellm plugin that displays the return status of arbitrary shell
+Changes: 
+ gkrellexec (1.0.2-1) unstable; urgency=low
+ .
+   * Initial Release.
+Checksums-Sha1: 
+ 1df4cf3591fdb1ae9da4ec5cf2103060454868be 1278 gkrellexec_1.0.2-1.dsc
+ 2bbdccd2f8b624642017f1aa958f0801b5877d7f 11856 gkrellexec_1.0.2.orig.tar.gz
+ 3e466f1ced1b820a7645e31d88c4d5ef25674777 1550 gkrellexec_1.0.2-1.diff.gz
+ be4d672009a88fdd073b8be2a8560a3d2fae7088 8208 gkrellexec_1.0.2-1_i386.deb
+Checksums-Sha256: 
+ 4e9097d0e38289dd8a26534b0ef7e8cc70eeba51cfd65b1e3f76fa0a150aad40 1278 gkrellexec_1.0.2-1.dsc
+ f8ebd0f99208a061ba8e32cc935f0cc931e69aee5173aba3a45160cf1ad6abe7 11856 gkrellexec_1.0.2.orig.tar.gz
+ fc8d37103a4bfaf89d5e8841defae1e4f608ac378dd5720903321029111029cd 1550 gkrellexec_1.0.2-1.diff.gz
+ 68f4d728a370286193b3155f05e31bb53a1d7cc3214f9c4d727308daa7ca4106 8208 gkrellexec_1.0.2-1_i386.deb
+Files: 
+ 476d8a0137fd8e3ff9b9064083c89f9d 1278 utils extra gkrellexec_1.0.2-1.dsc
+ 460eb4e4d9890134a22ad5845ffeaa2a 11856 utils extra gkrellexec_1.0.2.orig.tar.gz
+ 1b5a565c0ac638bb8001cab9814a260d 1550 utils extra gkrellexec_1.0.2-1.diff.gz
+ b4c8965771632446e77a7183b97d7966 8208 utils extra gkrellexec_1.0.2-1_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAktAAFgACgkQQKPFnwyVxRIjggD8Cu19DO1PahMQi30sklHLWQC9
+snsykgEvlxN3hoLYHkwA/2KzFodYCDyYJTgMjiETw0dVc+S7wwrh3mjo1y/CWjVP
+=oCIl
+-----END PGP SIGNATURE-----
