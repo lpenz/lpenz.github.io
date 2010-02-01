@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Mon, 01 Feb 2010 21:22:34 -0200
+Source: scons2dot
+Binary: scons2dot
+Architecture: source i386
+Version: 0.9-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ scons2dot  - Fixes executable permissions
+Changes: 
+ scons2dot (0.9-1) unstable; urgency=low
+ .
+   * Initial debian release.
+Checksums-Sha1: 
+ 7868624b5ff6b096f07ecfbde121b6c58a5590f2 1184 scons2dot_0.9-1.dsc
+ a657555a8f2c270a851dd15475f583866b820a62 10759 scons2dot_0.9.orig.tar.gz
+ c9e2f58577aace98a99f3c50f3be5205dbae6819 1435 scons2dot_0.9-1.diff.gz
+ e52d4e9092d093aba76df08d5b1c73dc36ebde98 159808 scons2dot_0.9-1_i386.deb
+Checksums-Sha256: 
+ b378a6e7aaf97e622273bc0a43f5b819bd310b397e8288c6b5a7963fa07699fc 1184 scons2dot_0.9-1.dsc
+ 8b6be09652a23f32117b2edd4028a0c602d558bd58185dcd80f259192f1f950d 10759 scons2dot_0.9.orig.tar.gz
+ 1fc2898dd0bf3f4d7d1194a1f8f9ee096f6441ce9d4caede3fd14826b10e73a3 1435 scons2dot_0.9-1.diff.gz
+ 5a1c0c15c8e5e47b697bb8b5edd9fa0aa2936d672da890d5a6b3f6e1340cc252 159808 scons2dot_0.9-1_i386.deb
+Files: 
+ e178e443267fc90e060512bb3bfce516 1184 utils extra scons2dot_0.9-1.dsc
+ bc10a7d549e13ddb0fbbf74182acf5b5 10759 utils extra scons2dot_0.9.orig.tar.gz
+ 2f6e7ea4fc99152acc92e26d8bb56db3 1435 utils extra scons2dot_0.9-1.diff.gz
+ 9c369fcfd37a79c0d7ea7b5cd06b4550 159808 utils extra scons2dot_0.9-1_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAktnZ3AACgkQQKPFnwyVxRLFAAEAq7O+l+zY8weLtF9JFtFzCRiT
+bxo8AxkP/D9JSOw88iMBAIu3J96/iRylgFbJj67uGJULSs88xqoj5cwkJMt6QQHd
+=/dev
+-----END PGP SIGNATURE-----
