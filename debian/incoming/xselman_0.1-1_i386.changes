@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Mon, 15 Mar 2010 23:20:09 -0300
+Source: xselman
+Binary: xselman
+Architecture: source i386
+Version: 0.1-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ xselman    - X selection management
+Changes: 
+ xselman (0.1-1) unstable; urgency=low
+ .
+   * Initial release.
+Checksums-Sha1: 
+ 43516f33091f36dec731c2fc6ed8f0dbdbeda342 1220 xselman_0.1-1.dsc
+ 37f1d24084f49000a7c0c4af076eede69670eeea 9109 xselman_0.1.orig.tar.gz
+ 93edf51b34df52b94c3a5955888054ef18850179 1657 xselman_0.1-1.diff.gz
+ 337b8990d81fe34866660bf8a5be325cdc9cbfb1 4456 xselman_0.1-1_i386.deb
+Checksums-Sha256: 
+ 71afe7fdfeff38bc3759f7f3abc7acf91bf62a74ebd569dfa3c4c5326bb6a29b 1220 xselman_0.1-1.dsc
+ 08095685418ddd87839ce50019b5366849b3f052f69f750efbe40f8fba33b75f 9109 xselman_0.1.orig.tar.gz
+ 735cb19b44efa46f9cd420e09375b5547ce08b9d1d7823688f05b9abc04cd3fe 1657 xselman_0.1-1.diff.gz
+ 9c18fcccaeca19a3c8c4ba5bf0c04d33a7119319e90efa3f66a49ccc94880024 4456 xselman_0.1-1_i386.deb
+Files: 
+ b247c4ecbda4a8c86cf95c19e7c47024 1220 utils extra xselman_0.1-1.dsc
+ fd1b86f509464d2b9274d23bd24b6950 9109 utils extra xselman_0.1.orig.tar.gz
+ 3c8dccc8bf00c0b22f8bfa9ce89cc66c 1657 utils extra xselman_0.1-1.diff.gz
+ 91eae0d35f5703d5427655858137e9e8 4456 utils extra xselman_0.1-1_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAkue+BYACgkQQKPFnwyVxRL2vQEAglLEBr+JC7V5wy1ZhTJdLywx
+xR4Ekb3wG5Gxs4aAaZ4A/3h9JjPWHneC3rzaJbpmTArAWfgqKz/eWr2h2AmLmdz5
+=yHT3
+-----END PGP SIGNATURE-----
