@@ -2,6 +2,8 @@
 
 D=$1
 shift
+LIST=$1
+shift
 
 echo -n > $D
 
@@ -17,7 +19,7 @@ To use the debian repository behind this page, add the following line in
 
 END
 echo '```' >> $D
-sed '/^$/d' lpenz.list >> $D
+sed '/^$/d' $LIST >> $D
 echo '```' >> $D
 
 echo >> $D
@@ -33,7 +35,7 @@ The following utilities are available in the repository:
 
 END
 
-for i in incoming/*.changes; do
+for i in "$@"; do
 	APP=$(sed -n 's/^Source: \(.*\)/\1/p' $i)
 	DESCR=$(sed -n "/^Description:/,+1s/^ $APP \+- \(.*\)$/\1/p" $i)
 	echo - [$APP http://www.github.com/lpenz/$APP]: $DESCR >> $D
