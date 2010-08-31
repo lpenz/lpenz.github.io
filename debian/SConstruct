@@ -1,0 +1,19 @@
+
+import os
+import glob
+
+Command('index.html', 'index.t2t', 'txt2tags -t html -i $SOURCE -o $TARGET')
+
+changes = []
+for f in glob.glob('incoming/*.orig.tar.gz'):
+    root = f.replace('.orig.tar.gz', '')
+    rver = glob.glob(root+'*.dsc')[0].replace('.dsc', '')
+    rcha = glob.glob(rver+'_*.changes')[0]
+    rtyp = rcha.replace('.changes', '')
+    print(f, root, rver, rcha, rtyp)
+    changes.append(rcha)
+    #for sufs in ['.diff.gz', '.dsc', '_i386.build', '_i386.changes
+
+Command('index.t2t', ['lpenz.list'] + changes, 'indexbuild $TARGET $SOURCES')
+
+
