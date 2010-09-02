@@ -1,8 +1,11 @@
 #!/bin/sh
 
+cd debian
+
 rm -f db/references.db
 
 for i in "$@"; do
-	reprepro --ignore=wrongdistribution -Vb . include lpenz $i
+	j=${i#debian/}
+	reprepro --ignore=wrongdistribution -Vb . include lpenz $j
 done
 
