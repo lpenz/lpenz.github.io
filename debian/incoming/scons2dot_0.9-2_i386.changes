@@ -18,22 +18,22 @@ Changes:
  .
    * Fixed package description, which was completely wrong.
 Checksums-Sha1: 
- 909ef601b86a79b5f09ee601ea6a922a61c3b5d8 1184 scons2dot_0.9-2.dsc
- 2b69e2dc145e5792f8138c0e6a25ab1fe31eefe1 1458 scons2dot_0.9-2.diff.gz
- c721450a8283516bb9bdf95e6510c1753d66fd9b 177202 scons2dot_0.9-2_i386.deb
+ f61da041470695bcc985e8bc780aa4a8ecfedf92 1184 scons2dot_0.9-2.dsc
+ c26bd142c9fea2fde8a6e938d287055ae037a395 1458 scons2dot_0.9-2.diff.gz
+ 0ded63adb895dd606aa00a1165aab589f60687c4 177200 scons2dot_0.9-2_i386.deb
 Checksums-Sha256: 
- e5686015750fd8153155e6aca94ee8cf0c32605a88f345e04cdd27e1319118c4 1184 scons2dot_0.9-2.dsc
- 2495e7eb021b10ce093e0548978015113977089c01d8408f77f0da5185335423 1458 scons2dot_0.9-2.diff.gz
- 56ca9a7b4b4ee540a6565f370dfff2f2d93421d510a0174b6023c38de0778068 177202 scons2dot_0.9-2_i386.deb
+ 45bc2b004cb1c34648ee382694241e9db658c9e9f422a3debb737c4e2c62f2ae 1184 scons2dot_0.9-2.dsc
+ 1b6f5e268b2b16cdd8718914c876a9f41defd72f79ac618e5c264a4920452688 1458 scons2dot_0.9-2.diff.gz
+ 180d83f24a7d7960d06cae56e5de57304b11781433db5b590773207d98de7d99 177200 scons2dot_0.9-2_i386.deb
 Files: 
- 349d7b5c5fa0167987b73024774fdaae 1184 utils extra scons2dot_0.9-2.dsc
- 251a83843f62eeb4c7b42e9fa6e98b37 1458 utils extra scons2dot_0.9-2.diff.gz
- 83e4907d7e906be748673d5acbe228ff 177202 utils extra scons2dot_0.9-2_i386.deb
+ da7bcd7d57cec7d0cb3cc57608aea18f 1184 utils extra scons2dot_0.9-2.dsc
+ 8da996cd4ea412960d362ca407f152ce 1458 utils extra scons2dot_0.9-2.diff.gz
+ 04b941a4d281ba340de1083c03742bb8 177200 utils extra scons2dot_0.9-2_i386.deb
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iF4EAREIAAYFAkx+/KcACgkQQKPFnwyVxRLuYQD+JbdvLG8W+PJON4obc4FHZpf1
-400HpVqDAmySpnFtfgABAKx95taF/82lujVoDTKVkFH8bkuUT8vK90PGmlK7FUax
-=viP1
+iF4EAREIAAYFAkx/AyQACgkQQKPFnwyVxRKEAAD/TsG/CXtwKCLARSe+Q5UDewuN
+OZ2xUqf0TFG/dZB+Pr4A/2QuwB2jGkKVhJKkxEVuMqtvZMgvG6iboWnMtzbIGOcI
+=G9Ns
 -----END PGP SIGNATURE-----
