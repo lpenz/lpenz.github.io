@@ -44,9 +44,9 @@ def debdo():
             'release.caches.db',
             'version',
             ]:
-            env.SideEffect(os.path.join('db', s), debiantaget)
+            env.SideEffect(os.path.join('debian', 'db', s), debiantaget)
         for s in ['Release.gpg', 'Release', 'InRelease']:
-            env.SideEffect(os.path.join('dists', 'lpenz', s), debiantaget)
+            env.SideEffect(os.path.join('debian', 'dists', 'lpenz', s), debiantaget)
         for d in ['main', 'contrib', 'non-free']:
             for j in [
                 os.path.join('source', 'Release'),
@@ -55,7 +55,7 @@ def debdo():
                 os.path.join('binary-i386', 'Release'),
                 os.path.join('binary-i386', 'Packages.gz'),
                 ]:
-                env.SideEffect(os.path.join('dists', 'lpenz', d, j), debiantaget)
+                env.SideEffect(os.path.join('debian', 'dists', 'lpenz', d, j), debiantaget)
         env.Command(os.path.join(tpath, '%s_%s.orig.tar.gz' % (pack, ov)),
             os.path.join(ipath, '%s_%s.orig.tar.gz' % (pack, ov)),
             'cp $SOURCE $TARGET')
