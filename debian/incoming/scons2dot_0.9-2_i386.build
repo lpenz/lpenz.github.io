@@ -115,7 +115,7 @@ dpkg-deb: building package `scons2dot' in `../scons2dot_0.9-2_i386.deb'.
 dpkg-genchanges: not including original source code in upload
 dpkg-buildpackage: binary and diff upload (original source NOT included)
 Now running lintian...
-W: scons2dot source: out-of-date-standards-version 3.8.3 (current is 3.9.0)
+W: scons2dot source: out-of-date-standards-version 3.8.3 (current is 3.9.1)
 Finished running lintian.
 Now signing changes and any dsc files...
  signfile scons2dot_0.9-2.dsc Leandro Lisboa Penz <llpenz@gmail.com>
