@@ -1,0 +1,18 @@
+#!/bin/sh
+
+SRC=${1?}
+DST=${2?}
+
+TMPYML=$(tempfile)
+TMPSRC=$(tempfile)
+TMPDST=$(tempfile)
+
+sed -n '/---/,/^---$/p' $SRC > $TMPYML
+sed '/---/,/^---$/d' $SRC > $TMPSRC
+
+txt2tags -H -t html -i $TMPSRC -o $TMPDST
+
+cat $TMPYML $TMPDST > $DST
+
+rm -f $TMPYML $TMPSRC $TMPDST
+
