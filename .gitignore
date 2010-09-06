@@ -3,6 +3,6 @@
 /debian/pool
 /debian/index.html
 /debian/index.t2t
-/index.html
+/_site
 /aboutme.html
 .sconsign.dblite

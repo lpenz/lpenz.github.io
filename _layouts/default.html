@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ page.title }}</title>
+<link rel="stylesheet" type="text/css" href="/base-min.css" />
+<link rel="stylesheet" type="text/css" href="/style.css" />
+<link rel="shortcut icon" href="/favicon.ico" />
+</head>
+<body>
+<div id="header">
+	<div id="logo">
+		<img alt="Avulsos by Penz" src="/favicon.ico" />
+	</div>
+	<div id="title">
+		Avulsos by Penz
+	</div>
+	<ul id="nav">
+		<li><a href="posts.html">Posts</a></li>
+		<li><a href="about.html">About</a></li>
+	</ul>
+</div>
+<div id="contents">
+<h1>{{ page.title }}</h1>
+{{ content }}
+</div>
+<div id="footer">
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		This <span xmlns:dc="http://purl.org/dc/elements/1.1/" href="http://purl.org/dc/dcmitype/Text" rel="dc:type">work</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Leandro Lisboa Penz</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
+</div>
+</body>
+</html>

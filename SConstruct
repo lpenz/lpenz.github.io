@@ -68,7 +68,6 @@ env.Command('debian/index.t2t', ['debian/lpenz.list'] + allchanges, 'debian/inde
 env.Command('debian/index.html', 'debian/index.t2t', 'txt2tags -t html -i $SOURCE -o $TARGET')
 env.Command(debiantaget, allchanges, 'debian/repbuild $SOURCES')
 
-env.Command('index.html', 'index.t2t', 'txt2tags -t html -i $SOURCE -o $TARGET')
 env.Command('aboutme.html', 'aboutme.t2t', 'txt2tags -t html -i $SOURCE -o $TARGET')
 
 
