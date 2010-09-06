@@ -15,6 +15,6 @@ for p in glob.glob('posts/*'):
         t = os.path.join('_posts', b)
         env.Command(t, p, 'cp $SOURCE $TARGET')
 
-env.Command('aboutme.textile', 'pages/aboutme.t2t', 'tools/yamlt2t $SOURCE $TARGET')
+env.Command('aboutme.textile', 'aboutme.t2t', 'tools/yamlt2t $SOURCE $TARGET')
 
 

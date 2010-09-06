@@ -1,4 +1,9 @@
 safe: true
 lsi: false
 pygments: true
-exclude: [ debian, posts, tools, pages ]
+exclude: 
+- SConstruct
+- posts
+- tools
+- debian
+- aboutme.t2t

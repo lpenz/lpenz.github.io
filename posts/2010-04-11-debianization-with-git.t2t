@@ -1,6 +1,8 @@
 ---
 layout: default
-title: Debianization with git-buildpackage
+title: "Debianization with git-buildpackage"
+categories:
+- debian
 ---
 
 After building some useful piece of software, one has to decide how to best
