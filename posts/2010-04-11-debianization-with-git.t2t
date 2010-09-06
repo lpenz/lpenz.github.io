@@ -14,6 +14,8 @@ This article explains how to create and support a .deb package for a simple
 software maintained in git, by tracking the packaging scheme in a specific
 branch on the same repository.
 
+
+
 == Prerequisites ==
 
 In order to ease the packaging and keep your package warning-free, it should
@@ -26,7 +28,7 @@ have in its main repository:
   should install the binary in ``$(PREFIX)/bin`` and the manual to
   ``$(PREFIX)/share/man/man#``. ``PREFIX`` should be, by default,
   ``/usr/local``, so that non-debian users can still user your package.
-- A way to create ``package_version.tar.gz`` (//make dist//).
+- A way to create //package//_//version//.tar.gz (//make dist//).
   We will use it to import the original source files into the debian package
   build structure.
 
@@ -57,9 +59,9 @@ That will make both branches point to a root-commit with no files.
 
 After putting //package//_//version//.orig.tar.gz in the directory above
 the current one, we can take the next step, which is the creation of the
-initial //debian/// dir in the //debian-debian// branch:
+initial //debian/// directory in the //debian-debian// branch:
 ```
-dh_make -s -p //package//_//version//
+dh_make -s -p package_version
 ```
 You can now customize the standard debian/ dir created. The only required files
 that must be fixed are: changelog, compat, control, copyright and rules.
@@ -87,7 +89,7 @@ You can now commit the debian dir in the debian-debian branch.
 
 In the debian-debian branch:
 ```
-git-import-orig ..///package//_//version//.orig.tar.gz
+git-import-orig ../package_version.orig.tar.gz
 ```
 That will import the original sources to the debian-upstream branch, and merge
 it with the debian-debian branch.
@@ -98,7 +100,7 @@ it with the debian-debian branch.
 
 To create the debian package:
 ```
-	git-buildpackage --git-tag
+git-buildpackage --git-tag
 ```
 
 
@@ -106,11 +108,11 @@ To create the debian package:
 
 Create the new ..///package//_//version//.orig.tar.gz and then:
 ```
-	git-import-orig ..///package//_//version//.orig.tar.gz
+git-import-orig ../package_version.orig.tar.gz
 ```
 Edit the debian/changelog file (you can use //dch// for that), and create a new package:
 ```
-	git-buildpackage --git-tag
+git-buildpackage --git-tag
 ```
 Yes, it's that easy.
 
