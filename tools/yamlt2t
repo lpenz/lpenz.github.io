@@ -12,7 +12,12 @@ sed '/---/,/^---$/d' $SRC > $TMPSRC
 
 txt2tags -H -t html -i $TMPSRC -o $TMPDST
 
-cat $TMPYML $TMPDST > $DST
+(
+cat $TMPYML
+echo '<notextile>'
+cat $TMPDST
+echo '</notextile>'
+)> $DST
 
 rm -f $TMPYML $TMPSRC $TMPDST
 
