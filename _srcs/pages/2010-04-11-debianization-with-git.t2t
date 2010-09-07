@@ -1,9 +1,6 @@
----
-layout: default
-title: "Debianization with git-buildpackage"
-categories:
-- debian
----
+Debianization with git-buildpackage
+
+
 
 After building some useful piece of software, one has to decide how to best
 deploy it. In UNIX, the standard way to do that is by publishing the source

@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<title>{{ page.title }}</title>
+<title>Avulsos by Penz</title>
 <link rel="stylesheet" type="text/css" href="/base-min.css" />
 <link rel="stylesheet" type="text/css" href="/style.css" />
 <link rel="shortcut icon" href="/favicon.ico" />
@@ -20,8 +20,7 @@
 	</ul>
 </div>
 <div id="contents">
-<h1>{{ page.title }}</h1>
-{{ content }}
+$content$
 </div>
 <div id="footer">
 		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
