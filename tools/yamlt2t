@@ -3,14 +3,17 @@
 SRC=${1?}
 DST=${2?}
 
-TMPYML=$(tempfile)
-TMPSRC=$(tempfile)
-TMPDST=$(tempfile)
+TMPYML=$(tempfile -d .)
+TMPSRC=$(tempfile -d .)
+TMPDST=$(tempfile -d .)
 
 sed -n '/---/,/^---$/p' $SRC > $TMPYML
 sed '/---/,/^---$/d' $SRC > $TMPSRC
 
-txt2tags -H -t html -i $TMPSRC -o $TMPDST
+if ! txt2tags -H -t html -i $TMPSRC -o $TMPDST; then
+	rm -f $TMPYML $TMPSRC $TMPDST
+	exit 1
+fi
 
 (
 cat $TMPYML

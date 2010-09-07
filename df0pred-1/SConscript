@@ -1,0 +1,13 @@
+
+Command('pointplot.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
+Depends('pointplot.png', 'init.R')
+SideEffect('lmplot.png', 'pointplot.png')
+SideEffect('lm.txt', 'pointplot.png')
+SideEffect('lmsummary.txt', 'pointplot.png')
+SideEffect('lmrandsummary.txt', 'pointplot.png')
+
+Command('main.textile', 'main.t2t', '../tools/yamlt2t ${SOURCE.file} ${TARGET.file}', chdir=1)
+Depends('main.textile', 'lmsummary.txt')
+Depends('main.textile', 'lm.txt')
+
+

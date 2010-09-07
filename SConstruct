@@ -17,4 +17,7 @@ for p in glob.glob('posts/*'):
 
 env.Command('aboutme.textile', 'aboutme.t2t', 'tools/yamlt2t $SOURCE $TARGET')
 
+env.SConscript('df0pred-1/SConscript')
+env.Command('_posts/2010-08-15-df0pred-1.textile', 'df0pred-1/main.textile', 'cp $SOURCE $TARGET')
+
 
