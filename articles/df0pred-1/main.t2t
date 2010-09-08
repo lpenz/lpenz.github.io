@@ -1,10 +1,6 @@
----
-layout: default
-title: "Data exploring with R: hard drive occupation prediction"
-categories:
-- R
-- statistics
----
+Data exploring with R: hard drive occupation prediction
+
+
 
 On some environments, disk space usage can be pretty predictable. In this post,
 we will see how to do a linear regression to estimate when free space will reach
@@ -63,7 +59,7 @@ We can check the data graphically by issuing:
 That gives us an idea on how predictable the usage of our hard drive is.
 
 From our example, we get:
- [/df0pred-1/pointplot.png] 
+ [pointplot.png] 
 
 
 
@@ -84,7 +80,7 @@ We can also plot the line over our data:
 ```
 
 The example plot, with the line:
- [/df0pred-1/lmplot.png] 
+ [lmplot.png] 
 
 
 

@@ -1,13 +1,18 @@
 
-Command('pointplot.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
-Depends('pointplot.png', 'init.R')
-SideEffect('lmplot.png', 'pointplot.png')
-SideEffect('lm.txt', 'pointplot.png')
-SideEffect('lmsummary.txt', 'pointplot.png')
-SideEffect('lmrandsummary.txt', 'pointplot.png')
+import os
 
-Command('main.textile', 'main.t2t', '../tools/yamlt2t ${SOURCE.file} ${TARGET.file}', chdir=1)
-Depends('main.textile', 'lmsummary.txt')
-Depends('main.textile', 'lm.txt')
+Import(['env', 'render', 'top'])
+
+env.Command('pointplot.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
+env.Depends('pointplot.png', 'init.R')
+env.SideEffect('lmplot.png', 'pointplot.png')
+env.SideEffect('lm.txt', 'pointplot.png')
+env.SideEffect('lmsummary.txt', 'pointplot.png')
+env.SideEffect('lmrandsummary.txt', 'pointplot.png')
+
+env.Command('main.html', 'main.t2t', '%s %s 2 ${SOURCE.file} ${TARGET.file}' % (render, top), chdir=1)
+env.Depends('main.html', os.path.join(top, 'layouts', 'default.st'))
+env.Depends('main.html', 'lmsummary.txt')
+env.Depends('main.html', 'lm.txt')
 
 

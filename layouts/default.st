@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<title>Avulsos by Penz</title>
+<title>$title$</title>
 <link rel="stylesheet" type="text/css" href="$top$/base-min.css" />
 <link rel="stylesheet" type="text/css" href="$top$/style.css" />
 <link rel="shortcut icon" href="$top$/favicon.ico" />
@@ -15,11 +15,12 @@
 		<a href="/">Avulsos by Penz</a>
 	</div>
 	<ul id="nav">
-		<li><a href="$top$/posts.html">Posts</a></li>
+		<!--<li><a href="$top$/posts.html">Posts</a></li>-->
 		<li><a href="$top$/aboutme.html">About me</a></li>
 	</ul>
 </div>
 <div id="contents">
+	<h1>$title$</h1>
 $content$
 </div>
 <div id="footer">

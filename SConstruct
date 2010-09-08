@@ -4,20 +4,31 @@ import glob
 import re
 
 env = Environment(ENV = os.environ)
+env.Export('env')
+
+top = os.path.abspath(os.path.curdir)
+env.Export('top')
+
 
 # Renderer:
 env.Command('tools/render', 'tools/render.hs', 'ghc --make -o $TARGET $SOURCE')
 env.SideEffect('tools/render.o',  'tools/render')
 env.SideEffect('tools/render.hi', 'tools/render')
+render = os.path.join(top, 'tools', 'render')
+env.Export('render')
 
 
 # Top texts:
 for f in glob.glob('*.t2t'):
     (bn, be) = os.path.splitext(f)
     t = bn + '.html'
-    env.Command(t, f, 'tools/render $SOURCE $TARGET')
+    env.Command(t, f, 'tools/render %s 0 $SOURCE $TARGET' % top)
     env.Depends(t, 'tools/render')
     env.Depends(t, 'layouts/default.st')
+
+
+env.SConscript('articles/df0pred-1/SConscript')
+
 
 #def proc(path):
 #    if os.path.isdir(path):
