@@ -11,3 +11,8 @@ aboutme.html
 /articles/df0pred-1/main.html
 /articles/df0pred-1/pointplot.png
 /articles/debianization-with-git.html
+/debian/Contents.gz
+/debian/Packages.gz
+/debian/Release
+/debian/Release.gpg
+/debian/Sources.gz
