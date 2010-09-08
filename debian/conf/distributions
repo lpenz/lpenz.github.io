@@ -1,8 +1,0 @@
-Origin: Leandro Penz
-Label: lpenz debian packets
-Suite: unreleased
-Codename: lpenz
-Architectures: i386 source
-Components: main non-free contrib
-Description: Packets from Leandro Penz
-SignWith: default
