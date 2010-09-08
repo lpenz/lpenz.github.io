@@ -1,7 +1,7 @@
 
 import os
 
-Import(['env', 'render', 'top'])
+Import(['env', 'renderer', 'render', 'top'])
 
 env.Command('pointplot.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
 env.Depends('pointplot.png', 'init.R')
@@ -10,9 +10,11 @@ env.SideEffect('lm.txt', 'pointplot.png')
 env.SideEffect('lmsummary.txt', 'pointplot.png')
 env.SideEffect('lmrandsummary.txt', 'pointplot.png')
 
-env.Command('main.html', 'main.t2t', '%s %s 2 ${SOURCE.file} ${TARGET.file}' % (render, top), chdir=1)
-env.Depends('main.html', os.path.join(top, 'layouts', 'default.st'))
-env.Depends('main.html', 'lmsummary.txt')
-env.Depends('main.html', 'lm.txt')
+render('main.t2t')
+
+#env.Command('main.html', 'main.t2t', '%s %s 2 ${SOURCE.file} ${TARGET.file}' % (renderer, top), chdir=1)
+#env.Depends('main.html', os.path.join(top, 'layouts', 'default.st'))
+#env.Depends('main.html', 'lmsummary.txt')
+#env.Depends('main.html', 'lm.txt')
 
 

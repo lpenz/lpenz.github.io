@@ -14,17 +14,25 @@ env.Export('top')
 env.Command('tools/render', 'tools/render.hs', 'ghc --make -o $TARGET $SOURCE')
 env.SideEffect('tools/render.o',  'tools/render')
 env.SideEffect('tools/render.hi', 'tools/render')
-render = os.path.join(top, 'tools', 'render')
-env.Export('render')
+renderer = os.path.join(top, 'tools', 'render')
+env.Export('renderer')
 
+
+def render(f):
+    relp = os.path.relpath(os.path.abspath(f), top)
+    lvl = [ d for d in relp.split('/') if d != '' ]
+    (bn, be) = os.path.splitext(f)
+    t = bn + '.html'
+    env.Command(t, f, '%s %s %d ${SOURCE.file} ${TARGET.file}' % (renderer, top, len(lvl) - 1), chdir = 1)
+    env.Depends(t, renderer)
+    env.Depends(t, os.path.join(top, 'layouts/default.st'))
+env.Export('render')
 
 # Top texts:
 for f in glob.glob('*.t2t'):
-    (bn, be) = os.path.splitext(f)
-    t = bn + '.html'
-    env.Command(t, f, 'tools/render %s 0 $SOURCE $TARGET' % top)
-    env.Depends(t, 'tools/render')
-    env.Depends(t, 'layouts/default.st')
+    render(f)
+
+render('articles/debianization-with-git.t2t')
 
 
 env.SConscript('articles/df0pred-1/SConscript')
