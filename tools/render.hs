@@ -2,12 +2,17 @@
 import System
 import Data.ByteString.Lazy (ByteString)
 import Text.StringTemplate
+import System.Process
+
 
 main :: IO ()
 main = do
     [src,dst] <- getArgs
-    templates <- directoryGroup "_srcs/layouts" :: IO (STGroup String)
+    srchtml <- readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", src, "-o", "-" ] []
+    templates <- directoryGroup "layouts" :: IO (STGroup String)
     let Just t = getStringTemplate "default" templates
-    f <- readFile src
-    writeFile dst $ toString $ setAttribute "content" f $ t
+    writeFile dst $ toString
+        $ setAttribute "top" "."
+        $ setAttribute "content" srchtml
+        $ t
 

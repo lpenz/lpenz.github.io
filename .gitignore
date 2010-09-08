@@ -1,4 +1,6 @@
 .sconsign.dblite
 *.hi
 *.o
-/_srcs/tools/render
+index.html
+aboutme.html
+/tools/render

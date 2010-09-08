@@ -2,21 +2,21 @@
 <html>
 <head>
 <title>Avulsos by Penz</title>
-<link rel="stylesheet" type="text/css" href="/base-min.css" />
-<link rel="stylesheet" type="text/css" href="/style.css" />
-<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="$top$/base-min.css" />
+<link rel="stylesheet" type="text/css" href="$top$/style.css" />
+<link rel="shortcut icon" href="$top$/favicon.ico" />
 </head>
 <body>
 <div id="header">
 	<div id="logo">
-		<a href="/"><img alt="Avulsos by Penz" src="/favicon.ico" /></a>
+		<a href="/"><img alt="Avulsos by Penz" src="$top$/logo.png" /></a>
 	</div>
 	<div id="title">
 		<a href="/">Avulsos by Penz</a>
 	</div>
 	<ul id="nav">
-		<li><a href="/posts.html">Posts</a></li>
-		<li><a href="/aboutme.html">About me</a></li>
+		<li><a href="$top$/posts.html">Posts</a></li>
+		<li><a href="$top$/aboutme.html">About me</a></li>
 	</ul>
 </div>
 <div id="contents">
@@ -29,3 +29,5 @@ $content$
 <script type="text/javascript"> var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); </script> <script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-4182011-2"); pageTracker._trackPageview(); } catch(err) {}</script>
 </body>
 </html>
+<!-- vim: ft=html
+-->

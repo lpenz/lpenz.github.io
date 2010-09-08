@@ -5,15 +5,19 @@ import re
 
 env = Environment(ENV = os.environ)
 
-for f in glob.glob('_srcs/top/*'):
-    env.Command(os.path.basename(f), f, 'cp $SOURCE $TARGET')
+# Renderer:
+env.Command('tools/render', 'tools/render.hs', 'ghc --make -o $TARGET $SOURCE')
+env.SideEffect('tools/render.o',  'tools/render')
+env.SideEffect('tools/render.hi', 'tools/render')
 
-env.Command('_srcs/tools/render', '_srcs/tools/render.hs', 'ghc --make -o $TARGET $SOURCE')
 
-for f in glob.glob('_srcs/pages/*.t2t'):
-    b = os.path.basename(f)
-    env.Command(b, f, '_srcs/tools/render $SOURCE $TARGET')
-    env.Depends(b, '_srcs/tools/render')
+# Top texts:
+for f in glob.glob('*.t2t'):
+    (bn, be) = os.path.splitext(f)
+    t = bn + '.html'
+    env.Command(t, f, 'tools/render $SOURCE $TARGET')
+    env.Depends(t, 'tools/render')
+    env.Depends(t, 'layouts/default.st')
 
 #def proc(path):
 #    if os.path.isdir(path):
