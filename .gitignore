@@ -16,3 +16,4 @@ aboutme.html
 /debian/Release
 /debian/Release.gpg
 /debian/Sources.gz
+/debian/index.t2t

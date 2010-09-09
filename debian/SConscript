@@ -10,4 +10,10 @@ env.Command('Contents.gz',  glob.glob('incoming/*.deb'), 'apt-ftparchive content
 env.Command('Release',   ['Packages.gz', 'Sources.gz'], 'apt-ftparchive release  . > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
 env.Command('Release.gpg', 'Release', 'gpg --output ${TARGET.file} -ba ${SOURCE.file}', chdir=1)
 
+indexbuild = env.File('indexbuild')
+env.Command('index.t2t', ['lpenz.list']+env.Glob('incoming/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
+env.Depends('index.t2t', indexbuild)
+
+render('index.t2t')
+
 
