@@ -11,4 +11,7 @@ env.SideEffect('lmsummary.txt', 'pointplot.png')
 env.SideEffect('lmrandsummary.txt', 'pointplot.png')
 
 render('index.t2t')
+env.Depends('index.html', 'lm.txt')
+env.Depends('index.html', 'lmsummary.txt')
+env.Depends('index.html', 'lmrandsummary.txt')
 
