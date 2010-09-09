@@ -16,6 +16,7 @@
 	</div>
 	<ul id="nav">
 		<!--<li><a href="$top$/posts.html">Posts</a></li>-->
+		<li><a href="$top$/debian/">Debian</a></li>
 		<li><a href="$top$/aboutme.html">About me</a></li>
 	</ul>
 </div>
