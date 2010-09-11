@@ -1,5 +1,5 @@
 
-import RendererLib
+import RenderLib
 import System
 
 main :: IO ()

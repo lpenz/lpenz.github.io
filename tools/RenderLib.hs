@@ -1,7 +1,5 @@
-module RendererLib where
+module RenderLib where
 
-import System
-import Data.ByteString.Lazy (ByteString)
 import Text.StringTemplate
 import System.Process
 import System.FilePath

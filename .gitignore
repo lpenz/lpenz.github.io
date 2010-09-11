@@ -1,6 +1,7 @@
 .sconsign.dblite
 *.hi
 *.o
+*.pyc
 index.html
 aboutme.html
 /tools/render

@@ -3,7 +3,9 @@ import os
 import glob
 import re
 
-env = Environment(ENV = os.environ)
+env = Environment(ENV = os.environ
+    , toolpath = ['tools']
+    , tools = ['haskell', 'txt2tags'])
 env.Export('env')
 
 top = os.path.abspath(os.path.curdir)
@@ -11,10 +13,9 @@ env.Export('top')
 
 
 # Renderer:
-env.Command('tools/render', 'tools/render.hs', 'ghc --make -itools -o $TARGET $SOURCE')
-env.SideEffect('tools/render.o',  'tools/render')
-env.SideEffect('tools/render.hi', 'tools/render')
-env.Depends('tools/render', 'tools/RendererLib.hs')
+env.Append(HASKELLPATH='tools')
+env.HASKELL('tools/RenderLib.hs')
+env.HASKELL('tools/render.hs')
 renderer = os.path.join('tools', 'render')
 env.Export('renderer')
 
