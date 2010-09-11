@@ -6,15 +6,20 @@ import System.Process
 import System.FilePath
 import Data.List
 
+getTitle :: FilePath -> IO (String)
+getTitle src = do
+    srct2t  <- readFile src
+    return $ head $ lines srct2t
+
+
 main :: IO ()
 main = do
-    [layoutdir, lvlstr, src, dst] <- getArgs
-    let lvl = read lvlstr :: Int
-    srct2t  <- readFile src
-    let title = head $ lines srct2t
+    [src, dst] <- getArgs
+    title <- getTitle src
     srchtml <- readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", src, "-o", "-" ] []
-    templates <- directoryGroup (joinPath [ layoutdir, "layouts" ]) :: IO (STGroup String)
+    templates <- directoryGroup "layouts" :: IO (STGroup String)
     let Just t = getStringTemplate "default" templates
+    let lvl = length (splitPath src) - 1
     let top = if lvl == 0 then "." else (concat $ intersperse "/" $ replicate lvl "..")
     writeFile dst $ toString
         $ setAttribute "top" top

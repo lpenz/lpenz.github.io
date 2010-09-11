@@ -14,19 +14,17 @@ env.Export('top')
 env.Command('tools/render', 'tools/render.hs', 'ghc --make -o $TARGET $SOURCE')
 env.SideEffect('tools/render.o',  'tools/render')
 env.SideEffect('tools/render.hi', 'tools/render')
-renderer = os.path.join(top, 'tools', 'render')
+renderer = os.path.join('tools', 'render')
 env.Export('renderer')
 
 
 def render(f):
-    relp = os.path.relpath(os.path.abspath(f), top)
-    lvl = [ d for d in relp.split('/') if d != '' ]
-    (bn, be) = os.path.splitext(f)
-    t = bn + '.html'
-    env.Command(t, f, '%s %s %d ${SOURCE.file} ${TARGET.file}' % (renderer, top, len(lvl) - 1), chdir = 1)
-    env.Depends(t, renderer)
+    t = os.path.splitext(f)[0] + '.html'
+    env.Command(t, f, '%s ${SOURCE} ${TARGET}' % renderer)
+    env.Depends(t, os.path.join(top, renderer))
     env.Depends(t, os.path.join(top, 'layouts/default.st'))
 env.Export('render')
+
 
 # Top texts:
 for f in glob.glob('*.t2t'):
@@ -36,6 +34,7 @@ for f in glob.glob('*.t2t'):
 # Articles:
 render('articles/debianization-with-git.t2t')
 env.SConscript('articles/df0pred-1/SConscript')
+
 
 # Debian:
 env.SConscript('debian/SConscript')
