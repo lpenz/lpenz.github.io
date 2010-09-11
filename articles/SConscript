@@ -4,9 +4,18 @@ import glob
 
 Import(['env'])
 
+articles = []
+
 # Articles:
 for i in glob.glob('*'):
     if not os.path.isdir(i):
         continue
     env.SConscript('%s/SConscript' % i)
+    articles.append('%s/index.t2t' % i)
+
+# Index:
+indexbuild = env.File('indexbuild')
+env.Command('index.t2t', articles, indexbuild.abspath + ' $TARGET $SOURCES')
+
+env.RENDER('index.t2t')
 

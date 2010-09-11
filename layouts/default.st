@@ -9,14 +9,14 @@
 <body>
 <div id="header">
 	<div id="logo">
-		<a href="/"><img alt="Avulsos by Penz" src="$top$/logo.png" /></a>
+		<a href="$top$/index.html"><img alt="Avulsos by Penz" src="$top$/logo.png" /></a>
 	</div>
 	<div id="title">
-		<a href="/">Avulsos by Penz</a>
+		<a href="$top$/index.html">Avulsos by Penz</a>
 	</div>
 	<ul id="nav">
-		<!--<li><a href="$top$/posts.html">Posts</a></li>-->
-		<li><a href="$top$/debian/">Debian</a></li>
+		<li><a href="$top$/articles/index.html">Articles</a></li>
+		<li><a href="$top$/debian/index.html">Debian</a></li>
 		<li><a href="$top$/aboutme.html">About me</a></li>
 	</ul>
 </div>

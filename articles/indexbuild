@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+DST=${1?}
+shift
+
+TMP=$(tempfile)
+
+cat <<END >>$TMP
+Articles
+
+
+
+
+The following articles are present in this page:
+END
+
+for f in "$@"; do
+	TITLE=$(head -1 $f)
+	B=${f##*articles/}
+	echo "- [$TITLE ${B%.t2t}.html]" >> $TMP
+done
+
+cat <<END >>$TMP
+
+
+
+END
+
+mv $TMP $DST
+

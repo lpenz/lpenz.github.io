@@ -3,7 +3,7 @@
 *.o
 *.pyc
 index.html
-aboutme.html
+/aboutme.html
 /tools/render
 /articles/df0pred-1/lm.txt
 /articles/df0pred-1/lmplot.png
@@ -11,7 +11,7 @@ aboutme.html
 /articles/df0pred-1/lmsummary.txt
 /articles/df0pred-1/main.html
 /articles/df0pred-1/pointplot.png
-/articles/debianization-with-git.html
+/articles/index.t2t
 /debian/Contents.gz
 /debian/Packages.gz
 /debian/Release
