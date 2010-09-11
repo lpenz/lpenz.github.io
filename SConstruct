@@ -11,9 +11,10 @@ env.Export('top')
 
 
 # Renderer:
-env.Command('tools/render', 'tools/render.hs', 'ghc --make -o $TARGET $SOURCE')
+env.Command('tools/render', 'tools/render.hs', 'ghc --make -itools -o $TARGET $SOURCE')
 env.SideEffect('tools/render.o',  'tools/render')
 env.SideEffect('tools/render.hi', 'tools/render')
+env.Depends('tools/render', 'tools/RendererLib.hs')
 renderer = os.path.join('tools', 'render')
 env.Export('renderer')
 
