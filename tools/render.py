@@ -26,7 +26,7 @@ def renderSourceScanner(node, env, path):
 
 
 def renderTargetScanner(node, env, path):
-    return [os.path.join(env['TOP'], env['RENDER'])]
+    return [os.path.join(env['TOP'], env['RENDERTEMPLATE']), os.path.join(env['TOP'], env['RENDER'])]
 
 
 def generate(env):
