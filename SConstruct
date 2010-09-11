@@ -5,26 +5,23 @@ import re
 
 env = Environment(ENV = os.environ
     , toolpath = ['tools']
-    , tools = ['haskell', 'txt2tags'])
+    , tools = ['haskell', 'txt2tags', 'render'])
 env.Export('env')
 
 top = os.path.abspath(os.path.curdir)
 env.Export('top')
+env['TOP'] = top
 
 
 # Renderer:
 env.Append(HASKELLPATH='tools')
 env.HASKELL('tools/RenderLib.hs')
 env.HASKELL('tools/render.hs')
-renderer = os.path.join('tools', 'render')
-env.Export('renderer')
 
 
 def render(f):
     t = os.path.splitext(f)[0] + '.html'
-    env.Command(t, f, 'tools/render ${SOURCE} ${TARGET}')
-    env.Depends(t, os.path.join(top, renderer))
-    env.Depends(t, os.path.join(top, 'layouts/default.st'))
+    env.RENDER(t, ['$TOP/layouts/default.st', f])
 env.Export('render')
 
 

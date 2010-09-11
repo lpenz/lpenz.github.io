@@ -1,7 +1,7 @@
 
 import os
 
-Import(['env', 'renderer', 'render', 'top'])
+Import(['env', 'render', 'top'])
 
 env.Command('pointplot.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
 env.Depends('pointplot.png', 'init.R')
