@@ -33,7 +33,7 @@ def generate(env):
     """Add Builders and construction variables for render to an Environment."""
     RenderAction = SCons.Action.Action('$RENDERCOM', '$RENDERCOMSTR')
     RenderTargetScanner = SCons.Scanner.Base(name = "renderTargetScanner", function = renderTargetScanner, skeys = ['.t2t'])
-    env['BUILDERS']['RENDER'] = SCons.Builder.Builder(action = RenderAction, src_suffix = '.t2t', source_scanner = SCons.Tool.SourceFileScanner, target_scanner = RenderTargetScanner)
+    env['BUILDERS']['RENDER'] = SCons.Builder.Builder(action = RenderAction, suffix = '.html', src_suffix = '.t2t', source_scanner = SCons.Tool.SourceFileScanner, target_scanner = RenderTargetScanner)
     env['RENDER']      = 'tools/render'
     env['RENDERTEMPLATE'] = 'layouts/default.st'
     env['RENDERCOM']   = '$RENDER $RENDERTEMPLATE $SOURCE $TARGET'

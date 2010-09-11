@@ -1,4 +1,4 @@
 
-Import(['env', 'render'])
-render('index.t2t')
+Import(['env'])
+env.RENDER('index.t2t')
 

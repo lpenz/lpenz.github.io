@@ -2,7 +2,7 @@
 import os
 import glob
 
-Import(['env', 'render', 'top'])
+Import(['env'])
 
 env.Command('Packages.gz',  glob.glob('incoming/*.deb'), 'apt-ftparchive packages . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
 env.Command('Sources.gz',   glob.glob('incoming/*.dsc'), 'apt-ftparchive sources  . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
@@ -14,6 +14,6 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', ['lpenz.list']+env.Glob('incoming/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
 env.Depends('index.t2t', indexbuild)
 
-render('index.t2t')
+env.RENDER('index.t2t')
 
 
