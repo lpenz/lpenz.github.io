@@ -21,7 +21,7 @@ env.HASKELL('tools/render.hs')
 
 def render(f):
     t = os.path.splitext(f)[0] + '.html'
-    env.RENDER(t, ['$TOP/layouts/default.st', f])
+    env.RENDER(t, f)
 env.Export('render')
 
 

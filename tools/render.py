@@ -26,7 +26,7 @@ def renderSourceScanner(node, env, path):
 
 
 def renderTargetScanner(node, env, path):
-    return [os.path.join(env['TOP'], 'tools/render')]
+    return [os.path.join(env['TOP'], env['RENDER'])]
 
 
 def generate(env):
@@ -35,7 +35,8 @@ def generate(env):
     RenderTargetScanner = SCons.Scanner.Base(name = "renderTargetScanner", function = renderTargetScanner, skeys = ['.t2t'])
     env['BUILDERS']['RENDER'] = SCons.Builder.Builder(action = RenderAction, src_suffix = '.t2t', source_scanner = SCons.Tool.SourceFileScanner, target_scanner = RenderTargetScanner)
     env['RENDER']      = 'tools/render'
-    env['RENDERCOM']   = '$RENDER $SOURCES $TARGET'
+    env['RENDERTEMPLATE'] = 'layouts/default.st'
+    env['RENDERCOM']   = '$RENDER $RENDERTEMPLATE $SOURCE $TARGET'
     RenderSourceScanner = SCons.Scanner.Base(name = "renderSourceScanner", function = renderSourceScanner, skeys = ['.t2t'], recursive = True)
     SCons.Tool.SourceFileScanner.add_scanner('.t2t', RenderSourceScanner)
 
