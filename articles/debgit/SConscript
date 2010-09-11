@@ -1,0 +1,4 @@
+
+Import(['env', 'render'])
+render('index.t2t')
+

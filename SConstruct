@@ -21,7 +21,7 @@ env.Export('renderer')
 
 def render(f):
     t = os.path.splitext(f)[0] + '.html'
-    env.Command(t, f, '%s ${SOURCE} ${TARGET}' % renderer)
+    env.Command(t, f, 'tools/render ${SOURCE} ${TARGET}')
     env.Depends(t, os.path.join(top, renderer))
     env.Depends(t, os.path.join(top, 'layouts/default.st'))
 env.Export('render')
@@ -33,8 +33,7 @@ for f in glob.glob('*.t2t'):
 
 
 # Articles:
-render('articles/debianization-with-git.t2t')
-env.SConscript('articles/df0pred-1/SConscript')
+env.SConscript('articles/SConscript')
 
 
 # Debian:

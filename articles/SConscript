@@ -1,0 +1,12 @@
+
+import os
+import glob
+
+Import(['env', 'render'])
+
+# Articles:
+for i in glob.glob('*'):
+    if not os.path.isdir(i):
+        continue
+    env.SConscript('%s/SConscript' % i)
+
