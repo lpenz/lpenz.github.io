@@ -1,29 +1,38 @@
 module RenderLib where
 
 import Text.StringTemplate
+import System.Directory
 import System.Process
 import System.FilePath
 import Data.List
 import Control.Monad
 import Data.Maybe
+import Text.Printf (printf)
 
 
 getFileTitle :: FilePath -> IO (String)
 getFileTitle src = do
-    srct2t  <- readFile src
+    srct2t <- readFile src
     return $ head $ lines srct2t
 
 
 getBreadcrumbs :: FilePath -> IO (String)
 getBreadcrumbs src = do
-    let p = init $ splitPath src
-    putStrLn $ show p
-    -- mapM gettitles p
-    -- where
-    --     gettitles f = do
-    --         e <- fileExists (f ++ "index.html")
-    --         if e then return (getfileTitle
-    return ""
+    let paths = inits $ init $ splitPath src
+    title <- mapM gettitles paths
+    putStrLn $ show paths ++ " got " ++ show title
+    let titleurl = map geturl (zip paths title)
+    putStrLn $ show paths ++ " got " ++ show titleurl
+    return $ concat title
+    where
+        geturl (p0, t0) = printf "<a href=\"$top$/%s/index.html\"> %s </a>" p0 t0
+        gettitles p0 = do
+            let p = concat p0
+            let f = p ++ "./index.t2t"
+            e <- doesFileExist f
+            t <- getFileTitle f
+            let r = if e then t else (last p0)
+            return r
 
 		-- <a href="$top$/index.html">Avulsos by Penz</a>
 
