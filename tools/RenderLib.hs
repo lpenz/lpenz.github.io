@@ -16,16 +16,18 @@ getFileTitle src = do
     return $ head $ lines srct2t
 
 
-getBreadcrumbs :: FilePath -> IO (String)
-getBreadcrumbs src = do
+getBreadcrumbs :: String -> FilePath -> IO (String)
+getBreadcrumbs top src = do
     let paths = inits $ init $ splitPath src
     title <- mapM gettitles paths
-    putStrLn $ show paths ++ " got " ++ show title
     let titleurl = map geturl (zip paths title)
-    putStrLn $ show paths ++ " got " ++ show titleurl
-    return $ concat title
+    --putStrLn $ show paths ++ " got " ++ show titleurl
+    let rv = concat $ intersperse " &gt; " titleurl
+    --putStrLn $ "rv "++rv
+    return $ rv
     where
-        geturl (p0, t0) = printf "<a href=\"$top$/%s/index.html\"> %s </a>" p0 t0
+        geturl :: ([String], String) -> String
+        geturl (p0, t0) = printf "<a href=\"%s/%sindex.html\">%s</a>" top (concat p0) t0
         gettitles p0 = do
             let p = concat p0
             let f = p ++ "./index.t2t"
@@ -43,7 +45,7 @@ renderT2T attrs tpfile src dst = do
     tp0 <- liftM newSTMP $ readFile tpfile
     let lvl = length (splitPath src) - 1
     let top = if lvl == 0 then "." else (concat $ intersperse "/" $ replicate lvl "..")
-    breadcrumbs <- getBreadcrumbs src
+    breadcrumbs <- getBreadcrumbs top src
     let tp =
             attrs
             $ setAttribute "top" top
