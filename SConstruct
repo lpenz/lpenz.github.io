@@ -21,6 +21,10 @@ for f in glob.glob('*.t2t'):
     env.RENDER(f)
 
 
+# About me:
+env.SConscript('aboutme/SConscript')
+
+
 # Articles:
 env.SConscript('articles/SConscript')
 

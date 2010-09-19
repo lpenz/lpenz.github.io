@@ -17,7 +17,7 @@
 	<ul id="nav">
 		<li><a href="$top$/articles/index.html">Articles</a></li>
 		<li><a href="$top$/debian/index.html">Debian</a></li>
-		<li><a href="$top$/aboutme.html">About me</a></li>
+		<li><a href="$top$/aboutme/index.html">About me</a></li>
 	</ul>
 </div>
 <div id="contents">
