@@ -12,7 +12,7 @@
 		<a href="$top$/index.html"><img alt="Avulsos by Penz" src="$top$/logo.png" /></a>
 	</div>
 	<div id="title">
-		<a href="$top$/index.html">Avulsos by Penz</a>
+		$breadcrumbs$
 	</div>
 	<ul id="nav">
 		<li><a href="$top$/articles/index.html">Articles</a></li>
