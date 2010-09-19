@@ -12,6 +12,7 @@ for i in glob.glob('*'):
         continue
     env.SConscript('%s/SConscript' % i)
     articles.append('%s/index.t2t' % i)
+    env.Depends('%s/index.html' % i, 'index.t2t')
 
 # Index:
 indexbuild = env.File('indexbuild')
