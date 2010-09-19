@@ -1,12 +1,13 @@
  dpkg-buildpackage -rfakeroot -D -us -uc -i -I
-dpkg-buildpackage: export CPPFLAGS from dpkg-buildflags (origin: vendor): 
 dpkg-buildpackage: export CFLAGS from dpkg-buildflags (origin: vendor): -g -O2
+dpkg-buildpackage: export CPPFLAGS from dpkg-buildflags (origin: vendor): 
 dpkg-buildpackage: export CXXFLAGS from dpkg-buildflags (origin: vendor): -g -O2
 dpkg-buildpackage: export FFLAGS from dpkg-buildflags (origin: vendor): -g -O2
 dpkg-buildpackage: export LDFLAGS from dpkg-buildflags (origin: vendor): 
 dpkg-buildpackage: source package scons2dot
-dpkg-buildpackage: source version 0.9-2
+dpkg-buildpackage: source version 0.9.1-1
 dpkg-buildpackage: source changed by Leandro Lisboa Penz <llpenz@gmail.com>
+ dpkg-source -i -I --before-build scons2dot
 dpkg-buildpackage: host architecture i386
  fakeroot debian/rules clean
 dh  clean
@@ -22,12 +23,13 @@ make[1]: Leaving directory `/home/lpenz/projs/scons2dot'
    dh_clean
  dpkg-source -i -I -b scons2dot
 dpkg-source: warning: no source format specified in debian/source/format, see dpkg-source(1)
-dpkg-source: warning: source directory 'scons2dot' is not <sourcepackage>-<upstreamversion> 'scons2dot-0.9'
-dpkg-source: warning: .orig directory name scons2dot.orig is not <package>-<upstreamversion> (wanted scons2dot-0.9.orig)
+dpkg-source: warning: source directory 'scons2dot' is not <sourcepackage>-<upstreamversion> 'scons2dot-0.9.1'
+dpkg-source: warning: .orig directory name scons2dot.orig is not <package>-<upstreamversion> (wanted scons2dot-0.9.1.orig)
 dpkg-source: info: using source format `1.0'
-dpkg-source: info: building scons2dot using existing scons2dot_0.9.orig.tar.gz
-dpkg-source: info: building scons2dot in scons2dot_0.9-2.diff.gz
-dpkg-source: info: building scons2dot in scons2dot_0.9-2.dsc
+dpkg-source: info: building scons2dot using existing scons2dot_0.9.1.orig.tar.gz
+dpkg-source: info: building scons2dot in scons2dot_0.9.1-1.diff.gz
+dpkg-source: warning: ignoring deletion of file README.textile
+dpkg-source: info: building scons2dot in scons2dot_0.9.1-1.dsc
  debian/rules build
 dh  build
    dh_testdir
@@ -36,21 +38,6 @@ dh  build
 make[1]: Entering directory `/home/lpenz/projs/scons2dot'
 ghc --make -cpp -Wall scons2dot.hs -o scons2dot
 [1 of 1] Compiling Main             ( scons2dot.hs, scons2dot.o )
-
-scons2dot.hs:23:0:
-    Warning: The import of `Data.List' is redundant
-               except perhaps to import instances from `Data.List'
-             To import instances alone, use: import Data.List()
-
-scons2dot.hs:26:0:
-    Warning: The import of `Data.Maybe' is redundant
-               except perhaps to import instances from `Data.Maybe'
-             To import instances alone, use: import Data.Maybe()
-
-scons2dot.hs:28:0:
-    Warning: The import of `System.IO' is redundant
-               except perhaps to import instances from `System.IO'
-             To import instances alone, use: import System.IO()
 Linking scons2dot ...
 txt2tags -t man -i manual.t2t -o scons2dot.1
 txt2tags wrote /home/lpenz/projs/scons2dot/scons2dot.1
@@ -110,16 +97,17 @@ dpkg-shlibdeps: warning: dependency on libutil.so.1 could be avoided if "debian/
    dh_gencontrol
    dh_md5sums
    dh_builddeb
-dpkg-deb: building package `scons2dot' in `../scons2dot_0.9-2_i386.deb'.
- dpkg-genchanges  >../scons2dot_0.9-2_i386.changes
-dpkg-genchanges: not including original source code in upload
-dpkg-buildpackage: binary and diff upload (original source NOT included)
+dpkg-deb: building package `scons2dot' in `../scons2dot_0.9.1-1_i386.deb'.
+ dpkg-genchanges  >../scons2dot_0.9.1-1_i386.changes
+dpkg-genchanges: including full source code in upload
+ dpkg-source -i -I --after-build scons2dot
+dpkg-buildpackage: full upload (original source is included)
 Now running lintian...
 W: scons2dot source: out-of-date-standards-version 3.8.3 (current is 3.9.1)
 Finished running lintian.
 Now signing changes and any dsc files...
- signfile scons2dot_0.9-2.dsc Leandro Lisboa Penz <llpenz@gmail.com>
+ signfile scons2dot_0.9.1-1.dsc Leandro Lisboa Penz <llpenz@gmail.com>
 
- signfile scons2dot_0.9-2_i386.changes Leandro Lisboa Penz <llpenz@gmail.com>
+ signfile scons2dot_0.9.1-1_i386.changes Leandro Lisboa Penz <llpenz@gmail.com>
 
 Successfully signed dsc and changes files

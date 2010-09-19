@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 19 Sep 2010 18:58:16 -0300
+Source: ftpsync
+Binary: ftpsync
+Architecture: source all
+Version: 1.1.1-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ ftpsync    - Efficient FTP synchronization
+Changes: 
+ ftpsync (1.1.1-1) unstable; urgency=low
+ .
+   * New upstream release: minor fixes in status messages.
+Checksums-Sha1: 
+ b53d80b604bbe0347c39275211c74471e834ecbc 1114 ftpsync_1.1.1-1.dsc
+ 751720fdbfab6bc9dc7435ee4ab21b40b917d422 11374 ftpsync_1.1.1.orig.tar.gz
+ 1ff05d41d46ccb5614e5ab204a9f707b3f27b9ca 1608 ftpsync_1.1.1-1.diff.gz
+ ea125d5a6e1bc8f312b6634432a1ee50478ad93f 6400 ftpsync_1.1.1-1_all.deb
+Checksums-Sha256: 
+ e834794bdc1cbed2d10d006c52f1f911d853daeeb1a91e951466bd9251b7124f 1114 ftpsync_1.1.1-1.dsc
+ d3a67b815a3644db10a8a12395ba93460a744408119b12c8ef045d74c81c9973 11374 ftpsync_1.1.1.orig.tar.gz
+ a2a9b676bb523c777c75910dff3727a37217eeb75b033ae6ad8b5b5893aeb6db 1608 ftpsync_1.1.1-1.diff.gz
+ 13fffab6f7e8ff6819b162add5086b596567c576cd95d68671a8898cabf345c7 6400 ftpsync_1.1.1-1_all.deb
+Files: 
+ 722b5d1ff6251601432d5d38f317803c 1114 python extra ftpsync_1.1.1-1.dsc
+ 7a6ff3caed2633a1f1743702f65ef489 11374 python extra ftpsync_1.1.1.orig.tar.gz
+ a019754400609e4f815cb23ea107ae9e 1608 python extra ftpsync_1.1.1-1.diff.gz
+ 11eb19eabd9e8166a1a80d7d3d7a6e2f 6400 python extra ftpsync_1.1.1-1_all.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAkyWh78ACgkQQKPFnwyVxRJrWwD/QIxFuM2VzM5Ooc7kYxuVYj+w
+SLn7LVTO1WVPWMYHNTsA/0UyHy2avsHML55HxkQBCmXtFE+1J5d6fYefwIpsMg6W
+=wg61
+-----END PGP SIGNATURE-----

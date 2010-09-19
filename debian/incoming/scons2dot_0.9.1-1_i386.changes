@@ -1,0 +1,43 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 19 Sep 2010 19:02:19 -0300
+Source: scons2dot
+Binary: scons2dot
+Architecture: source i386
+Version: 0.9.1-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ scons2dot  - Builds graph of dependencies of scons
+Changes: 
+ scons2dot (0.9.1-1) unstable; urgency=low
+ .
+   * New upstream release: a bug was prunning dependencies of level greater
+     than 3.
+Checksums-Sha1: 
+ 55e8440448d2e13d818b5e4285fa56828a18e5ff 1198 scons2dot_0.9.1-1.dsc
+ 335be3822558f0299c6cbd557179114788bbb301 10901 scons2dot_0.9.1.orig.tar.gz
+ dc77511a9ea2bce9f7f6bf6a3eb6bd74be669b2d 1521 scons2dot_0.9.1-1.diff.gz
+ e4928a7e31ca88f0ee592cc82c359003ea7758f1 177086 scons2dot_0.9.1-1_i386.deb
+Checksums-Sha256: 
+ 4d8a77d60bf5e1f1a3289eaf149a836f15e9aad66e12124411d28a61b3b44630 1198 scons2dot_0.9.1-1.dsc
+ 6b0dad0faf4e8c558e919b8e6d6c037930a89e68cd4c1812af946e061592c76f 10901 scons2dot_0.9.1.orig.tar.gz
+ eeb6f0021a13fcad306ee67a31c0010efdb0fc885c4904cc458caaaf61660c96 1521 scons2dot_0.9.1-1.diff.gz
+ 575064a53ac6caf87a7f8f7df32b08bd3a41f5a8212a039f60d589e1cbd49975 177086 scons2dot_0.9.1-1_i386.deb
+Files: 
+ bac7185109a3e27832c2babf585b3d6d 1198 utils extra scons2dot_0.9.1-1.dsc
+ 7ea2ec59501030372705357ce0f6e475 10901 utils extra scons2dot_0.9.1.orig.tar.gz
+ 5c5baed4851ec212e3e470e9a8df41ea 1521 utils extra scons2dot_0.9.1-1.diff.gz
+ ccd834899a5e7c763c439a4773e8ad03 177086 utils extra scons2dot_0.9.1-1_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAkyWiQEACgkQQKPFnwyVxRK5bQD/dvZB/PU6MPBOocc2EENxWxRA
+mCuT4MHg29XZUY/PRTEA/1i3uDJH9fWpY8FgS4EvBXXW/Cttjf2D+OV7WgrjmQLG
+=6EbQ
+-----END PGP SIGNATURE-----
