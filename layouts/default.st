@@ -5,8 +5,6 @@
 <link rel="stylesheet" type="text/css" href="$top$/base-min.css" />
 <link rel="stylesheet" type="text/css" href="$top$/style.css" />
 <link rel="shortcut icon" href="$top$/favicon.ico" />
-<link rel="openid2.provider" href="https://www.google.com/accounts/" />
-<link rel="openid2.local_id" href="http://www.google.com/profiles/llpenz" />
 </head>
 <body>
 <div id="header">
