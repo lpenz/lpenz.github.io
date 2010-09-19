@@ -17,9 +17,9 @@ def haskellExecutableEmitter(target, source, env):
 def haskellAutoEmitter(target, source, env):
     base = SCons.Util.splitext(str(source[0]))[0]
     contents = source[0].get_contents()
-    target.append(base + '.o')
     if main_re.findall(contents):
-        target.append(base)
+        return base, source
+    target.append(base + '.o')
     return target, source
 
 import_re = [
