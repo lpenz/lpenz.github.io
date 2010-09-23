@@ -18,3 +18,7 @@ index.html
 /debian/Release.gpg
 /debian/Sources.gz
 /debian/index.t2t
+/debian/binary-i386
+/debian/dists
+/debian/lpenz
+/debian/main

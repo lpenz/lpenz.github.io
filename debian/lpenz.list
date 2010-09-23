@@ -1,2 +1,2 @@
-deb     http://lpenz.github.com/debian/ /
-deb-src http://lpenz.github.com/debian/ /
+deb     http://lpenz.github.com/debian/ lpenz main
+deb-src http://lpenz.github.com/debian/ lpenz main
