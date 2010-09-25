@@ -4,19 +4,16 @@ import glob
 
 Import(['env'])
 
-env.Command('Packages.gz',  glob.glob('incoming/*.deb'), 'apt-ftparchive packages . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
-env.Command('Sources.gz',   glob.glob('incoming/*.dsc'), 'apt-ftparchive sources  . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
-env.Command('Contents.gz',  glob.glob('incoming/*.deb'), 'apt-ftparchive contents . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
-env.Command('Release',   ['Packages.gz', 'Sources.gz'], 'apt-ftparchive -o APT::FTPArchive::Release::Label=lpenz release . > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
-env.Command('Release.gpg', 'Release', 'gpg --output ${TARGET.file} -ba ${SOURCE.file}', chdir=1)
-
-env.Command('main', [], 'ln -s . $TARGET')
-env.Command('lpenz', [], 'ln -s . $TARGET')
-env.Command('dists', [], 'ln -s . $TARGET')
-env.Command('binary-i386', [], 'ln -s . $TARGET')
+env.Command('dists/lpenz/main/binary-i386/Packages.gz',  glob.glob('packages/*.deb'), 'dpkg-scanpackages ../../../../packages | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
+env.Command('dists/lpenz/main/source/Sources.gz',        glob.glob('packages/*.dsc'), 'dpkg-scansources  ../../../../packages | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
+#env.Command('Contents.gz',  glob.glob('incoming/*.deb'), 'apt-ftparchive contents . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
+env.Command('dists/lpenz/main/source/Release',   ['dists/lpenz/main/binary-i386/Packages.gz', 'dists/lpenz/main/source/Sources.gz'], 'apt-ftparchive -o APT::FTPArchive::Release::Label=lpenz release . > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
+env.Command('dists/lpenz/main/source/Release.gpg', 'dists/lpenz/main/source/Release', 'gpg --output ${TARGET.file} -ba ${SOURCE.file}', chdir=1)
+env.Command('dists/lpenz/main/binary-i386/Release', 'dists/lpenz/main/source/Release', 'cp $SOURCE $TARGET')
+env.Command('dists/lpenz/main/binary-i386/Release.gpg', 'dists/lpenz/main/source/Release.gpg', 'cp $SOURCE $TARGET')
 
 indexbuild = env.File('indexbuild')
-env.Command('index.t2t', ['lpenz.list']+env.Glob('incoming/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
+env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
 env.Depends('index.t2t', indexbuild)
 
 env.RENDER('index.t2t')
