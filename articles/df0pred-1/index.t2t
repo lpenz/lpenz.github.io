@@ -12,7 +12,7 @@ statistical software environment.
 
 
 
-== Prerequisites ==
+= Prerequisites =
 
 The first thing we need is the data. By running a simple
 ``(date --utc; df -k; echo) >> /var/dflog.txt``
@@ -40,7 +40,7 @@ upon values observed in real data. The used disk space is represented in
 
 
 
-== Starting up ==
+= Starting up =
 
 After running **R** in the shell prompt, we get the usual license and basic help
 information.
@@ -65,7 +65,7 @@ From our example, we get:
 
 
 
-== Linear model ==
+= Linear model =
 
 We can now create and take a look at our linear model object:
 ```
@@ -86,7 +86,7 @@ The example plot, with the line:
 
 
 
-== Evaluating the model ==
+= Evaluating the model =
 
 R provides us with a very generic command that generates statistical information
 about objects: **summary**. Let's use it on our linear model objects:
@@ -128,7 +128,7 @@ nicely, we can use it to predict hard-disk shortage.
 
 
 
-== Predicting disk-free-zero ==
+= Predicting disk-free-zero =
 
 Until now, we represented disk space as a function of time, creating a model
 that allows us to predict the used disk space given the date. But what we really
@@ -164,7 +164,7 @@ pattern holds until then, with 95% statistical significance.
 
 
 
-== Conclusion ==
+= Conclusion =
 
 By analysing the used disk space, we have avoided dealing with total disk
 expansion. We can even predict how long the expansion will give us before
@@ -186,7 +186,7 @@ another article.
 
 
 
-== Further reading ==
+= Further reading =
 
 - http://www.cyclismo.org/tutorial/R/index.html: R tutorial
 - http://www.r-tutor.com/: An R introduction to statistics

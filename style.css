@@ -73,13 +73,15 @@ body {
 	vertical-align: text-bottom;
 }
 
-h1, h2 {
-	color: #256449;
+h1,h2 {
 	margin-top: 2em;
+}
+h1 {
+	color: #256449;
 	text-align: left;
 	border-bottom: 1px solid #925136;
 }
-h1 {
+#contents #title {
 	margin-top: 5px;
 	font-size: 175%;
 	text-align: center;

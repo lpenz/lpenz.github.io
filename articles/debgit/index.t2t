@@ -17,7 +17,7 @@ branch on the same repository.
 
 
 
-== Prerequisites ==
+= Prerequisites =
 
 In order to ease the packaging and keep your package warning-free, it should
 have in its main repository:
@@ -38,7 +38,7 @@ These items are not debian-specific and are useful for everyone.
 
 
 
-== Initial packaging setup ==
+= Initial packaging setup =
 
 The first step is to create the debian branches in the git repository. On the
 debian-upstream branch, we will store the source files of the "upstream"
@@ -86,7 +86,7 @@ You can now commit the debian dir in the debian-debian branch.
 
 
 
-== Importing the sources ==
+= Importing the sources =
 
 In the debian-debian branch:
 ```
@@ -97,7 +97,7 @@ it with the debian-debian branch.
 
 
 
-== Creating the package ==
+= Creating the package =
 
 To create the debian package:
 ```
@@ -105,7 +105,7 @@ git-buildpackage --git-tag
 ```
 
 
-== Importing further versions ==
+= Importing further versions =
 
 Create the new ..///package//_//version//.orig.tar.gz and then:
 ```
@@ -119,7 +119,7 @@ Yes, it's that easy.
 
 
 
-== Final remarks ==
+= Final remarks =
 
 After an initial expensive setup, package creation of further versions is
 mostly painless, which is the whole point of git-buildpackage and friends.
