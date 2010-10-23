@@ -14,14 +14,14 @@ ids = {'`':'verb', '"':'raw', "'":'passthru' }
 def renderSourceScanner(node, env, path):
     candidates = cre.findall(node.get_contents())
     includes = []
-    for file in candidates:
-        mark = file[0]
+    for f in candidates:
+        mark = f[0]
         if mark in ids.keys():
-            if file[:2] == file[-2:] == mark*2:
-                file = file[2:-2]
+            if f[:2] == f[-2:] == mark*2:
+                f = f[2:-2]
         else:
-            includes.extend(renderScanFile(env.File(file)))
-        includes.append(file)
+            includes.extend(renderScanFile(env.File(f)))
+        includes.append(f)
     return includes
 
 
