@@ -17,5 +17,6 @@ env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbui
 env.Depends('index.t2t', indexbuild)
 
 env.RENDER('index.t2t')
+env.Depends('index.html', '../index.t2t')
 
 

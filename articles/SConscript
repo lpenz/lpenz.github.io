@@ -19,4 +19,5 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', articles, indexbuild.abspath + ' $TARGET $SOURCES')
 
 env.RENDER('index.t2t')
+env.Depends('index.html', '../index.t2t')
 
