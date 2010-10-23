@@ -3,7 +3,8 @@
 *.o
 *.pyc
 index.html
-/aboutme.html
+/index.t2t
+/indexbuild
 /tools/render
 /articles/df0pred-1/lm.txt
 /articles/df0pred-1/lmplot.png
