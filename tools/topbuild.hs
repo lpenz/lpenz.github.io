@@ -10,13 +10,15 @@ import RenderLib
 
 
 news :: [(Day, String)]
-news = [
-    ( fromGregorian 2010 10 23,
-        "Main page now has a //whatsnew// section!")
+news = reverse [
+    ( fromGregorian 2010  4 11,
+        "New [Debianization with git-buildpackage $home$/articles/debgit/index.html] article.")
     ,(fromGregorian 2010  8 15,
         "New [Data exploring with R: hard drive occupation prediction $home$/articles/df0pred-1/index.html] article.")
-    ,(fromGregorian 2010  4 11,
-        "New [Debianization with git-buildpackage $home$/articles/debgit/index.html] article.")
+    ,(fromGregorian 2010 10 23,
+        "Main page now has a //whatsnew// section!")
+    ,(fromGregorian 2010 10 24,
+        "Whatsnew feed up and running.")
     ]
 
 home :: String
