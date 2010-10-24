@@ -67,6 +67,7 @@ renderT2T attrs tpfile src dst = do
     let tp =
             attrs
             $ setAttribute "top" top
+            $ setAttribute "home" "http://lpenz.github.com"
             $ setAttribute "title" title
             $ setAttribute "content" srchtml
             $ setAttribute "breadcrumbs" breadcrumbs
