@@ -4,6 +4,7 @@ import Data.Time.Calendar
 import System
 import System.IO
 import Text.XML.Light as XML
+import Data.List.Utils
 
 import RenderLib
 
@@ -13,11 +14,13 @@ news = [
     ( fromGregorian 2010 10 23,
         "Main page now has a //whatsnew// section!")
     ,(fromGregorian 2010  8 15,
-        "New [Data exploring with R: hard drive occupation prediction articles/df0pred-1/index.html] article.")
+        "New [Data exploring with R: hard drive occupation prediction $home$/articles/df0pred-1/index.html] article.")
     ,(fromGregorian 2010  4 11,
-        "New [Debianization with git-buildpackage articles/debgit/index.html] article.")
+        "New [Debianization with git-buildpackage $home$/articles/debgit/index.html] article.")
     ]
 
+home :: String
+home = "http://lpenz.github.com"
 
 -- Page: ----------------------------------------
 
@@ -40,28 +43,55 @@ pagebuild h = do
 pagenews :: Handle -> (Day, String) -> IO ()
 pagenews h (d, n) = do
     hPutStr h $ "== " ++ show d ++ " ==[" ++ show d ++ "]\n\n"
-    hPutStr h $ "  " ++ n ++ "\n\n"
+    hPutStr h $ "  " ++ replace "$home$" "" n ++ "\n\n"
 
 -- Feed: ----------------------------------------
 
 feedbuild :: [(Day, String)] -> XML.Element
-feedbuild newshtml = rss { elAttribs = [Attr (qualName "version") "2.0"] }
+feedbuild newshtml = rss {
+    elAttribs = [
+        Attr (qualName "version") "2.0"
+        ,Attr (qualName "xmlns:atom") "http://www.w3.org/2005/Atom" ] }
     where
+        title = xmlLeaf "title" "Avulsos by Penz - Whatsnew"
+        link = xmlLeaf "link" home
         rss =
             qualNode "rss" $ (:[]) $ Elem
-            $ qualNode "channel" $ map Elem
-            $ [xmlLeaf "title" "Avulsos by Penz - Whatsnew"
-                ,xmlLeaf "link" "http://lpenz.github.com/"
-                ,xmlLeaf "description" "Whatsnew section of Avulsos by Penz page."]
+            $ qualNode "channel" $ map Elem $ [
+                title
+                ,link
+                ,xmlLeaf "description" "Whatsnew in Avulsos by Penz page."
+                ,xmlLeaf "managingEditor" "llpenz@gmail.com (Leandro Lisboa Penz)"
+                ,xmlLeaf "webMaster" "llpenz@gmail.com (Leandro Lisboa Penz)"
+                ,xmlLeaf "docs" "http://www.rssboard.org/rss-specification"
+                ,xmlLeaf "pubDate" (formatdayrfc maxdate)
+                ,xmlLeaf "lastBuildDate" (formatdayrfc maxdate)
+                ,xmlLeaf "language" "en"
+                ,qualNode "image" $ map Elem [
+                    title
+                    ,link
+                    ,xmlLeaf "url" $ home ++ "/logo.png"
+                    ]
+                ,blank_element { elName = qualName "atom:link", elAttribs = [
+                    Attr  (qualName "href") $ home ++ "/whatsnew.xml"
+                    ,Attr (qualName "rel")  "self"
+                    ,Attr (qualName "type") "application/rss+xml"] }
+                    ]
               ++ map feeditems newshtml
+        maxdate = foldr1 max $ map fst newshtml
 
 
 feeditems :: (Day, String) -> XML.Element
 feeditems (d, s) =
     qualNode "item" $ map Elem
-    $ [xmlHtml "description" s
-        ,xmlHtml "guid" $ "http://lpenz.github.com/index.html#" ++ show d
-        ,xmlLeaf "pubDate" (formatdayrfc d)]
+    $ [
+        xmlLeaf  "title" $ "News for " ++ show d
+        ,xmlLeaf "link" $ home ++ "/index.html#" ++ show d
+        ,xmlLeaf "guid" $ home ++ "/index.html#" ++ show d
+        ,xmlLeaf "pubDate" (formatdayrfc d)
+        ,xmlHtml "description" $ replace "$home$" home s
+        ]
+
 
 
 qualNode :: String -> [XML.Content] -> XML.Element
