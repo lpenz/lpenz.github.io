@@ -3,10 +3,7 @@ module Main where
 import Data.Time.Calendar
 import System
 import System.IO
-import Text.Feed.Constructor
-import Text.Feed.Export
-import Text.Feed.Types
-import Text.XML.Light.Output
+import Text.XML.Light as XML
 
 import RenderLib
 
@@ -47,34 +44,38 @@ pagenews h (d, n) = do
 
 -- Feed: ----------------------------------------
 
-feedkind :: FeedKind
-feedkind = RSSKind $ Just "2.0"
-
-
-feedbuild :: [(Day, String)] -> String
+feedbuild :: [(Day, String)] -> XML.Element
 feedbuild newshtml =
-    showTopElement
-    $ xmlFeed
-    $ withFeedTitle "Avulsos by Penz's whatsnew"
-    $ withFeedDescription "Feed for whatsnew section of Avulsos by Penz"
-    $ withFeedHome "http://lpenz.github.com/"
-    $ withFeedLanguage "en"
-    $ withFeedGenerator ("Hand-made with haskell's Feed package", Nothing)
-    $ withFeedDate (formatdayrfc maxday)
-    $ withFeedItems items
-    $ newFeed feedkind
-    where
-        maxday :: Day
-        maxday = foldr1 max $ map fst news
-        items :: [Item]
-        items = map itemformat newshtml
+    qualNode "rss" $ (:[]) $ Elem
+    $ qualNode "channel" $ map Elem
+    $ [xmlLeaf "title" "Avulsos by Penz - Whatsnew"
+        ,xmlLeaf "link" "http://lpenz.github.com/"
+        ,xmlLeaf "description" "Whatsnew section of Avulsos by Penz page."]
+      ++ map feeditems newshtml
 
 
-itemformat :: (Day, String) -> Item
-itemformat (d, s) =
-    withItemTitle s
-    $ withItemDate (formatdayrfc d)
-    $ newItem feedkind
+feeditems :: (Day, String) -> XML.Element
+feeditems (d, s) =
+    qualNode "item" $ map Elem
+    $ [xmlHtml "description" s
+        ,xmlLeaf "pubDate" (formatdayrfc d)]
+
+
+qualNode :: String -> [XML.Content] -> XML.Element
+qualNode n cs = blank_element { elName = qualName n , elContent = cs }
+
+qualName :: String -> QName
+qualName n = QName{qName=n,qURI=Nothing,qPrefix=Nothing}
+
+xmlAttr :: String -> String -> XML.Attr
+xmlAttr k v = Attr (qualName k) v
+
+xmlLeaf :: String -> String -> XML.Element
+xmlLeaf tg txt = blank_element{ elName = qualName tg , elContent = [ Text blank_cdata { cdData = txt } ] }
+
+xmlHtml :: String -> String -> XML.Element
+xmlHtml tg txt = blank_element{ elName = qualName tg , elContent = [ Text blank_cdata { cdVerbatim = CDataVerbatim, cdData = txt } ] }
+
 
 -- Main: ----------------------------------------
 
@@ -83,6 +84,7 @@ main = do
     [page, feed] <- getArgs
     withFile page WriteMode pagebuild
     newshtml <- mapM ( \ (d, s) -> t2tToHtml s >>= \ n -> return (d, n)) news
-    writeFile feed (feedbuild newshtml)
+    --writeFile feed (show $ feedbuild newshtml)
+    writeFile feed (showTopElement $ feedbuild newshtml)
 
 

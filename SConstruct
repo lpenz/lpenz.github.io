@@ -18,8 +18,9 @@ env.HASKELL('tools/render.hs')
 
 # Main page:
 env.HASKELL('tools/topbuild.hs')
-env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t feed.xml')
-env.SideEffect('feed.xml', 'index.t2t')
+env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t whatsnew0.xml')
+env.SideEffect('whatsnew0.xml', 'index.t2t')
+env.Command('whatsnew.xml', 'whatsnew0.xml', 'xmllint --format --output $TARGET $SOURCE')
 env.RENDER('index.t2t')
 
 

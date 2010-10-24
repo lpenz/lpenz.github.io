@@ -4,6 +4,7 @@
 *.o
 *.pyc
 /index.t2t
+/whatsnew0.xml
 /tools/topbuild
 /tools/render
 /debian/index.t2t
@@ -14,8 +15,10 @@
 
 # Ignore only on devel:
 index.html
+/whatsnew.xml
 /feed.xml
 /debian/dists
 /articles/df0pred-1/lmplot.png
 /articles/df0pred-1/main.html
 /articles/df0pred-1/pointplot.png
+
