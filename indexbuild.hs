@@ -1,8 +1,14 @@
 module Main where
 
+import Data.Time.Calendar
 import System
 import System.IO
-import Data.Time.Calendar
+import Text.Feed.Constructor
+import Text.Feed.Export
+import Text.Feed.Types
+import Text.XML.Light.Output
+
+import RenderLib
 
 
 news :: [(Day, String)]
@@ -16,9 +22,10 @@ news = [
     ]
 
 
+-- Page: ----------------------------------------
 
-indexbuild :: Handle -> IO ()
-indexbuild h = do
+pagebuild :: Handle -> IO ()
+pagebuild h = do
     hPutStr h "Avulsos by Penz\n"
     hPutStr h $ replicate 3 '\n'
     hPutStr h "= Contents =\n\n\n"
@@ -29,22 +36,53 @@ indexbuild h = do
         ,"- Information [about me aboutme/index.html]\n"
         ,"\n\n"]
     hPutStr h "= Whatsnew =\n\n\n"
-    mapM_ (shownews h) news
+    mapM_ (pagenews h) news
     hPutStr h "\n\n\n"
 
 
-shownews :: Handle -> (Day, String) -> IO ()
-shownews h (d, n) = do
+pagenews :: Handle -> (Day, String) -> IO ()
+pagenews h (d, n) = do
     hPutStr h $ "- **" ++ show d ++ "**\n\n"
     hPutStr h $ "  " ++ n ++ "\n\n"
 
+-- Feed: ----------------------------------------
+
+feedkind :: FeedKind
+feedkind = RSSKind $ Just "2.0"
+
+
+feedbuild :: [(Day, String)] -> String
+feedbuild newshtml =
+    showTopElement
+    $ xmlFeed
+    $ withFeedTitle "Avulsos by Penz's whatsnew"
+    $ withFeedDescription "Feed for whatsnew section of Avulsos by Penz"
+    $ withFeedHome "http://lpenz.github.com/"
+    $ withFeedLanguage "en"
+    $ withFeedGenerator ("Hand-made with haskell's Feed package", Nothing)
+    $ withFeedDate (formatdayrfc maxday)
+    $ withFeedItems items
+    $ newFeed feedkind
+    where
+        maxday :: Day
+        maxday = foldr1 max $ map fst news
+        items :: [Item]
+        items = map itemformat newshtml
+
+
+itemformat :: (Day, String) -> Item
+itemformat (d, s) =
+    withItemTitle s
+    $ withItemDate (formatdayrfc d)
+    $ newItem feedkind
+
+-- Main: ----------------------------------------
 
 main :: IO ()
 main = do
-    [dst] <- getArgs
-    withFile dst WriteMode indexbuild
-
-
-
+    [page, feed] <- getArgs
+    withFile page WriteMode pagebuild
+    newshtml <- mapM ( \ (d, s) -> t2tToHtml s >>= \ n -> return (d, n)) news
+    writeFile feed (feedbuild newshtml)
 
 

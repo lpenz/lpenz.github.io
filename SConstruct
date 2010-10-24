@@ -18,7 +18,8 @@ env.HASKELL('tools/render.hs')
 
 # Main page:
 env.HASKELL('indexbuild.hs')
-env.Command('index.t2t', 'indexbuild', './indexbuild $TARGET')
+env.Command('index.t2t', 'indexbuild', './indexbuild $TARGET feed.xml')
+env.SideEffect('feed.xml', 'index.t2t')
 env.RENDER('index.t2t')
 
 

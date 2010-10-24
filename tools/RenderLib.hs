@@ -1,13 +1,27 @@
 module RenderLib where
 
-import Text.StringTemplate
-import System.Directory
-import System.Process
-import System.FilePath
-import Data.List
 import Control.Monad
+import Data.List
 import Data.Maybe
+import Data.Time.Calendar
+import Data.Time.Clock
+import Data.Time.Format
+import System.Directory
+import System.FilePath
+import System.Locale
+import System.Process
 import Text.Printf (printf)
+import Text.StringTemplate
+
+
+formatdayrfc :: Day -> String
+formatdayrfc d = formatTime defaultTimeLocale rfc822DateFormat $ UTCTime { utctDay = d, utctDayTime = fromInteger 0 }
+
+
+t2tToHtml :: String -> IO (String)
+t2tToHtml str = do
+    let nstr = "\n\n\n\n" ++ str
+    readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", "-", "-o", "-" ] nstr
 
 
 getFileTitle :: FilePath -> IO (String)
