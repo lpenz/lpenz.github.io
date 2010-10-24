@@ -4,7 +4,7 @@
 *.pyc
 index.html
 /index.t2t
-/indexbuild
+/tools/topbuild
 /tools/render
 /articles/df0pred-1/lm.txt
 /articles/df0pred-1/lmplot.png
