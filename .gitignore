@@ -1,18 +1,21 @@
+# Always ignore:
 .sconsign.dblite
 *.hi
 *.o
 *.pyc
-index.html
 /index.t2t
 /tools/topbuild
 /tools/render
+/debian/index.t2t
+/articles/index.t2t
 /articles/df0pred-1/lm.txt
-/articles/df0pred-1/lmplot.png
 /articles/df0pred-1/lmrandsummary.txt
 /articles/df0pred-1/lmsummary.txt
+
+# Ignore only on devel:
+index.html
+/feed.xml
+/debian/dists
+/articles/df0pred-1/lmplot.png
 /articles/df0pred-1/main.html
 /articles/df0pred-1/pointplot.png
-/articles/index.t2t
-/debian/index.t2t
-/debian/dists
-/feed.xml
