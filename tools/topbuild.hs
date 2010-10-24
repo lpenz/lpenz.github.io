@@ -39,25 +39,28 @@ pagebuild h = do
 
 pagenews :: Handle -> (Day, String) -> IO ()
 pagenews h (d, n) = do
-    hPutStr h $ "- **" ++ show d ++ "**\n\n"
+    hPutStr h $ "== " ++ show d ++ " ==[" ++ show d ++ "]\n\n"
     hPutStr h $ "  " ++ n ++ "\n\n"
 
 -- Feed: ----------------------------------------
 
 feedbuild :: [(Day, String)] -> XML.Element
-feedbuild newshtml =
-    qualNode "rss" $ (:[]) $ Elem
-    $ qualNode "channel" $ map Elem
-    $ [xmlLeaf "title" "Avulsos by Penz - Whatsnew"
-        ,xmlLeaf "link" "http://lpenz.github.com/"
-        ,xmlLeaf "description" "Whatsnew section of Avulsos by Penz page."]
-      ++ map feeditems newshtml
+feedbuild newshtml = rss { elAttribs = [Attr (qualName "version") "2.0"] }
+    where
+        rss =
+            qualNode "rss" $ (:[]) $ Elem
+            $ qualNode "channel" $ map Elem
+            $ [xmlLeaf "title" "Avulsos by Penz - Whatsnew"
+                ,xmlLeaf "link" "http://lpenz.github.com/"
+                ,xmlLeaf "description" "Whatsnew section of Avulsos by Penz page."]
+              ++ map feeditems newshtml
 
 
 feeditems :: (Day, String) -> XML.Element
 feeditems (d, s) =
     qualNode "item" $ map Elem
     $ [xmlHtml "description" s
+        ,xmlHtml "guid" $ "http://lpenz.github.com/index.html#" ++ show d
         ,xmlLeaf "pubDate" (formatdayrfc d)]
 
 
