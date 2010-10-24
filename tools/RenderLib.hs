@@ -15,7 +15,11 @@ import Text.StringTemplate
 
 
 formatdayrfc :: Day -> String
-formatdayrfc d = formatTime defaultTimeLocale rfc822DateFormat $ UTCTime { utctDay = d, utctDayTime = fromInteger 0 }
+formatdayrfc d = f $ formatTime defaultTimeLocale rfc822DateFormat $ UTCTime { utctDay = d, utctDayTime = fromInteger 0 }
+    where
+        f (' ':'U':'T':'C':[]) = " GMT"
+        f (x:xs) = x:f xs
+        f [] = []
 
 
 t2tToHtml :: String -> IO (String)
