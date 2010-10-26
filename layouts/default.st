@@ -5,6 +5,7 @@
 <link rel="stylesheet" type="text/css" href="$top$/base-min.css" />
 <link rel="stylesheet" type="text/css" href="$top$/style.css" />
 <link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="$home$/whatsnew.xml"/>
+<link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="$home$/articles.xml"/>
 <link rel="shortcut icon" href="$top$/favicon.ico" />
 </head>
 <body>
