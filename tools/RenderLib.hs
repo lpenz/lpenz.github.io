@@ -12,6 +12,11 @@ import System.Locale
 import System.Process
 import Text.Printf (printf)
 import Text.StringTemplate
+import Data.List.Utils
+
+
+home :: String
+home = "http://lpenz.github.com"
 
 
 formatdayrfc :: Day -> String
@@ -26,6 +31,9 @@ t2tToHtml :: String -> IO (String)
 t2tToHtml str = do
     let nstr = "\n\n\n\n" ++ str
     readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", "-", "-o", "-" ] nstr
+
+t2tfileToHtml :: FilePath -> IO (String)
+t2tfileToHtml filename = readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", filename, "-o", "-" ] []
 
 
 getFileTitle :: FilePath -> IO (String)
@@ -59,7 +67,8 @@ getBreadcrumbs top src = do
 renderT2T :: (StringTemplate String -> StringTemplate String) -> FilePath -> FilePath -> FilePath -> IO ()
 renderT2T attrs tpfile src dst = do
     title <- getFileTitle src
-    srchtml <- readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", src, "-o", "-" ] []
+    srchtml0 <- t2tfileToHtml src
+    let srchtml = replace "$cwd$/" "" srchtml0
     tp0 <- liftM newSTMP $ readFile tpfile
     let lvl = length (splitPath src) - 1
     let top = if lvl == 0 then "." else (concat $ intersperse "/" $ replicate lvl "..")

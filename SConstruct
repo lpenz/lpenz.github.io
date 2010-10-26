@@ -23,6 +23,16 @@ env.SideEffect('whatsnew0.xml', 'index.t2t')
 env.Command('whatsnew.xml', 'whatsnew0.xml', 'xmllint --format --output $TARGET $SOURCE')
 env.RENDER('index.t2t')
 
+# Article feed:
+articles = []
+for i in glob.glob('articles/*'):
+    if os.path.isdir(i):
+        articles.append(os.path.join(i, 'index.t2t'))
+env.HASKELL('tools/articlefeed.hs')
+env.Command('articles0.xml', articles, 'tools/articlefeed $TARGET $SOURCES')
+env.Depends('articles0.xml', 'tools/articlefeed')
+env.Command('articles.xml', 'articles0.xml', 'xmllint --format --output $TARGET $SOURCE')
+
 
 # About me:
 env.SConscript('aboutme/SConscript')
