@@ -19,6 +19,8 @@ news = reverse [
         "Main page now has a //whatsnew// section!")
     ,(fromGregorian 2010 10 24,
         "Whatsnew feed up and running.")
+    ,(fromGregorian 2010 10 25,
+        "Articles feed up and running.")
     ]
 
 -- Page: ----------------------------------------
