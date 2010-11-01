@@ -6,7 +6,7 @@ import re
 env = Environment(ENV = os.environ
     , TOP = os.path.abspath(os.path.curdir)
     , toolpath = ['tools']
-    , tools = ['haskell', 'txt2tags', 'render'])
+    , tools = ['haskell', 'render'])
 env.Export('env')
 
 
