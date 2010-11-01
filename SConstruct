@@ -10,6 +10,19 @@ env = Environment(ENV = os.environ
 env.Export('env')
 
 
+# infotree:
+def infotreeProcDir(d, l):
+    if not os.path.isdir(d):
+        return
+    i = os.path.join(d, 'info.yaml')
+    if os.path.isfile(i):
+        l.append(os.path.relpath(i))
+    for s in glob.glob(os.path.join(d, '*')):
+        infotreeProcDir(s, l)
+infofiles = []
+infotreeProcDir('.', infofiles)
+env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')
+
 # Renderer:
 env.Append(HASKELLPATH='tools')
 env.HASKELL('tools/RenderLib.hs')

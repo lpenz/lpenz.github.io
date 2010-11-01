@@ -4,6 +4,7 @@
 *.o
 *.pyc
 /index.t2t
+/infotree.yaml
 /whatsnew0.xml
 /articles0.xml
 /tools/topbuild
