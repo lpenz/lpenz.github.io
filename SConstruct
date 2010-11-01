@@ -23,10 +23,10 @@ infofiles = []
 infotreeProcDir('.', infofiles)
 env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')
 
-# Renderer:
+
+# Haskell config:
 env.Append(HASKELLPATH='tools')
 env.HASKELL('tools/RenderLib.hs')
-env.HASKELL('tools/render.hs')
 
 
 # Main page:
