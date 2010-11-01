@@ -1,6 +1,15 @@
 #!/usr/bin/python
 
 import sys
+import yaml
+import os
+
+
+def yamlget(d):
+    yfilename = os.path.join(d, 'info.yaml')
+    if not os.path.isfile(yfilename):
+        return {}
+    return yaml.load(open(yfilename).read())
 
 
 def t2trender(t2tfilename):
@@ -25,12 +34,12 @@ def t2trender(t2tfilename):
     return outfd.read()
 
 
-def render(data):
+def render(data, y):
     from mako.template import Template
     from mako.lookup import TemplateLookup
 
     lookup = TemplateLookup(['templates'])
-    return Template(data, lookup=lookup).render()
+    return Template(data, lookup=lookup).render(**y)
 
 
 def main(argv=None):
@@ -50,9 +59,13 @@ def main(argv=None):
 
     infilename = args[0]
     outfilename = args[1]
+
+    y = yamlget('.')
+    y.update(yamlget(os.path.dirname(infilename)))
     htmlstr = t2trender(infilename)
     out = open(outfilename, 'w')
-    out.write(render(htmlstr))
+    out.write(render(htmlstr, y))
+
 
 if __name__ == "__main__":
     main()
