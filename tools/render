@@ -42,6 +42,14 @@ def render(data, y):
     return Template(data, lookup=lookup).render(**y)
 
 
+def topcalc(infilename):
+    rv = ''
+    dirname = os.path.dirname(infilename)
+    for d in dirname.split(os.sep):
+        rv = os.path.join(rv, '..')
+    return rv
+
+
 def main(argv=None):
     from sys import stdin
 
@@ -62,6 +70,7 @@ def main(argv=None):
 
     y = yamlget('.')
     y.update(yamlget(os.path.dirname(infilename)))
+    y['top'] = topcalc(infilename)
     htmlstr = t2trender(infilename)
     out = open(outfilename, 'w')
     out.write(render(htmlstr, y))
