@@ -32,6 +32,7 @@ def render(data):
     lookup = TemplateLookup(['templates'])
     return Template(data, lookup=lookup).render()
 
+
 def main(argv=None):
     from sys import stdin
 
