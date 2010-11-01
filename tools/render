@@ -34,7 +34,7 @@ def t2trender(t2tfilename):
     return outfd.read()
 
 
-def render(data, y):
+def makorender(data, y):
     from mako.template import Template
     from mako.lookup import TemplateLookup
 
@@ -46,17 +46,20 @@ def dirscalc(infilename):
     dirname =  os.path.join('.', os.path.dirname(infilename))
     top = ''
     breadcrumbs = []
-    p = ''
     dirs = dirname.split(os.sep)
     dirs = [ d for d in dirs if d != '' ]
     lvl = len(dirs) - 1
+    yt = yaml.load(open('infotree.yaml').read())
+    yc = yt
+    p = ''
     for d in dirs:
+        if d != '.':
+            yc = yc[d]
         p = os.path.join(p, d)
-        y = yamlget(p)
         i = 'index.html'
         for l in range(lvl, 0, -1):
             i = os.path.join('..', i)
-        breadcrumbs.append('<a href="%s">%s</a>' % (i, y['title']))
+        breadcrumbs.append('<a href="%s">%s</a>' % (i, yc['title']))
         if lvl > 0:
             top = os.path.join(top, '..')
         lvl = lvl - 1
@@ -86,7 +89,7 @@ def main(argv=None):
     y['top'], y['breadcrumbs'] = dirscalc(infilename)
     htmlstr = t2trender(infilename)
     out = open(outfilename, 'w')
-    out.write(render(htmlstr, y))
+    out.write(makorender(htmlstr, y))
 
 
 if __name__ == "__main__":
