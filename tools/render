@@ -12,7 +12,7 @@ def yamlget(d):
     return yaml.load(open(yfilename).read())
 
 
-def t2trender(t2tfilename):
+def t2trender(t2tfilename, y):
     from tempfile import TemporaryFile
     from os.path import isfile
     from subprocess import Popen
@@ -20,7 +20,7 @@ def t2trender(t2tfilename):
     if not isfile(t2tfilename):
         raise SystemExit("error: can't find %s" % t2tfilename)
     outfd = TemporaryFile()
-    outfd.write('<%inherit file="base.html"/>\n')
+    outfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
     try:
         t2t = Popen(['txt2tags', '-t', 'html', '-H', '-i', t2tfilename, '-o', '-'], stdout = outfd)
         retcode = t2t.wait()
@@ -87,7 +87,7 @@ def main(argv=None):
     y = yamlget('.')
     y.update(yamlget(os.path.dirname(infilename)))
     y['top'], y['breadcrumbs'] = dirscalc(infilename)
-    htmlstr = t2trender(infilename)
+    htmlstr = t2trender(infilename, y)
     out = open(outfilename, 'w')
     out.write(makorender(htmlstr, y))
 
