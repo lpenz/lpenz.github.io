@@ -1,0 +1,40 @@
+#!/usr/bin/python
+
+import os
+import yaml
+
+def main(argv=None):
+    from sys import stdin
+
+    if argv is None:
+        import sys
+        argv = sys.argv
+
+    from optparse import OptionParser
+
+    parser = OptionParser("usage: %prog <output.yaml> <files.yaml...>")
+
+    opts, args = parser.parse_args(argv[1:])
+    if len(args) < 2:
+        parser.error("wrong number of arguments") # Will exit
+    outputfilename = args[0]
+
+    top = {}
+    for filename in args[1:]:
+        dirname = os.path.dirname(filename)
+        cur = top
+        if dirname != '':
+            for d in dirname.split(os.sep):
+                if not cur.has_key(d):
+                    cur[d] = {}
+                cur = cur[d]
+        y = yaml.load(open(filename).read())
+        for k in y:
+            cur[k] = y[k]
+    out = open(outputfilename, 'w')
+    yaml.dump(top, stream = out)
+
+if __name__ == "__main__":
+    main()
+
+

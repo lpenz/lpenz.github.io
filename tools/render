@@ -1,0 +1,105 @@
+#!/usr/bin/python
+
+import sys
+import yaml
+import os
+
+
+def yamlget(d):
+    yfilename = os.path.join(d, 'info.yaml')
+    if not os.path.isfile(yfilename):
+        return {}
+    return yaml.load(open(yfilename).read())
+
+
+def t2trender(t2tfilename, y):
+    from tempfile import TemporaryFile
+    from os.path import isfile
+    from subprocess import Popen
+
+    if not isfile(t2tfilename):
+        raise SystemExit("error: can't find %s" % t2tfilename)
+    outfd = TemporaryFile()
+    outfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
+    try:
+        t2t = Popen(['txt2tags', '-t', 'html', '-H', '-i', t2tfilename, '-o', '-'], stdout = outfd)
+        retcode = t2t.wait()
+        if retcode < 0:
+            print >>sys.stderr, "Child was terminated by signal", -retcode
+        elif retcode != 0:
+            print >>sys.stderr, "Child returned", retcode
+    except OSError, e:
+        print >>sys.stderr, "Execution failed:", e
+    outfd.seek(0)
+    return outfd.read()
+
+
+def makorender(data, y):
+    from mako.template import Template
+    from mako.lookup import TemplateLookup
+
+    lookup = TemplateLookup(['templates'])
+    return Template(data, lookup=lookup).render(**y)
+
+
+def dirscalc(infilename):
+    dirname =  os.path.join('.', os.path.dirname(infilename))
+    top = ''
+    breadcrumbs = []
+    dirs = dirname.split(os.sep)
+    dirs = [ d for d in dirs if d != '' ]
+    lvl = len(dirs) - 1
+    yt = yaml.load(open('infotree.yaml').read())
+    yc = yt
+    p = ''
+    for d in dirs:
+        if d != '.':
+            yc = yc[d]
+        p = os.path.join(p, d)
+        i = 'index.html'
+        for l in range(lvl, 0, -1):
+            i = os.path.join('..', i)
+        breadcrumbs.append('<a href="%s">%s</a>' % (i, yc['title']))
+        if lvl > 0:
+            top = os.path.join(top, '..')
+        lvl = lvl - 1
+    if top == '':
+        top = '.'
+    return top, ' &gt; '.join(breadcrumbs)
+
+
+def main(argv=None):
+    if argv is None:
+        import sys
+        argv = sys.argv
+
+    from optparse import OptionParser
+
+    parser = OptionParser("usage: %prog <input> <output>")
+
+    opts, args = parser.parse_args(argv[1:])
+    if len(args) != 2:
+        parser.error("wrong number of arguments") # Will exit
+
+    infilename = args[0]
+    outfilename = args[1]
+
+    indirname = os.path.dirname(infilename)
+
+    y = yamlget('.')
+    y.update(yamlget(indirname))
+    if y.has_key('disqus') and not y.has_key('disqus_id'):
+        y['disqus_id'] = os.path.basename(indirname)
+    y['top'], y['breadcrumbs'] = dirscalc(infilename)
+    y['url'] = '%s/%s' % (y['home'], indirname)
+    if indirname != '':
+        y['url'] = y['url'] + '/'
+    y['url'] = y['url'] + 'index.html'
+    htmlstr = t2trender(infilename, y)
+    out = open(outfilename, 'w')
+    out.write(makorender(htmlstr, y))
+
+
+if __name__ == "__main__":
+    main()
+

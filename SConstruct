@@ -5,15 +5,28 @@ import re
 
 env = Environment(ENV = os.environ
     , TOP = os.path.abspath(os.path.curdir)
-    , toolpath = ['tools']
-    , tools = ['haskell', 'txt2tags', 'render'])
+    , toolpath = ['tools/scons']
+    , tools = ['haskell', 'render'])
 env.Export('env')
 
 
-# Renderer:
+# infotree:
+def infotreeProcDir(d, l):
+    if not os.path.isdir(d):
+        return
+    i = os.path.join(d, 'info.yaml')
+    if os.path.isfile(i):
+        l.append(os.path.relpath(i))
+    for s in glob.glob(os.path.join(d, '*')):
+        infotreeProcDir(s, l)
+infofiles = []
+infotreeProcDir('.', infofiles)
+env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')
+
+
+# Haskell config:
 env.Append(HASKELLPATH='tools')
 env.HASKELL('tools/RenderLib.hs')
-env.HASKELL('tools/render.hs')
 
 
 # Main page:

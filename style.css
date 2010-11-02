@@ -88,3 +88,13 @@ h1 {
 	border-bottom: none;
 }
 
+#disqus_top {
+	margin: auto;
+	padding: 5px 15px 5px 15px;
+	border: 1px solid #739A89;
+}
+
+.dsq-brlink {
+	display: none;
+}
+
