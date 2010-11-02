@@ -43,7 +43,7 @@ pagebuild h = do
 
 pagenews :: Handle -> (Day, String) -> IO ()
 pagenews h (d, n) = do
-    hPutStr h $ "== " ++ show d ++ " ==[" ++ show d ++ "]\n\n"
+    hPutStr h $ "== " ++ show d ++ " ==[whatsnew" ++ show d ++ "]\n\n"
     hPutStr h $ "  " ++ replace "$home$" "" n ++ "\n\n"
 
 -- Feed: ----------------------------------------
@@ -87,8 +87,8 @@ feeditems (d, s) =
     qualNode "item" $ map Elem
     $ [
         xmlLeaf  "title" $ "News for " ++ show d
-        ,xmlLeaf "link" $ home ++ "/index.html#" ++ show d
-        ,xmlLeaf "guid" $ home ++ "/index.html#" ++ show d
+        ,xmlLeaf "link" $ home ++ "/index.html#whatsnew" ++ show d
+        ,xmlLeaf "guid" $ home ++ "/index.html#whatsnew" ++ show d
         ,xmlLeaf "pubDate" (formatdayrfc d)
         ,xmlHtml "description" $ replace "$home$" home s
         ]

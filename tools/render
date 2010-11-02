@@ -22,7 +22,7 @@ def t2trender(t2tfilename, y):
     outfd = TemporaryFile()
     outfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
     try:
-        t2t = Popen(['txt2tags', '-t', 'html', '-H', '-i', t2tfilename, '-o', '-'], stdout = outfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tfilename, '-o', '-'], stdout = outfd)
         retcode = t2t.wait()
         if retcode < 0:
             print >>sys.stderr, "Child was terminated by signal", -retcode
