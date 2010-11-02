@@ -95,7 +95,7 @@ def main(argv=None):
     if indirname != '':
         y['url'] = y['url'] + '/'
     y['url'] = y['url'] + 'index.html'
-    htmlstr = t2trender(infilename, y)
+    htmlstr = t2trender(infilename, y).replace('$cwd$/', '')
     out = open(outfilename, 'w')
     out.write(makorender(htmlstr, y))
 
