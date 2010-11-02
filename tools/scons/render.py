@@ -27,7 +27,7 @@ def renderSourceScanner(node, env, path):
 
 
 def renderTargetScanner(node, env, path):
-    rv = [os.path.join(env['TOP'], env['RENDER'])]
+    rv = [os.path.join(env['TOP'], f) for f in [env['RENDER'], 'infotree.yaml']]
     yfilename = os.path.join(os.path.dirname(str(node)), 'info.yaml')
     if os.path.isfile(yfilename):
         y = yaml.load(open(yfilename).read())

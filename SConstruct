@@ -5,7 +5,7 @@ import re
 
 env = Environment(ENV = os.environ
     , TOP = os.path.abspath(os.path.curdir)
-    , toolpath = ['tools']
+    , toolpath = ['tools/scons']
     , tools = ['haskell', 'render'])
 env.Export('env')
 
