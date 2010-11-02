@@ -84,9 +84,17 @@ def main(argv=None):
     infilename = args[0]
     outfilename = args[1]
 
+    indirname = os.path.dirname(infilename)
+
     y = yamlget('.')
-    y.update(yamlget(os.path.dirname(infilename)))
+    y.update(yamlget(indirname))
+    if y.has_key('disqus') and not y.has_key('disqus_id'):
+        y['disqus_id'] = os.path.basename(indirname)
     y['top'], y['breadcrumbs'] = dirscalc(infilename)
+    y['url'] = '%s/%s' % (y['home'], indirname)
+    if indirname != '':
+        y['url'] = y['url'] + '/'
+    y['url'] = y['url'] + 'index.html'
     htmlstr = t2trender(infilename, y)
     out = open(outfilename, 'w')
     out.write(makorender(htmlstr, y))
