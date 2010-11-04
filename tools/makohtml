@@ -13,44 +13,34 @@ def yamlget(d):
     return yaml.load(open(yfilename).read())
 
 
-def t2trender(t2tfilename, y):
+def templated(infilename, y):
     from tempfile import TemporaryFile
     from os.path import isfile
     from subprocess import Popen
 
-    if not isfile(t2tfilename):
-        raise SystemExit("error: can't find %s" % t2tfilename)
-    t2toutfd = TemporaryFile()
-    t2toutfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
-    try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tfilename, '-o', '-'], stdout = t2toutfd)
-        retcode = t2t.wait()
-        if retcode < 0:
-            print >>sys.stderr, "Child was terminated by signal", -retcode
-        elif retcode != 0:
-            print >>sys.stderr, "Child returned", retcode
-    except OSError, e:
-        print >>sys.stderr, "Execution failed:", e
-    htmloutfd = TemporaryFile()
+    if not isfile(infilename):
+        raise SystemExit("error: can't find %s" % infilename)
+    infd = open(infilename)
+    outfd = TemporaryFile()
+    outfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
     imgcenterre = re.compile('^\s*<center>(<img[^>]+>)</center>\s*$')
     pipfrem = re.compile('(.*)<p>\s*</p>(.*)')
-    t2toutfd.seek(0)
     skipnext = False
-    for l in t2toutfd:
+    for l in infd:
         m = imgcenterre.match(l)
         if m:
             l = '</p>\n<center>%s</center>\n' % m.group(1)
-            htmloutfd.write(l)
+            outfd.write(l)
             skipnext = True
             continue
         m = pipfrem.match(l)
         if m:
             l = m.group(1)
         if not skipnext:
-            htmloutfd.write(l)
+            outfd.write(l)
         skipnext = False
-    htmloutfd.seek(0)
-    return htmloutfd.read()
+    outfd.seek(0)
+    return outfd.read()
 
 
 def makorender(data, y):
@@ -114,7 +104,7 @@ def main(argv=None):
     if indirname != '':
         y['url'] = y['url'] + '/'
     y['url'] = y['url'] + 'index.html'
-    htmlstr = t2trender(infilename, y).replace('$cwd$/', '')
+    htmlstr = templated(infilename, y).replace('$cwd$/', '')
     out = open(outfilename, 'w')
     out.write(makorender(htmlstr, y))
 

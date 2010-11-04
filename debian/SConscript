@@ -17,7 +17,7 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
 env.Depends('index.t2t', indexbuild)
 
-env.RENDER('index.t2t')
+env.MAKOHTML('index.t2t')
 env.Depends('index.html', '../index.t2t')
 
 

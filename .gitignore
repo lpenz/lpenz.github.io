@@ -3,17 +3,23 @@
 *.hi
 *.o
 *.pyc
+/index.bhtml
 /index.t2t
 /infotree.yaml
-/whatsnew0.xml
 /articles0.xml
-/tools/topbuild
-/tools/articlefeed
-/debian/index.t2t
-/articles/index.t2t
-/articles/df0pred-1/lm.txt
+/whatsnew0.xml
+/aboutme/index.bhtml
+/articles/debgit/index.bhtml
+/articles/df0pred-1/index.bhtml
 /articles/df0pred-1/lmrandsummary.txt
 /articles/df0pred-1/lmsummary.txt
+/articles/df0pred-1/lm.txt
+/articles/index.bhtml
+/articles/index.t2t
+/debian/index.bhtml
+/debian/index.t2t
+/tools/articlefeed
+/tools/topbuild
 
 # Ignore only on devel:
 index.html
