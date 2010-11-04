@@ -32,14 +32,23 @@ def t2trender(t2tfilename, y):
     except OSError, e:
         print >>sys.stderr, "Execution failed:", e
     htmloutfd = TemporaryFile()
-    imgcenterre = re.compile('^\s+<center>(<img[^>]+>)</center>\s+$')
+    imgcenterre = re.compile('^\s*<center>(<img[^>]+>)</center>\s*$')
+    pipfrem = re.compile('(.*)<p>\s*</p>(.*)')
     t2toutfd.seek(0)
+    skipnext = False
     for l in t2toutfd:
         m = imgcenterre.match(l)
         if m:
-            htmloutfd.write('</p><center>%s</center><p>' % m.group(1))
-        else:
+            l = '</p>\n<center>%s</center>\n' % m.group(1)
             htmloutfd.write(l)
+            skipnext = True
+            continue
+        m = pipfrem.match(l)
+        if m:
+            l = m.group(1)
+        if not skipnext:
+            htmloutfd.write(l)
+        skipnext = False
     htmloutfd.seek(0)
     return htmloutfd.read()
 
