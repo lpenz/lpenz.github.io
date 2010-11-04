@@ -27,7 +27,7 @@ body {
 	color: #925136;
 	text-decoration: none;
 }
-#header #title {
+#header #breadcrumbs {
 	display: inline;
 	margin-left: 10px;
 }
