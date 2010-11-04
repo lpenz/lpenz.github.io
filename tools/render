@@ -3,6 +3,7 @@
 import sys
 import yaml
 import os
+import re
 
 
 def yamlget(d):
@@ -19,10 +20,10 @@ def t2trender(t2tfilename, y):
 
     if not isfile(t2tfilename):
         raise SystemExit("error: can't find %s" % t2tfilename)
-    outfd = TemporaryFile()
-    outfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
+    t2toutfd = TemporaryFile()
+    t2toutfd.write('<%%inherit file="%s.html"/>\n' % y.get('template', 'base'))
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tfilename, '-o', '-'], stdout = outfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tfilename, '-o', '-'], stdout = t2toutfd)
         retcode = t2t.wait()
         if retcode < 0:
             print >>sys.stderr, "Child was terminated by signal", -retcode
@@ -30,8 +31,17 @@ def t2trender(t2tfilename, y):
             print >>sys.stderr, "Child returned", retcode
     except OSError, e:
         print >>sys.stderr, "Execution failed:", e
-    outfd.seek(0)
-    return outfd.read()
+    htmloutfd = TemporaryFile()
+    imgcenterre = re.compile('^\s+<center>(<img[^>]+>)</center>\s+$')
+    t2toutfd.seek(0)
+    for l in t2toutfd:
+        m = imgcenterre.match(l)
+        if m:
+            htmloutfd.write('</p><center>%s</center><p>' % m.group(1))
+        else:
+            htmloutfd.write(l)
+    htmloutfd.seek(0)
+    return htmloutfd.read()
 
 
 def makorender(data, y):
