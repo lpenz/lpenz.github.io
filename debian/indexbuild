@@ -34,7 +34,7 @@ END
 for i in "$@"; do
 	APP=$(sed -n 's/^Source: \(.*\)/\1/p' $i)
 	DESCR=$(sed -n "/^Description:/,+1s/^ $APP \+- \(.*\)$/\1/p" $i)
-	echo - [$APP http://www.github.com/lpenz/$APP]: $DESCR >> $D
+	echo - [$APP http://github.com/lpenz/$APP]: $DESCR >> $D
 done
 
 cat <<END >> $D
