@@ -17,7 +17,12 @@
 		<a href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/logo.png" /></a>
 	</div>
 	<div id="breadcrumbs">
-		${breadcrumbs}
+		% for b in breadcrumbs:
+			% if not b['first']:
+				&gt;
+			% endif
+			<a href="${b['url']}">${b['title']}</a>
+		% endfor
 	</div>
 	<ul id="nav">
 		<li><a href="${top}/articles/index.html">Articles</a></li>

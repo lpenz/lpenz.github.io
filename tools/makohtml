@@ -25,6 +25,7 @@ def dirscalc(infilename):
     yt = yaml.load(open('infotree.yaml').read())
     yc = yt
     p = ''
+    first = True
     for d in dirs:
         if d != '.':
             yc = yc['sub'][d]
@@ -32,13 +33,14 @@ def dirscalc(infilename):
         i = 'index.html'
         for l in range(lvl, 0, -1):
             i = os.path.join('..', i)
-        breadcrumbs.append('<a href="%s">%s</a>' % (i, yc['title']))
+        breadcrumbs.append({ 'title': yc['title'], 'url': i, 'first' : first})
+        first = False
         if lvl > 0:
             top = os.path.join(top, '..')
         lvl = lvl - 1
     if top == '':
         top = '.'
-    return top, ' &gt; '.join(breadcrumbs)
+    return top, breadcrumbs
 
 
 def infoget(infilename):
