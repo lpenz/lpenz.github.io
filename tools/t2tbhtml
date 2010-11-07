@@ -1,0 +1,62 @@
+#!/usr/bin/python
+
+import sys
+import re
+import os
+from tempfile import TemporaryFile
+from subprocess import Popen
+
+
+def t2thtml(infilename):
+    if not os.path.isfile(infilename):
+        raise SystemExit("error: can't find %s" % t2tfilename)
+    t2toutfd = TemporaryFile()
+    try:
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', infilename, '-o', '-'], stdout = t2toutfd)
+        retcode = t2t.wait()
+        if retcode < 0:
+            print >>sys.stderr, "Child was terminated by signal", -retcode
+        elif retcode != 0:
+            print >>sys.stderr, "Child returned", retcode
+    except OSError, e:
+        print >>sys.stderr, "Execution failed:", e
+    t2toutfd.seek(0)
+    return t2toutfd
+
+
+def main():
+    from optparse import OptionParser
+
+    parser = OptionParser("usage: %prog <input> <output>")
+    opts, args = parser.parse_args(sys.argv[1:])
+    if len(args) != 2:
+        parser.error("wrong number of arguments") # Will exit
+
+    infilename = args[0]
+    outfilename = args[1]
+
+    t2toutfd = t2thtml(infilename)
+
+    outfd = open(outfilename, 'w')
+
+    imgcenterre = re.compile('^\s*<center>(<img[^>]+>)</center>\s*$')
+    pipfrem = re.compile('(.*)<p>\s*</p>(.*)')
+    skipnext = False
+    for l in t2toutfd:
+        m = imgcenterre.match(l)
+        if m:
+            l = '</p>\n<center>%s</center>\n' % m.group(1)
+            outfd.write(l)
+            skipnext = True
+            continue
+        m = pipfrem.match(l)
+        if m:
+            l = m.group(1)
+        if not skipnext:
+            outfd.write(l)
+        skipnext = False
+
+
+if __name__ == "__main__":
+    main()
+

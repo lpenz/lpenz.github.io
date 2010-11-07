@@ -67,22 +67,8 @@ def templated(infilename, template, y):
     outfd = TemporaryFile()
     if template:
         outfd.write('<%%inherit file="%s.html"/>\n' % template)
-    imgcenterre = re.compile('^\s*<center>(<img[^>]+>)</center>\s*$')
-    pipfrem = re.compile('(.*)<p>\s*</p>(.*)')
-    skipnext = False
     for l in infd:
-        m = imgcenterre.match(l)
-        if m:
-            l = '</p>\n<center>%s</center>\n' % m.group(1)
-            outfd.write(l)
-            skipnext = True
-            continue
-        m = pipfrem.match(l)
-        if m:
-            l = m.group(1)
-        if not skipnext:
-            outfd.write(l)
-        skipnext = False
+        outfd.write(l)
     outfd.seek(0)
     return outfd.read()
 
@@ -102,7 +88,7 @@ def makorender(data, y):
 def main():
     from optparse import OptionParser
 
-    parser = OptionParser("usage: %prog <input> <output>")
+    parser = OptionParser("usage: %prog [-t template] <input> <output>")
     parser.add_option("-t", "--template", dest="template", help="Template to use, if any")
     opts, args = parser.parse_args(sys.argv[1:])
     if len(args) != 2:

@@ -26,13 +26,20 @@ def t2tbhtmlSourceScanner(node, env, path):
     return includes
 
 
+def t2tbhtmlTargetScanner(node, env, path):
+    return [os.path.join(env['TOP'], env['T2TBHTML'])]
+
+
 def generate(env):
     """Add Builders and construction variables for t2tbhtml to an Environment."""
+    T2tbhtmlTargetScanner = SCons.Scanner.Base(name = "t2tbhtmlTargetScanner", function = t2tbhtmlTargetScanner)
     env['BUILDERS']['T2TBHTML'] = SCons.Builder.Builder(\
-            action = 'txt2tags -q -H -t html -i $SOURCE -o $TARGET'
+            action = '$T2TBHTML $SOURCE $TARGET'
             , suffix = '.bhtml'
             , src_suffix = '.t2t'
-            , source_scanner = SCons.Tool.SourceFileScanner)
+            , source_scanner = SCons.Tool.SourceFileScanner
+            , target_scanner = T2tbhtmlTargetScanner)
+    env['T2TBHTML'] = 'tools/t2tbhtml'
     T2tbhtmlSourceScanner = SCons.Scanner.Base(name = "t2tbhtmlSourceScanner", function = t2tbhtmlSourceScanner, skeys = ['.t2t'], recursive = True)
     SCons.Tool.SourceFileScanner.add_scanner('.t2t', T2tbhtmlSourceScanner)
 
