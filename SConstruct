@@ -22,6 +22,7 @@ def infotreeProcDir(d, l):
 infofiles = []
 infotreeProcDir('.', infofiles)
 env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')
+env.Depends('infotree.yaml', 'tools/infotreebuild')
 
 
 # Haskell config:
@@ -35,6 +36,7 @@ env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t whatsnew0.x
 env.SideEffect('whatsnew0.xml', 'index.t2t')
 env.Command('whatsnew.xml', 'whatsnew0.xml', 'xmllint --format --output $TARGET $SOURCE')
 env.MAKOHTML('index.t2t', MAKOFLAGS='-t base')
+
 
 # Article feed:
 articles = []
