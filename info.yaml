@@ -1,2 +1,13 @@
 title: Avulsos by Penz
 home: "http://lpenz.github.com"
+whatsnew:
+    - date: 2010-04-11
+      news: 'New [Debianization with git-buildpackage articles/debgit/index.html] article.'
+    - date: 2010-08-15
+      news: 'New [Data exploring with R: hard drive occupation prediction articles/df0pred-1/index.html] article.'
+    - date: 2010-10-23
+      news: 'Main page now has a //whatsnew// section!'
+    - date: 2010-10-24
+      news: 'Whatsnew feed up and running.'
+    - date: 2010-10-25
+      news: 'Articles feed up and running.'
