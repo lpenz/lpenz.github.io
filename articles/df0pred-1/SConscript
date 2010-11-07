@@ -10,7 +10,7 @@ env.SideEffect('lm.txt', 'pointplot.png')
 env.SideEffect('lmsummary.txt', 'pointplot.png')
 env.SideEffect('lmrandsummary.txt', 'pointplot.png')
 
-env.MAKOHTML('index.t2t')
+env.MAKOHTML('index.t2t', MAKOFLAGS = '-t base')
 env.Depends('index.html', '../index.t2t')
 env.Depends('index.html', '../../index.t2t')
 

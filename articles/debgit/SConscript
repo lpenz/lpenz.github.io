@@ -1,6 +1,6 @@
 
 Import(['env'])
-env.MAKOHTML('index.t2t')
+env.MAKOHTML('index.t2t', MAKOFLAGS = '-t base')
 env.Depends('index.html', '../index.t2t')
 env.Depends('index.html', '../../index.t2t')
 

@@ -34,7 +34,7 @@ env.HASKELL('tools/topbuild.hs')
 env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t whatsnew0.xml')
 env.SideEffect('whatsnew0.xml', 'index.t2t')
 env.Command('whatsnew.xml', 'whatsnew0.xml', 'xmllint --format --output $TARGET $SOURCE')
-env.MAKOHTML('index.t2t')
+env.MAKOHTML('index.t2t', MAKOFLAGS='-t base')
 
 # Article feed:
 articles = []
