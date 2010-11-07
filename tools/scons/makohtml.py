@@ -23,7 +23,7 @@ def makohtmlTargetScanner(node, env, path):
 
 def generate(env):
     """Add Builders and construction variables for makohtml to an Environment."""
-    MakohtmlTargetScanner = SCons.Scanner.Base(name = "makohtmlTargetScanner", function = makohtmlTargetScanner, skeys = ['.t2t'])
+    MakohtmlTargetScanner = SCons.Scanner.Base(name = "makohtmlTargetScanner", function = makohtmlTargetScanner)
     env['BUILDERS']['MAKOHTML'] = SCons.Builder.Builder(\
             action = '$MAKOHTML $MAKOFLAGS $SOURCE $TARGET'
             , suffix = '.html'
