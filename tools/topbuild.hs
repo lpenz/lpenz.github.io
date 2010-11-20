@@ -115,10 +115,10 @@ xmlHtml tg txt = blank_element{ elName = qualName tg , elContent = [ Text blank_
 
 main :: IO ()
 main = do
-    [page, feed] <- getArgs
+    [page] <- getArgs
     withFile page WriteMode pagebuild
-    newshtml <- mapM ( \ (d, s) -> t2tToHtml s >>= \ n -> return (d, n)) news
+    --newshtml <- mapM ( \ (d, s) -> t2tToHtml s >>= \ n -> return (d, n)) news
     --writeFile feed (show $ feedbuild newshtml)
-    writeFile feed (showTopElement $ feedbuild newshtml)
+    --writeFile feed (showTopElement $ feedbuild newshtml)
 
 
