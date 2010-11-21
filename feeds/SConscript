@@ -12,3 +12,8 @@ env.Depends('whatsnew.xml', '../templates/feed.xml')
 env.MAKO('articles.xml', 'articles.feed')
 env.Depends('articles.xml', '../templates/feed.xml')
 
+for i in glob.glob('../articles/*'):
+    if not os.path.isdir(i):
+        continue
+    env.Depends('articles.xml', os.path.join(i, 'index.html'))
+
