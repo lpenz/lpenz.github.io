@@ -18,7 +18,7 @@ This page acts as a central hub to stuff I write. There is no central theme, any
 % for i in whatsnew:
 == ${i['date']} ==[whatsnew${i['date']}]
 
-${i['news']}
+${i['news'].replace('$home$/', '')}
 
 
 
