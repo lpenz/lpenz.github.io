@@ -9,8 +9,8 @@
         <docs>http://www.rssboard.org/rss-specification</docs>
 		<%self:pubdate>
 			<%def name="show(i)">
-        <pubDate>${rfctime(i)} UTC</pubDate>
-        <lastBuildDate>${rfctime(i)} UTC</lastBuildDate>
+        <pubDate>${rfctime(i)} +0000</pubDate>
+        <lastBuildDate>${rfctime(i)} +0000</lastBuildDate>
 			</%def>
 		</%self:pubdate>
         <language>en</language>
@@ -26,7 +26,7 @@
                     <title>${i['title']}</title>
                     <link>${i['link']}</link>
                     <guid>${i['link']}</guid>
-                    <pubDate>${rfctime(i['date'])} UTC</pubDate>
+                    <pubDate>${rfctime(i['date'])} +0000</pubDate>
                     <description><![CDATA[${(i['description'])}]]></description>
                 </item>
             </%def>
