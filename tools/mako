@@ -4,7 +4,27 @@ import sys
 import yaml
 import os
 import re
+from tempfile import TemporaryFile, NamedTemporaryFile
+from subprocess import Popen
 
+# txt2tags render: ###########################################################
+
+def txt2tags(intext):
+    t2tinfd = NamedTemporaryFile()
+    t2tinfd.write('\n\n\n\n' + intext)
+    t2tinfd.flush()
+    t2toutfd = TemporaryFile()
+    try:
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tinfd.name, '-o', '-'], stdout = t2toutfd)
+        retcode = t2t.wait()
+        if retcode < 0:
+            print >>sys.stderr, "Child was terminated by signal", -retcode
+        elif retcode != 0:
+            print >>sys.stderr, "Child returned", retcode
+    except OSError, e:
+        print >>sys.stderr, "Execution failed:", e
+    t2toutfd.seek(0)
+    return t2toutfd.read()
 
 # Info get: ##################################################################
 
@@ -27,7 +47,7 @@ def dirscalc(infilename):
     p = ''
     first = True
     for d in dirs:
-        if d != '.':
+        if d != '.' and yc['sub'].has_key(d):
             yc = yc['sub'][d]
         p = os.path.join(p, d)
         i = 'index.html'
@@ -80,7 +100,7 @@ def makorender(data, y):
     from mako.lookup import TemplateLookup
 
     lookup = TemplateLookup(['templates'])
-    return Template(data, lookup=lookup).render(**y)
+    return Template(data, lookup=lookup).render(txt2tags=txt2tags, **y)
 
 
 # Main: ######################################################################

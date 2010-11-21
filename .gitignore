@@ -23,12 +23,11 @@
 
 # Ignore only on devel:
 index.html
-/whatsnew.xml
-/articles.xml
-/feed.xml
 /debian/dists
 /articles/df0pred-1/lmplot.png
 /articles/df0pred-1/main.html
 /articles/df0pred-1/pointplot.png
+/feeds/whatsnew.xml
+/feeds/articles.xml
 # End
 
