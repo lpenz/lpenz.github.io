@@ -19,5 +19,4 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', articles, indexbuild.abspath + ' $TARGET $SOURCES')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
-env.Depends('index.html', '../index.t2t')
 
