@@ -14,7 +14,7 @@ This page acts as a central hub to stuff I write. There is no central theme, any
 = Whatsnew =
 
 
-
+<% whatsnew.reverse() %>
 % for i in whatsnew:
 == ${i['date']} ==[whatsnew${i['date']}]
 
