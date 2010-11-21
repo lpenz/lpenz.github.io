@@ -36,23 +36,13 @@ env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t')
 env.MAKO('index.t2t', MAKOFLAGS='-t base')
 
 
-# Article feed:
-articles = []
-for i in glob.glob('articles/*'):
-    if os.path.isdir(i):
-        articles.append(os.path.join(i, 'index.t2t'))
-env.HASKELL('tools/articlefeed.hs')
-env.Command('articles0.xml', articles, 'tools/articlefeed $TARGET $SOURCES')
-env.Depends('articles0.xml', 'tools/articlefeed')
-env.Command('articles.xml', 'articles0.xml', 'xmllint --format --output $TARGET $SOURCE')
-
-
 # About me:
 env.SConscript('aboutme/SConscript')
 
 
 # Articles:
 env.SConscript('articles/SConscript')
+env.HASKELL('tools/articlefeed.hs', HASKELLPATH='tools')
 
 
 # Debian:

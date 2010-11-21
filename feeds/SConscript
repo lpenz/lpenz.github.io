@@ -1,5 +1,18 @@
 
+import os
+import glob
+
 Import(['env'])
+
+# Whatsnew feed:
 env.MAKO('whatsnew.xml', 'whatsnew.feed')
 env.Depends('whatsnew.xml', '../templates/feed.xml')
+
+# Article feed:
+articles = []
+for i in glob.glob('../articles/*'):
+    if os.path.isdir(i):
+        articles.append(os.path.join(i, 'index.t2t'))
+env.Command('articles.xml', articles, 'tools/articlefeed $TARGET $SOURCES')
+env.Depends('articles.xml', '../tools/articlefeed')
 
