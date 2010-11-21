@@ -47,7 +47,7 @@ def dirscalc(infilename):
     p = ''
     first = True
     for d in dirs:
-        if d != '.':
+        if d != '.' and yc['sub'].has_key(d):
             yc = yc['sub'][d]
         p = os.path.join(p, d)
         i = 'index.html'

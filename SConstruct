@@ -34,7 +34,6 @@ env.HASKELL('tools/RenderLib.hs')
 env.HASKELL('tools/topbuild.hs')
 env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t')
 env.MAKO('index.t2t', MAKOFLAGS='-t base')
-env.MAKO('whatsnew.xml', 'whatsnew.template')
 
 
 # Article feed:
@@ -58,5 +57,9 @@ env.SConscript('articles/SConscript')
 
 # Debian:
 env.SConscript('debian/SConscript')
+
+
+# Feeds:
+env.SConscript('feeds/SConscript')
 
 

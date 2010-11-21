@@ -1,0 +1,12 @@
+<%inherit file='feed.xml'/>
+
+<%def name='title()'>Avulsos by Penz - Whatsnew</%def>
+<%def name='description()'>Whatsnew in Avulsos by Penz page.</%def>
+<%def name='pubdate()'><% x = max([i['date'] for i in whatsnew]) %>${x.ctime()}</%def>
+<%def name='link()'>'http://lpenz.github.com/feeds/whatsnew.xml'</%def>
+<%def name='items()'>
+	% for i in [ { 'title': 'News for '+str(i['date']), 'date': i['date'], 'description': txt2tags(i['news']), 'link': 'http://lpenz.github.com/index.html#whatsnew'+str(i['date']) } for i in whatsnew ]:
+		${caller.show(i)}
+	% endfor
+</%def>
+

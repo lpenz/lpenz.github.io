@@ -1,0 +1,5 @@
+
+Import(['env'])
+env.MAKO('whatsnew.xml', 'whatsnew.feed')
+env.Depends('whatsnew.xml', '../templates/feed.xml')
+
