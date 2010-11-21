@@ -35,6 +35,12 @@ def txt2tags(intext):
     t2tinfd.write('\n\n\n\n' + intext)
     return txt2tagsfd(t2tinfd.name, t2tinfd)
 
+# Misc functions: ############################################################
+
+def rfctime(d):
+    return d.strftime('%a, %d %b %Y %H:%M:%S')
+
+
 # Info get: ##################################################################
 
 def yamlget(d):
@@ -110,7 +116,7 @@ def makorender(data, y):
     from mako.lookup import TemplateLookup
 
     lookup = TemplateLookup(['templates'])
-    return Template(data, lookup=lookup).render(txt2tags=txt2tags, txt2tagsfile=txt2tagsfile, **y)
+    return Template(data, lookup=lookup).render(txt2tags=txt2tags, txt2tagsfile=txt2tagsfile, rfctime=rfctime, **y)
 
 
 # Main: ######################################################################
