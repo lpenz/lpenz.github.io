@@ -18,7 +18,6 @@
 /articles/index.t2t
 /debian/index.bhtml
 /debian/index.t2t
-/tools/topbuild
 
 # Ignore only on devel:
 index.html

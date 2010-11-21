@@ -25,14 +25,8 @@ env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')
 env.Depends('infotree.yaml', 'tools/infotreebuild')
 
 
-# Haskell config:
-env.Append(HASKELLPATH='tools')
-env.HASKELL('tools/RenderLib.hs')
-
-
 # Main page:
-env.HASKELL('tools/topbuild.hs')
-env.Command('index.t2t', 'tools/topbuild', 'tools/topbuild index.t2t')
+env.Command('index.t2t', 'index.bt2t', 'tools/mako $SOURCE $TARGET')
 env.MAKO('index.t2t', MAKOFLAGS='-t base')
 
 

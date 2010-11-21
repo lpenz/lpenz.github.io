@@ -1,0 +1,29 @@
+Avulsos by Penz
+
+
+
+= Contents =
+
+This page acts as a central hub to stuff I write. There is no central theme, anything goes. For now, you can find here:
+- Technical [articles articles/index.html] or texts that I wrote
+- [Debian debian/index.html]-related stuff and software.
+- Information [about me aboutme/index.html]
+
+
+
+= Whatsnew =
+
+
+
+% for i in whatsnew:
+== ${i['date']} ==[whatsnew${i['date']}]
+
+${i['news']}
+
+
+
+% endfor
+
+
+%% vim: ft=txt2tags
+
