@@ -42,7 +42,6 @@ env.SConscript('aboutme/SConscript')
 
 # Articles:
 env.SConscript('articles/SConscript')
-env.HASKELL('tools/articlefeed.hs', HASKELLPATH='tools')
 
 
 # Debian:

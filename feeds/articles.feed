@@ -1,0 +1,18 @@
+<%inherit file='feed.xml'/>
+
+<%def name='title()'>Avulsos by Penz - Articles</%def>
+<%def name='description()'>Articles in Avulsos by Penz page.</%def>
+<%def name='pubdate()'><% x = max([i['date'] for i in sub['articles']['sub'].values()]) %>${x.ctime()}</%def>
+<%def name='link()'>'http://lpenz.github.com/feeds/articles.xml'</%def>
+<%def name='items()'>
+	<%
+		j = []
+		for i,v in sub['articles']['sub'].items():
+			f = txt2tagsfile('articles/'+i+'/index.t2t')
+			j.append({ 'title': v['title'], 'date': v['date'], 'description': f, 'link': home+'/articles/'+i })
+	%>
+	% for i in j:
+		${caller.show(i)}
+	% endfor
+</%def>
+
