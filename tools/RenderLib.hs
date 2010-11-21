@@ -30,10 +30,10 @@ formatdayrfc d = f $ formatTime defaultTimeLocale rfc822DateFormat $ UTCTime { u
 t2tToHtml :: String -> IO (String)
 t2tToHtml str = do
     let nstr = "\n\n\n\n" ++ str
-    readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", "-", "-o", "-" ] nstr
+    readProcess "/usr/bin/txt2tags" [ "-t", "xhtml", "-H", "-i", "-", "-o", "-" ] nstr
 
 t2tfileToHtml :: FilePath -> IO (String)
-t2tfileToHtml filename = readProcess "/usr/bin/txt2tags" [ "-t", "html", "-H", "-i", filename, "-o", "-" ] []
+t2tfileToHtml filename = readProcess "/usr/bin/txt2tags" [ "-t", "xhtml", "-H", "-i", filename, "-o", "-" ] []
 
 
 getFileTitle :: FilePath -> IO (String)
