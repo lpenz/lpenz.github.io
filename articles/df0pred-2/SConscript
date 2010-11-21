@@ -4,6 +4,7 @@ import os
 Import(['env'])
 
 env.Command('lmplotspike.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
+env.SideEffect('boxplot.png', 'lmplotspike.png')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
 

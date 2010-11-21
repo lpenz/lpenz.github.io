@@ -10,3 +10,8 @@ png('lmplotspike.png')
 plot(usd ~ day)
 abline(model)
 
+dudelta <- diff(usd)
+
+png('boxplot.png')
+boxplot(dudelta)
+

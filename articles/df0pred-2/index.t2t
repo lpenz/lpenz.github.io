@@ -49,7 +49,7 @@ the variance of the data - there is a good chance that our disk space will zero
 long before that if that variance is large and we are not lucky.
 
 Instead of employing simple math, we can use our new friend R to generate a
-probability distribution of the day of exhaustion. Let's how we can do that.
+probability distribution of the day of exhaustion. Let's see how we can do that.
 
 First, let's load the data file that we used to generate the figure above
 ([download $cwd$/duinfospike.dat]):
@@ -58,6 +58,32 @@ First, let's load the data file that we used to generate the figure above
 > duinfo <- read.table('duinfospike.dat', colClasses=c("Date","numeric"), col.names=c("day","usd"))
 > attach(duinfo)
 ```
+
+We now get the delta of the disk usage, and take a look at its boxplot:
+
+```
+> dudelta <- diff(usd)
+> boxplot(dudelta)
+```
+
+ [boxplot.png] 
+
+We can see the cleanup right there, as the lower point.
+
+The next step is the creation of the sample of the number of days left until
+exhaustion. In order to do that, we create an R function that sums values taken
+randomly from our disk delta sample until our free space zeroes, and returns the
+number of samples taken:
+
+```
+f <- function(spaceleft, days)
+    if (spaceleft <= 0) days else f(spaceleft - sample(duinfo$usd, 1, replace=TRUE), days + 1)
+```
+
+By repeatedly running this function and gathering the results, we generate a set
+of number-of-days-until-exhaustion that is robust and corresponds to the data we
+have observed. This robustness means that we don't even need to remove outliers,
+as they will barely affect out results.
 
 
 
