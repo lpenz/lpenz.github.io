@@ -9,13 +9,11 @@ from subprocess import Popen
 
 # txt2tags render: ###########################################################
 
-def txt2tags(intext):
-    t2tinfd = NamedTemporaryFile()
-    t2tinfd.write('\n\n\n\n' + intext)
+def txt2tagsfd(t2tinfilename, t2tinfd):
     t2tinfd.flush()
     t2toutfd = TemporaryFile()
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tinfd.name, '-o', '-'], stdout = t2toutfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tinfilename, '-o', '-'], stdout = t2toutfd)
         retcode = t2t.wait()
         if retcode < 0:
             print >>sys.stderr, "Child was terminated by signal", -retcode
@@ -25,6 +23,17 @@ def txt2tags(intext):
         print >>sys.stderr, "Execution failed:", e
     t2toutfd.seek(0)
     return t2toutfd.read()
+
+
+def txt2tagsfile(infilename):
+    t2tinfd = open(infilename)
+    return txt2tagsfd(infilename, t2tinfd)
+
+
+def txt2tags(intext):
+    t2tinfd = NamedTemporaryFile()
+    t2tinfd.write('\n\n\n\n' + intext)
+    return txt2tagsfd(t2tinfd.name, t2tinfd)
 
 # Info get: ##################################################################
 
@@ -65,7 +74,8 @@ def dirscalc(infilename):
 
 def infoget(infilename):
     indirname = os.path.dirname(infilename)
-    y = yamlget('.')
+    y = yaml.load(open('infotree.yaml').read())
+    y.update(yamlget('.'))
     y.update(yamlget(indirname))
     if y.has_key('disqus') and not y.has_key('disqus_id'):
         y['disqus_id'] = os.path.basename(indirname)
@@ -100,7 +110,7 @@ def makorender(data, y):
     from mako.lookup import TemplateLookup
 
     lookup = TemplateLookup(['templates'])
-    return Template(data, lookup=lookup).render(txt2tags=txt2tags, **y)
+    return Template(data, lookup=lookup).render(txt2tags=txt2tags, txt2tagsfile=txt2tagsfile, **y)
 
 
 # Main: ######################################################################
