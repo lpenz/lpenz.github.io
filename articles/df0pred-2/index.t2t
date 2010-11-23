@@ -11,35 +11,51 @@ and making a linear regression.
 In this article we will see the exact problem with that method, and deploy a
 more robust one. Besides robustness, we will also see how we can generate a
 probability distribution for the date of disk space exhaustion instead of
-calculating a single value.
+calculating a single day.
 
 
 
 = The problem with the linear regression =
 
-The linear regression used in the first article has a fatal problem: it fails completely
-when there is even a single day where disk usage is out-of-pattern in the
-sample. Let's say that you deleted some big backup files in the hard disk, as
-they were not needed anymore - that would break the sample in two parts: one
-before the cleanup and another, with an offset, after the cleanup. If we plot
-the line given by the linear regression, we can see clearly that our model fits
-none of the parts:
+The linear regression used in the first article has a serious
+lack of [robustness http://en.wikipedia.org/wiki/Robust_statistics].
+That means that it is very sensitive to even single departures
+from the linear pattern. For instance, if we ever delete some big files in the
+hard disk, we would break the sample in two parts: one before the cleanup and
+another, with an offset, after the cleanup. If we plot the line given by the
+linear model, we can see clearly that our model fits none of the parts:
 
  [lmplotsplit.png] 
 
 If we keep analysing the occupied disk space, there is not much we can do
 besides discarding the data we got before the cleanup, even though it was
-perfectly valid. There is no way to discard **just** the cleanup and keep the
-data. Or is there?
+perfectly valid. There is no way to easily ignore the cleanup and use the data.
 
-By dropping the linear regression and the occupied disk space analysis, and
-looking at the **difference** in occupied space, we can simply ignore the
-cleanup sample, as it does not affect any other sample. We just have to develop
-a method to discover when the free space will zero based on the new data.
+In fact, we can only use the first method when our disk consumption pattern is
+linear for the whole analysed period, and that rarely is the case when there is
+human intervention. Always look at the graph to see if the model makes sense.
 
 
 
-= The new method: sampling days left with bootstrapping =
+= A naïve new method: averaging the difference =
+
+Instead of using the daily used disk space as input, we will use the
+daily **difference** (or delta) of used disk space. By itself, this reduces a
+big disk cleanup to a single outlier, instead of breaking our sample in two. We
+could then just filter out the outliers, calculate the average increment in used
+disk space and divide the current free space by it. That would give us the
+average number of days left until disk exhaustion. But that is not good enough.
+
+The first problem we would face is that filtering out the outliers is not
+simple. Afterall, we are throwing out data that might be valuable: it could be a
+regular monthly process that we should take into account.
+
+Besides, we would still not have the probability distribution for the date, only
+a single value.
+
+
+
+= The real new method: bootstrapping days left =
 
 If we just take the average of the occupied disk space delta and divide our
 current free disk space by it, we get the number of days left before exhaustion,
