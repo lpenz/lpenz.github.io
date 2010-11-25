@@ -25,7 +25,7 @@ hard disk, we would break the sample in two parts: one before the cleanup and
 another, with an offset, after the cleanup. If we plot the line given by the
 linear model, we can see clearly that our model fits none of the parts:
 
- [lmplotsplit.png] 
+ [lmplotspike.png] 
 
 If we keep analysing the occupied disk space, there is not much we can do
 besides discarding the data we got before the cleanup, even though it was
