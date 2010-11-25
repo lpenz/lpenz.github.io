@@ -4,6 +4,7 @@ import sys
 import yaml
 import os
 import re
+import codecs
 from tempfile import TemporaryFile, NamedTemporaryFile
 from subprocess import Popen
 
@@ -11,7 +12,7 @@ from subprocess import Popen
 
 def txt2tagsfd(t2tinfilename, t2tinfd):
     t2tinfd.flush()
-    t2toutfd = TemporaryFile()
+    t2toutfd = encfix(TemporaryFile())
     try:
         t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tinfilename, '-o', '-'], stdout = t2toutfd)
         retcode = t2t.wait()
@@ -33,9 +34,14 @@ def txt2tagsfile(infilename):
 def txt2tags(intext):
     t2tinfd = NamedTemporaryFile()
     t2tinfd.write('\n\n\n\n' + intext)
-    return txt2tagsfd(t2tinfd.name, t2tinfd)
+    return txt2tagsfd(t2tinfd.name, encfix(t2tinfd))
 
 # Misc functions: ############################################################
+
+encoding = 'iso8859-1'
+
+def encfix(f):
+    return codecs.getreader(encoding)(codecs.getwriter(encoding)(f))
 
 def rfctime(d):
     return d.strftime('%a, %d %b %Y %H:%M:%S')
@@ -99,8 +105,8 @@ def templated(infilename, template, y):
 
     if not isfile(infilename):
         raise SystemExit("error: can't find %s" % infilename)
-    infd = open(infilename)
-    outfd = TemporaryFile()
+    infd = encfix(open(infilename))
+    outfd = encfix(TemporaryFile())
     if template:
         outfd.write('<%%inherit file="%s.html"/>\n' % template)
     for l in infd:
@@ -116,7 +122,7 @@ def makorender(data, y):
     from mako.lookup import TemplateLookup
 
     lookup = TemplateLookup(['templates'])
-    return Template(data, lookup=lookup).render(txt2tags=txt2tags, txt2tagsfile=txt2tagsfile, rfctime=rfctime, **y)
+    return Template(data, lookup=lookup).render_unicode(txt2tags=txt2tags, txt2tagsfile=txt2tagsfile, rfctime=rfctime, **y)
 
 
 # Main: ######################################################################
@@ -135,7 +141,7 @@ def main():
 
     info = infoget(infilename)
     htmlstr = templated(infilename, opts.template, info).replace('$cwd$/', '')
-    out = open(outfilename, 'w')
+    out = encfix(open(outfilename, 'w'))
     out.write(makorender(htmlstr, info))
 
 
