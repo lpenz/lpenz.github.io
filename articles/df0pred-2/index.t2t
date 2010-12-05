@@ -3,7 +3,7 @@ Hard drive occupation prediction - part 2
 ?
 
 
-On the [first $cwd$/../df0pred-1] article, we saw a quick-and-dirty method to
+On the [first $cwd$/../df0pred-1/index.html] article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is constant. We did that by
 importing our data into [R http://en.wikipedia.org/wiki/R_programming_language]
 and making a linear regression.

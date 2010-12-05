@@ -172,7 +172,7 @@ has a break point - some disk cleanup or software installation - the model will
 not give good results. We will usually see that in the analysis, but we should
 also always look at the graph.
 
-In the [next part ../df0pred-2/index.html] of this article we will see a more
+In the [next part $cwd/../df0pred-2/index.html] of this article we will see a more
 robust method for disk exhaustion prediction. We will also sacrifice our ability
 to see the used space vs time in order to get a statistical distribution for the
 date of exhaustion, which is a lot more useful.
