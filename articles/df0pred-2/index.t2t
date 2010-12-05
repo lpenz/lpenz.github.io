@@ -58,14 +58,15 @@ a single value.
 = The real new method: bootstrapping days left =
 
 If we just take the average of the occupied disk space delta and divide our
-current free disk space by it, we get the number of days left before exhaustion,
-on average. That would be equivalent to our linear regression, but,
+current free disk space by it, we get the average number of days left before
+exhaustion.  That would be equivalent to our linear regression, but,
 unfortunately, is not a very realistic result, as it doesn't take into account
 the variance of the data - there is a good chance that our disk space will zero
 long before that if that variance is large and we are not lucky.
 
-Instead of employing simple math, we can use our new friend R to generate a
-probability distribution of the day of exhaustion. Let's see how we can do that.
+Instead of employing simple math, we can use our friend R to generate a
+probability distribution for the day of exhaustion. Let's see how we can do
+that.
 
 First, let's load the data file that we used to generate the figure above
 ([download $cwd$/duinfospike.dat]):
@@ -84,7 +85,7 @@ We now get the delta of the disk usage, and take a look at its boxplot:
 
  [boxplot.png] 
 
-We can see the cleanup right there, as the lower point.
+We can see the cleanup right there, as the lowest point.
 
 The next step is the creation of the sample of the number of days left until
 exhaustion. In order to do that, we create an R function that sums values taken
