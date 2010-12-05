@@ -124,7 +124,7 @@ It's easy to notice that, even though the five-number summary is narrower, the
 p-values are greater than 5%, and the r-squared values are very far from 1.
 
 Now that we are convinced (hopefully) that our linear model fits our data
-nicely, we can use it to predict hard-disk shortage.
+well, we can use it to predict hard-disk shortage.
 
 
 
@@ -166,23 +166,16 @@ pattern holds until then, with 95% statistical significance.
 
 = Conclusion =
 
-By analysing the used disk space, we have avoided dealing with total disk
-expansion. We can even predict how long the expansion will give us before
-another one is required.
+The linear model can give us the predicted hard disk space usage at any future
+date, as long as collected data pattern **is linear**. If the data we collected
+has a break point - some disk cleanup or software installation - the model will
+not give good results. We will usually see that in the analysis, but we should
+also always look at the graph.
 
-On the other hand, looking only at the used space has a fatal weakness: we
-cannot deal with spikes. A spike could originate from an upgrade or from the
-installation of some software, or even from a cleanup of the hard drive. In our
-data, the spike would break our sample in two groups, as all samples after it
-will have an offset. The model would give us a line that tries to fit both
-groups, acceptably fitting none. To fix the situation we can either throw out
-all data prior to the spike or decrease the spike delta from the total hard
-drive space and from the following samples before calculating the model. Both
-solutions are inadequate. A better approach is to avoid analysing used disk
-space and look only at its daily difference. That would make the spike appear as
-a single sample that has a reduced impact in our prediction, and we can easily
-eliminate it as an outlier without further problems. But that is the subject for
-another article.
+In the [next part ../df0pred-2/index.html] of this article we will see a more
+robust method for disk exhaustion prediction. We will also sacrifice our ability
+to see the used space vs time in order to get a statistical distribution for the
+date of exhaustion, which is a lot more useful.
 
 
 
