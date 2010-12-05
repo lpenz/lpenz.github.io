@@ -4,12 +4,12 @@ Hard drive occupation prediction - part 2
 
 
 On the [first $cwd$/../df0pred-1/index.html] article, we saw a quick-and-dirty method to
-predict disk space exhaustion when the usage pattern is constant. We did that by
+predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
 importing our data into [R http://en.wikipedia.org/wiki/R_programming_language]
 and making a linear regression.
 
-In this article we will see the exact problem with that method, and deploy a
-more robust one. Besides robustness, we will also see how we can generate a
+In this article we will see the problems with that method, and deploy a
+more robust solution. Besides robustness, we will also see how we can generate a
 probability distribution for the date of disk space exhaustion instead of
 calculating a single day.
 
@@ -23,17 +23,21 @@ That means that it is very sensitive to even single departures
 from the linear pattern. For instance, if we ever delete some big files in the
 hard disk, we would break the sample in two parts: one before the cleanup and
 another, with an offset, after the cleanup. If we plot the line given by the
-linear model, we can see clearly that our model fits none of the parts:
+linear model, we can see clearly that it does not fit our overall data very
+well:
 
  [lmplotspike.png] 
+
+([Data file $cwd$/duinfospike.dat])
 
 If we keep analysing the occupied disk space, there is not much we can do
 besides discarding the data we got before the cleanup, even though it was
 perfectly valid. There is no way to easily ignore the cleanup and use the data.
 
 In fact, we can only use the first method when our disk consumption pattern is
-linear for the whole analysed period, and that rarely is the case when there is
-human intervention. Always look at the graph to see if the model makes sense.
+linear for the whole analysed period - and that rarely is the case when there is
+human intervention. We should always look at the graph to see if the solution
+makes sense.
 
 
 
@@ -42,13 +46,15 @@ human intervention. Always look at the graph to see if the model makes sense.
 Instead of using the daily used disk space as input, we will use the
 daily **difference** (or delta) of used disk space. By itself, this reduces a
 big disk cleanup to a single outlier, instead of breaking our sample in two. We
-could then just filter out the outliers, calculate the average increment in used
+could then just filter out the outliers, calculate the average daily increment in used
 disk space and divide the current free space by it. That would give us the
-average number of days left until disk exhaustion. But that is not good enough.
+average number of days left until disk exhaustion. Well, that would give us some
+new problems to solve.
 
-The first problem we would face is that filtering out the outliers is not
+The first problem is that filtering out the outliers is not
 simple. Afterall, we are throwing out data that might be valuable: it could be a
-regular monthly process that we should take into account.
+regular monthly process that we should take into account in order to generate
+a better prediction.
 
 Besides, we would still not have the probability distribution for the date, only
 a single value.
@@ -57,19 +63,16 @@ a single value.
 
 = The real new method: bootstrapping days left =
 
-If we just take the average of the occupied disk space delta and divide our
-current free disk space by it, we get the average number of days left before
-exhaustion.  That would be equivalent to our linear regression, but,
-unfortunately, is not a very realistic result, as it doesn't take into account
-the variance of the data - there is a good chance that our disk space will zero
-long before that if that variance is large and we are not lucky.
+Instead of calculating the number of days left from the data, we will use a
+technique called [bootstrapping http://en.wikipedia.org/wiki/Bootstrapping_(statistics)]
+to generate the distribution of days left. The idea is simple: we sample the
+data we have - daily used disk space - until the sum is above the free disk
+space; the number of samples taken is the number of days left. By doing that
+repeatedly, we get the set of "possible days left" with a distribution that
+corresponds to the data we have used. Let's how we can do that in R.
 
-Instead of employing simple math, we can use our friend R to generate a
-probability distribution for the day of exhaustion. Let's see how we can do
-that.
-
-First, let's load the data file that we used to generate the figure above
-([download $cwd$/duinfospike.dat]):
+First, let's load the data file that we will use (same one used in the
+introduction):
 
 ```
 > duinfo <- read.table('duinfospike.dat', colClasses=c("Date","numeric"), col.names=c("day","usd"))
@@ -93,14 +96,29 @@ randomly from our disk delta sample until our free space zeroes, and returns the
 number of samples taken:
 
 ```
-f <- function(spaceleft, days)
-    if (spaceleft <= 0) days else f(spaceleft - sample(duinfo$usd, 1, replace=TRUE), days + 1)
+f <- function(spaceleft) {
+    days <- 0
+    while(spaceleft > 0) {
+        days <- days + 1
+        spaceleft <- spaceleft - sample(dudelta, 1, replace=TRUE)
+    }
+    days
+}
+
 ```
 
 By repeatedly running this function and gathering the results, we generate a set
 of number-of-days-until-exhaustion that is robust and corresponds to the data we
 have observed. This robustness means that we don't even need to remove outliers,
-as they will barely affect out results.
+as they will barely affect out results. For an HD of 1TB (all units are 1kB):
+
+```
+freespace <- 1e9 - duinfo$usd[length(duinfo$usd)]
+daysleft <- replicate(5000, f(freespace, 0))
+plot(density(daysleft), bw=0.5)
+```
+
+ [daysleft.png] 
 
 
 
