@@ -1,17 +1,15 @@
 #!/usr/bin/Rscript
 
-duinfo <- read.table('duinfospike.dat',
-		colClasses=c("Date","numeric"),
-		col.names=c("day","usd"))
-attach(duinfo)
-model <- lm(usd ~ day)
+source('init.R')
 
 png('lmplotspike.png')
 plot(usd ~ day)
 abline(model)
 
-dudelta <- diff(usd)
-
 png('boxplot.png')
 boxplot(dudelta)
+
+png('daysleft.png')
+plot(density(daysleft, bw=0.5))
+
 
