@@ -17,7 +17,7 @@ f <- function(spaceleft) {
 }
 
 freespace <- 1e9 - duinfo$usd[length(duinfo$usd)]
-daysleft <- replicate(1000, f(freespace))
+daysleft <- replicate(100, f(freespace))
 
 # vim: ft=r
 
