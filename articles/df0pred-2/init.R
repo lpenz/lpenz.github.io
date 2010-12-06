@@ -1,23 +1,15 @@
 
-duinfo <- read.table('duinfospike.dat',
-		colClasses=c("Date","numeric"),
-		col.names=c("day","usd"))
-attach(duinfo)
+source('datain.R')
+
+png('boxplot.png')
+source('deltaplot.R')
+
 model <- lm(usd ~ day)
 
-dudelta <- diff(usd)
-
-f <- function(spaceleft) {
-    days <- 0
-    while(spaceleft > 0) {
-        days <- days + 1
-        spaceleft <- spaceleft - sample(dudelta, 1, replace=TRUE)
-    }
-    days
-}
+source('func.R')
 
 freespace <- 1e9 - duinfo$usd[length(duinfo$usd)]
-daysleft <- replicate(100, f(freespace))
+daysleft <- replicate(50, f(freespace))
 
 # vim: ft=r
 

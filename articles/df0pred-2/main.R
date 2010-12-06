@@ -6,10 +6,6 @@ png('lmplotspike.png')
 plot(usd ~ day)
 abline(model)
 
-png('boxplot.png')
-boxplot(dudelta)
-
 png('daysleft.png')
-plot(density(daysleft, bw=0.5))
-
+source('daysleftplot.R')
 

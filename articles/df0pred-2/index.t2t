@@ -74,19 +74,13 @@ corresponds to the data we have used. Let's how we can do that in R.
 First, let's load the data file that we will use (same one used in the
 introduction):
 
-```
-> duinfo <- read.table('duinfospike.dat', colClasses=c("Date","numeric"), col.names=c("day","usd"))
-> attach(duinfo)
-```
+%!include: ``datain.R``
 
 We now get the delta of the disk usage, and take a look at its boxplot:
 
-```
-> dudelta <- diff(usd)
-> boxplot(dudelta)
-```
+%!include: ``deltaplot.R``
 
- [boxplot.png] 
+ [deltaplot.png] 
 
 We can see the cleanup right there, as the lowest point.
 
@@ -95,28 +89,14 @@ exhaustion. In order to do that, we create an R function that sums values taken
 randomly from our disk delta sample until our free space zeroes, and returns the
 number of samples taken:
 
-```
-f <- function(spaceleft) {
-    days <- 0
-    while(spaceleft > 0) {
-        days <- days + 1
-        spaceleft <- spaceleft - sample(dudelta, 1, replace=TRUE)
-    }
-    days
-}
-
-```
+%!include: ``func.R``
 
 By repeatedly running this function and gathering the results, we generate a set
 of number-of-days-until-exhaustion that is robust and corresponds to the data we
 have observed. This robustness means that we don't even need to remove outliers,
 as they will barely affect out results. For an HD of 1TB (all units are 1kB):
 
-```
-freespace <- 1e9 - duinfo$usd[length(duinfo$usd)]
-daysleft <- replicate(5000, f(freespace, 0))
-plot(density(daysleft), bw=0.5)
-```
+%!include: ``daysleftplot.R``
 
  [daysleft.png] 
 
