@@ -1,7 +1,7 @@
 
 source('datain.R')
 
-png('boxplot.png')
+png('deltaplot.png')
 source('deltaplot.R')
 
 model <- lm(usd ~ day)

@@ -3,15 +3,7 @@ import os
 
 Import(['env'])
 
-env.Command('lmplotspike.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
-env.Depends('lmplotspike.png', 'duinfospike.dat')
-env.Depends('lmplotspike.png', 'init.R')
-env.Depends('lmplotspike.png', 'datain.R')
-env.Depends('lmplotspike.png', 'deltaplot.R')
-env.Depends('lmplotspike.png', 'daysleftplot.R')
-env.Depends('lmplotspike.png', 'func.R')
-env.SideEffect('boxplot.png', 'lmplotspike.png')
-env.SideEffect('daysleft.png', 'lmplotspike.png')
+env.R('deltaplot.png', 'main.R')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
 

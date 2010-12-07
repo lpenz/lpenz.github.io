@@ -6,7 +6,7 @@ import re
 env = Environment(ENV = os.environ
     , TOP = os.path.abspath(os.path.curdir)
     , toolpath = ['tools/scons']
-    , tools = ['haskell', 't2tbhtml', 'mako'])
+    , tools = ['haskell', 't2tbhtml', 'mako', 'R'])
 env.Export('env')
 
 
