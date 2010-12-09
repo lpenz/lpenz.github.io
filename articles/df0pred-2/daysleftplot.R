@@ -1,6 +1,10 @@
+#!/usr/bin/Rscript
 
-freespace <- 1e9 - duinfo$usd[length(duinfo$usd)]
-daysleft <- replicate(100, f(freespace))
-plot(density(daysleft))
+source('datain.R')
 
+source('func.R')
+
+dudelta <- diff(usd)
+png('daysleft.png')
+source('daysleftcode.R')
 

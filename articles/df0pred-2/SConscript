@@ -3,7 +3,9 @@ import os
 
 Import(['env'])
 
-env.R('deltaplot.png', 'main.R')
+env.R('deltabox.png', 'deltaboxplot.R')
+env.R('daysleft.png', 'daysleftplot.R')
+env.R('lmplot.png', 'lmplot.R')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
 

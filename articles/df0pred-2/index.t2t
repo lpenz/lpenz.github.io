@@ -26,7 +26,7 @@ another, with an offset, after the cleanup. If we plot the line given by the
 linear model, we can see clearly that it does not fit our overall data very
 well:
 
- [lmplotspike.png] 
+ [lmplot.png] 
 
 ([Data file $cwd$/duinfospike.dat])
 
@@ -72,15 +72,16 @@ repeatedly, we get the set of "possible days left" with a distribution that
 corresponds to the data we have used. Let's how we can do that in R.
 
 First, let's load the data file that we will use (same one used in the
-introduction):
+introduction) along with a variable that holds the size of the disk (1TB; all
+units are in MB):
 
 %!include: ``datain.R``
 
 We now get the delta of the disk usage, and take a look at its boxplot:
 
-%!include: ``deltaplot.R``
+%!include: ``deltaboxcode.R``
 
- [deltaplot.png] 
+ [deltabox.png] 
 
 We can see the cleanup right there, as the lowest point.
 
@@ -94,9 +95,9 @@ number of samples taken:
 By repeatedly running this function and gathering the results, we generate a set
 of number-of-days-until-exhaustion that is robust and corresponds to the data we
 have observed. This robustness means that we don't even need to remove outliers,
-as they will barely affect out results. For an HD of 1TB (all units are 1kB):
+as they will barely affect out results:
 
-%!include: ``daysleftplot.R``
+%!include: ``daysleftcode.R``
 
  [daysleft.png] 
 
