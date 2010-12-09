@@ -64,7 +64,7 @@ a single value.
 = The real new method: bootstrapping days left =
 
 Instead of calculating the number of days left from the data, we will use a
-technique called [bootstrapping http://en.wikipedia.org/wiki/Bootstrapping_(statistics)]
+technique called [bootstrapping http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29]
 to generate the distribution of days left. The idea is simple: we sample the
 data we have - daily used disk space - until the sum is above the free disk
 space; the number of samples taken is the number of days left. By doing that
