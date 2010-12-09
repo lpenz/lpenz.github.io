@@ -6,7 +6,10 @@ import SCons.Action
 import SCons.Builder
 import SCons.Util
 
-plot_re = re.compile(r'''png\('([^']+)'\)''', re.M)
+output_re = [
+        re.compile(r'''png\('([^']+)'\)''', re.M)
+        , re.compile(r'''save\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M)
+        ]
 
 def rEmitter(target, source, env):
     target = []
@@ -16,21 +19,26 @@ def rEmitter(target, source, env):
         deps.append(s)
         for d in deps:
             contents = d.get_contents()
-            for t in plot_re.findall(contents):
-                target.append(os.path.join(sdir, t))
+            for r in output_re:
+                for t in r.findall(contents):
+                    target.append(os.path.join(sdir, t))
     return target, source
 
 
-source_re = re.compile(r'''source\('([^']+)'\)''', re.M)
+source_re = [
+        re.compile(r'''source\('([^']+)'\)''', re.M)
+        , re.compile(r'''load\('([^']+)'\)''', re.M)
+        ]
 
 def rSearchDeps(node, env):
     contents = node.get_contents()
     rv = []
-    for d in source_re.findall(contents):
-        dpath = os.path.join(os.path.dirname(str(node)), d)
-        df = env.File(dpath)
-        rv.append(df)
-        rv.extend(rSearchDeps(df, env))
+    for r in source_re:
+        for d in r.findall(contents):
+            dpath = os.path.join(os.path.dirname(str(node)), d)
+            df = env.File(dpath)
+            rv.append(df)
+            rv.extend(rSearchDeps(df, env))
     return rv
 
 

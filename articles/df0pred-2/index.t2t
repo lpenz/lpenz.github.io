@@ -79,7 +79,8 @@ units are in MB):
 
 We now get the delta of the disk usage, and take a look at its boxplot:
 
-%!include: ``deltaboxcode.R``
+%!include: ``deltaboxcalc.R``
+%!include: ``deltaboxplot.R``
 
  [deltabox.png] 
 
@@ -97,7 +98,8 @@ of number-of-days-until-exhaustion that is robust and corresponds to the data we
 have observed. This robustness means that we don't even need to remove outliers,
 as they will barely affect out results:
 
-%!include: ``daysleftcode.R``
+%!include: ``daysleftcalc.R``
+%!include: ``daysleftplot.R``
 
  [daysleft.png] 
 
