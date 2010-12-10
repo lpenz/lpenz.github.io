@@ -1,2 +1,2 @@
-freespace <- totalspace - duinfo$usd[length(duinfo$usd)]
+freespace <- totalspace - usd[length(usd)]
 daysleft <- replicate(100, f(freespace))

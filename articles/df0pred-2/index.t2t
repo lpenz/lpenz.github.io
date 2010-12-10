@@ -26,7 +26,7 @@ another, with an offset, after the cleanup. If we plot the line given by the
 linear model, we can see clearly that it does not fit our overall data very
 well:
 
- [lmplot.png] 
+ [lm.png] 
 
 ([Data file $cwd$/duinfospike.dat])
 
