@@ -9,6 +9,7 @@ import SCons.Util
 output_re = [
         re.compile(r'''png\('([^']+)'\)''', re.M)
         , re.compile(r'''save\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M)
+        , re.compile(r'''sink\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M)
         ]
 
 def rEmitter(target, source, env):

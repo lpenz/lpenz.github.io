@@ -3,12 +3,7 @@ import os
 
 Import(['env'])
 
-env.Command('pointplot.png', 'main.R', 'Rscript ${SOURCE.file}', chdir=1)
-env.Depends('pointplot.png', 'init.R')
-env.SideEffect('lmplot.png', 'pointplot.png')
-env.SideEffect('lm.txt', 'pointplot.png')
-env.SideEffect('lmsummary.txt', 'pointplot.png')
-env.SideEffect('lmrandsummary.txt', 'pointplot.png')
+env.R('pointplot.png', 'main.R', chdir=1)
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
 
