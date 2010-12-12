@@ -3,6 +3,7 @@
 *.hi
 *.o
 *.pyc
+*.Rinc
 /index.bhtml
 /index.t2t
 /infotree.yaml
@@ -14,6 +15,8 @@
 /articles/df0pred-1/lmrandsummary.txt
 /articles/df0pred-1/lmsummary.txt
 /articles/df0pred-1/lm.txt
+/articles/df0pred-1/predict.txt
+/articles/df0pred-1/predictdate.txt
 /articles/df0pred-2/index.bhtml
 /articles/df0pred-2/main.RData
 /articles/index.bhtml

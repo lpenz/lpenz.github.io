@@ -17,9 +17,16 @@ png('lmplot.png')
 plot(usd ~ day)
 abline(model)
 
-drand <- read.table('drand.dat',
-		colClasses=c("Date","numeric"),
-		col.names=c("day","usd"))
+sink(file='predict.txt')
+cat('> predict(model2, data.frame(usd = 1e9))\n')
+predict(model2, data.frame(usd = 1e9))
+sink()
+
+sink(file='predictdate.txt')
+cat('> as.Date(predict(model2, data.frame(usd = 1e9)), origin="1970-01-01")\n')
+as.Date(predict(model2, data.frame(usd = 1e9)), origin="1970-01-01")
+sink()
+
 sink(file='lmrandsummary.txt')
 summary(lm(drand$usd ~ drand$day))
 sink()

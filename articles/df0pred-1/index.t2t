@@ -46,10 +46,8 @@ After running **R** in the shell prompt, we get the usual license and basic help
 information.
 
 The first step is to import your data:
-```
-> duinfo <- read.table('duinfo.dat', colClasses=c("Date","numeric"), col.names=c("day","usd"))
-> attach(duinfo)
-```
+
+%!include: ``datain.Rinc``
 
 The variable //duinfo// is now a list with two columns: //day// and //usd//. The
 ``attach`` command allows us to use the column names directly.
@@ -143,21 +141,13 @@ f-statistics) hold in the inverted model.
 We now use the **predict** function to extrapolate the model. Let's assume that
 the total disk space in our example is 1TB:
 
-```
-> predict(model2, data.frame(usd = 1e9))
-       1
-16280.59
-```
+%!include: ``predict.txt``
 
 But... when is that? Well, that is the numeric representation of a day in R,
 which is the number of days since 1970-01-01. To get the human-readable day, we
 use:
 
-```
-> as.Date(predict(model2, data.frame(usd = 1e9)), origin="1970-01-01")
-           1
-"2014-07-29"
-```
+%!include: ``predictdate.txt``
 
 There we are: our disk space will reach 1TB in 2014-07-29 **if** the current
 pattern holds until then, with 95% statistical significance.
