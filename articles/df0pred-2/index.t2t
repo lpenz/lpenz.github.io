@@ -104,4 +104,9 @@ as they will barely affect out results:
  [daysleft.png] 
 
 
+Let's use a trick to see the dates in that graph:
+
+%!include: ``df0densityplot.R``
+
+ [df0density.png] 
 
