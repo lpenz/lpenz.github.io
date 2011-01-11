@@ -1,1 +1,1 @@
-df0date <- day[length(day)] + daysleft
+df0date <- today + daysleft

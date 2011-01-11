@@ -4,4 +4,5 @@ duinfo <- read.table('duinfospike.dat',
 		col.names=c("day","usd"))
 attach(duinfo)
 totalspace <- 1e6
+today <- day[length(day)]
 
