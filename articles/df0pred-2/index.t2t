@@ -110,3 +110,13 @@ Let's use a trick to see the dates in that graph:
 
  [df0density.png] 
 
+
+That represents the probability that we will reach df0 in any one of those
+single days. More useful is the cumulative distribution, which is the
+probability that we reach df0 **before** the given day:
+
+%!include: ``df0cumsumplot.R``
+
+ [df0cumsum.png] 
+
+
