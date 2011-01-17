@@ -29,6 +29,7 @@ def rEmitter(target, source, env):
 source_re = [
         re.compile(r'''source\('([^']+)'\)''', re.M)
         , re.compile(r'''load\('([^']+)'\)''', re.M)
+        , re.compile(r'''read\.table\('([^']+)''', re.M)
         ]
 
 def rSearchDeps(node, env):
