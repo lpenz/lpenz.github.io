@@ -74,7 +74,7 @@ We can now create and take a look at our linear model object:
 ```
 %!include: ``lm.txt``
 
-The second coefficient in the example tells us that we are consuming about 458 MB (4.580e+05) of disk space per day.
+The second coefficient in the example tells us that we are consuming about 559 MB of disk space per day.
 
 We can also plot the linear model over our data:
 ```
@@ -103,7 +103,7 @@ linear model only makes sense when the residuals are normally distributed.
 Let's see what what each piece of information above means: the first is the
 [five-number summary http://en.wikipedia.org/wiki/Five-number_summary]
 of the residuals. That tells us the maximum and minimum error, and that 75% of
-the errors are between -1.2 GB and 1.8 GB. We then get the results of a
+the errors are between -5.3 GB and 5.5 GB. We then get the results of a
 [Student's t-test http://en.wikipedia.org/wiki/Student%27s_t-test] of
 the model coefficients against the data. The last column tells us roughly how
 probable seeing the given residuals is, assuming that the disk space does not
@@ -153,7 +153,7 @@ use:
 
 %!include: ``predictdate.txt``
 
-There we are: df0 will be in 2010-01-12 **if** the
+There we are: df0 will be in 2010-06-27 **if** the
 current pattern holds until then, with 95% statistical significance.
 
 
