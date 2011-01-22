@@ -1,2 +1,2 @@
 plot(dens, xaxt='n')
-axis.Date(1, densday, at=seq(densdays[1], tail(densdays, 1), 'month'), format='%F')
+axis.Date(1, densday, at=seq(min(densdays), max(densdays), 'month'), format='%F')
