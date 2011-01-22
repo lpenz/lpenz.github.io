@@ -65,10 +65,10 @@ value.
 
 
 
-= The real new method: bootstrapping days left =
+= The real new method: days left by Monte Carlo simulation =
 
 Instead of calculating the number of days left from the data, we will use a
-technique called [bootstrapping http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29]
+technique called [Monte Carlo simulation http://en.wikipedia.org/wiki/Monte_carlo_simulation]
 to generate the distribution of days left. The idea is simple: we sample the
 data we have - daily used disk space - until the sum is above the free disk
 space; the number of samples taken is the number of days left. By doing that
@@ -155,6 +155,22 @@ Mix and match and see what a good convention for your case is.
 
 
 = Conclusion =
+
+This and the [previous article $cwd$/../df0pred-1/index.html] showed how to use
+statistics in R to make a prediction of when free hard-disk space will zero.
+
+The first article was main purpose was to serve as an introduction to R. There
+are many reasons that make linear regression an unsuitable technique for
+df0 prediction - the underlying process of disk consumption is certainly not
+linear. But, if the graph shows you that the line fits, there is no reason to
+ignore it.
+
+Monte Carlo simulation, on the other hand, is a powerful and general technique.
+It assumes little about the data (non-parameterized), and it can give you
+probability distributions. If you want to forecast something, you can always
+start recording data and use Monte Carlo in some way to make predictions
+**based on the evidence**. Personally, I think we don't do this nearly as often
+as we could. Well, [Joel is even using it to make schedules http://www.joelonsoftware.com/items/2007/10/26.html].
 
 
 
