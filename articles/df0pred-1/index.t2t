@@ -95,8 +95,7 @@ about objects: **summary**. Let's use it on our linear model objects:
 
 To check the quality of a linear regression, we focus on the **residuals**, as
 they represent the error of our model. We calculate them by subtracting the
-expected value (from the model) from the sampled value, for every sample. The
-linear model only makes sense when the residuals are normally distributed.
+expected value (from the model) from the sampled value, for every sample.
 
 Let's see what what each piece of information above means: the first is the
 [five-number summary http://en.wikipedia.org/wiki/Five-number_summary]
