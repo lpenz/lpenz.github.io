@@ -2,9 +2,6 @@ Hard drive occupation prediction with R
 
 2010-08-15
 
-%!preproc: "!totalspace!" 200GB
-
-
 
 On some environments, disk space usage can be pretty predictable. In this post,
 we will see how to do a linear regression to estimate when free space will reach
