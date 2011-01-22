@@ -1,2 +1,2 @@
 plot(dens, xaxt='n')
-axis.Date(1, as.Date(dens$x, origin="1970-01-01"), format='%F')
+axis.Date(1, densday, at=seq(densdays[1], tail(densdays, 1), 'month'), format='%F')

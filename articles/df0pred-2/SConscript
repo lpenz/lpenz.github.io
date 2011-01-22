@@ -6,7 +6,7 @@ Import(['env'])
 env.R('main.RData', 'main.R')
 env.Depends('main.RData', 'duinfospike.dat')
 
-for i in ['delta', 'deltabox', 'deltakd', 'daysleft', 'lm', 'df0date','df0density','df0cumsum']:
+for i in ['delta', 'deltabox', 'deltakd', 'daysleft', 'lm', 'df0density','df0cumsum']:
     env.Command(i+'.png', ['main.RData', 'plot.R', i+'plot.R'], './plot.R '+i, chdir=1)
 
 for i in ['delta']:
