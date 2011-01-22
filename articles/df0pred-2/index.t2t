@@ -140,8 +140,28 @@ That represents the probability that we will reach df0 in any one of those
 single days. More useful is the cumulative distribution, which is the
 probability that we reach df0 **before** the given day:
 
+%!include: ``df0cumsumcalc.R``
 %!include: ``df0cumsumplot.R``
 
  [df0cumsum.png] 
+
+
+With the cumulative probability estimate, we can see when we have to start
+worrying about the disk by looking at the first day that the probability of df0
+is above 0:
+
+%!include: ``df0first.txt``
+
+Well, we can also be a bit more bold and wait until the chances of reaching df0
+rise above 5%:
+
+%!include: ``df0above5.txt``
+
+Mix and match and see what a good convention for your case is.
+
+
+
+= Conclusion =
+
 
 
