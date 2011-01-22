@@ -11,3 +11,5 @@ whatsnew:
       news: 'Whatsnew feed up and running.'
     - date: 2010-10-25
       news: 'Articles feed up and running.'
+    - date: 2011-01-22
+      news: 'New [Hard drive occupation prediction with R - Part 2 $home$/articles/df0pred-2/index.html] article.'
