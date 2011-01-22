@@ -56,7 +56,8 @@ The variable //duinfo// is now a list with two columns: //day// and //usd//. The
 
 We can check the data graphically by issuing:
 ```
-> plot(usd ~ day)
+> plot(usd ~ day, xaxt='n')
+> axis.Date(1, day, format='%F')
 ```
 That gives us an idea on how predictable the usage of our hard drive is.
 

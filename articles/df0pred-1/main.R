@@ -3,7 +3,8 @@
 source('init.R')
 
 png('pointplot.png')
-plot(usd ~ day)
+plot(usd ~ day, xaxt='n')
+axis.Date(1, day, format='%F')
 
 sink(file='lm.txt')
 model
@@ -14,7 +15,8 @@ summary(model)
 sink()
 
 png('lmplot.png')
-plot(usd ~ day)
+plot(usd ~ day, xaxt='n')
+axis.Date(1, day, format='%F')
 abline(model)
 
 sink(file='predict.txt')
