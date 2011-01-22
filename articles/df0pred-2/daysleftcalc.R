@@ -1,2 +1,2 @@
 freespace <- totalspace - tail(usd, 1)
-daysleft <- replicate(100, f(freespace))
+daysleft <- replicate(5000, f(freespace))
