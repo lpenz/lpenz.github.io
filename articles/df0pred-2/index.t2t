@@ -25,7 +25,7 @@ files in the hard disk, we end up breaking the sample in parts that cannot be
 analysed together. If we plot the line given by the linear model, we can see
 clearly that it does not fit our overall data very well:
 
- [lm.png] 
+ [$cwd$/lm.png] 
 
 ([Data file $cwd$/duinfospike.dat])
 
@@ -87,7 +87,7 @@ We now get the delta of the disk usage. Let's take a look at it:
 %!include: ``deltaplot.R``
 
 
- [delta.png] 
+ [$cwd$/delta.png] 
 
 
 The summary function gives us the five-number summary, while the boxplot shows
@@ -98,7 +98,7 @@ us how the data is distributed graphically:
 %!include: ``deltaboxplot.R``
 
 
- [deltabox.png] 
+ [$cwd$/deltabox.png] 
 
 
 The kernel density plot gives us about the same, but in another visual format:
@@ -106,7 +106,7 @@ The kernel density plot gives us about the same, but in another visual format:
 %!include: ``deltakdplot.R``
 
 
- [deltakd.png] 
+ [$cwd$/deltakd.png] 
 
 
 We can see the cleanups right there, as the lower points.
@@ -126,7 +126,7 @@ as they will not disproportionally bias out results:
 %!include: ``daysleftcalc.R``
 %!include: ``daysleftplot.R``
 
- [daysleft.png] 
+ [$cwd$/daysleft.png] 
 
 What we want now is the
 [empirical cumulative distribution http://en.wikipedia.org/wiki/Empirical_distribution_function].
@@ -136,7 +136,7 @@ given date.
 %!include: ``df0ecdfcalc.R``
 %!include: ``df0ecdfplot.R``
 
- [df0ecdf.png] 
+ [$cwd$/df0ecdf.png] 
 
 
 With the cumulative probability estimate, we can see when we have to start
