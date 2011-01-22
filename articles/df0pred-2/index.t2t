@@ -20,19 +20,22 @@ calculating a single day.
 The linear regression used in the first article has a serious
 lack of [robustness http://en.wikipedia.org/wiki/Robust_statistics].
 That means that it is very sensitive to even single departures
-from the linear pattern. For instance, if we ever delete some big files in the
-hard disk, we would break the sample in two parts: one before the cleanup and
-another, with an offset, after the cleanup. If we plot the line given by the
-linear model, we can see clearly that it does not fit our overall data very
-well:
+from the linear pattern. For instance, if we periodically delete some big
+files in the hard disk, we end up breaking the sample in parts that cannot be
+analysed together. If we plot the line given by the linear model, we can see
+clearly that it does not fit our overall data very well:
 
  [lm.png] 
 
 ([Data file $cwd$/duinfospike.dat])
 
-If we keep analysing the occupied disk space, there is not much we can do
-besides discarding the data we got before the cleanup. There is no way to easily
-ignore only the cleanup and use all other data.
+We can see in the graph that the linear model gives us a line that our free disk
+space is increasing instead of decreasing! If we use this model, we will reach
+the conclusion that we will never reach df0.
+
+If we keep analysing used disk space, there is not much we can do besides
+discarding the data gathered before the last cleanup. There is no way to easily
+ignore only the cleanup.
 
 In fact, we can only use the linear regression method when our disk consumption
 pattern is linear for the whole analysed period - and that rarely is the case
@@ -45,19 +48,20 @@ the model makes sense.
 
 Instead of using the daily used disk space as input, we will use the
 daily **difference** (or delta) of used disk space. By itself, this reduces a
-big disk cleanup to a single outlier, instead of breaking our sample in two. We
-could then just filter out the outliers, calculate the average daily increment in used
+big disk cleanup to a single outlier instead of breaking our sample. We could
+then just filter out the outliers, calculate the average daily increment in used
 disk space and divide the current free space by it. That would give us the
 average number of days left until disk exhaustion. Well, that would also give us
 some new problems to solve.
 
-The first problem is that filtering out the outliers is not
-simple. Afterall, we are throwing out data that might be meaningful: it could be a
-regular monthly process that we should take into account in order to generate
-a better prediction.
+The first problem is that filtering out the outliers is neither
+straightforward nor recommended. Afterall, we are throwing out data that might
+be meaningful: it could be a regular monthly process that we should take into
+account in order to generate a better prediction.
 
-Besides, we would still not have the probability distribution for the date, only
-a single value.
+Besides, by averaging disk consumption and dividing free disk space by it,  we
+would still not have the probability distribution for the date, only a single
+value.
 
 
 
@@ -105,11 +109,11 @@ The kernel density plot gives us about the same, but in another visual format:
  [deltakd.png] 
 
 
-We can see the cleanup right there, as the lowest point.
+We can see the cleanups right there, as the lower points.
 
 The next step is the creation of the sample of the number of days left until
 exhaustion. In order to do that, we create an R function that sums values taken
-randomly from our disk delta sample until our free space zeroes, and returns the
+randomly from our delta sample until our free space zeroes, and returns the
 number of samples taken:
 
 %!include: ``func.R``
@@ -117,7 +121,7 @@ number of samples taken:
 By repeatedly running this function and gathering the results, we generate a set
 of number-of-days-until-exhaustion that is robust and corresponds to the data we
 have observed. This robustness means that we don't even need to remove outliers,
-as they will barely affect out results:
+as they will not disproportionally bias out results:
 
 %!include: ``daysleftcalc.R``
 %!include: ``daysleftplot.R``
