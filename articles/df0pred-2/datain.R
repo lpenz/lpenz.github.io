@@ -4,5 +4,5 @@ duinfo <- read.table('duinfospike.dat',
 		col.names=c("day","usd"))
 attach(duinfo)
 totalspace <- 500000
-today <- day[length(day)]
+today <- tail(day, 1)
 
