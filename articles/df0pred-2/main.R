@@ -2,12 +2,12 @@
 
 source('datain.R')
 source('func.R')
-source('deltaboxcalc.R')
+source('deltacalc.R')
 source('daysleftcalc.R')
+source('df0densitycalc.R')
 source('df0datecalc.R')
 
 model <- lm(usd ~ day)
 
-save(list=c('usd', 'day', 'f', 'dudelta', 'freespace', 'daysleft', 'model', 'df0date', 'today'), file='main.RData')
-#axis.POSIXct(1, at=seq(day[1], max(day)+6, "months"), format="%Y-%m-%d")
+save(list=c('usd', 'day', 'f', 'dudelta', 'freespace', 'daysleft', 'model', 'df0date', 'today', 'dens'), file='main.RData')
 

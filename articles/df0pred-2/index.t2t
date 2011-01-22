@@ -31,13 +31,13 @@ well:
 ([Data file $cwd$/duinfospike.dat])
 
 If we keep analysing the occupied disk space, there is not much we can do
-besides discarding the data we got before the cleanup, even though it was
-perfectly valid. There is no way to easily ignore the cleanup and use the data.
+besides discarding the data we got before the cleanup. There is no way to easily
+ignore only the cleanup and use all other data.
 
-In fact, we can only use the first method when our disk consumption pattern is
-linear for the whole analysed period - and that rarely is the case when there is
-human intervention. We should always look at the graph to see if the solution
-makes sense.
+In fact, we can only use the linear regression method when our disk consumption
+pattern is linear for the whole analysed period - and that rarely is the case
+when there is human intervention. We should always look at the graph to see if
+the model makes sense.
 
 
 
@@ -48,11 +48,11 @@ daily **difference** (or delta) of used disk space. By itself, this reduces a
 big disk cleanup to a single outlier, instead of breaking our sample in two. We
 could then just filter out the outliers, calculate the average daily increment in used
 disk space and divide the current free space by it. That would give us the
-average number of days left until disk exhaustion. Well, that would give us some
-new problems to solve.
+average number of days left until disk exhaustion. Well, that would also give us
+some new problems to solve.
 
 The first problem is that filtering out the outliers is not
-simple. Afterall, we are throwing out data that might be valuable: it could be a
+simple. Afterall, we are throwing out data that might be meaningful: it could be a
 regular monthly process that we should take into account in order to generate
 a better prediction.
 
@@ -69,20 +69,41 @@ to generate the distribution of days left. The idea is simple: we sample the
 data we have - daily used disk space - until the sum is above the free disk
 space; the number of samples taken is the number of days left. By doing that
 repeatedly, we get the set of "possible days left" with a distribution that
-corresponds to the data we have used. Let's how we can do that in R.
+corresponds to the data we have collected. Let's how we can do that in R.
 
 First, let's load the data file that we will use (same one used in the
-introduction) along with a variable that holds the size of the disk (1TB; all
+introduction) along with a variable that holds the size of the disk (500GB; all
 units are in MB):
 
 %!include: ``datain.R``
 
-We now get the delta of the disk usage, and take a look at its boxplot:
+We now get the delta of the disk usage. Let's take a look at it:
 
-%!include: ``deltaboxcalc.R``
+%!include: ``deltacalc.R``
+%!include: ``deltaplot.R``
+
+
+ [delta.png] 
+
+
+The summary function gives us the five-number summary, while the boxplot shows
+us how the data is distributed graphically:
+
+%!include: ``deltasummary.txt``
+
 %!include: ``deltaboxplot.R``
 
+
  [deltabox.png] 
+
+
+The kernel density plot gives us about the same, but in another visual format:
+
+%!include: ``deltakdplot.R``
+
+
+ [deltakd.png] 
+
 
 We can see the cleanup right there, as the lowest point.
 
@@ -103,13 +124,13 @@ as they will barely affect out results:
 
  [daysleft.png] 
 
+In order to see the distribution for the date, we have to add the number of days
+left to the current date and format the axis as dates:
 
-Let's use a trick to see the dates in that graph:
-
+%!include: ``df0densitycalc.R``
 %!include: ``df0densityplot.R``
 
  [df0density.png] 
-
 
 That represents the probability that we will reach df0 in any one of those
 single days. More useful is the cumulative distribution, which is the
