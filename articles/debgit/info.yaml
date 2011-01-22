@@ -1,3 +1,6 @@
 title: Debianization with git-buildpackage
 date: 2010-04-11
 disqus: True
+tags:
+- debian
+- git

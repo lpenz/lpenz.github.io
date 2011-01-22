@@ -84,7 +84,7 @@ def dirscalc(infilename):
     return top, breadcrumbs
 
 
-def infoget(infilename):
+def infoget(opts, infilename):
     indirname = os.path.dirname(infilename)
     y = yaml.load(open('infotree.yaml').read())
     y.update(yamlget('.'))
@@ -93,6 +93,10 @@ def infoget(infilename):
         y['disqus_id'] = os.path.basename(indirname)
     y['top'], y['breadcrumbs'] = dirscalc(infilename)
     y['url'] = os.path.join(y['home'], indirname, 'index.html')
+    if opts.define:
+        for d in opts.define:
+            kv = d.split('=')
+            y[kv[0]] = kv[1]
     return y
 
 
@@ -132,6 +136,7 @@ def main():
 
     parser = OptionParser("usage: %prog [-t template] <input> <output>")
     parser.add_option("-t", "--template", dest="template", help="Template to use, if any")
+    parser.add_option("-d", "--define", dest="define", action="append", help="Extra definitions for rendering")
     opts, args = parser.parse_args(sys.argv[1:])
     if len(args) != 2:
         parser.error("wrong number of arguments") # Will exit
@@ -139,7 +144,7 @@ def main():
     infilename = args[0]
     outfilename = args[1]
 
-    info = infoget(infilename)
+    info = infoget(opts, infilename)
     htmlstr = templated(infilename, opts.template, info).replace('$cwd$/', '')
     out = encfix(open(outfilename, 'w'))
     out.write(makorender(htmlstr, info))

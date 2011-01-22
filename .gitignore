@@ -32,7 +32,6 @@ index.html
 /debian/dists
 /articles/df0pred-1/*.png
 /articles/df0pred-2/*.png
-/feeds/whatsnew.xml
-/feeds/articles.xml
+/feeds/*.xml
 # End
 
