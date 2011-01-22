@@ -2,7 +2,9 @@
 
 load('main.RData')
 sink(file='df0first.txt')
-cat('densdays[which(cumdens > 0.001)[1]]\n')
-densdays[which(cumdens > 0.001)[1]]
+cat('df0day[1]\n')
+df0day[1]
+cat('df0ecdfunc(df0day[1])\n')
+df0ecdfunc(df0day[1])
 sink()
 

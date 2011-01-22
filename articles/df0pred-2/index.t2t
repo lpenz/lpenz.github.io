@@ -128,22 +128,15 @@ as they will not disproportionally bias out results:
 
  [daysleft.png] 
 
-In order to see the distribution for the date, we have to add the number of days
-left to the current date and format the axis as dates:
+What we want now is the
+[empirical cumulative distribution http://en.wikipedia.org/wiki/Empirical_distribution_function].
+This function gives us the probability that we will reach df0 **before** the
+given date.
 
-%!include: ``df0densitycalc.R``
-%!include: ``df0densityplot.R``
+%!include: ``df0ecdfcalc.R``
+%!include: ``df0ecdfplot.R``
 
- [df0density.png] 
-
-That represents the probability that we will reach df0 in any one of those
-single days. More useful is the cumulative distribution, which is the
-probability that we reach df0 **before** the given day:
-
-%!include: ``df0cumsumcalc.R``
-%!include: ``df0cumsumplot.R``
-
- [df0cumsum.png] 
+ [df0ecdf.png] 
 
 
 With the cumulative probability estimate, we can see when we have to start

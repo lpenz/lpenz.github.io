@@ -1,1 +1,1 @@
-plot(density(daysleft))
+plot(daysleft)
