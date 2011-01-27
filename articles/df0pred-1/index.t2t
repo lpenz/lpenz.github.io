@@ -151,7 +151,7 @@ use:
 %!include: ``predictdate.txt``
 
 There we are: df0 will be at the above date **if** the
-current pattern holds until then, with 95% statistical significance.
+current pattern holds until then.
 
 
 
@@ -163,10 +163,15 @@ has a break point - some disk cleanup or software installation - the model will
 not give good results. We will usually see that in the analysis, but we should
 also always look at the graph.
 
-In the [next part $cwd$/../df0pred-2/index.html] of this article we will see a more
-robust method for df0 prediction. We will also sacrifice our ability
-to see the used space vs time in order to get a statistical distribution for the
-date of exhaustion, which is a lot more useful.
+This article is focused on teaching R basics - data input and plotting. We skip
+most of the formalities of science here, and linear regression is certainly not
+a proper df0 prediction method in the general case.
+
+On the other hand, in the [next part $cwd$/../df0pred-2/index.html] of this
+article we will see a more robust method for df0 prediction. We will also
+sacrifice our ability to see the used space vs time in order to get a
+statistical distribution for the date of exhaustion, which is a lot more useful
+in general.
 
 
 
