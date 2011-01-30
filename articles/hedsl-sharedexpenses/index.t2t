@@ -1,0 +1,166 @@
+Haskel eDSL Tutorial - Shared expenses
+
+2011-01-22
+
+
+People have been creating
+[interesting http://ashish.typepad.com/ashishs_niti/2007/06/another_dsl_emb.html]
+and
+[weird http://augustss.blogspot.com/2009/02/more-basic-not-that-anybody-should-care.html]
+embedded domain-specific languages in haskell. In this article we will see how
+we can create one for shared expenses calculation and why haskell is so suitable
+for that.
+
+This article is written in literal-haskell style, so that you can simply paste it in a
+//file.lhs// and then //runhaskell file.lhs// to run it. That's why we need the
+lines bellow:
+
+```
+
+> import Data.Map as Map
+> import Control.Monad.State
+
+```
+
+
+
+= Why haskell =
+
+The first reason to use haskell is that it has a very clean syntax:
+- a function and its arguments are separated by spaces, not by parenthesis and
+  commas, parenthesis are only used to make nested function calls;
+- there is a syntax sugar for monads that let us avoid writing the monadic
+  operators //>>// and //>>=//.
+
+
+When combined, these features allow us to leave very little "haskell" in our
+DSL, as we will see.
+
+
+
+= The shared expenses problem =
+
+Lets say that you went on a travel with 3 friends, and there are some costs that
+are shared by everyone. You want to record these expenses and then everyone can
+pay up once the trip is over.
+
+In other words, you want that records like this:
+
+```
+
+> trip = sharedexpenses $ do
+>     dexter `paid` 53.00
+>     angel `paid` 27.00
+>     debra `paid` 8.00
+>     harry `paid` 19.00
+>     debra `paid` 17.00
+>     angel `paid` 22.00
+
+```
+
+People can also lend money to each other:
+
+```
+
+> --    dexter `gave` harry 20.00
+> --    angel `gave` debra 32.00
+
+```
+
+
+
+= The state monad =
+
+By programming a new monad you get the "programmable semicolon" that people talk
+about. That allows you to implement a custom program flow, and we don't need
+that. The state monad is perfectly capable of solving our problem, as we only
+want to track the expenses of each person. If we wanted to store the
+transactions and present a report, the writer monad would be another option.
+
+Let's first define what a person is and who our friends are:
+```
+
+> newtype Person = Person { name :: String } deriving (Eq, Ord)
+
+> dexter = Person "Dexter"
+> angel = Person "Angel"
+> debra = Person "Debra"
+> harry = Person "Harry"
+
+```
+
+
+
+
+= Paying and giving =
+
+//paid// and //gave// are functions that change update our state:
+
+```
+
+> paid payer money = modify $ adjust (+ money) payer
+
+> -- gave lender borrower money = modify $ (adjust (+ money) lender) . (adjust (\ m -> m - money) borrower)
+
+```
+
+You can see that even our functions are straightforward.
+
+
+
+= Solving =
+
+To solve the shared expenses problem, we will use a simple algorithm: he who
+owes more pays to the one that has more credit until everybody is paid:
+
+```
+
+> solve state = solve' $ Map.map ( \ m -> m - avg) state
+>     where avg = (fold (+) 0 state) / (toRational $ size state)
+
+> solve' state | Map.null state = return ()
+> solve' state = do
+>     putStrLn $ name payer ++ " pays " ++ show amount ++ " to " ++ name receiver
+>     solve newstate
+>     where
+>         (payer, debt) = foldWithKey payercalc (Person "", 0) state
+>         payercalc p m (_,  m0) | m < m0 = (p, m)
+>         payercalc _ _ (p0, m0)          = (p0, m0)
+>         (receiver, credit) = foldWithKey receivercalc (Person "", 0) state
+>         receivercalc p m (_,  m0) | m > m0 = (p, m)
+>         receivercalc _ _ (p0, m0)          = (p0, m0)
+>         amount = min debt credit
+>         newstate = mapWithKey statefix state
+>         statefix p m | p == receiver = m - amount
+>         statefix p m | p == payer = m + amount
+>         statefix _ m = m
+
+```
+
+
+= Plumbing =
+
+The function ``sharedexpenses`` is the one that glues the eDSL and the state
+monad, and the ``main`` function is the one that plugs it with
+the ``solve`` function:
+
+```
+
+> sharedexpenses f = execState f empty
+
+> main = solve $ trip
+
+```
+
+
+
+= Further reading =
+
+- http://paulspontifications.blogspot.com/2008/01/why-haskell-is-good-for-embedded-domain.html:
+  Why Haskell is Good for Embedded Domain Specific Languages
+- http://cgi.cse.unsw.edu.au/~dons/blog/2007/03: Practical Haskell: shell
+  scripting with error handling and privilege separation
+- http://gbacon.blogspot.com/2009/07/programmable-semicolon-explained.html:
+  Programmable semicolon explained
+
+
