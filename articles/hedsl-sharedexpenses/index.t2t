@@ -80,7 +80,7 @@ transactions and present a report, the writer monad would be another option.
 Let's first define what a person is and who our friends are:
 ```
 
-> newtype Person = Person { name :: String } deriving (Eq, Ord)
+> newtype Person = Person { name :: String } deriving (Eq, Ord, Show)
 
 > dexter = Person "Dexter"
 > angel = Person "Angel"
