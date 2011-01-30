@@ -130,7 +130,7 @@ owes more pays to the one that has more credit until everybody is paid:
 >         receivercalc p m (_,  m0) | m > m0 = (p, m)
 >         receivercalc _ _ (p0, m0)          = (p0, m0)
 >         amount = min debt credit
->         newstate = mapWithKey statefix state
+>         newstate = filter (!= 0) $ mapWithKey statefix state
 >         statefix p m | p == receiver = m - amount
 >         statefix p m | p == payer = m + amount
 >         statefix _ m = m
