@@ -98,7 +98,7 @@ Let's first define what a person is and who our friends are:
 
 ```
 
-> paid payer money = modify $ adjust (+ money) payer
+> paid payer money = modify $ insertWith (+) payer money
 
 > -- gave lender borrower money = modify $ (adjust (+ money) lender) . (adjust (\ m -> m - money) borrower)
 
