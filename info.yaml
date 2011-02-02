@@ -13,3 +13,6 @@ whatsnew:
       news: 'Articles feed up and running.'
     - date: 2011-01-22
       news: 'New [Hard drive occupation prediction with R - Part 2 $home$/articles/df0pred-2/index.html] article.'
+    - date: 2011-02-02
+      news: 'New [Haskel eDSL Tutorial - Shared expenses $home$/articles/hedsl-sharedexpenses/index.html] article.'
+
