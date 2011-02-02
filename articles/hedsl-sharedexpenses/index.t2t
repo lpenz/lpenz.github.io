@@ -44,40 +44,48 @@ Lets say that you went on a travel with 3 friends, and there are some costs that
 are shared by everyone. You want to record these expenses and then everyone can
 pay up once the trip is over.
 
-In other words, you want that records like this:
+In other words, you want records to look like this:
 
 ```
 
 > trip = sharedexpenses $ do
->     dexter `paid` 5300
->     angel  `paid` 2700
->     debra  `paid`  800
->     harry  `paid` 1900
->     debra  `paid` 1700
->     angel  `paid` 2200
+>     dexter `spent` 5300
+>     angel  `spent` 2700
+>     debra  `spent`  800
+>     harry  `spent` 1900
+>     debra  `spent` 1700
+>     angel  `spent` 2200
 
 ```
 
-People can also lend money to each other:
+Also, you wan to be able to record transactions in which people lend money
+straight to each other:
 
 ```
 
-> --    dexter `gave` harry 2000
-> --    angel  `gave` debra 3200
+>     dexter `gave` harry $ 2000
+>     angel  `gave` debra $ 3200
 
 ```
+
+The haskell leaks we have in the records are the backticks (`````) and the
+``$``. We could get rid of them also, but the plumbing would get a lot more
+convoluted.
 
 
 
 = The state monad =
 
 By programming a new monad you get the "programmable semicolon" that people talk
-about. That allows you to implement a custom program flow, and we don't need
-that. The state monad is perfectly capable of solving our problem, as we only
-want to track the expenses of each person. If we wanted to store the
-transactions and present a report, the writer monad would be another option.
+so much about. That allows you to implement a custom program flow different from
+the standard top-down - it allows built-in backtracking, for instance.
 
-Let's first define what a person is and who our friends are:
+But that is not what makes an eDSL. For our shared-expenses example, top-down is
+just fine. The only thing we need is a way to store the expenses each person
+had, and a simple built-in //state monad// with a //map// inside can solve our
+problem.
+
+The next step is the definition of what a person is and who our friends are:
 ```
 
 > newtype Person = Person { name :: String } deriving (Eq, Ord, Show)
@@ -89,46 +97,48 @@ Let's first define what a person is and who our friends are:
 
 ```
 
+We could skip this step and use just strings here, but that would make typos a
+runtime mistake. Haskell has strong types, so we use them here to catch typos in
+the compilation phase, which is a good practice.
 
 
 
-= Paying and giving =
+= Spending and giving =
 
-//paid// and //gave// are functions that change update our state:
-
-```
-
-> paid payer money = modify $ insertWith (+) payer money
-
-> -- gave lender borrower money = modify $ (adjust (+ money) lender) . (adjust (\ m -> m - money) borrower)
+//spent// and //gave// are functions that update our state:
 
 ```
 
-You can see that even our functions are straightforward.
+> spent payer money = modify $ insertWith (+) payer money
+
+> gave lender borrower money = modify $ (adjust (+ money) lender) . (adjust (\ m -> m - money) borrower)
+
+```
+
+//spent// adds the given amount to the element indexed by the person in the map,
+while //gave// adds the amount to the lender and subtract it from the borrower.
 
 
 
 = Solving =
 
 To solve the shared expenses problem, we will use a simple algorithm: he who
-owes more pays to the one that has more credit until everybody is paid:
+owes more pays to the one that has more credit until everybody is paid.
 
 ```
 
-> solve :: Map Person Int -> IO ()
 > solve state = solve' $ Map.map ( \ m -> m - avg) state
 >     where avg = round $ (toRational $ fold (+) 0 state) / (toRational $ size state)
 
-> solve' state | Map.null state = return ()
-> solve' state = do
->     putStrLn $ name payer ++ " pays " ++ show amount ++ " to " ++ name receiver
->     solve' newstate
+> solve' state | Map.null state = []
+> solve' state =
+>     (name payer ++ " pays " ++ show amount ++ " to " ++ name receiver) : solve' newstate
 >     where
->         (payer, debt)      = foldWithKey (getpers True)  (Person "", 0) state
+>         (payer,    debt)   = foldWithKey (getpers True)  (Person "", 0) state
 >         (receiver, credit) = foldWithKey (getpers False) (Person "", 0) state
 >         getpers True  p m (_,  m0) | m < m0 = (p, m) -- Gets payer.
 >         getpers False p m (_,  m0) | m > m0 = (p, m) -- Gets receiver.
->         getpers _ _ _  (p0, m0)             = (p0, m0)
+>         getpers _     _ _ e                 = e
 >         amount = min (-debt) credit
 >         newstate = Map.filter (/= 0) $ mapWithKey statefix state
 >         statefix p m | p == receiver = m - amount
@@ -137,18 +147,25 @@ owes more pays to the one that has more credit until everybody is paid:
 
 ```
 
+The //solve// functions subtracts from everybody the amount that each person is
+supposed to spend (the average), so that we can eliminate a person from the map
+when he reaches 0. //solve'// is a recursive functions that performs a single
+payment and calls itself again with an updated state.
+
+
 
 = Plumbing =
 
 The function ``sharedexpenses`` is the one that glues the eDSL and the state
-monad, and the ``main`` function is the one that plugs it with
-the ``solve`` function:
+monad, while the ``main`` function is the one that plugs it with
+the ``solve`` function and prints the results:
 
 ```
 
+> sharedexpenses :: State (Map Person Int) () -> Map Person Int
 > sharedexpenses f = execState f empty
 
-> main = solve $ trip
+> main = mapM_ putStrLn $ solve trip
 
 ```
 
