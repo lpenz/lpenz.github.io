@@ -50,11 +50,11 @@ In other words, you want that records like this:
 
 > trip = sharedexpenses $ do
 >     dexter `paid` 5300
->     angel `paid` 2700
->     debra `paid` 800
->     harry `paid` 1900
->     debra `paid` 1700
->     angel `paid` 2200
+>     angel  `paid` 2700
+>     debra  `paid`  800
+>     harry  `paid` 1900
+>     debra  `paid` 1700
+>     angel  `paid` 2200
 
 ```
 
@@ -63,7 +63,7 @@ People can also lend money to each other:
 ```
 
 > --    dexter `gave` harry 2000
-> --    angel `gave` debra 3200
+> --    angel  `gave` debra 3200
 
 ```
 
@@ -83,9 +83,9 @@ Let's first define what a person is and who our friends are:
 > newtype Person = Person { name :: String } deriving (Eq, Ord, Show)
 
 > dexter = Person "Dexter"
-> angel = Person "Angel"
-> debra = Person "Debra"
-> harry = Person "Harry"
+> angel  = Person "Angel"
+> debra  = Person "Debra"
+> harry  = Person "Harry"
 
 ```
 
@@ -128,7 +128,7 @@ owes more pays to the one that has more credit until everybody is paid:
 >         (receiver, credit) = foldWithKey (getpers False) (Person "", 0) state
 >         getpers True  p m (_,  m0) | m < m0 = (p, m) -- Gets payer.
 >         getpers False p m (_,  m0) | m > m0 = (p, m) -- Gets receiver.
->         getpers _ _ _  (p0, m0)          = (p0, m0)
+>         getpers _ _ _  (p0, m0)             = (p0, m0)
 >         amount = min (-debt) credit
 >         newstate = Map.filter (/= 0) $ mapWithKey statefix state
 >         statefix p m | p == receiver = m - amount
