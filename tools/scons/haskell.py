@@ -53,7 +53,7 @@ def generateAuto(env):
     HaskellScanner = SCons.Scanner.Base(
             name = 'haskellScanner',
             function = haskellScannerFunc,
-            skeys = ['.hs'],
+            skeys = ['.hs', '.lhs'],
             path_function = SCons.Scanner.FindPathDirs('HASKELLPATH'),
             recursive = True)
 
@@ -82,7 +82,7 @@ def generateExecutable(env):
     HaskellScanner = SCons.Scanner.Base(
             name = 'haskellScanner',
             function = haskellScannerFunc,
-            skeys = ['.hs'],
+            skeys = ['.hs', '.lhs'],
             path_function = SCons.Scanner.FindPathDirs('HASKELLPATH'),
             recursive = True)
 
