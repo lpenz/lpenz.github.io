@@ -19,7 +19,6 @@ lines bellow:
 
 > import Data.Map as Map
 > import Control.Monad.State
-> import Debug.Trace (trace)
 
 ```
 
@@ -137,7 +136,7 @@ owes more pays to the one that has more credit until everybody is paid.
 
 > solve' _   state | Map.null state = []
 > solve' err state =
->     trace (show state) $ (name payer ++ " pays " ++ show amount ++ " to " ++ name receiver) : solve' err newstate
+>     (name payer ++ " pays " ++ show amount ++ " to " ++ name receiver) : solve' err newstate
 >     where
 >         (payer,    debt)   = foldWithKey (getpers True)  (Person "", 0) state
 >         (receiver, credit) = foldWithKey (getpers False) (Person "", 0) state
