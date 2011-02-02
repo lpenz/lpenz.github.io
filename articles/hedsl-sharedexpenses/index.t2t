@@ -84,8 +84,11 @@ the standard top-down - it allows built-in backtracking, for instance.
 
 But that is not an eDSL requirement. For our shared-expenses example, top-down
 is just fine. The only thing we need is a way to store the expenses each person
-had, and a simple built-in //state monad// with a //map// inside can solve our
-problem.
+had, and a simple
+[state monad http://hackage.haskell.org/packages/archive/mtl/latest/doc/html/Control-Monad-State.html]
+with a
+[map http://hackage.haskell.org/packages/archive/containers/latest/doc/html/Data-Map.html]
+inside can solve our problem.
 
 The next step is the definition of what a person is and who our friends are:
 ```
@@ -183,6 +186,27 @@ the ``solve`` function and prints the results:
 
 ```
 
+Running this program provides us the following results:
+
+%!include: ``results.txt``
+
+
+
+= Conclusions =
+
+We have seen what is an eDSL by building a solution to a real, day-to-day
+problem. No hidden enchantments or dark arts involved: you don't have to build a
+custom monad or start with something that looks like
+//data Expr a = ...//; you can just define how you want your language to look
+like, think about what the state needs to store and build the plumbing around
+the state monad - or even around the
+[writer monad http://hackage.haskell.org/packages/archive/mtl/latest/doc/html/Control-Monad-Writer.html].
+You can also use nested state monads to define heterogeneous environments with
+different "syntaxes" verified by the type system. The only drawback is that
+every user of your language will need a haskell compiler installed, but with
+the [haskell platform http://hackage.haskell.org/platform/] available, that
+shouldn't be a problem.
+
 
 
 = Further reading =
@@ -193,5 +217,6 @@ the ``solve`` function and prints the results:
   scripting with error handling and privilege separation
 - http://gbacon.blogspot.com/2009/07/programmable-semicolon-explained.html:
   Programmable semicolon explained
+
 
 
