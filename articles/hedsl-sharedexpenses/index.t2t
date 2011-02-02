@@ -49,12 +49,12 @@ In other words, you want that records like this:
 ```
 
 > trip = sharedexpenses $ do
->     dexter `paid` 53.00
->     angel `paid` 27.00
->     debra `paid` 8.00
->     harry `paid` 19.00
->     debra `paid` 17.00
->     angel `paid` 22.00
+>     dexter `paid` 5300
+>     angel `paid` 2700
+>     debra `paid` 800
+>     harry `paid` 1900
+>     debra `paid` 1700
+>     angel `paid` 2200
 
 ```
 
@@ -62,8 +62,8 @@ People can also lend money to each other:
 
 ```
 
-> --    dexter `gave` harry 20.00
-> --    angel `gave` debra 32.00
+> --    dexter `gave` harry 2000
+> --    angel `gave` debra 3200
 
 ```
 
@@ -115,22 +115,22 @@ owes more pays to the one that has more credit until everybody is paid:
 
 ```
 
+> solve :: Map Person Int -> IO ()
 > solve state = solve' $ Map.map ( \ m -> m - avg) state
->     where avg = (fold (+) 0 state) / (toRational $ size state)
+>     where avg = round $ (toRational $ fold (+) 0 state) / (toRational $ size state)
 
 > solve' state | Map.null state = return ()
 > solve' state = do
 >     putStrLn $ name payer ++ " pays " ++ show amount ++ " to " ++ name receiver
->     solve newstate
+>     solve' newstate
 >     where
->         (payer, debt) = foldWithKey payercalc (Person "", 0) state
->         payercalc p m (_,  m0) | m < m0 = (p, m)
->         payercalc _ _ (p0, m0)          = (p0, m0)
->         (receiver, credit) = foldWithKey receivercalc (Person "", 0) state
->         receivercalc p m (_,  m0) | m > m0 = (p, m)
->         receivercalc _ _ (p0, m0)          = (p0, m0)
->         amount = min debt credit
->         newstate = filter (!= 0) $ mapWithKey statefix state
+>         (payer, debt)      = foldWithKey (getpers True)  (Person "", 0) state
+>         (receiver, credit) = foldWithKey (getpers False) (Person "", 0) state
+>         getpers True  p m (_,  m0) | m < m0 = (p, m) -- Gets payer.
+>         getpers False p m (_,  m0) | m > m0 = (p, m) -- Gets receiver.
+>         getpers _ _ _  (p0, m0)          = (p0, m0)
+>         amount = min (-debt) credit
+>         newstate = Map.filter (/= 0) $ mapWithKey statefix state
 >         statefix p m | p == receiver = m - amount
 >         statefix p m | p == payer = m + amount
 >         statefix _ m = m
