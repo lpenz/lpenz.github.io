@@ -32,7 +32,7 @@ env.MAKO('index.t2t', MAKOFLAGS='-t base')
 
 
 # About me:
-env.SConscript('aboutme/SConscript')
+env.SConscript('about/SConscript')
 
 
 # Articles:
