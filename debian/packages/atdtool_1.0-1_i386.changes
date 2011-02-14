@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Mon, 14 Feb 2011 21:29:16 -0200
+Source: atdtool
+Binary: atdtool
+Architecture: source all
+Version: 1.0-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ atdtool    - Command-line interface to After the Deadline language checker
+Changes: 
+ atdtool (1.0-1) unstable; urgency=low
+ .
+   * Initial release.
+Checksums-Sha1: 
+ ca193d95cca77c102e3874caffc94919d768726d 1098 atdtool_1.0-1.dsc
+ 39e4912829f17bee29a9711bd3c9c70df99aa99a 4128 atdtool_1.0.orig.tar.gz
+ 913556f857c4fb26db6de634860355d96e61bdfe 1969 atdtool_1.0-1.diff.gz
+ a3fdcd6c21aa723991ece4aadb3949f5cc0d430f 3068 atdtool_1.0-1_all.deb
+Checksums-Sha256: 
+ d0fe708a822a1ef6ee4e46dd7adac7c979375debca7a9bb0d3052670483b7474 1098 atdtool_1.0-1.dsc
+ ed8ec076110d87c929e3c9b9d9bb4cece9f19093d06831107653403c68f5e50e 4128 atdtool_1.0.orig.tar.gz
+ fb93c0fd4ad9bf8db69bf912e26f2eaac9194ec4da8e55f9f5da3eea585261fd 1969 atdtool_1.0-1.diff.gz
+ bf88e502be9764c2522851544576ffcf7bfc6f5d6dbe43456add70771bd346b7 3068 atdtool_1.0-1_all.deb
+Files: 
+ 0216dea44d57cebb32de13fcd2d28e30 1098 python extra atdtool_1.0-1.dsc
+ 9a8591528ae689513edc6c6d8d4afe37 4128 python extra atdtool_1.0.orig.tar.gz
+ 114434abf8c6d8994745b995a287d709 1969 python extra atdtool_1.0-1.diff.gz
+ 3e92b5d8547368fe64b33938bc7ed943 3068 python extra atdtool_1.0-1_all.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iF4EAREIAAYFAk1ZvvAACgkQQKPFnwyVxRLrGQD/RuV4axjWGPEDEeE1HXA9tluS
+XTmQJ2zN/k0vwxxvxfQBAL8yevH4ivwbRmkAwgzilPk9ZY4OTk+p6oepwbjeqAgr
+=cCIi
+-----END PGP SIGNATURE-----
