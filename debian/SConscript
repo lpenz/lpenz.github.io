@@ -8,7 +8,7 @@ if False:
     env.Command('dists/lpenz/main/binary-i386/Packages.bz2',  glob.glob('packages/*.deb'), '(set -e; cd debian; dpkg-scanpackages packages | bzip2 -9c) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
     env.Command('dists/lpenz/main/source/Sources.bz2',        glob.glob('packages/*.dsc'), '(set -e; cd debian; dpkg-scansources  packages | bzip2 -9c) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
     #env.Command('Contents.gz',  glob.glob('incoming/*.deb'), 'apt-ftparchive contents . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
-    env.Command('dists/lpenz/Release',   ['dists/lpenz/main/binary-i386/Packages.bz2', 'dists/lpenz/main/source/Sources.bz2', 'lpenz-apt-release.conf'], '(set -e; apt-ftparchive -c debian/lpenz-apt-release.conf release .) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
+    env.Command('dists/lpenz/Release',   ['dists/lpenz/main/binary-i386/Packages.bz2', 'dists/lpenz/main/source/Sources.bz2', 'lpenz-apt-release.conf'], '(set -e; apt-ftparchive -c debian/lpenz-apt-release.conf release debian/dists/lpenz) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
     env.Command('dists/lpenz/Release.gpg', 'dists/lpenz/Release', 'gpg --output ${TARGET} -ba ${SOURCE}')
 
 indexbuild = env.File('indexbuild')
