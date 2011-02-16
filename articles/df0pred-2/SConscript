@@ -3,7 +3,8 @@ import os
 
 Import(['env'])
 
-env.R('main.RData', 'main.R')
+if False:
+    env.R('main.RData', 'main.R')
 env.Depends('main.RData', 'duinfospike.dat')
 
 for i in ['delta', 'deltabox', 'deltakd', 'daysleft', 'lm', 'df0ecdf']:
