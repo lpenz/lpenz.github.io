@@ -5,7 +5,7 @@ dpkg-buildpackage: export CXXFLAGS from dpkg-buildflags (origin: vendor): -g -O2
 dpkg-buildpackage: export FFLAGS from dpkg-buildflags (origin: vendor): -g -O2
 dpkg-buildpackage: export LDFLAGS from dpkg-buildflags (origin: vendor): 
 dpkg-buildpackage: source package atdtool
-dpkg-buildpackage: source version 1.0-1
+dpkg-buildpackage: source version 1.1-1
 dpkg-buildpackage: source changed by Leandro Lisboa Penz <llpenz@gmail.com>
  dpkg-source -i -I --before-build atdtool
 dpkg-buildpackage: host architecture i386
@@ -18,13 +18,10 @@ rm -f atdtool.1
 make[1]: Leaving directory `/home/lpenz/projs/atdtool'
    dh_clean
  dpkg-source -i -I -b atdtool
-dpkg-source: warning: no source format specified in debian/source/format, see dpkg-source(1)
-dpkg-source: warning: source directory 'atdtool' is not <sourcepackage>-<upstreamversion> 'atdtool-1.0'
-dpkg-source: warning: .orig directory name atdtool.orig is not <package>-<upstreamversion> (wanted atdtool-1.0.orig)
-dpkg-source: info: using source format `1.0'
-dpkg-source: info: building atdtool using existing atdtool_1.0.orig.tar.gz
-dpkg-source: info: building atdtool in atdtool_1.0-1.diff.gz
-dpkg-source: info: building atdtool in atdtool_1.0-1.dsc
+dpkg-source: info: using source format `3.0 (quilt)'
+dpkg-source: info: building atdtool using existing ./atdtool_1.1.orig.tar.gz
+dpkg-source: info: building atdtool in atdtool_1.1-1.debian.tar.gz
+dpkg-source: info: building atdtool in atdtool_1.1-1.dsc
  debian/rules build
 dh build 
    dh_testdir
@@ -42,12 +39,12 @@ dh binary
    dh_installdirs
    debian/rules override_dh_auto_install
 make[1]: Entering directory `/home/lpenz/projs/atdtool'
-/usr/bin/make PREFIX=/home/lpenz/projs/atdtool/debian/usr install
+/usr/bin/make PREFIX=/home/lpenz/projs/atdtool/debian/atdtool/usr install
 make[2]: Entering directory `/home/lpenz/projs/atdtool'
-mkdir -p /home/lpenz/projs/atdtool/debian/usr/bin
-install atdtool /home/lpenz/projs/atdtool/debian/usr/bin/atdtool
-mkdir -p /home/lpenz/projs/atdtool/debian/usr/share/man/man1
-install atdtool.1 /home/lpenz/projs/atdtool/debian/usr/share/man/man1/atdtool.1
+mkdir -p /home/lpenz/projs/atdtool/debian/atdtool/usr/bin
+install atdtool /home/lpenz/projs/atdtool/debian/atdtool/usr/bin/atdtool
+mkdir -p /home/lpenz/projs/atdtool/debian/atdtool/usr/share/man/man1
+install atdtool.1 /home/lpenz/projs/atdtool/debian/atdtool/usr/share/man/man1/atdtool.1
 make[2]: Leaving directory `/home/lpenz/projs/atdtool'
 make[1]: Leaving directory `/home/lpenz/projs/atdtool'
    dh_install
@@ -87,22 +84,18 @@ make[1]: Leaving directory `/home/lpenz/projs/atdtool'
    dh_shlibdeps
    dh_installdeb
    dh_gencontrol
-dpkg-gencontrol: warning: Depends field of package atdtool: unknown substitution variable ${python:Depends}
    dh_md5sums
    dh_builddeb
-dpkg-deb: building package `atdtool' in `../atdtool_1.0-1_all.deb'.
- dpkg-genchanges  >../atdtool_1.0-1_i386.changes
+dpkg-deb: building package `atdtool' in `../atdtool_1.1-1_all.deb'.
+ dpkg-genchanges  >../atdtool_1.1-1_i386.changes
 dpkg-genchanges: including full source code in upload
  dpkg-source -i -I --after-build atdtool
 dpkg-buildpackage: full upload (original source is included)
 Now running lintian...
-W: atdtool: description-starts-with-leading-spaces
-W: atdtool: extended-description-line-too-long
-W: atdtool: new-package-should-close-itp-bug
 Finished running lintian.
 Now signing changes and any dsc files...
- signfile atdtool_1.0-1.dsc Leandro Lisboa Penz <llpenz@gmail.com>
+ signfile atdtool_1.1-1.dsc Leandro Lisboa Penz <llpenz@gmail.com>
 
- signfile atdtool_1.0-1_i386.changes Leandro Lisboa Penz <llpenz@gmail.com>
+ signfile atdtool_1.1-1_i386.changes Leandro Lisboa Penz <llpenz@gmail.com>
 
 Successfully signed dsc and changes files
