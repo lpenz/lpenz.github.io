@@ -32,7 +32,7 @@ YYYY-MM-DD free space
 This format can be read and parsed in R with a single command.
 
 [This $cwd$/duinfo.dat] is the data file we will use as source for the results
-provided in this article. Feel free to download it and repeat the procedures.
+provided in this article. Feel free to download it and repeat the process.
 All number in the file are in MB units, and we assume an HD of 500GB. We will
 call the date the free space reaches 0 as the **df0**.
 
@@ -97,7 +97,7 @@ To check the quality of a linear regression, we focus on the **residuals**, as
 they represent the error of our model. We calculate them by subtracting the
 expected value (from the model) from the sampled value, for every sample.
 
-Let's see what what each piece of information above means: the first is the
+Let's see what each piece of information above means: the first is the
 [five-number summary http://en.wikipedia.org/wiki/Five-number_summary]
 of the residuals. That tells us the maximum and minimum error, and that 75% of
 the errors are between -1.4 GB and 1.3 GB. We then get the results of a
@@ -144,8 +144,8 @@ We now use the **predict** function to extrapolate the model.
 
 %!include: ``predict.txt``
 
-But... when is that? Well, that is the numeric representation of a day in R,
-which is the number of days since 1970-01-01. To get the human-readable day, we
+But... when is that? Well, that is the numeric representation of a day in R:
+the number of days since 1970-01-01. To get the human-readable day, we
 use:
 
 %!include: ``predictdate.txt``
@@ -169,7 +169,7 @@ a proper df0 prediction method in the general case.
 
 On the other hand, in the [next part $cwd$/../df0pred-2/index.html] of this
 article we will see a more robust method for df0 prediction. We will also
-sacrifice our ability to see the used space vs time in order to get a
+sacrifice our ability to see the used space vs time to get a
 statistical distribution for the date of exhaustion, which is a lot more useful
 in general.
 

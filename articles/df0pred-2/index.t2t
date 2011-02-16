@@ -38,7 +38,7 @@ discarding the data gathered before the last cleanup. There is no way to easily
 ignore only the cleanup.
 
 In fact, we can only use the linear regression method when our disk consumption
-pattern is linear for the whole analysed period - and that rarely is the case
+pattern is linear for the analysed period - and that rarely is the case
 when there is human intervention. We should always look at the graph to see if
 the model makes sense.
 
@@ -57,7 +57,7 @@ some new problems to solve.
 The first problem is that filtering out the outliers is neither
 straightforward nor recommended. Afterall, we are throwing out data that might
 be meaningful: it could be a regular monthly process that we should take into
-account in order to generate a better prediction.
+account to generate a better prediction.
 
 Besides, by averaging disk consumption and dividing free disk space by it,  we
 would still not have the probability distribution for the date, only a single
@@ -157,7 +157,7 @@ Mix and match and see what a good convention for your case is.
 = Conclusion =
 
 This and the [previous article $cwd$/../df0pred-1/index.html] showed how to use
-statistics in R to make a prediction of when free hard-disk space will zero.
+statistics in R to predict when free hard-disk space will zero.
 
 The first article was main purpose was to serve as an introduction to R. There
 are many reasons that make linear regression an unsuitable technique for
