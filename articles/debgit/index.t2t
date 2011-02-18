@@ -67,7 +67,7 @@ initial ``debian`` directory in the debian-debian branch:
 ```
 dh_make -s -p <package>_<version>
 ```
-We can now customize the standard ``debian``/ directory created. The only required files
+We can now customize the standard ``debian`` directory created. The only required files
 that must be fixed are: ``changelog``, ``compat``, ``control``, ``copyright``
 and ``rules``.
 Besides filling package-specific information, we should also:
