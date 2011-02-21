@@ -1,0 +1,245 @@
+Hard drive occupation prediction - part 3
+
+2011-02-19
+
+
+On the [second cwd$/../df0pred-2/index.html] article, we saw how to use a Monte
+Carlo simulation generate sample of disk space delta for future dates and
+calculate the distribution probability of zeroing free space in the future.
+
+In this article, we will see how we can plot the calculated sample for each day,
+and have a better notion of the occupied disk space spread. We will also see how
+we can plot the observed disk size, so that we have a visual feedback of the
+quality of our predictions on a daily basis.
+
+
+
+= The input data =
+
+[This file $cwd$/duinfospike.dat] has the dataset we will use as example. It's
+the same we used in the second part. The graph below shows it:
+
+ [$cwd$/usd.png] 
+
+We not import this data into R:
+
+%!include: ``datain.R``
+
+Notice that for this analysis, we have decreased total disk space to 400GB.
+
+
+
+= The evolution of the distribution =
+
+To see how a sample is distributed we can use a
+[histogram http://en.wikipedia.org/wiki/Histogram], a
+[kernel density plot http://en.wikipedia.org/wiki/Kernel_density]
+or a [boxplot http://en.wikipedia.org/wiki/Boxplot].
+The boxplot, albeit simpler, has the advantage of having all information in a
+single dimension. That allows us to build a plot that has a boxplot for each
+day that includes all samples prior to the given day, and a blue point for the
+actual sample:
+
+%!include: ``usdcumplot.R``
+
+ [$cwd$/usdcum.png] 
+
+The thick line in the middle of the graph is the median; the darker area
+goes from the first quartile to the third - which means that 50% of the samples
+are in that range. The lighter area has the maximum and minimum points, if they
+are within 1.5 [IQR http://en.wikipedia.org/wiki/Interquartile_range] of the
+upper/lower quartile. Points out of that range are considered outliers and
+plotted individually.
+
+
+
+= Distribution prediction =
+
+The graph above shows us how the distribution of the actual occupied disk space
+has evolved through time. However, what we really want to see is the
+distribution of our forecast.
+
+We will use 5000 samples and estimate the next 4 months:
+
+%!include: ``mcscalc.R``
+%!include: ``mcsplot.R``
+
+ [$cwd$/mcs.png] 
+
+You can also plot the df0 distribution over that:
+
+
+
+
+----------------------------------------
+
+% = The problem with the linear regression =
+% 
+% The linear regression used in the first article has a serious
+% lack of [robustness http://en.wikipedia.org/wiki/Robust_statistics].
+% That means that it is very sensitive to even single departures
+% from the linear pattern. For instance, if we periodically delete some big
+% files in the hard disk, we end up breaking the sample in parts that cannot be
+% analysed together. If we plot the line given by the linear model, we can see
+% clearly that it does not fit our overall data very well:
+% 
+%  [$cwd$/lm.png] 
+% 
+% ([Data file $cwd$/duinfospike.dat])
+% 
+% We can see in the graph that the linear model gives us a line that our free disk
+% space is increasing instead of decreasing! If we use this model, we will reach
+% the conclusion that we will never reach df0.
+% 
+% If we keep analysing used disk space, there is not much we can do besides
+% discarding the data gathered before the last cleanup. There is no way to easily
+% ignore only the cleanup.
+% 
+% In fact, we can only use the linear regression method when our disk consumption
+% pattern is linear for the analysed period - and that rarely is the case
+% when there is human intervention. We should always look at the graph to see if
+% the model makes sense.
+% 
+% 
+% 
+% = A naïve new method: averaging the difference =
+% 
+% Instead of using the daily used disk space as input, we will use the
+% daily **difference** (or delta) of used disk space. By itself, this reduces a
+% big disk cleanup to a single outlier instead of breaking our sample. We could
+% then just filter out the outliers, calculate the average daily increment in used
+% disk space and divide the current free space by it. That would give us the
+% average number of days left until disk exhaustion. Well, that would also give us
+% some new problems to solve.
+% 
+% The first problem is that filtering out the outliers is neither
+% straightforward nor recommended. Afterall, we are throwing out data that might
+% be meaningful: it could be a regular monthly process that we should take into
+% account to generate a better prediction.
+% 
+% Besides, by averaging disk consumption and dividing free disk space by it,  we
+% would still not have the probability distribution for the date, only a single
+% value.
+% 
+% 
+% 
+% = The real new method: days left by Monte Carlo simulation =
+% 
+% Instead of calculating the number of days left from the data, we will use a
+% technique called [Monte Carlo simulation http://en.wikipedia.org/wiki/Monte_carlo_simulation]
+% to generate the distribution of days left. The idea is simple: we sample the
+% data we have - daily used disk space - until the sum is above the free disk
+% space; the number of samples taken is the number of days left. By doing that
+% repeatedly, we get the set of "possible days left" with a distribution that
+% corresponds to the data we have collected. Let's how we can do that in R.
+% 
+% First, let's load the data file that we will use (same one used in the
+% introduction) along with a variable that holds the size of the disk (500GB; all
+% units are in MB):
+% 
+% %!include: ``datain.R``
+% 
+% We now get the delta of the disk usage. Let's take a look at it:
+% 
+% %!include: ``deltacalc.R``
+% %!include: ``deltaplot.R``
+% 
+% 
+%  [$cwd$/delta.png] 
+% 
+% 
+% The summary function gives us the five-number summary, while the boxplot shows
+% us how the data is distributed graphically:
+% 
+% %!include: ``deltasummary.txt``
+% 
+% %!include: ``deltaboxplot.R``
+% 
+% 
+%  [$cwd$/deltabox.png] 
+% 
+% 
+% The kernel density plot gives us about the same, but in another visual format:
+% 
+% %!include: ``deltakdplot.R``
+% 
+% 
+%  [$cwd$/deltakd.png] 
+% 
+% 
+% We can see the cleanups right there, as the lower points.
+% 
+% The next step is the creation of the sample of the number of days left until
+% exhaustion. In order to do that, we create an R function that sums values taken
+% randomly from our delta sample until our free space zeroes, and returns the
+% number of samples taken:
+% 
+% %!include: ``func.R``
+% 
+% By repeatedly running this function and gathering the results, we generate a set
+% of number-of-days-until-exhaustion that is robust and corresponds to the data we
+% have observed. This robustness means that we don't even need to remove outliers,
+% as they will not disproportionally bias out results:
+% 
+% %!include: ``daysleftcalc.R``
+% %!include: ``daysleftplot.R``
+% 
+%  [$cwd$/daysleft.png] 
+% 
+% What we want now is the
+% [empirical cumulative distribution http://en.wikipedia.org/wiki/Empirical_distribution_function].
+% This function gives us the probability that we will reach df0 **before** the
+% given date.
+% 
+% %!include: ``df0ecdfcalc.R``
+% %!include: ``df0ecdfplot.R``
+% 
+%  [$cwd$/df0ecdf.png] 
+% 
+% 
+% With the cumulative probability estimate, we can see when we have to start
+% worrying about the disk by looking at the first day that the probability of df0
+% is above 0:
+% 
+% %!include: ``df0first.txt``
+% 
+% Well, we can also be a bit more bold and wait until the chances of reaching df0
+% rise above 5%:
+% 
+% %!include: ``df0above5.txt``
+% 
+% Mix and match and see what a good convention for your case is.
+% 
+% 
+% 
+% = Conclusion =
+% 
+% This and the [previous article $cwd$/../df0pred-1/index.html] showed how to use
+% statistics in R to predict when free hard-disk space will zero.
+% 
+% The first article was main purpose was to serve as an introduction to R. There
+% are many reasons that make linear regression an unsuitable technique for
+% df0 prediction - the underlying process of disk consumption is certainly not
+% linear. But, if the graph shows you that the line fits, there is no reason to
+% ignore it.
+% 
+% Monte Carlo simulation, on the other hand, is a powerful and general technique.
+% It assumes little about the data (non-parameterized), and it can give you
+% probability distributions. If you want to forecast something, you can always
+% start recording data and use Monte Carlo in some way to make predictions
+% **based on the evidence**. Personally, I think we don't do this nearly as often
+% as we could. Well, [Joel is even using it to make schedules http://www.joelonsoftware.com/items/2007/10/26.html].
+% 
+% 
+% 
+% = Further reading =
+% 
+% - http://www.joelonsoftware.com/items/2007/10/26.html: Joel's use of Monte Carlo
+%   to make schedules.
+% - http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29: Wikipedia's page
+%   on bootstrapping, which is clearer than the one on Monte Carlo simulations.
+% - http://www.r-bloggers.com/: daily news and tutorials about R, very good to
+%   learn the language and see what people are doing with it.
+% 
+
+
