@@ -68,6 +68,10 @@ We will use 5000 samples and estimate the next 4 months:
 
 You can also plot the df0 distribution over that:
 
+%!include: ``df0calc.R``
+%!include: ``df0plot.R``
+
+ [$cwd$/df0.png] 
 
 
 
