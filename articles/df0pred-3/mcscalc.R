@@ -1,4 +1,4 @@
-numsamples <- 5000 # Number of Monte Carlo samples
+numsamples <- 10000 # Number of Monte Carlo samples
 numdays    <- 120  # Number of days to simulate
 
 dudelta <- diff(usd)

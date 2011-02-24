@@ -1,2 +1,3 @@
-df0cases <- apply(dssim, 2, function(i) sum(i > totalspace))
-df0prob  <- df0cases / sum(df0cases)
+df0day <- sort(daysleft + today)
+df0ecdfunc <- ecdf(df0day)
+df0prob <- df0ecdfunc(df0day)

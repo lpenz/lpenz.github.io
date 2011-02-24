@@ -1,6 +1,7 @@
 Hard drive occupation prediction - part 3
 
 2011-02-19
+%!preproc: <mcsamples> 10000
 
 
 On the [second cwd$/../df0pred-2/index.html] article, we saw how to use a Monte
@@ -59,14 +60,19 @@ The graph above shows us how the distribution of the actual occupied disk space
 has evolved through time. However, what we really want to see is the
 distribution of our forecast.
 
-We will use 5000 samples and estimate the next 4 months:
+We will use <mcsamples> samples and estimate the next 4 months:
 
 %!include: ``mcscalc.R``
 %!include: ``mcsplot.R``
 
  [$cwd$/mcs.png] 
 
-You can also plot the df0 distribution over that:
+To find the set of number of days left from our <mcsamples> samples, we do:
+
+%!include: ``df0daysleftcalc.R``
+
+We can then use the same procedure we used in the
+[previous article cwd$/../df0pred-2/index.html]:
 
 %!include: ``df0calc.R``
 %!include: ``df0plot.R``
