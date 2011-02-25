@@ -52,6 +52,28 @@ are within 1.5 [IQR http://en.wikipedia.org/wiki/Interquartile_range] of the
 upper/lower quartile. Points out of that range are considered outliers and
 plotted individually.
 
+The graph above shows us the evolution of the distribution of the used disk
+space. We have already seen that the difference in used disk space yields more
+useful data:
+
+%!include: ``deltacalc.R``
+%!include: ``deltacumplot.R``
+
+ [$cwd$/deltacum.png] 
+
+We can see in the graph above that we have some small outliers to the top and
+some big outliers in the bottom - those were disk cleanups, as you may recall.
+By using the //outline=TRUE// option of boxplot, we can zoom in the middle of
+the plot:
+
+%!include: ``deltacumoutlineplot.R``
+
+ [$cwd$/deltacumoutline.png] 
+
+From this graph we can tell that our the perceived pattern of disk consumption
+pattern is very regular after we have processed half our samples.
+
+==============================================================================
 
 
 = Distribution prediction =
