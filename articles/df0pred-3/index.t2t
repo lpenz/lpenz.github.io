@@ -63,7 +63,7 @@ useful data:
 
 We can see in the graph above that we have some small outliers to the top and
 some big outliers in the bottom - those were disk cleanups, as you may recall.
-By using the //outline=TRUE// option of boxplot, we can zoom in the middle of
+By using the //outline=FALSE// option of boxplot, we can zoom in the middle of
 the plot:
 
 %!include: ``deltacumoutlineplot.R``
