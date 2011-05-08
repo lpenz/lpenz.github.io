@@ -1,4 +1,4 @@
-plot(fday, dssim[1,], ylim=c(min(dssim[1:5,]), max(dssim[1:5,])), ylab='usd', xaxt='n', type='l')
+plot(fday, dssim[1,], ylim=c(min(dssim[1:5,]), max(dssim[1:5,])), ylab='usd', xlab='', xaxt='n', type='l')
 axis.Date(1, day, at=seq(min(fday), max(fday), 'week'), format='%F')
 lines(fday, replicate(numdays+1, totalspace), col='gray')
 lines(fday, dssim[2,])

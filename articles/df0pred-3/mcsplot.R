@@ -1,4 +1,4 @@
-plot(fday, dssim[1,], ylim=c(min(dssim), max(dssim)), ylab='usd', xaxt='n', type='l')
+plot(fday, dssim[1,], ylim=c(min(dssim), max(dssim)), ylab='usd', xlab='', xaxt='n', type='l')
 axis.Date(1, day, at=seq(min(fday), max(fday), 'week'), format='%F')
 f <- function(i) lines(fday, dssim[i,])
 mapply(f, seq(2, numdays))
