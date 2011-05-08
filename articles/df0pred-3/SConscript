@@ -7,7 +7,7 @@ if True:
     env.R('main.RData', 'main.R')
 env.Depends('main.RData', 'duinfospike.dat')
 
-for i in ['usd', 'mcs', 'mcs3', 'mcsdaydens', 'mcsbox']:
+for i in ['usd', 'mcs', 'mcs3', 'mcsdaydens', 'mcsbox', 'mcsquant', 'mcsquantbar']:
     env.Command(i+'.png', ['main.RData', 'plot.R', i+'plot.R'], './plot.R '+i, chdir=1)
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')

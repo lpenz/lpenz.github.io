@@ -113,3 +113,36 @@ simulations at any day:
 
 
 
+== Quantile lines ==
+
+We can use the //quantile// function to calculate the values for each quantile
+per day, and plot the lines:
+
+%!include:``mcsquantplot.R``
+
+ [$cwd$/mcsquant.png] 
+
+The advantage of this type of graph over the boxplot is that it is parameterized
+by //q//. This variable tells us the number of parts that we should divide our
+sample in. The lines above show us the division. If //q// is odd, the middle
+line is exactly the median. If //q// is 5, the lines will draw a shape similar
+to that of the boxplot, the only difference being the top and bottom line, that
+will include outliers - the boxplot filters outliers by using the IQR as
+explained above.
+
+
+
+== Quantile areas ==
+
+The idea is similar to the one above, but using barplots to fill the intervals:
+
+%!include:``mcsquantbarplot.R``
+
+ [$cwd$/mcsquantbar.png] 
+
+In this case, using an even //q// makes more sense, as we want to use the same
+colors for the symmetric. With an odd //q//, there would either be a larger
+middle interval or a broken symmetry.
+
+
+
