@@ -1,17 +1,17 @@
 Hard drive occupation prediction - part 3
 
 2011-02-19
-%!preproc: <mcsamples> 10000
+%!preproc: <mcsimulations> 10000
 
 
 On the [second cwd$/../df0pred-2/index.html] article, we saw how to use a Monte
 Carlo simulation generate sample of disk space delta for future dates and
 calculate the distribution probability of zeroing free space in the future.
 
-In this article, we will see how we can plot the calculated sample for each day,
-and have a better notion of the occupied disk space spread. We will also see how
-we can plot the observed disk size, so that we have a visual feedback of the
-quality of our predictions on a daily basis.
+In this article, we will see how we can plot the predicted distribution for the
+occupied disk space. Instead of answering que question "how likely is that my
+disk space will zero before date X?," we will be able to also answer "how much
+disk space will I need by date X, and with what probability?"
 
 
 
@@ -26,26 +26,113 @@ We not import this data into R:
 
 %!include: ``datain.R``
 
-Notice that for this analysis, we have decreased total disk space to 400GB.
+And we build our simulation for the next 4 months and create some variables:
+
+%!include: ``mcscalc.R``
 
 
+
+= Visualizing the possible scenarios =
+
+After performing the simulation, what kind of data do we have? Each simulation is
+built by sampling from the delta samples and adding to the current disk space
+for each day in the simulated period. We can say that each simulation is a
+possible scenario for the next 4 months. As the delta samples are concentrated
+around a point, we can expect the same behaviour from the simulations: for each
+day, they should be more concentrated around a range of values, even though the
+range should grow wider with time.
+
+The graph bellow shows the result of the first 5 simulations:
+
+%!include: ``mcs3plot.R``
+
+ [$cwd$/mcs3.png] 
+
+From this graph we can clearly see that the range of possible values for the
+used disk space grows with time. All simulations start with the same value - the
+actual used disk space for today - and grow apart as we sample from the delta
+pool.
+
+We can also plot all simulations in a single graph:
+
+%!include: ``mcsplot.R``
+
+ [$cwd$/mcs.png] 
+
+This plot gives us an idea of the overall spread of the data, but it fails to
+show the density. Remember, there are <mcsimulations> black lines there.
+
+
+
+= Visualizing the distribution for specific days =
+
+There is another way to look at our data: we have created, for each day, a
+sample of the possible used disk spaces. We can take any day of the simulation
+and look at the density:
+
+%!include: ``mcsdaydensplot.R``
+
+ [$cwd$/mcsdaydens.png] 
+
+
+By looking at this graph we can see the trend: the curves are getting
+flatter - meaning that we are getting more possible values for occupied disk
+space; and moving to the right - meaning that we have more simulations with
+higher occupied disk space values.
+
+
+
+= Visualizing the evolution of the distribution =
+
+So far, we have seen how we can visualize some simulations along the 4 months
+and how we can visualize the distribution for some specific days.
+
+We can also plot the distribution of the values for each day in the simulated 4
+months. We can't use the kernel density plot or the histogram, as they use both
+axis, but there are other options.
+
+
+== The Boxplot ==
+
+We can use a boxplot for each day in R in a very straightforward way.
+
+%!include:``mcsboxplot.R``
+
+ [$cwd$/mcsbox.png] 
+
+The boxplots glued together build a shape that shows us the distribution of our
+simulations at any day:
+- The thick line in the middle of the graph is the median
+- The darker area goes from the first quartile to the third - which means that
+  50% of the samples are in that range
+- The lighter area has the maximum and minimum points, if they are within 1.5
+  [IQR http://en.wikipedia.org/wiki/Interquartile_range] of the upper/lower
+  quartile.  Points out of this range are considered outliers and are not
+  plotted.
+
+
+==============================================================================
 
 = The evolution of the distribution =
 
 To see how a sample is distributed we can use a
 [histogram http://en.wikipedia.org/wiki/Histogram], a
 [kernel density plot http://en.wikipedia.org/wiki/Kernel_density]
-or a [boxplot http://en.wikipedia.org/wiki/Boxplot].
-The boxplot, albeit simpler, has the advantage of having all information in a
-single dimension. That allows us to build a plot that has a boxplot for each
-day that includes all samples prior to the given day, and a blue point for the
-actual sample:
+or a [boxplot http://en.wikipedia.org/wiki/Boxplot]. The histogram and the
+kernel density plot use one axis for the data and the other for the count or
+density. The boxplot, on the other hand, uses a single dimension for the data.
+That serves us well, as we can have the date as one axis, the disk space as the
+other and a boxplot for each day.
+
+As an example, let's plot the cumulative distribution for the used disk space:
 
 %!include: ``usdcumplot.R``
 
  [$cwd$/usdcum.png] 
 
-The thick line in the middle of the graph is the median; the darker area
+What we have here is a lot of boxplots piled together, forming a shape that
+tells us how the distribution of the used disk space evolved with each sample:
+the thick line in the middle of the graph is the median; the darker area
 goes from the first quartile to the third - which means that 50% of the samples
 are in that range. The lighter area has the maximum and minimum points, if they
 are within 1.5 [IQR http://en.wikipedia.org/wiki/Interquartile_range] of the
@@ -71,25 +158,26 @@ the plot:
  [$cwd$/deltacumoutline.png] 
 
 From this graph we can tell that our the perceived pattern of disk consumption
-pattern is very regular after we have processed half our samples.
+pattern is quite regular after we have processed half our samples.
 
-==============================================================================
 
 
 = Distribution prediction =
 
 The graph above shows us how the distribution of the actual occupied disk space
-has evolved through time. However, what we really want to see is the
-distribution of our forecast.
+and its delta have evolved in the past. We can also see how our predicted
+distribution will evolve in the future.
 
-We will use <mcsamples> samples and estimate the next 4 months:
+The first thing we need is the simulated data. Again, we use Monte Carlo, but
+this time we keep all the samples from all the trials and boxplot them by date:
 
 %!include: ``mcscalc.R``
 %!include: ``mcsplot.R``
 
  [$cwd$/mcs.png] 
 
-To find the set of number of days left from our <mcsamples> samples, we do:
+
+To find the set of number of days left from our <mcsimulations> samples, we do:
 
 %!include: ``df0daysleftcalc.R``
 

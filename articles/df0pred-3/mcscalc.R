@@ -1,9 +1,10 @@
-numsamples <- 10000 # Number of Monte Carlo samples
-numdays    <- 120  # Number of days to simulate
+numsimulations <- 10000 # Number of Monte Carlo samples
+numdays    <- 240   # Number of days to simulate
 
-dssimtmp <- replicate(numsamples, tail(usd, 1))
-f <- function(i) {
-	dssimtmp <<- dssimtmp - replicate(numsamples, sample(dudelta, 1, replace=TRUE))
-}
-dssim <- mapply(f, seq(1, numdays))
+dssimtmp0 <- replicate(numsimulations, tail(usd, 1))
+dssimtmp  <- dssimtmp0
+f <- function(i) dssimtmp <<- dssimtmp + replicate(numsimulations, sample(dudelta, 1, replace=TRUE))
+dssim <- cbind(dssimtmp0, mapply(f, seq(1, numdays)))
+
+fday <- seq(today, today+numdays, by='day') # Future days.
 
