@@ -92,6 +92,7 @@ months. We can't use the kernel density plot or the histogram, as they use both
 axis, but there are other options.
 
 
+
 == The Boxplot ==
 
 We can use a boxplot for each day in R in a very straightforward way.
