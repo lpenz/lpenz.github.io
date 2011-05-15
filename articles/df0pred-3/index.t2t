@@ -142,8 +142,8 @@ The idea is similar to the one above, but using barplots to fill the intervals:
 
 In this case, using an odd //q// makes more sense, as we want to use the same
 colors for the symmetric intervals. With an even //q//, there would either be a
-larger middle interval or a broken symmetry. The code above builds a large
-middle interval.
+larger middle interval with two quantiles or a broken symmetry. The code above
+builds a larger middle interval when given an even //q//.
 
 
 
