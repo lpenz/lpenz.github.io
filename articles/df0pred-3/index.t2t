@@ -205,13 +205,18 @@ If we do regular disk cleanups, we must have at least one of them in our
 training set to get realistic results.
 
 This also validates our cross-validation code. A common mistake is using the
-whole data set as the training set and then cross-validating with the same data,
-thus testing if the technique is good for predicting our current data instead of
-predicting the future.
+whole data set as the training set, cross-validating nothing.
 
 
 
 = Conclusions =
 
+We can use Monte Carlo simulations not only to generate a distribution
+probability of an event as we did in the [previous cwd$/../df0pred-2/index.html]
+article, but also to predict a possible range of future values. In this article,
+disk space occupation is not the most interesting example, as we are usually
+more interested in knowing when our used disk space will reach a certain value
+than in knowing the most probable values in time.
 
+On the other hand, imagine that this represents...
 
