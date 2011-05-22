@@ -8,10 +8,10 @@ On the [second cwd$/../df0pred-2/index.html] article, we saw how to use a Monte
 Carlo simulation generate sample of disk space delta for future dates and
 calculate the distribution probability of zeroing free space in the future.
 
-In this article, we will see how we can plot the predicted distribution for the
-occupied disk space. Instead of answering que question "how likely is that my
-disk space will zero before date X?," we will be able to also answer "how much
-disk space will I need by date X, and with what probability?"
+In this article, we will see how we can plot the evolution of predicted
+distribution for the occupied disk space. Instead of answering que question "how
+likely is that my disk space will zero before date X?," we will answer
+"how much disk space will I need by date X, and with what probability?"
 
 
 
@@ -22,11 +22,11 @@ the same we used in the second part. The graph below shows it:
 
  [$cwd$/usd.png] 
 
-We not import this data into R:
+We now import this data into R:
 
 %!include: ``datain.R``
 
-And we build our simulation for the next 4 months and create some variables:
+We then build our simulations for the next 4 months:
 
 %!include: ``mcscalc.R``
 
@@ -34,15 +34,11 @@ And we build our simulation for the next 4 months and create some variables:
 
 = Visualizing the possible scenarios =
 
-After performing the simulation, what kind of data do we have? Each simulation is
+What king of data have we built in our simulations? Each simulation is
 built by sampling from the delta samples and adding to the current disk space
-for each day in the simulated period. We can say that each simulation is a
-possible scenario for the next 4 months. As the delta samples are concentrated
-around a point, we can expect the same behaviour from the simulations: for each
-day, they should be more concentrated around a range of values, even though the
-range should grow wider with time.
-
-The graph bellow shows the result of the first 5 simulations:
+for each day in the simulated period. We can say that each individual simulation
+is a possible scenario for the next 4 months. The graph bellow shows the
+first 5 simulations:
 
 %!include: ``mcs3plot.R``
 
@@ -60,7 +56,8 @@ We can also plot all simulations in a single graph:
  [$cwd$/mcs.png] 
 
 This plot gives us an idea of the overall spread of the data, but it fails to
-show the density. Remember, there are <mcsimulations> black lines there.
+show the density. There are <mcsimulations> black lines there, with many of them
+overlapping one another.
 
 
 
@@ -75,10 +72,11 @@ and look at the density:
  [$cwd$/mcsdaydens.png] 
 
 
-By looking at this graph we can see the trend: the curves are getting
-flatter - meaning that we are getting more possible values for occupied disk
-space; and moving to the right - meaning that we have more simulations with
-higher occupied disk space values.
+By looking at this graph we can see the trend:
+- The curves are getting flatter: we are getting more possible values for
+  occupied disk space.
+- The curves are moving to the right: we have more simulations with higher
+  occupied disk space values.
 
 
 
@@ -89,13 +87,15 @@ and how we can visualize the distribution for some specific days.
 
 We can also plot the distribution of the values for each day in the simulated 4
 months. We can't use the kernel density plot or the histogram, as they use both
-axis, but there are other options.
+axes, but there are other options, most of them involving some abuse of the
+built-in plot functions.
 
 
 
-== The Boxplot ==
+== Boxplot ==
 
-We can use a boxplot for each day in R in a very straightforward way.
+We can use the //boxplot// function to create a boxplot for each day in R in a
+very straightforward way:
 
 %!include:``mcsboxplot.R``
 
@@ -115,8 +115,8 @@ simulations at any day:
 
 == Quantile lines ==
 
-We can use the //quantile// function to calculate the values for each quantile
-per day, and plot the lines:
+We can use the //quantile// function to calculate the values of each
+[quantile http://en.wikipedia.org/wiki/Quantile] per day, and plot the lines:
 
 %!include:``mcsquantplot.R``
 
@@ -130,11 +130,18 @@ to that of the boxplot, the only difference being the top and bottom line, that
 will include outliers - the boxplot filters outliers by using the IQR as
 explained above.
 
+In the code above, we have used the //colorsDouble// function to generate a
+sequence of colors that folds in the middle:
+
+%!include:``funcs.R``
+
 
 
 == Quantile areas ==
 
-The idea is similar to the one above, but using barplots to fill the intervals:
+We can also abuse the //barplots// function to create an area graph. We have to
+eliminate the bar borders, zero the distance between them and plot a white bar
+from the axis to the first quartile, if appropriate:
 
 %!include:``mcsquantbarplot.R``
 
@@ -146,4 +153,12 @@ larger middle interval with two quantiles or a broken symmetry. The code above
 builds a larger middle interval when given an even //q//.
 
 
+== Quantile heat map ==
+
+If we increase //q// and use //heat.colors// in a quantile area plot, we get
+something similar to a heat map:
+
+%!include:``mcsquantheatplot.R``
+
+ [$cwd$/mcsquantheat.png] 
 
