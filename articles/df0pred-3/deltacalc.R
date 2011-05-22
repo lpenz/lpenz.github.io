@@ -1,1 +1,0 @@
-dudelta <- diff(usd)
