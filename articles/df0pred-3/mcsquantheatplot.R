@@ -5,5 +5,6 @@ f <- function(i) {
 }
 qvals <- mapply(f, seq(1, numdays+1))
 colors <- c('white', colorsDouble(heat.colors, q))
-barplot(qvals, ylab='usd', xlab='day', names.arg=seq(min(fday), max(fday), 'day'), col=colors, ylim=c(min(dssim), max(dssim)), border=NA, space=0)
+barplot(qvals, ylab='usd', xlab='day', col=colors, border=NA, space=0,
+	names.arg=seq(min(fday), max(fday), 'day'), ylim=c(min(dssim), max(dssim)))
 abline(h=totalspace, col='gray')
