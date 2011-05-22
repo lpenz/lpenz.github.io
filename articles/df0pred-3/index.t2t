@@ -173,3 +173,22 @@ axis of the //barplot// and using the //points// function:
 
  [$cwd$/mcspf1.png] 
 
+
+
+= Training set, validation set =
+
+[Cross-validation http://en.wikipedia.org/wiki/Cross-validation_(statistics)] is
+a technique that we can use to validate the use of Monte Carlo on our data.
+
+We first split our data in two sets: the training set and the validation set. We
+than use only the first in our simulations, and plot the second over. We can
+then see graphically if the data fits our simulation.
+
+Let's use the first two months as the training set, and the other three months
+as the validation set:
+
+%!include:``mcscvcalc.R``
+%!include:``mcscvplot.R``
+
+ [$cwd$/mcscv.png] 
+
