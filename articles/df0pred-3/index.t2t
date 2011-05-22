@@ -169,6 +169,7 @@ something similar to a heat map:
 We can also plot our data in the same graph as our simulations, by extending the
 axis of the //barplot// and using the //points// function:
 
+%!include:``quantheatplotfunc.R``
 %!include:``mcspf1plot.R``
 
  [$cwd$/mcspf1.png] 
@@ -177,7 +178,7 @@ axis of the //barplot// and using the //points// function:
 
 = Training set, validation set =
 
-[Cross-validation http://en.wikipedia.org/wiki/Cross-validation_(statistics)] is
+[Cross-validation http://en.wikipedia.org/wiki/Cross-validation_%28statistics%28] is
 a technique that we can use to validate the use of Monte Carlo on our data.
 
 We first split our data in two sets: the training set and the validation set. We
@@ -187,8 +188,30 @@ then see graphically if the data fits our simulation.
 Let's use the first two months as the training set, and the other three months
 as the validation set:
 
-%!include:``mcscvcalc.R``
-%!include:``mcscvplot.R``
+%!include:``mcscv1calc.R``
+%!include:``mcscv1plot.R``
 
- [$cwd$/mcscv.png] 
+ [$cwd$/mcscv1.png] 
+
+Looks like using only the first two months already gives us a fair simulation.
+What if we used only a single month, when no disk cleanup was performed?
+
+%!include:``mcscv2calc.R``
+%!include:``mcscv2plot.R``
+
+ [$cwd$/mcscv2.png] 
+
+If we do regular disk cleanups, we must have at least one of them in our
+training set to get realistic results.
+
+This also validates our cross-validation code. A common mistake is using the
+whole data set as the training set and then cross-validating with the same data,
+thus testing if the technique is good for predicting our current data instead of
+predicting the future.
+
+
+
+= Conclusions =
+
+
 
