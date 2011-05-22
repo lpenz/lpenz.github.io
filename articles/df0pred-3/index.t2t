@@ -162,3 +162,14 @@ something similar to a heat map:
 
  [$cwd$/mcsquantheat.png] 
 
+
+
+= Visualizing past, present and future =
+
+We can also plot our data in the same graph as our simulations, by extending the
+axis of the //barplot// and using the //points// function:
+
+%!include:``mcspf1plot.R``
+
+ [$cwd$/mcspf1.png] 
+
