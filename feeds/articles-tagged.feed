@@ -3,7 +3,7 @@
 <%def name='title()'>Avulsos by Penz - Articles tagged as ${tag} </%def>
 <%def name='description()'>Articles tagged as ${tag} in Avulsos by Penz page.</%def>
 <%def name='pubdate()'><% x = max([i['date'] for i in sub['articles']['sub'].values() if tag in i['tags']]) %>${caller.show(x)}</%def>
-<%def name='link()'>http://lpenz.github.com/feeds/articles.xml</%def>
+<%def name='link()'>http://lpenz.org/feeds/articles.xml</%def>
 <%def name='items()'>
 	<%
 		j = []
