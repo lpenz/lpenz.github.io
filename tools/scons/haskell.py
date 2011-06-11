@@ -71,7 +71,7 @@ def generateAuto(env):
     env['HASKELLINCPREFIX']  = '-i'
     env['HASKELLINCSUFFIX']  = ''
     env['HASKELLINCFLAGS'] = '$( ${_concat(HASKELLINCPREFIX, HASKELLPATH, HASKELLINCSUFFIX, __env__, RDirs, TARGET, SOURCE)} $)'
-    env['HASKELLFLAGS'] = SCons.Util.CLVar('--make -cpp -fglasgow-exts -Wall -Werror ')
+    env['HASKELLFLAGS'] = SCons.Util.CLVar('--make -cpp -Wall -Werror ')
     env['HASKELLCOM']   = '$HASKELLBIN $HASKELLFLAGS $HASKELLINCFLAGS $SOURCE'
 
 def generateExecutable(env):
