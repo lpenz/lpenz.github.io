@@ -223,8 +223,11 @@ only see when you will arrive at your destination, but also the region where you
 will probably be at any day.
 
 There are plenty of other uses for this kind of prediction. Collect the data,
-look at it and think if it would be useful to predict future values and ranges.
-Then use R and go for it.
+look at it and think if it would be useful to predict future ranges, and if your
+data allows it. If it does, go for it. Predictions based on the evidence can be
+even used to support a decision or a point of view, just keep your eyes open;
+you can only use the past if you honestly don't think anything different is
+going to happen.
 
 
 
