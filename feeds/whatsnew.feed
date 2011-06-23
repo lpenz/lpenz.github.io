@@ -5,7 +5,7 @@
 <%def name='pubdate()'><% x = max([i['date'] for i in whatsnew]) %>${caller.show(x)}</%def>
 <%def name='link()'>http://lpenz.org/feeds/whatsnew.xml</%def>
 <%def name='items()'>
-	% for i in [ { 'title': 'News for '+str(i['date']), 'date': i['date'], 'description': txt2tags(i['news']).replace('$home$', home), 'link': 'http://lpenz.org/index.html#whatsnew'+str(i['date']) } for i in whatsnew ]:
+	% for i in [ { 'title': 'News for '+str(i['date']), 'subtitle':'', 'date': i['date'], 'description': txt2tags(i['news']).replace('$home$', home), 'link': 'http://lpenz.org/index.html#whatsnew'+str(i['date']) } for i in whatsnew ]:
 		${caller.show(i)}
 	% endfor
 </%def>

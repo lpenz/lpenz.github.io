@@ -4,15 +4,15 @@
         <title>${self.title()}</title>
         <link>http://lpenz.org</link>
         <description>${self.description()}</description>
-        <managingEditor>llpenz@gmail.com (Leandro Lisboa Penz)</managingEditor>
-        <webMaster>llpenz@gmail.com (Leandro Lisboa Penz)</webMaster>
+        <managingEditor>lpenz@lpenz.org (Leandro Lisboa Penz)</managingEditor>
+        <webMaster>lpenz@lpenz.org (Leandro Lisboa Penz)</webMaster>
         <docs>http://www.rssboard.org/rss-specification</docs>
-		<%self:pubdate>
-			<%def name="show(i)">
+        <%self:pubdate>
+            <%def name="show(i)">
         <pubDate>${rfctime(i)} +0000</pubDate>
         <lastBuildDate>${rfctime(i)} +0000</lastBuildDate>
-			</%def>
-		</%self:pubdate>
+            </%def>
+        </%self:pubdate>
         <language>en</language>
         <image>
             <title>${self.title()}</title>
@@ -23,7 +23,7 @@
         <%self:items>
             <%def name="show(i)">
                 <item>
-                    <title>${i['title']}</title>
+                    <title>${i['title']}${i['subtitle']}</title>
                     <link>${i['link']}</link>
                     <guid>${i['link']}</guid>
                     <pubDate>${rfctime(i['date'])} +0000</pubDate>

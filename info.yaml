@@ -4,7 +4,7 @@ whatsnew:
     - date: 2010-04-11
       news: 'New [Debianization with git-buildpackage $home$/articles/debgit/index.html] article.'
     - date: 2010-08-15
-      news: 'New [Hard drive occupation prediction with R $home$/articles/df0pred-1/index.html] article.'
+      news: 'New [Hard drive occupation prediction with R $home$/articles/df0pred-1/index.html] (The linear regression) article.'
     - date: 2010-10-23
       news: 'Main page now has a //whatsnew// section!'
     - date: 2010-10-24
@@ -12,9 +12,9 @@ whatsnew:
     - date: 2010-10-25
       news: 'Articles feed up and running.'
     - date: 2011-01-22
-      news: 'New [Hard drive occupation prediction with R - Part 2 $home$/articles/df0pred-2/index.html] article.'
+      news: 'New [Hard drive occupation prediction with R - Part 2 $home$/articles/df0pred-2/index.html] (Getting the probability distribution) article.'
     - date: 2011-02-02
       news: 'New [Haskell eDSL Tutorial - Shared expenses $home$/articles/hedsl-sharedexpenses/index.html] article.'
-    - date: 2011-06-11
-      news: 'New [Hard drive occupation prediction with R - Part 3 $home$/articles/df0pred-3/index.html] article.'
+    - date: 2011-06-23
+      news: 'New [Hard drive occupation prediction with R - Part 3 $home$/articles/df0pred-3/index.html] (Predicting future ranges) article.'
 
