@@ -25,6 +25,7 @@ for i in glob.glob('../articles/*'):
 
 for t in tags:
     env.MAKO('articles-%s.xml' % t, 'articles-tagged.feed', MAKOFLAGS='-d tag=%s' % t)
+    env.Depends('articles-%s.xml' % t, '../templates/feed.xml')
     for i in tags[t]:
         env.Depends('articles-%s.xml' % t, os.path.join(i, 'index.html'))
         env.Depends('articles-%s.xml' % t, os.path.join(i, 'info.yaml'))
