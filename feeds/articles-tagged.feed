@@ -11,7 +11,12 @@
 			if tag in v['tags']:
 				f = txt2tagsfile('articles/'+i+'/index.t2t')
 				cwd = home+'/articles/'+i
-				j.append({ 'title': v['title'], 'date': v['date'], 'description': f.replace('$cwd$', cwd), 'link': cwd })
+				n = { 'title': v['title'], 'date': v['date'], 'description': f.replace('$cwd$', cwd), 'link': cwd }
+				if v.has_key('subtitle'):
+					n['subtitle'] = ' - ' + v['subtitle']
+				else:
+					n['subtitle'] = ''
+				j.append(n)
 	%>
 	% for i in j:
 		${caller.show(i)}
