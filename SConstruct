@@ -5,10 +5,11 @@ import re
 
 env = Environment(ENV = os.environ
     , TOP = os.path.abspath(os.path.curdir)
-    , toolpath = ['tools/scons']
-    , tools = ['haskell', 't2tbhtml', 'mako', 'R'])
+    , toolpath = ['tools/scons', '/usr/lib/scons/SCons/Tool'])
 env.Export('env')
 
+for t in ['haskell', 't2tbhtml', 'mako', 'R', 'gcc']:
+    env.Tool(t)
 
 # infotree:
 def infotreeProcDir(d, l):
