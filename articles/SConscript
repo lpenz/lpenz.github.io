@@ -10,13 +10,13 @@ articles = []
 for i in glob.glob('*'):
     if not os.path.isdir(i):
         continue
+    if not os.path.exists(os.path.join(i, 'info.yaml')):
+        continue
     env.SConscript('%s/SConscript' % i)
-    articles.append('%s/index.t2t' % i)
-    env.Depends('%s/index.html' % i, 'index.t2t')
+    articles.append('%s' % i)
 
 # Index:
 indexbuild = env.File('indexbuild')
-articles.sort()
 env.Command('index.t2t', articles, indexbuild.abspath + ' $TARGET $SOURCES')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')

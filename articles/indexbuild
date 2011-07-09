@@ -1,32 +1,54 @@
-#!/bin/sh
+#!/usr/bin/python
 
-set -e
+import sys
+import os
+import yaml
+from optparse import OptionParser
 
-DST=${1?}
-shift
+def main():
+    parser = OptionParser("usage: %prog <output.t2t> <articles directories...>")
 
-TMP=$(tempfile)
+    opts, args = parser.parse_args()
+    if len(args) < 2:
+        parser.error("wrong number of arguments")
+    outputfilename = args[0]
 
-cat <<END >>$TMP
-Articles
+    articlesdir = sys.argv[2:]
+    articlesinfo = []
+
+    for a in articlesdir:
+        info = '%s/info.yaml' % a
+        y = yaml.load(open(info).read())
+        articlesinfo.append(((y['date'], y['title'], a), y['tags']))
+    articlesinfo.sort()
+
+    fd = open('%s.tmp' % outputfilename, 'w')
+    fd.write('''Articles
 
 
 
 
 The following articles are present in this page:
-END
+''')
 
-for f in "$@"; do
-	TITLE=$(head -1 $f)
-	B=${f##*articles/}
-	echo "- [$TITLE ${B%.t2t}.html]" >> $TMP
-done
+    for a in articlesinfo:
+        fd.write('- %s [%s %s/index.html]' % a[0])
+        first = True
+        for t in a[1]:
+            if not first:
+                fd.write(', ')
+            else:
+                fd.write(' ')
+            first = False
+            fd.write('//%s//' % t)
+        fd.write('\n\n')
 
-cat <<END >>$TMP
+    fd.write('\n\n')
+
+    fd.close()
+    os.rename('%s.tmp' % outputfilename, outputfilename)
 
 
-
-END
-
-mv $TMP $DST
+if __name__ == "__main__":
+    main()
 
