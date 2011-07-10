@@ -1,0 +1,8 @@
+
+import os
+
+Import(['env'])
+
+env.Program('hasbug.c', CPPFLAGS='-g')
+env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+

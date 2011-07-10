@@ -1,0 +1,21 @@
+Probabilistic bug hunting
+
+2011-09-07
+
+
+Have you ever run into a bug that, no matter how precise you are trying to
+reproduce it, it only appears sometimes? And then, you think you've got it and
+finally solved it and tested for it a couple of times without a single
+manifestation. How do you know that you tested enough? How do you know that you
+were not "lucky" in your tests?
+
+In this article we will see how those questions can be answered and the math
+behind it.
+
+
+
+= The bug =
+
+%!include: ``hasbug.c``
+
+

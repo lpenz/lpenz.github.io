@@ -32,6 +32,8 @@
 /articles/index.t2t
 /debian/index.bhtml
 /debian/index.t2t
+/articles/bugprobhunt/hasbug
+/articles/bugprobhunt/index.bhtml
 
 # Ignore only on devel:
 index.html
