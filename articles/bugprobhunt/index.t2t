@@ -14,8 +14,78 @@ behind it.
 
 
 
-= The bug =
+= The Bug =
+
+The following program is supposed to generate a random 16-bit integer and print
+it on stdout.
 
 %!include: ``hasbug.c``
+
+On my architecture (Linux on IA-32) it has a bug that makes it print "error"
+instead of the number sometimes. We will analyse the bug throughout the article.
+
+
+
+= The Model =
+
+Every time we run the program, the bug can either show up or not. We will model
+a single program run as a
+[bernoulli trial http://en.wikipedia.org/wiki/Bernoulli_trial], with success
+defined as "seeing the bug", as that is the event we are testing for. As a
+bernoulli trial, the model for the results of running the program //n// times
+follows a
+[binomial distribution http://en.wikipedia.org/wiki/Binomial_distribution]
+//B(n,p)//, where //p// is the probability of seeing the bug in a single run.
+
+By using this model we are implicitly assuming that all our tests are performed
+under the same conditions. In order words: if the bug happens more ofter in one
+environment, we either test always in that environment or never; if the bug
+gets more and more frequent the longer the PC is running, we reset the PC after
+each trial. If we ignore these tendencies and make mixed tests, our model won't
+work, and can lead us to wrong conclusions.
+
+
+
+= Estimating p =
+
+Before we try fixing anything, we have to know more about the bug, starting by
+the probability //p// of reproducing it. We can estimate this probability by
+dividing the number of times we see the bug //k// by the number of times we
+tested for it //n//. Let's try that with our sample bug:
+
+```
+$ ./hasbug 
+error
+$ ./hasbug
+25877
+```
+
+So: //k//=1, //n//=2 => //p// ~ 0.5, right? And if we tested 1000 times and got
+the bug exactly 500 times, what would be the difference?
+
+Let's try a different angle: if //p// was 0.2, what are the odds of seeing one
+error in two tests? From wikipedia, we can see that this can be calculated by
+using the probability mass function of the binomial distribution:
+
+ [http://upload.wikimedia.org/math/0/c/1/0c1ae7a35c20afa9f189dffa5d3c0c23.png] 
+
+Where:
+
+ [http://upload.wikimedia.org/math/c/2/d/c2d02458d8c35f11e465c639ba62f081.png] 
+
+(we can use the function //dbinom// in R to calculate that)
+
+By using those formulas, we can see that the probability of seeing one error in
+two tests give that //p// is 0.2 is 0.32. That means that if we perform many
+2-runs tests, we will see the bug once in 32% of the tests.
+
+On the other hand, the probability of seeing 500 errors in 1000 runs for a //p//
+of 0.2 is 3e-99. You would have to test more than once for
+[each atom in the known universe http://en.wikipedia.org/wiki/Observable_universe#Matter_content]
+on average to see that happen.
+
+So, if we test twice, //p// might be 0.5, but there is a good chance that it
+might be 0.2 also. 
+
 
 

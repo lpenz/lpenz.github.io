@@ -25,9 +25,9 @@ int main(void)
 	short r;
 	int ret = get_random_short(&r);
 	if (ret < 0)
-		printf("erro\n");
+		printf("error\n");
 	else
-		printf("ok\n");
+		printf("%d\n", r);
 	return 0;
 }
 
