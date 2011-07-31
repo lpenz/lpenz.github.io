@@ -2,7 +2,7 @@ Probabilistic bug hunting
 Basic statistics for programmers
 2011-09-07
 
-%!postproc: '!!hasbug_results!!' <iframe src="hasbug_results.bhtml" width="100%" height="500"></iframe>
+%!postproc: '!!hasbug_results!!' <iframe src="hasbug_results.html" width="100%" height="500"></iframe>
 
 
 Have you ever run into a bug that, no matter how precise you are trying to
