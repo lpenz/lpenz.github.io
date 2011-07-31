@@ -18,7 +18,7 @@
 /articles/df0pred-2/deltasummary.txt
 /articles/df0pred-2/df0above5.txt
 /articles/df0pred-2/df0first.txt
-/articles/df0pred-3/main.RData
+#/articles/df0pred-3/main.RData # Commited to speed build.
 /articles/hedsl-sharedexpenses/results.txt
 /articles/hedsl-sharedexpenses/sharedexpenses
 /articles/hedsl-sharedexpenses/sharedexpenses.lhs
