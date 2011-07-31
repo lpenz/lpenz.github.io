@@ -3,7 +3,7 @@ import os
 
 Import(['env'])
 
-if True:
+if False:
     env.R('main.RData', 'main.R')
 env.Depends('main.RData', 'duinfospike.dat')
 
