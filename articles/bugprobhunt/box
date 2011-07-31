@@ -55,14 +55,14 @@ def outputResults(opts, balls, results):
         os.rename(opts.outresults+'.tmp', opts.outresults)
 
 
-def outputProbabilities(opts, balls, probs):
+def outputProbabilities(opts, balls, results, probs):
     if opts.outprobabilities == '-':
         out = sys.stdout
     elif opts.outprobabilities:
         out = open(opts.outprobabilities+'.tmp', 'w')
     out.write('"k","rows","%"\n')
     for k,rows in probs.items():
-        out.write('%d,%d,"%0.2f%%"\n' % (k, rows, 100.0*rows/256))
+        out.write('%d,%d,"%0.2f%%"\n' % (k, rows, 100.0*rows/len(results)))
     if opts.outprobabilities != '-':
         out.close()
         os.rename(opts.outprobabilities+'.tmp', opts.outprobabilities)
@@ -82,7 +82,7 @@ def main():
     if opts.outresults:
         outputResults(opts, balls, results)
     if opts.outprobabilities:
-        outputProbabilities(opts, balls, probs)
+        outputProbabilities(opts, balls, results, probs)
 
 
 if __name__ == "__main__":
