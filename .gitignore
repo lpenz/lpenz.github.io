@@ -4,33 +4,25 @@
 *.o
 *.pyc
 *.Rinc
-/index.bhtml
+*.bhtml
 /index.t2t
 /infotree.yaml
 /articles0.xml
 /whatsnew0.xml
-/about/index.bhtml
-/articles/debgit/index.bhtml
-/articles/df0pred-1/index.bhtml
 /articles/df0pred-1/lmrandsummary.txt
 /articles/df0pred-1/lmsummary.txt
 /articles/df0pred-1/lm.txt
 /articles/df0pred-1/predict.txt
 /articles/df0pred-1/predictdate.txt
-/articles/df0pred-2/index.bhtml
 #/articles/df0pred-2/main.RData # Commited to speed build.
 /articles/df0pred-2/deltasummary.txt
 /articles/df0pred-2/df0above5.txt
 /articles/df0pred-2/df0first.txt
-/articles/df0pred-3/index.bhtml
 /articles/df0pred-3/main.RData
-/articles/hedsl-sharedexpenses/index.bhtml
 /articles/hedsl-sharedexpenses/results.txt
 /articles/hedsl-sharedexpenses/sharedexpenses
 /articles/hedsl-sharedexpenses/sharedexpenses.lhs
-/articles/index.bhtml
 /articles/index.t2t
-/debian/index.bhtml
 /debian/index.t2t
 
 # Ignore only on devel:
