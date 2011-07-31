@@ -18,6 +18,7 @@ def makoTargetScanner(node, env, path):
             rv.append(os.path.join(env['TOP'], 'templates', y['template'] + '.html'))
         else:
             rv.append(os.path.join(env['TOP'], 'templates', 'base.html'))
+        rv.append(os.path.join(env['TOP'], 'templates', 'bare.html'))
     return rv
 
 
