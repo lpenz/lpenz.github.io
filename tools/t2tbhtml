@@ -16,10 +16,13 @@ def t2thtml(infilename):
         retcode = t2t.wait()
         if retcode < 0:
             print >>sys.stderr, "Child was terminated by signal", -retcode
+            sys.exit(1)
         elif retcode != 0:
             print >>sys.stderr, "Child returned", retcode
+            sys.exit(1)
     except OSError, e:
         print >>sys.stderr, "Execution failed:", e
+        sys.exit(1)
     t2toutfd.seek(0)
     return t2toutfd
 
