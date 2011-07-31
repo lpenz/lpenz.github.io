@@ -25,7 +25,6 @@
 /articles/index.t2t
 /debian/index.t2t
 /articles/bugprobhunt/hasbug
-/articles/bugprobhunt/index.bhtml
 
 # Ignore only on devel:
 index.html
@@ -35,6 +34,6 @@ index.html
 /articles/df0pred-3/*.png
 /feeds/*.xml
 /articles/bugprobhunt/*.csv
-/articles/bugprobhunt/hasbug_results.html
+/articles/bugprobhunt/r1w3_n4_results.html
 # End
 
