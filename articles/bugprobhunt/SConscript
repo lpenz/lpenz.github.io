@@ -4,5 +4,11 @@ import os
 Import(['env'])
 
 env.Program('hasbug.c', CPPFLAGS='-g')
+env.Command('hasbug_results.csv', ['box'], '$SOURCE -r 1 -w 3 -n 4 --output-results $TARGET', chdir=False)
+env.Command('hasbug_probabilities.csv', ['box'], '$SOURCE -r 1 -w 3 -n 4 --output-probabilities $TARGET', chdir=False)
+
+env.MAKO('hasbug_results.t2t', MAKOFLAGS = '-t base')
+env.Depends('hasbug_results.bhtml', 'hasbug_results.csv')
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+env.Depends('index.bhtml', 'hasbug_probabilities.csv')
 

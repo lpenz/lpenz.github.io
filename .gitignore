@@ -42,5 +42,7 @@ index.html
 /articles/df0pred-2/*.png
 /articles/df0pred-3/*.png
 /feeds/*.xml
+/articles/bugprobhunt/*.csv
+/articles/bugprobhunt/hasbug_results.html
 # End
 

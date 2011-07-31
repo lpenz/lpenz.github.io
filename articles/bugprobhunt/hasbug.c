@@ -17,7 +17,7 @@ int get_random_short(short *r)
 	*r = c;
 	close(f);
 
-	return ret;
+	return ret % 4;
 }
 
 int main(void)

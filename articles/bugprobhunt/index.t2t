@@ -1,6 +1,8 @@
 Probabilistic bug hunting
-An introduction to statistics
+Basic statistics for programmers
 2011-09-07
+
+%!postproc: '!!hasbug_results!!' <iframe src="hasbug_results.bhtml" width="100%" height="500"></iframe>
 
 
 Have you ever run into a bug that, no matter how precise you are trying to
@@ -22,7 +24,7 @@ it on stdout.
 %!include: ``hasbug.c``
 
 On my architecture (Linux on IA-32) it has a bug that makes it print "error"
-instead of the number sometimes. We will analyse the bug throughout the article.
+instead of the number sometimes.
 
 
 
@@ -32,89 +34,107 @@ Every time we run the program, the bug can either show up or not. We will model
 a single program run as a
 [bernoulli trial http://en.wikipedia.org/wiki/Bernoulli_trial], with success
 defined as "seeing the bug", as that is the event we are testing for. As a
-bernoulli trial, the model for the results of running the program //n// times
+bernoulli trial, the model for the results of running the program \(n\) times
 follows a
 [binomial distribution http://en.wikipedia.org/wiki/Binomial_distribution]
-//B(n,p)//, where //p// is the probability of seeing the bug in a single run.
+\(B(n,p)\), where \(p\) is the probability of seeing the bug in a single run.
 
 By using this model we are implicitly assuming that all our tests are performed
 under the same conditions. In order words: if the bug happens more ofter in one
 environment, we either test always in that environment or never; if the bug
 gets more and more frequent the longer the PC is running, we reset the PC after
-each trial. The idea is to test in such a way that the parameter //p// is
-constant. If we ignore this requirement and make mixed tests, our model won't
-work, and can lead us to wrong conclusions.
+each trial. The idea is to test in such a way that the parameter \(p\) is
+constant. If we ignore this requirement and mix tests, misusing our model, we
+can be lead to false conclusions.
 
 The model is analogous to a box with red and white balls. Each trial
 is equivalent to taking a ball off the box and looking at its color: if it is
-red, we have seen the bug; if it is white, we have not. //p// is the number of
+red, we have seen the bug; if it is white, we have not. \(p\) is the number of
 red balls in the box divided by the number of white balls. The total number of
 balls in the box is not relevant to our analogy, only the red/white ratio. After
-seeing the ball, we put it back in the box, as //p// must remain constant.
+seeing the ball, we put it back in the box, as \(p\) must be remain constant in
+all trials.
 
 
 
 
-= Estimating p =
+= Estimating \(p\) =
 
 Before we try fixing anything, we have to know more about the bug, starting by
-the probability //p// of reproducing it. We can estimate this probability by
-dividing the number of times we see the bug //k// by the number of times we
-tested for it //n//. Let's try that with our sample bug:
+the probability \(p\) of reproducing it. We can estimate this probability by
+dividing the number of times we see the bug \(k\) by the number of times we
+tested for it \(n\). Let's try that with our sample bug:
 
 ```
-$ ./hasbug 
+$ ./hasbug
+831
+$ ./hasbug
+-28708
+$ ./hasbug
 error
 $ ./hasbug
-25877
+31774
 ```
 
-So: //k//=1, //n//=2 => //p// ~ 0.5, right? If we tested 1000 times and got
-the bug exactly 500 times, what would be the difference?
+So: \(k=1, n=4 \Rightarrow p \sim 0.25\), right? It would be better if we tested
+more, but how much more, and exactly what would be better?
 
 
 
-== p precision ==
+== \(p\) precision ==
 
-Let's try that with our box analogy: imagine that there are 3 balls in the box,
-one red and two white. That means //p// = 1/3. What are the possible results
-when we test twice?
+Let's go back to our box analogy: imagine that there are 4 balls in the box, one
+red and three white. That means \(p = 1/4\). What are the possible results when
+we test four times?
 
-|| First ball | Second ball | p estimate |
-| red         | white       | 0.5        |
-| white       | red         | 0.5        |
-| white       | white       | 0          |
-| red         | red         | 1          |
+|| Red balls | White balls | \(p\) estimate |
+| 0          | 4           | 0              |
+| 1          | 3           | 0.25           |
+| 2          | 2           | 0.5            |
+| 3          | 1           | 0.75           |
+| 4          | 0           | 1              |
 
-The less we test, the smaller is our precisions. Roughly, //p// precision will
-be at most 1/n. That means that we have a precision of 0.001 when we test 1000
+The less we test, the smaller is our precisions. Roughly, \(p\) precision will
+be at most \(1/n\). That means that we have a precision of 0.001 when we test 1000
 times.
 
 
 
-== p probability ==
+== \(p\) probability ==
 
-From another angle: if //p// is 1/3, what are the odds of seeing one
-error in two tests? Let's name the 3 balls as A-red, B-white and C-white:
+Let's now approach the problem from another angle: if \(p = 1/4\), what are the
+odds of seeing one error in four tests? Let's name the 4 balls as A-red,
+B-white, C-white and D-white:
 
-|| First ball | Second ball | p estimate |
-| A-red       | A-red       | 1          |
-| A-red       | B-white     | 0.5        |
-| A-red       | C-white     | 0.5        |
-| B-white     | A-red       | 0.5        |
-| B-white     | B-white     | 0          |
-| B-white     | C-white     | 0          |
-| C-white     | A-red       | 0.5        |
-| C-white     | B-white     | 0          |
-| C-white     | C-white     | 0          |
+!!hasbug_results!!
 
-We have 4/9 (~44%) probability of estimating //p// as 0.5 if it is 1/3 and we
-test only twice. That's the same probability of estimating //p// as 0 in the
+The table above has all the possible results for getting 4 balls out of the
+box. That's \(4^4=256\) rows, generated by [this $cwd$/box] python script.
+The same script counts the number of red balls in each row, and outputs the
+following table:
+
+%!csv: articles/bugprobhunt/hasbug_probabilities.csv
+
+
+The same scripts tells me that there are 108 rows with a single red ball. That
+means that the probability of seeing one red ball in 4 trials for \(p = 1/4\) is
+\(108/256 = 42.1875%\).
+
+
+but as the programmers we are, we will never type
+that by hand; the program I wrote to generate. Of course I did not type that, the python program
+used to generate it is [here buildtable].
+
+
+
+
+We have 4/9 (~44%) probability of estimating \(p\) as 0.5 if it is 1/3 and we
+test only twice. That's the same probability of estimating \(p\) as 0 in the
 same conditions.
 
 
 
-== Increasing //n// ==
+== Increasing \(n\) ==
 
 
 
