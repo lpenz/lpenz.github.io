@@ -21,7 +21,7 @@ def t2tbhtmlSourceScanner(node, env, path):
             if f[:2] == f[-2:] == mark*2:
                 f = f[2:-2]
         else:
-            includes.extend(t2tbhtmlScanFile(env.File(f)))
+            includes.extend(t2tbhtmlSourceScanner(env.File(f)))
         includes.append(f)
     return includes
 
