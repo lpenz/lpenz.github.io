@@ -103,8 +103,8 @@ times.
 == \(p\) probability ==
 
 Let's now approach the problem from another angle: if \(p = 1/4\), what are the
-odds of seeing one error in four tests? Let's name the 4 balls as A-red,
-B-white, C-white and D-white:
+odds of seeing one error in four tests? Let's name the 4 balls as 0-red,
+1-white, 2-white and 3-white:
 
 !!hasbug_results!!
 
