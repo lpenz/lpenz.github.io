@@ -47,11 +47,11 @@ each trial. The idea is to test in such a way that the parameter \(p\) is
 constant. If we ignore this requirement and mix tests, misusing our model, we
 can be lead to false conclusions.
 
-The model is analogous to a box with red and white balls. Each trial
+The model is analogous to a box with red and green balls. Each trial
 is equivalent to taking a ball off the box and looking at its color: if it is
-red, we have seen the bug; if it is white, we have not. \(p\) is the number of
-red balls in the box divided by the number of white balls. The total number of
-balls in the box is not relevant to our analogy, only the red/white ratio. After
+red, we have seen the bug; if it is green, we have not. \(p\) is the number of
+red balls in the box divided by the number of green balls. The total number of
+balls in the box is not relevant to our analogy, only the red/green ratio. After
 seeing the ball, we put it back in the box, as \(p\) must be remain constant in
 all trials.
 
@@ -84,10 +84,10 @@ more, but how much more, and exactly what would be better?
 == \(p\) precision ==
 
 Let's go back to our box analogy: imagine that there are 4 balls in the box, one
-red and three white. That means \(p = 1/4\). What are the possible results when
+red and three green. That means \(p = 1/4\). What are the possible results when
 we test four times?
 
-|| Red balls | White balls | \(p\) estimate |
+|| Red balls | Green balls | \(p\) estimate |
 | 0          | 4           | 0              |
 | 1          | 3           | 0.25           |
 | 2          | 2           | 0.5            |
@@ -104,7 +104,7 @@ times.
 
 Let's now approach the problem from another angle: if \(p = 1/4\), what are the
 odds of seeing one error in four tests? Let's name the 4 balls as 0-red,
-1-white, 2-white and 3-white:
+1-green, 2-green and 3-green:
 
 !!r1w3_n4_results!!
 
@@ -115,10 +115,10 @@ following table:
 
 %!csv: articles/bugprobhunt/r1w3_n4_probabilities.csv
 
-That means that, for \(p=1/4\), we see 1 red ball and 3 white balls only 42% of
+That means that, for \(p=1/4\), we see 1 red ball and 3 green balls only 42% of
 the time when getting out 4 balls.
 
-What if \(p = 1/3\) - one red ball and two white balls? We would get the
+What if \(p = 1/3\) - one red ball and two green balls? We would get the
 following table:
 
 %!csv: articles/bugprobhunt/r1w2_n4_probabilities.csv

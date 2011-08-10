@@ -11,8 +11,8 @@ def buildresults(opts):
     for _ in range(0, opts.red):
         balls.append((i, 'red'))
         i = i + 1
-    for _ in range(0, opts.white):
-        balls.append((i, 'white'))
+    for _ in range(0, opts.green):
+        balls.append((i, 'green'))
         i = i + 1
     results = [ [b] for b in balls]
     for t in range(1, opts.n):
@@ -71,7 +71,7 @@ def outputProbabilities(opts, balls, results, probs):
 def main():
     parser = OptionParser("usage: %prog")
     parser.add_option("-r", "--red", dest="red", type='int', help="Number of red balls")
-    parser.add_option("-w", "--white", dest="white", type='int', help="Number of white balls")
+    parser.add_option("-w", "--green", dest="green", type='int', help="Number of green balls")
     parser.add_option("-n", "", dest="n", type='int', help="Number trials")
     parser.add_option("", "--output-results", dest="outresults", help="Output file for results, or - for stdout")
     parser.add_option("", "--output-probabilities", dest="outprobabilities", help="Output file for probabilities, or - for stdout")
