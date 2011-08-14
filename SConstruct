@@ -29,7 +29,7 @@ env.Depends('infotree.yaml', 'tools/infotreebuild')
 # Main page:
 env.Command('index.t2t', 'index.bt2t', 'tools/mako $SOURCE $TARGET')
 env.Depends('index.t2t', 'infotree.yaml')
-env.MAKO('index.t2t', MAKOFLAGS='-t base')
+env.MAKO('index.t2t', MAKOFLAGS='-t page')
 
 
 # About me:

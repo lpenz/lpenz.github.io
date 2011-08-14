@@ -1,4 +1,4 @@
 
 Import(['env'])
-env.MAKO('index.t2t', MAKOFLAGS='-t base')
+env.MAKO('index.t2t', MAKOFLAGS='-t page')
 

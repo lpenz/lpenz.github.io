@@ -14,7 +14,7 @@ for rw in [(1, 3), (1, 2), (1, 1)]:
     env.Command(csv, ['box'], '$SOURCE -r %d -w %d -n 4 --output-probabilities $TARGET' % rw, chdir=False)
     env.Depends('index.bhtml', csv)
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+env.MAKO('index.t2t', MAKOFLAGS = '-t page')
 
 env.Command('r1w3_p.png', 'pdistplot.R', '$SOURCE 1 3 $TARGET')
 env.Command('r2w6_p.png', 'pdistplot.R', '$SOURCE 2 6 $TARGET')

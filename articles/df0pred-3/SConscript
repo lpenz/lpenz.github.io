@@ -13,5 +13,5 @@ for i in ['usd', 'mcs', 'mcs3', 'mcsdaydens', 'mcsbox', 'mcsquant', 'mcsquantbar
 for i in ['mcsquantheat', 'mcspf1', 'mcscv1', 'mcscv2']:
     env.Depends(i+'.png', 'quantheatplotfunc.R')
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+env.MAKO('index.t2t', MAKOFLAGS = '-t page')
 
