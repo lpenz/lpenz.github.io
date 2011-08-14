@@ -143,6 +143,14 @@ The R script used to generate this plot is [here $cwd$/pdistplot.R].
 
 == Increasing \(n\) ==
 
+What happens when we test more? We obviously increase our precision, as it is at
+most \(1/n\), as we said before - there is no way to guess a \(p=1/3\) when we
+only test twice. But, there is also another effect: the
+distribution for \(p\) gets taller and narrower around the observed ratio
+\(k/n\):
+
+ [r2w6_p.png] 
+
 
 
 From wikipedia, we can see that this can be calculated by

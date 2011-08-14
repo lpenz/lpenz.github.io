@@ -16,6 +16,6 @@ x <- seq(0, 1, 0.001)
 y <- dbeta(x, k+1, n-k+1) / (100 * beta(k+1, n-k+1))
 
 png(output, width=800)
-qplot(x, y, geom='line', xlab='p', ylab='P(p)')
+qplot(x, y, geom='line', xlab='p', ylab='P(p)', main='p distribution for 1 red and 3 green balls')
 dev.off()
 
