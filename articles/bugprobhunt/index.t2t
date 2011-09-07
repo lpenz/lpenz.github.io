@@ -8,8 +8,8 @@ Basic statistics for programmers
 Have you ever run into a bug that, no matter how precise you are trying to
 reproduce it, it only happens sometimes? And then, you think you've got it and
 finally solved it, and tested a couple of times without any manifestation. How
-do you know that you tested enough? Are you sure you were not "lucky" in your
-tests?
+do you know that you have tested enough? Are you sure you were not "lucky" in
+your tests?
 
 In this article we will see how those questions can be answered and the math
 behind it.
@@ -33,27 +33,27 @@ instead of the number sometimes.
 Every time we run the program, the bug can either show up or not. We will model
 a single program run as a
 [bernoulli trial http://en.wikipedia.org/wiki/Bernoulli_trial], with success
-defined as "seeing the bug", as that is the event we are testing for. As a
-bernoulli trial, the model for the results of running the program \(n\) times
+defined as "seeing the bug", as that is the event we are interested in. As a
+bernoulli trial, the number of errors \(k\) of running the program \(n\) times
 follows a
 [binomial distribution http://en.wikipedia.org/wiki/Binomial_distribution]
-\(B(n,p)\), where \(p\) is the probability of seeing the bug in a single run.
+\(k \sim B(n,p)\), where \(p\) is the probability of seeing the bug in a single run.
 
 By using this model we are implicitly assuming that all our tests are performed
 under the same conditions. In order words: if the bug happens more ofter in one
 environment, we either test always in that environment or never; if the bug
 gets more and more frequent the longer the PC is running, we reset the PC after
 each trial. The idea is to test in such a way that the parameter \(p\) is
-constant. If we ignore this requirement and mix tests, misusing our model, we
-can be lead to false conclusions.
+constant. Figuring out a single value for a parameter that keeps changing makes
+no sense, and can lead us to wrong conclusions.
 
-The model is analogous to a box with red and green balls. Each trial
-is equivalent to taking a ball off the box and looking at its color: if it is
+This model is the same we would use if we were taking out balls from a box with
+green and red balls. Instead of running a program, we take a ball off the box
+and look at its color: if it is
 red, we have seen the bug; if it is green, we have not. \(p\) is the number of
 red balls in the box divided by the number of green balls. The total number of
 balls in the box is not relevant to our analogy, only the red/green ratio. After
-seeing the ball, we put it back in the box, as \(p\) must be remain constant in
-all trials.
+seeing the ball, we put it back in the box, to keep \(p\) constant.
 
  [boxballs.png] 
 
@@ -158,7 +158,7 @@ gets taller and narrower around the observed ratio \(k/n\):
 
  [pdens_many.png] 
 
-This means that we have a higher probability that \(p\) is within a fixed
+This means that we have a higher probability that \(p\) is within a given
 interval, **or** that we have a narrower interval for a given probability.
 The usually take the second approach: fix the probability, now called
 [confidence level http://en.wikipedia.org/wiki/Confidence_level] and narrow down
@@ -166,14 +166,14 @@ the [confidence interval http://en.wikipedia.org/wiki/Confidence_interval] -
 i.e. the interval estimated for \(p\) - as we test.
 
 The typical confidence level is 95%. This means that if we repeated our test a
-huge number of times, in at least 95% of the time we would measure \(p\) inside
+huge number of times, in at least 95% of the tests we would measure \(p\) inside
 the confidence interval. This implies that we are rejecting 5% of our results
 because they are considered unlikely.
 
-Why don't we take a confidence level of 100% and be certain? Well, you'll notice
-that the density function is only 0 at 0 and 1. That means that a 100%
-confidence interval is the always whole range \((0, 1)\), no matter how many
-times we test. That would lead us nowhere.
+Why don't we take a confidence level of 100% and be sure about the interval?
+Well, you'll notice that the density function is only 0 at 0 and 1. That means
+that a 100% confidence interval is the whole open range \((0, 1)\), no matter
+how many times we test. That would lead us nowhere.
 
 
 
