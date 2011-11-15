@@ -1,6 +1,10 @@
 title: Avulsos by Penz
 home: "http://lpenz.org"
 whatsnew:
+    - date: 2011-11-15
+      news: 'New [google-spreadsheet-csv http://github.com/lpenz/google-spreadsheet-csv] debian package.'
+    - date: 2011-02-16
+      news: 'New [atdtool http://github.com/lpenz/atdtool] debian package.'
     - date: 2010-04-11
       news: 'New [Debianization with git-buildpackage $home$/articles/debgit/index.html] article.'
     - date: 2010-08-15
