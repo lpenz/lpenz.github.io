@@ -1,6 +1,6 @@
  dpkg-buildpackage -rfakeroot -D -us -uc -i -I
 dpkg-buildpackage: source package google-spreadsheet-csv
-dpkg-buildpackage: source version 1.0-1
+dpkg-buildpackage: source version 1.1-1
 dpkg-buildpackage: source changed by Leandro Lisboa Penz <llpenz@gmail.com>
  dpkg-source -i -I --before-build google-spreadsheet-csv
 dpkg-buildpackage: host architecture i386
@@ -14,9 +14,9 @@ make[1]: Leaving directory `/home/lpenz/projs/google-spreadsheet-csv'
    dh_clean
  dpkg-source -i -I -b google-spreadsheet-csv
 dpkg-source: info: using source format `3.0 (quilt)'
-dpkg-source: info: building google-spreadsheet-csv using existing ./google-spreadsheet-csv_1.0.orig.tar.gz
-dpkg-source: info: building google-spreadsheet-csv in google-spreadsheet-csv_1.0-1.debian.tar.gz
-dpkg-source: info: building google-spreadsheet-csv in google-spreadsheet-csv_1.0-1.dsc
+dpkg-source: info: building google-spreadsheet-csv using existing ./google-spreadsheet-csv_1.1.orig.tar.gz
+dpkg-source: info: building google-spreadsheet-csv in google-spreadsheet-csv_1.1-1.debian.tar.gz
+dpkg-source: info: building google-spreadsheet-csv in google-spreadsheet-csv_1.1-1.dsc
  debian/rules build
 dh build 
    dh_testdir
@@ -81,17 +81,17 @@ dh_pysupport: This program is deprecated, you should use dh_python2 instead. Mig
    dh_gencontrol
    dh_md5sums
    dh_builddeb
-dpkg-deb: building package `google-spreadsheet-csv' in `../google-spreadsheet-csv_1.0-1_all.deb'.
- dpkg-genchanges  >../google-spreadsheet-csv_1.0-1_i386.changes
+dpkg-deb: building package `google-spreadsheet-csv' in `../google-spreadsheet-csv_1.1-1_all.deb'.
+ dpkg-genchanges  >../google-spreadsheet-csv_1.1-1_i386.changes
 dpkg-genchanges: including full source code in upload
  dpkg-source -i -I --after-build google-spreadsheet-csv
 dpkg-buildpackage: full upload (original source is included)
 Now running lintian...
-W: google-spreadsheet-csv: new-package-should-close-itp-bug
+W: google-spreadsheet-csv source: out-of-date-standards-version 3.9.2 (current is 3.9.3)
 Finished running lintian.
 Now signing changes and any dsc files...
- signfile google-spreadsheet-csv_1.0-1.dsc Leandro Lisboa Penz <llpenz@gmail.com>
+ signfile google-spreadsheet-csv_1.1-1.dsc Leandro Lisboa Penz <llpenz@gmail.com>
 
- signfile google-spreadsheet-csv_1.0-1_i386.changes Leandro Lisboa Penz <llpenz@gmail.com>
+ signfile google-spreadsheet-csv_1.1-1_i386.changes Leandro Lisboa Penz <llpenz@gmail.com>
 
 Successfully signed dsc and changes files
