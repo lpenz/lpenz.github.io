@@ -1,0 +1,42 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Fri, 12 Oct 2012 23:48:46 -0300
+Source: watchng
+Binary: watchng
+Architecture: source all
+Version: 1.0-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <lpenz@lpenz.org>
+Changed-By: Leandro Lisboa Penz <lpenz@lpenz.org>
+Description: 
+ watchng    - Runs a command periodically, showing output only when it changes.
+Changes: 
+ watchng (1.0-1) unstable; urgency=low
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Checksums-Sha1: 
+ d029d24f7064361b72c3a819398dbc8de24576aa 1162 watchng_1.0-1.dsc
+ 1ae4f18ab08166c0f1101605f318a41bcaf7ca50 8821 watchng_1.0.orig.tar.gz
+ 0eef28b83aab33f48fea4040270b196f04181242 1700 watchng_1.0-1.debian.tar.gz
+ 65b20682536e8a1ec2e4ea56d8ff9e87affb848c 3466 watchng_1.0-1_all.deb
+Checksums-Sha256: 
+ 6a267374d50dd69d4b8c557e16f03693a3202e2a758cfc46f2ad643441d931d5 1162 watchng_1.0-1.dsc
+ dcd8e7620013b8bf13b780222b000993a7b84294209142b390d59a96a0addfe3 8821 watchng_1.0.orig.tar.gz
+ f79472b0782a0aaad36b6a3ac727c4ed600e85bb8a10cb9111b61ff677af5f31 1700 watchng_1.0-1.debian.tar.gz
+ 2fdf28e93bd7a79cb2639654e686547f0ac9c61c371f4d1e086d07d04e3ac2d3 3466 watchng_1.0-1_all.deb
+Files: 
+ 9ee7cfc1f9c48e5fe3a88903eee5e047 1162 python extra watchng_1.0-1.dsc
+ bcdd501127864f174f502f10fa2c137b 8821 python extra watchng_1.0.orig.tar.gz
+ e9bd9baecf620fdb49a7c42b29c1a24c 1700 python extra watchng_1.0-1.debian.tar.gz
+ c55e02edae450dc86fb68c41b71e4833 3466 python extra watchng_1.0-1_all.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iF4EAREIAAYFAlCEVjkACgkQQKPFnwyVxRJdmAD/W4QDMqC/Dd4Wpw8FiztJJULE
+sh4D8aOst40ln0WPLtsBAI2PT/XDN1Fq5Zu5XT9wq9idMpHI5uuWrhdRUMGaYpjg
+=9NeZ
+-----END PGP SIGNATURE-----
