@@ -1,0 +1,52 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sat, 16 Mar 2013 23:42:04 -0300
+Source: vimcommander
+Binary: vimcommander
+Architecture: source all
+Version: 0.81-1
+Distribution: UNRELEASED
+Urgency: low
+Maintainer: Leandro Lisboa Penz <llpenz@gmail.com>
+Changed-By: Leandro Lisboa Penz <llpenz@gmail.com>
+Description: 
+ vimcommander - totalcommander-like two-panel tree file explorer for vim
+Changes: 
+ vimcommander (0.81-1) UNRELEASED; urgency=low
+ .
+   * New upstream release: windows compatiblity in F-keys.
+Checksums-Sha1: 
+ e849966d1ded91b64ac24574ed234dd7f2cf2608 1855 vimcommander_0.81-1.dsc
+ d4b8631ad5da9f0eee404b2df6186c0e22323d4d 16359 vimcommander_0.81.orig.tar.gz
+ 16834aa7a969c076674ec65185f49167a88d4036 1914 vimcommander_0.81-1.diff.gz
+ 6f4c79050510733df44967ebc56af6fb757f7e9f 10914 vimcommander_0.81-1_all.deb
+Checksums-Sha256: 
+ c9abdaab23e8cf9f75f6c4318e6a92fa4ce7b44378f45981a1548986d5232926 1855 vimcommander_0.81-1.dsc
+ dfa36ab8cbe55ccbb2ef12fc76fc13738128294b6205e6b0d3fda63e7bf5caa1 16359 vimcommander_0.81.orig.tar.gz
+ 6298e413f257b8ac2ce74c9d623c8b9ce24d3a972d4e727368a4996770701c4c 1914 vimcommander_0.81-1.diff.gz
+ c60597f8cb6cfdd98d6c78098120ce6e7c7fd3adef13bbf1116385c0ef73f037 10914 vimcommander_0.81-1_all.deb
+Files: 
+ 827b883511e21ba5355315e68494e256 1855 utils extra vimcommander_0.81-1.dsc
+ 1fa9e4dd08268b385a592d2dffeba7fb 16359 utils extra vimcommander_0.81.orig.tar.gz
+ c516597047f9c66066d3b294a437665d 1914 utils extra vimcommander_0.81-1.diff.gz
+ 83ea45a6b8bb70df86089ddd6ee7759a 10914 utils extra vimcommander_0.81-1_all.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBCAAGBQJRRS3vAAoJEAGXDlAFqExZTScQAI55+qKjht1dDBV9OdH2VW4C
+HtUipz0e6OJ3RmYrt2+0L3fEXPBmhTp3oJr7qydaiHVLQCr/IWSH+1PTTLWoCih/
+CeDBqPD3rxz6H19KzZfpX36AZlV4Z0oxZsCkB6aY/HviWEH1JhGjL8jGUdpKzJSf
+nssWp037jCqhMqoeBwcePn6nk8gksP4mWBDLT3ww8uiFJVmwrU7/XRSmWMKji//n
+9dw0fNjkMN5y9Fwh6BgfdqN2TQyDDg3tDZjv5lY9QgmIa5YsiFySnUH1MlLqWN93
+uHk2wa0fFnfm0rkCm1a0oT1sy/77MEaSojdvbEWC6NEUfL0kZfrt6V/SqPA1Q79a
+wff+lbqy5wDTxUpqGEfiBOAxJOwctwkEpHojszEnliEPpROTfd5BWAjoCHmVtqej
+dXe0pgBahK6O46KjuaiBaEAoZhe/DoL7Fi/gyu30Mz0v4D9jL3+PGkNf7SWOZ7Hb
+nuHF9jVPubsa8KEQJ8s3b8l0ubA1jweTK7AX7v/48U5pbl8JOCWaJJ2mfob4stiT
+a4U4oULb/5lea2l+3hNsoP3qcIVvcmiJG1TnbNXWoJ5TAGPNWf/fx1XUyPw0nC5B
+cMormJNFSiDMPJQj5qwjVlHRYLV7peHWQEqnmMMQ6Eldd7JlxzBkXY1s4mqjVUxh
+bSQy+0kJXXkzQMURVsyc
+=1aAT
+-----END PGP SIGNATURE-----
