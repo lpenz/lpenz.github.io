@@ -1,0 +1,98 @@
+ dpkg-buildpackage -rfakeroot -D -us -uc -i -I
+dpkg-buildpackage: source package ftpsync
+dpkg-buildpackage: source version 1.1.1-2
+dpkg-buildpackage: source changed by Leandro Lisboa Penz <lpenz@lpenz.org>
+ dpkg-source -i -I --before-build ftpsync
+dpkg-buildpackage: host architecture i386
+ fakeroot debian/rules clean
+dh  clean
+   dh_testdir
+   dh_auto_clean
+make[1]: Entering directory `/home/lpenz/projs/ftpsync'
+rm -f ftpsync.1
+make[1]: Leaving directory `/home/lpenz/projs/ftpsync'
+   dh_clean
+ dpkg-source -i -I -b ftpsync
+dpkg-source: warning: no source format specified in debian/source/format, see dpkg-source(1)
+dpkg-source: warning: source directory 'ftpsync' is not <sourcepackage>-<upstreamversion> 'ftpsync-1.1.1'
+dpkg-source: warning: .orig directory name ftpsync.orig is not <package>-<upstreamversion> (wanted ftpsync-1.1.1.orig)
+dpkg-source: info: using source format `1.0'
+dpkg-source: info: building ftpsync using existing ftpsync_1.1.1.orig.tar.gz
+dpkg-source: info: building ftpsync in ftpsync_1.1.1-2.diff.gz
+dpkg-source: info: building ftpsync in ftpsync_1.1.1-2.dsc
+ debian/rules build
+dh  build
+   dh_testdir
+   dh_auto_configure
+   dh_auto_build
+make[1]: Entering directory `/home/lpenz/projs/ftpsync'
+txt2tags -t man -i manual.t2t -o ftpsync.1
+txt2tags wrote /home/lpenz/projs/ftpsync/ftpsync.1
+make[1]: Leaving directory `/home/lpenz/projs/ftpsync'
+   dh_auto_test
+ fakeroot debian/rules binary
+dh  binary
+   dh_testroot
+   dh_prep
+   dh_installdirs
+   debian/rules override_dh_auto_install
+make[1]: Entering directory `/home/lpenz/projs/ftpsync'
+/usr/bin/make PREFIX=/home/lpenz/projs/ftpsync/debian/ftpsync/usr install
+make[2]: Entering directory `/home/lpenz/projs/ftpsync'
+mkdir -p /home/lpenz/projs/ftpsync/debian/ftpsync/usr/bin
+install ftpsync /home/lpenz/projs/ftpsync/debian/ftpsync/usr/bin/ftpsync
+mkdir -p /home/lpenz/projs/ftpsync/debian/ftpsync/usr/share/man/man1
+install ftpsync.1 /home/lpenz/projs/ftpsync/debian/ftpsync/usr/share/man/man1/ftpsync.1
+make[2]: Leaving directory `/home/lpenz/projs/ftpsync'
+make[1]: Leaving directory `/home/lpenz/projs/ftpsync'
+   dh_install
+   dh_installdocs
+   dh_installchangelogs
+   dh_installexamples
+   dh_installman
+   dh_installcatalogs
+   dh_installcron
+   dh_installdebconf
+   dh_installemacsen
+   dh_installifupdown
+   dh_installinfo
+   dh_pysupport
+dh_pysupport: This program is deprecated, you should use dh_python2 instead. Migration guide: http://deb.li/dhs2p
+   dh_installinit
+   dh_installmenu
+   dh_installmime
+   dh_installmodules
+   dh_installlogcheck
+   dh_installlogrotate
+   dh_installpam
+   dh_installppp
+   dh_installudev
+   dh_installwm
+   dh_installxfonts
+   dh_installgsettings
+   dh_bugfiles
+   dh_ucf
+   dh_lintian
+   dh_gconf
+   dh_icons
+   dh_perl
+   dh_usrlocal
+   dh_link
+   dh_compress
+   dh_fixperms
+   dh_installdeb
+   dh_gencontrol
+dpkg-gencontrol: warning: File::FcntlLock not available; using flock which is not NFS-safe
+   dh_md5sums
+   dh_builddeb
+dpkg-deb: building package `ftpsync' in `../ftpsync_1.1.1-2_all.deb'.
+ dpkg-genchanges  >../ftpsync_1.1.1-2_i386.changes
+dpkg-genchanges: not including original source code in upload
+ dpkg-source -i -I --after-build ftpsync
+dpkg-buildpackage: binary and diff upload (original source NOT included)
+Now signing changes and any dsc files...
+ signfile ftpsync_1.1.1-2.dsc Leandro Lisboa Penz <lpenz@lpenz.org>
+
+ signfile ftpsync_1.1.1-2_i386.changes Leandro Lisboa Penz <lpenz@lpenz.org>
+
+Successfully signed dsc and changes files
