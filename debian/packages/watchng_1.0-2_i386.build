@@ -1,6 +1,6 @@
  dpkg-buildpackage -rfakeroot -D -us -uc -i -I
 dpkg-buildpackage: source package watchng
-dpkg-buildpackage: source version 1.0-1
+dpkg-buildpackage: source version 1.0-2
 dpkg-buildpackage: source changed by Leandro Lisboa Penz <lpenz@lpenz.org>
  dpkg-source -i -I --before-build watchng
 dpkg-buildpackage: host architecture i386
@@ -15,8 +15,8 @@ make[1]: Leaving directory `/home/lpenz/projs/watchng'
  dpkg-source -i -I -b watchng
 dpkg-source: info: using source format `3.0 (quilt)'
 dpkg-source: info: building watchng using existing ./watchng_1.0.orig.tar.gz
-dpkg-source: info: building watchng in watchng_1.0-1.debian.tar.gz
-dpkg-source: info: building watchng in watchng_1.0-1.dsc
+dpkg-source: info: building watchng in watchng_1.0-2.debian.tar.gz
+dpkg-source: info: building watchng in watchng_1.0-2.dsc
  debian/rules build
 dh  build
    dh_testdir
@@ -79,20 +79,17 @@ dh_pysupport: This program is deprecated, you should use dh_python2 instead. Mig
    dh_fixperms
    dh_installdeb
    dh_gencontrol
+dpkg-gencontrol: warning: File::FcntlLock not available; using flock which is not NFS-safe
    dh_md5sums
    dh_builddeb
-dpkg-deb: building package `watchng' in `../watchng_1.0-1_all.deb'.
- dpkg-genchanges  >../watchng_1.0-1_i386.changes
-dpkg-genchanges: including full source code in upload
+dpkg-deb: building package `watchng' in `../watchng_1.0-2_all.deb'.
+ dpkg-genchanges  >../watchng_1.0-2_i386.changes
+dpkg-genchanges: not including original source code in upload
  dpkg-source -i -I --after-build watchng
-dpkg-buildpackage: full upload (original source is included)
-Now running lintian...
-W: watchng: wrong-bug-number-in-closes l3:#nnnn
-W: watchng: new-package-should-close-itp-bug
-Finished running lintian.
+dpkg-buildpackage: binary and diff upload (original source NOT included)
 Now signing changes and any dsc files...
- signfile watchng_1.0-1.dsc Leandro Lisboa Penz <lpenz@lpenz.org>
+ signfile watchng_1.0-2.dsc Leandro Lisboa Penz <lpenz@lpenz.org>
 
- signfile watchng_1.0-1_i386.changes Leandro Lisboa Penz <lpenz@lpenz.org>
+ signfile watchng_1.0-2_i386.changes Leandro Lisboa Penz <lpenz@lpenz.org>
 
 Successfully signed dsc and changes files
