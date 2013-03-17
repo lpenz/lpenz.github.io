@@ -23,7 +23,7 @@ $PRE
 
 If you really trust me, you can add the GPG key I sign the repository with by issuing:
 $PRE
-wget -O - http://lpenz.org/lpenz_2010.asc | apt-key add -
+wget -O - http://lpenz.org/lpenz_2013.asc | apt-key add -
 $PRE
 
 
