@@ -25,4 +25,6 @@ whatsnew:
       news: 'New [watchng http://github.com/lpenz/watchng] debian package.'
     - date: 2013-03-17
       news: 'New gpg key; debian packages rebuilt and signed with new key.'
+    - date: 2013-03-30
+      news: 'New google-spreadsheet-csv (1.2) with fixes for Mac and special fields.'
 
