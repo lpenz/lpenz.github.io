@@ -42,12 +42,14 @@ def main():
 
     outfd = open(outfilename, 'w')
 
-    pipfrem = re.compile('(.*)<p>\s*</p>(.*)')
+    pipfrem = re.compile('(.*)<p>\s*</p>(.*)\s*$')
     for l in t2toutfd:
+        l = l.rstrip()
         m = pipfrem.match(l)
         if m:
             l = m.group(1) + ' ' + m.group(2)
         outfd.write(l)
+        outfd.write('\n')
 
 
 if __name__ == "__main__":
