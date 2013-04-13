@@ -1,0 +1,4 @@
+#!/bin/sh
+
+s3cmd sync --delete-removed --exclude=.git/* --exclude=.gitignore . s3://lpenz.org
+
