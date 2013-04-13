@@ -1,4 +1,19 @@
 #!/bin/sh
 
-s3cmd sync --delete-removed --exclude=.git/* --exclude=.gitignore . s3://lpenz.org
+set -e -x
+
+s3cmd sync --delete-removed \
+	--exclude=* \
+	--include=*.html \
+	--include=*.css \
+	--include=*.png \
+	--include=*.ico \
+	--include=*.xml \
+	--include=robots.txt \
+	--include=lpenz_2013.asc \
+	--include=debian/dists/* \
+	--include=debian/packages/* \
+	--include=debian/lpenz.list \
+	--exclude=templates/* \
+	. s3://lpenz.org
 
