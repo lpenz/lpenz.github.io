@@ -42,22 +42,12 @@ def main():
 
     outfd = open(outfilename, 'w')
 
-    imgcenterre = re.compile('^\s*<center>(<img[^>]+>)</center>\s*$')
     pipfrem = re.compile('(.*)<p>\s*</p>(.*)')
-    skipnext = False
     for l in t2toutfd:
-        m = imgcenterre.match(l)
-        if m:
-            l = '</p>\n<center>%s</center>\n' % m.group(1)
-            outfd.write(l)
-            skipnext = True
-            continue
         m = pipfrem.match(l)
         if m:
-            l = m.group(1)
-        if not skipnext:
-            outfd.write(l)
-        skipnext = False
+            l = m.group(1) + ' ' + m.group(2)
+        outfd.write(l)
 
 
 if __name__ == "__main__":
