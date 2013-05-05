@@ -1,0 +1,52 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 05 May 2013 18:03:00 -0300
+Source: apt-get-snapshot
+Binary: apt-get-snapshot
+Architecture: source all
+Version: 1.1-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <lpenz@lpenz.org>
+Changed-By: Leandro Lisboa Penz <lpenz@lpenz.org>
+Description: 
+ apt-get-snapshot - Download a specific version of a debian package from snapshot.deb
+Changes: 
+ apt-get-snapshot (1.1-1) unstable; urgency=low
+ .
+   * New upstream version 1.1 with many fixes.
+Checksums-Sha1: 
+ a72373e4dd9c492ad60e56dad41cedec3411f61f 1876 apt-get-snapshot_1.1-1.dsc
+ 911c50868b5b7e5c67d02f840899bf29c1cf72f0 3218 apt-get-snapshot_1.1.orig.tar.gz
+ e6b67426411f9b47cc5d8b201e02b9666e179e43 2203 apt-get-snapshot_1.1-1.debian.tar.gz
+ 90b0ad2c39bf013ce4376873f411c55060882345 4268 apt-get-snapshot_1.1-1_all.deb
+Checksums-Sha256: 
+ 82ab9a8ce437fda0560774910ffbc93e0f02b82f54cdb2eb15854eb3743fc4cb 1876 apt-get-snapshot_1.1-1.dsc
+ 98930a5598442f5a7ecf69a61ae903440ff9af7c368da6b3181c06476c9db692 3218 apt-get-snapshot_1.1.orig.tar.gz
+ 5d89a93e7d9dbca1947a5ad540ce17d3363469ac5b35e1ec9811a16e5045f1ba 2203 apt-get-snapshot_1.1-1.debian.tar.gz
+ 35e2ba548e09de4ead8f74364cfd28d3a0bb6c88f1348504fe0e50fece431303 4268 apt-get-snapshot_1.1-1_all.deb
+Files: 
+ eab0f707f7c88774903e3c69855e3fd7 1876 python extra apt-get-snapshot_1.1-1.dsc
+ 7cce2fb7113abe13116a84d18fa4d112 3218 python extra apt-get-snapshot_1.1.orig.tar.gz
+ a86a99546c3c94a47c9c16e783c74c53 2203 python extra apt-get-snapshot_1.1-1.debian.tar.gz
+ 7d392219e1ff17379f063cc5a1d55e8f 4268 python extra apt-get-snapshot_1.1-1_all.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBCAAGBQJRhsk+AAoJEAGXDlAFqExZmYQP/RhFm7qc74OdvXcWbjexurkb
+C2FHK8tmf8vyS+/N4KpTdAzuK3Kr2FL1UENUo2W82DlMqLJswOf2iyPGgQhXDyOq
+5UIxWEx/oRN2QpY39HyF4qAIjyrIazlaSdGNseFEgbokpsctqol0wR491WUpkXcd
+vkxavRE2UVXfvJeC7Oo2Hvxhp1VXjnDoqSdQ7Hs3HF0vGUwF+8WMIzBQ9S6L2o/r
+XejxlAKJ4gKJwQ4nEOuURlgjKeekxWfPZQ1Bbrb1BsmWDRgKjwKzzVomne3dqW5v
+Xl1Ky1+obb6oTko6RwK2Qfa7aA3r6K910dTXzwL5nhiIciWnnHcp0D3Vd+QdY0mY
+BBz/NfYGSVcybFwUgHn9Xduz5GnOBexeg7SI/sfWy1q4UWYsKuLXZwp0K9f1dZBU
+TNNbnHjHnOr0CsTghW48oUVzkRqaelH8CUrytvZScbTKfR6H9Zkw0Bya6lkXhUyh
+PfGlzZVM9HyesmDIImvovd31bhsn905Mjyau0pK7m3DYi1maIEwTNIa5UHqovpLy
+3qeHG+byqYXuEVdFdqAAx4oR7Mt7+ZPTBZs118iq7AKEHOymnOXmavdGH+WuNG26
+Ol1+rlw6ym8nSFHemuDQxNdOH14sKNwlRgg9NQLWqM9aWw7zL1zm/hNqpHvOkcFx
+LWMrYA2oXZweAdogXHnI
+=2mGr
+-----END PGP SIGNATURE-----
