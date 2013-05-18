@@ -25,15 +25,18 @@ infotreeProcDir('.', infofiles)
 env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')
 env.Depends('infotree.yaml', 'tools/infotreebuild')
 
+htmlsitefiles = set()
+env.Export('htmlsitefiles')
 
 # Main page:
 env.Command('index.t2t', 'index.bt2t', 'tools/mako $SOURCE $TARGET')
 env.Depends('index.t2t', 'infotree.yaml')
 env.MAKO('index.t2t', MAKOFLAGS='-t base')
+htmlsitefiles.add('index.html')
 
 
 # About me:
-env.SConscript('about/SConscript')
+env.SConscript('about/SConscript', )
 
 
 # Articles:
@@ -47,4 +50,8 @@ env.SConscript('debian/SConscript')
 # Feeds:
 env.SConscript('feeds/SConscript')
 
+
+# Final touches:
+env.Command('sitemap.xml', list(htmlsitefiles), 'tools/sitemapper $TARGET $SOURCES')
+env.Depends('sitemap.xml', 'tools/sitemapper')
 

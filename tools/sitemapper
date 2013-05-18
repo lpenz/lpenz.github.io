@@ -1,0 +1,56 @@
+#!/usr/bin/python
+
+import sys
+import os
+import subprocess
+#from glob import glob
+#import os.path as osp
+
+#def dodir(d, l = []):
+#    for f in glob(osp.join(d, '*')):
+#        if osp.isfile(f):
+#            l.append(f)
+#        elif osp.isdir(f):
+#            dodir(f, l)
+#    return l
+
+
+def doit(outfile, files):
+    if outfile != '-':
+        o = open(outfile+'.tmp', 'w')
+    else:
+        o = sys.stdout
+    o.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    o.write('<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">\n')
+    #files = dodir('.')
+    for f in files:
+        if not f.endswith('index.html'):
+            continue
+        #assert f.startswith('./')
+        #f = f[2:]
+        o.write('  <url>\n')
+        o.write('    <loc>http://lpenz.org/%s</loc>\n' % f)
+        d = subprocess.check_output('git log -1 --format=%%ai "%s"' % f, shell=True)
+        if len(d) > 0:
+            o.write('    <lastmod>%s</lastmod>\n' % d[0:10])
+        o.write('  </url>\n')
+    o.write('</urlset>\n')
+    if outfile != '-':
+        o.close()
+        os.rename(outfile+'.tmp', outfile)
+
+# Main: ######################################################################
+
+def main():
+    from optparse import OptionParser
+    parser = OptionParser("usage: %prog <output> <sitefiles>")
+    opts, args = parser.parse_args(sys.argv[1:])
+    if len(args) < 2:
+        parser.error("wrong number of arguments") # Will exit
+    #if len(args) != 1:
+    #    parser.error("wrong number of arguments") # Will exit
+    doit(args[0], args[1:])
+
+if __name__ == "__main__":
+    main()
+

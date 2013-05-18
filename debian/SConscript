@@ -2,7 +2,7 @@
 import os
 import glob
 
-Import(['env'])
+Import(['env', 'htmlsitefiles'])
 
 if False:
     env.Command('dists/lpenz/main/binary-i386/Packages',  glob.glob('packages/*.deb'), '(set -e; cd debian; dpkg-scanpackages packages) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
@@ -18,4 +18,5 @@ env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbui
 env.Depends('index.t2t', indexbuild)
 
 env.MAKO('index.t2t', MAKOFLAGS='-t base')
+htmlsitefiles.add('debian/index.html')
 
