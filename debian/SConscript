@@ -17,6 +17,17 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
 env.Depends('index.t2t', indexbuild)
 
+# TODO: manuals
+#for f in env.Glob('packages/*.orig.tar.gz'):
+#    m = re.match('^packages/([^_]+)_([0-9._-]+).orig.tar.gz$', str(f))
+#    assert m
+#    name = m.group(1)
+#    vers = m.group(2)
+#    t2t = '%s.t2t' % name
+#    env.Command(t2t, f, 'tar -xzOf $SOURCE %s_%s/manual.t2t > ${TARGET}.tmp && mv ${TARGET}.tmp $TARGET' % (name, vers))
+#    env.MAKO(t2t, MAKOFLAGS='-t base')
+#    htmlsitefiles.add('debian/%s.html' % name)
+
 env.MAKO('index.t2t', MAKOFLAGS='-t base')
 htmlsitefiles.add('debian/index.html')
 

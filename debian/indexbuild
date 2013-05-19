@@ -59,9 +59,10 @@ def main():
             name,
             desc,
             vers,
-            name, vers,
-            name, vers, arch,
-            name,
+            #name,             # manual
+            name, vers,       # download
+            name, vers, arch, # deb
+            name,             # github
             ))
     o.write('\n\n')
     o.write('They are all free software. Their source code can be found in http://github.com/lpenz, along with other projects that are not debianizable.\n\n')
