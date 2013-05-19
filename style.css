@@ -104,17 +104,17 @@ h1 {
 }
 
 table {
-	border: 1px solid black;
+	border: 1px solid #925136;
 	border-collapse: collapse;
 }
 table tr th {
-	border: 1px solid black;
+	border: 1px solid #925136;
 	background-color: #FFA885;
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
 }
 table tr td {
-	border: 1px solid black;
+	border: 1px solid #925136;
 	background-color: #CEFFE9;
 	padding-top: 0.2em;
 	padding-bottom: 0.2em;
