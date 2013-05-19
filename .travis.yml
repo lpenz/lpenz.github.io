@@ -1,0 +1,6 @@
+script: scons
+before_install:
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq txt2tags mako scons haskell-platform r-cran-ggplot2
+
+
