@@ -1,8 +1,8 @@
 
 import os
 import glob
-import re
 
+if False: Environment=None
 env = Environment(ENV = os.environ
     , TOP = os.path.abspath(os.path.curdir)
     , toolpath = ['tools/scons', '/usr/lib/scons/SCons/Tool'])
