@@ -177,7 +177,7 @@ axis of the //barplot// and using the //points// function:
 
 = Training set, validation set =
 
-[Cross-validation http://en.wikipedia.org/wiki/Cross-validation_%28statistics%28] is
+[Cross-validation http://en.wikipedia.org/wiki/Cross-validation] is
 a technique that we can use to validate the use of Monte Carlo on our data.
 
 We first split our data in two sets: the training set and the validation set. We

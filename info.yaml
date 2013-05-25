@@ -16,13 +16,13 @@ whatsnew:
     - date: 2011-02-02
       news: 'New [Haskell eDSL Tutorial - Shared expenses $home$/articles/hedsl-sharedexpenses/index.html] article.'
     - date: 2011-02-16
-      news: 'New [atdtool http://github.com/lpenz/atdtool] debian package.'
+      news: 'New [atdtool https://github.com/lpenz/atdtool] debian package.'
     - date: 2011-06-23
       news: 'New [Hard drive occupation prediction with R - Part 3 $home$/articles/df0pred-3/index.html] (Predicting future ranges) article.'
     - date: 2011-11-15
-      news: 'New [google-spreadsheet-csv http://github.com/lpenz/google-spreadsheet-csv] debian package.'
+      news: 'New [google-spreadsheet-csv https://github.com/lpenz/google-spreadsheet-csv] debian package.'
     - date: 2012-10-21
-      news: 'New [watchng http://github.com/lpenz/watchng] debian package.'
+      news: 'New [watchng https://github.com/lpenz/watchng] debian package.'
     - date: 2013-03-17
       news: 'New gpg key; debian packages rebuilt and signed with new key.'
     - date: 2013-03-30
