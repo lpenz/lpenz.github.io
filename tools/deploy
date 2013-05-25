@@ -1,5 +1,12 @@
 #!/bin/sh
 
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$BRANCH" != "master" ]; then
+	echo "deploy can only be used in mater branch; current branch: $BRANCH" >&2
+	exit 1
+fi
+
 set -e -x
 
 s3cmd sync --delete-removed \
