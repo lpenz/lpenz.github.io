@@ -34,17 +34,22 @@ def main():
     keynamemax = max([len(k.name) for k in keys])
     msg = lambda k, x: sys.stdout.write(('%%-%ds %%s\n' % (keynamemax+1)) % (k.name, x))
     for key in keys:
-        content = bucket.lookup(key.name)
-        mimet, _ = mimetypes.guess_type(key.name)
-        if not mimet:
+        s3_content_type = bucket.lookup(key.name).content_type
+        if key.name.endswith('.html') and 'xhtml1-transitional' in open(key.name).read():
+            mimet = 'application/xhtml+xml'
+        elif key.name.endswith('.dat'):
             mimet = ms.file(key.name)
+        else: # dicover:
+            mimet, _ = mimetypes.guess_type(key.name)
+            if not mimet:
+                mimet = ms.file(key.name)
         if not mimet:
-            msg(key, 'unable to discover type, keeping [%s]' % (content.content_type))
+            msg(key, 'unable to discover type, keeping [%s]' % (s3_content_type))
             continue
-        if content.content_type == mimet:
-            #msg(key, 'type [%s] ok!' % (content.content_type))
+        if s3_content_type == mimet:
+            #msg(key, 'type [%s] ok!' % (s3_content_type))
             continue
-        msg(key, 'fixing type, old [%s] will be [%s]' % (content.content_type, mimet))
+        msg(key, 'fixing type, old [%s] will be [%s]' % (s3_content_type, mimet))
         key.copy(key.bucket, key.name, preserve_acl=True, metadata={'Content-Type': mimet})
 
 
