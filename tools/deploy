@@ -23,6 +23,7 @@ s3cmd sync --delete-removed \
 	--include=debian/packages/* \
 	--include=debian/lpenz.list \
 	--include=.git/* \
+	--exclude=.git/gitk.cache \
 	--exclude=templates/* \
 	. s3://lpenz.org
 
