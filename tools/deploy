@@ -9,6 +9,7 @@ s3cmd sync --delete-removed \
 	--include=*.png \
 	--include=*.ico \
 	--include=*.xml \
+	--include=*.dat \
 	--include=robots.txt \
 	--include=lpenz_2013.asc \
 	--include=debian/dists/* \
