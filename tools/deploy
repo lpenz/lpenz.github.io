@@ -27,3 +27,5 @@ s3cmd sync --delete-removed \
 	--exclude=templates/* \
 	. s3://lpenz.org
 
+tools/s3fixmeta
+
