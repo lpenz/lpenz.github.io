@@ -1,9 +1,26 @@
 body {
-	width: 1000px;
+	width: 1212px;
 	margin-top: 5px;
 	margin-bottom: 5px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+#lpenz {
+	width:1000px;
+	position:float;
+	float:left
+}
+
+#adsense {
+	position:float;
+	float:left;
+	margin-left: 50px;
+	margin-top:50px;
+	/* Tests:
+	border: 1px solid black;
+	background-color:yellow;
+	*/
 }
 
 #header {
