@@ -17,6 +17,8 @@ body {
 	float:left;
 	margin-left: 50px;
 	margin-top:50px;
+	width: 160px;
+	height: 600px;
 	/* Tests:
 	border: 1px solid black;
 	background-color:yellow;
