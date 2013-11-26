@@ -6,7 +6,7 @@ Import(['env'])
 env.Program('hasbug.c', CPPFLAGS='-g')
 
 env.Command('r1w3_n4_results.csv', ['box'], '$SOURCE -r 1 -w 3 -n 4 --output-results $TARGET', chdir=False)
-env.MAKO('r1w3_n4_results.t2t', MAKOFLAGS = '-t base')
+env.MAKO('r1w3_n4_results.t2t', MAKOFLAGS = '-t htmlbare')
 env.Depends('r1w3_n4_results.bhtml', 'r1w3_n4_results.csv')
 
 for rw in [(1, 3), (1, 2), (1, 1)]:
@@ -14,7 +14,7 @@ for rw in [(1, 3), (1, 2), (1, 1)]:
     env.Command(csv, ['box'], '$SOURCE -r %d -w %d -n 4 --output-probabilities $TARGET' % rw, chdir=False)
     env.Depends('index.bhtml', csv)
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
 
 env.Command('r1w3_dist.png', 'pdistplot.R', '$SOURCE 1 3 $TARGET')
 env.Command('r1w3_dens.png', 'pdensplot.R', '$SOURCE 1 3 $TARGET')

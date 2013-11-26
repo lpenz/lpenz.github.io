@@ -27,9 +27,9 @@ env.Depends('index.t2t', indexbuild)
 #    vers = m.group(2)
 #    t2t = '%s.t2t' % name
 #    env.Command(t2t, f, 'tar -xzOf $SOURCE %s_%s/manual.t2t > ${TARGET}.tmp && mv ${TARGET}.tmp $TARGET' % (name, vers))
-#    env.MAKO(t2t, MAKOFLAGS='-t base')
+#    env.MAKO(t2t, MAKOFLAGS='-t htmlpage')
 #    htmlsitefiles.add('debian/%s.html' % name)
 
-env.MAKO('index.t2t', MAKOFLAGS='-t base')
+env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
 htmlsitefiles.add('debian/index.html')
 

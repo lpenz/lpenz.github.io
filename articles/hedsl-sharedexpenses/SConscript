@@ -7,6 +7,6 @@ env.Command('sharedexpenses.lhs', 'index.t2t', 'cp $SOURCE $TARGET')
 env.HASKELL_EXECUTABLE('sharedexpenses.lhs', HASKELLFLAGS = '--make -cpp -Werror -Wall -fno-warn-missing-signatures')
 env.Command('results.txt', 'sharedexpenses', '$SOURCE > $TARGET')
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
 htmlsitefiles.add('articles/hedsl-sharedexpenses/index.html')
 
