@@ -1,6 +1,20 @@
-<%inherit file="bare.html"/>
+<?xml version="1.0" encoding="iso-8859-1"
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>${title}</title>
+<link rel="stylesheet" type="text/css" href="${top}/base-min.css" />
+<link rel="stylesheet" type="text/css" href="${top}/style.css" />
+<link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
+<link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>
+<link rel="icon" type="image/png" href="${top}/logo.png" />
+<meta name="generator" content="http://txt2tags.sf.net" />
+</head>
+<body>
 
-<%block name="htmlbody">
+<div id="lpenz">
+
 <div id="header">
 	<div id="logo">
 		<a href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/logo.png" /></a>
@@ -26,6 +40,8 @@
 	% endif
 	    ${self.body()}
 </div>
+
+
 
 % if disqus:
 
@@ -55,9 +71,23 @@
 
 <div id="footer">
 		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>
-		This work by Leandro Lisboa Penz is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
 </div>
-<script type="text/javascript"> var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www."); document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E")); </script> <script type="text/javascript"> try { var pageTracker = _gat._getTracker("UA-4182011-2"); pageTracker._trackPageview(); } catch(err) {}</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4182011-2']);
+  _gaq.push(['_setDomainName', 'lpenz.org']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
 
 % if disqus:
 
@@ -71,8 +101,25 @@ var disqus_shortname = 'avulsosbypenz';
 </script>
 
 % endif
-</%block>
 
+</div>
+
+<div id="adsense">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7154717812458918";
+/* lpenz.org2 */
+google_ad_slot = "8271040381";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+</body>
+</html>
 <!-- vim: ft=html
 -->
 

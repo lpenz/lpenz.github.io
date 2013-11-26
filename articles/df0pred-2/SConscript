@@ -1,7 +1,7 @@
 
 import os
 
-Import(['env'])
+Import(['env', 'htmlsitefiles'])
 
 if False:
     env.R('main.RData', 'main.R')
@@ -14,4 +14,5 @@ for i in ['deltasummary', 'df0first', 'df0above5']:
     env.Command(i+'.txt', ['main.RData', i+'.R'], './%s.R ' % i, chdir=1)
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t base')
+htmlsitefiles.add('articles/df0pred-2/index.html')
 

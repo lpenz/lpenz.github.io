@@ -1,47 +1,75 @@
-#!/bin/sh
+#!/usr/bin/python
 
-D=${1?}
-shift
-LIST=${1?}
-shift
+import os
+import sys
+import re
+from optparse import OptionParser
 
-echo -n > $D
+def main():
+    parser = OptionParser("usage: %prog <output.t2t> <articles directories...>")
+    opts, args = parser.parse_args()
+    output = args[0]
+    applist = args[1]
+    if output != '-':
+        o = open(output+'.tmp', 'w')
+    else:
+        o = sys.stdout
+    o.write('Debian\n\n\n')
+    o.write('%!PostProc(xhtml): \'img \' \'img height="20px" \'\n')
+    o.write('\n\n')
+    o.write('= Configuration =\n\n')
+    o.write('To use the debian repository behind this page, put [this file ../%s] in ///etc/apt/sources.list.d// or add the following line to ///etc/apt/sources.list//:\n\n' % applist)
+    o.write('```\n')
+    o.write(open(applist).read())
+    o.write('\n```\n\n')
+    o.write('If you really trust me, you can add the [GPG key ../lpenz_2013.asc] I sign the repository with by issuing:\n')
+    o.write('```\nwget -O - http://lpenz.org/lpenz_2013.asc | apt-key add -\n```\n\n')
+    o.write('= Applications =\n\n')
+    o.write('The following utilities are available in the repository:\n\n')
+    o.write('|| Application | Description | Version | Get it |\n')
+    for app in args[2:]:
+        fd = open(app)
+        name = None
+        desc = None
+        vers = None
+        arch = None
+        for l in fd:
+            l = l.rstrip()
+            m = re.match('^Source: (.*)', l)
+            if m:
+                name = m.group(1)
+                continue
+            m = re.match('^Description:', l)
+            if m:
+                desc = fd.next().rstrip().lstrip()
+                pre = re.match('^%s\s+-\s+(.*)\s*' % name, desc)
+                if pre:
+                    desc = pre.group(1)
+                continue
+            m = re.match('^Architecture: source (.*)$', l)
+            if m:
+                arch = m.group(1)
+                l = fd.next().rstrip()
+                m = re.match('^Version: (.*)', l)
+                assert m
+                vers = m.group(1)
+                continue
+        assert name and desc and vers and arch
+        o.write('| %s | %s | %s |  [[../downloadicon.png] packages/%s_%s.orig.tar.gz] [[../debianswirl.png] packages/%s_%s_%s.deb]  [[../octocat.png] https://github.com/lpenz/%s]  |\n' % (
+            name,
+            desc,
+            vers,
+            #name,             # manual
+            name, re.sub('-[0-9]+$','',vers),       # download
+            name, vers, arch, # deb
+            name,             # github
+            ))
+    o.write('\n\n')
+    o.write('They are all free software. Their source code can be found in https://github.com/lpenz, along with other projects that are not debianizable.\n\n')
+    if output != '-':
+        o.close()
+        os.rename(output+'.tmp', output)
 
-PRE=\`\`\`
-
-cat <<END >> $D
-Debian
-
-
-
-To use the debian repository behind this page, add the following line in 
-///etc/apt/sources.list//:
-
-$PRE
-$(cat $LIST)
-$PRE
-
-If you really trust me, you can add the GPG key I sign the repository with by issuing:
-$PRE
-wget -O - http://lpenz.org/lpenz_2010.asc | apt-key add -
-$PRE
-
-
-The following utilities are available in the repository:
-
-END
-
-for i in "$@"; do
-	APP=$(sed -n 's/^Source: \(.*\)/\1/p' $i)
-	DESCR=$(sed -n "/^Description:/,+1s/^ $APP \+- \(.*\)$/\1/p" $i)
-	echo - [$APP http://github.com/lpenz/$APP]: $DESCR >> $D
-done
-
-cat <<END >> $D
-
-
-They are all free software. Their source code can be found in
-http://github.com/lpenz, along with other projects that are not debianizable.
-
-END
+if __name__ == "__main__":
+    main()
 

@@ -59,6 +59,7 @@ We can check the data graphically by issuing:
 That gives us an idea on how predictable the usage of our hard drive is.
 
 From our example, we get:
+
  [$cwd$/pointplot.png] 
 
 
@@ -80,6 +81,7 @@ We can also plot the linear model over our data:
 ```
 
 The example plot, with the line:
+
  [$cwd$/lmplot.png] 
 
 

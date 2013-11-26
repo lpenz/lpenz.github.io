@@ -130,8 +130,8 @@ mostly painless, which is the whole point of git-buildpackage and friends.
 
 Besides this article, we should check the ``debian`` dir of some already packaged
 software for reference. We can look at the
-[execpermfix http://github.com/lpenz/execpermfix] repository at
-[github http://github.com] when first trying to package something.
+[execpermfix https://github.com/lpenz/execpermfix] repository at
+[github https://github.com] when first trying to package something.
 
 Further information:
 

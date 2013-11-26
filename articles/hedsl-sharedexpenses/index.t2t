@@ -204,7 +204,7 @@ the state monad - or even around the
 You can also use nested state monads to define heterogeneous environments with
 different "syntaxes" verified by the type system. The only drawback is that
 every user of your language will need a haskell compiler installed, but with
-the [haskell platform http://hackage.haskell.org/platform/] available, that
+the [haskell platform http://www.haskell.org/platform/] available, that
 shouldn't be a problem.
 
 
@@ -213,8 +213,8 @@ shouldn't be a problem.
 
 - http://paulspontifications.blogspot.com/2008/01/why-haskell-is-good-for-embedded-domain.html:
   Why Haskell is Good for Embedded Domain Specific Languages
-- http://cgi.cse.unsw.edu.au/~dons/blog/2007/03: Practical Haskell: shell
-  scripting with error handling and privilege separation
+- http://donsbot.wordpress.com/2007/03/10/practical-haskell-shell-scripting-with-error-handling-and-privilege-separation/:
+  Practical Haskell: shell scripting with error handling and privilege separation
 - http://gbacon.blogspot.com/2009/07/programmable-semicolon-explained.html:
   Programmable semicolon explained
 

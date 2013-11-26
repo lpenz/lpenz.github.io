@@ -3,7 +3,7 @@ import os
 import glob
 import yaml
 
-Import(['env'])
+Import(['env', 'htmlsitefiles'])
 
 # Whatsnew feed:
 env.MAKO('whatsnew.xml', 'whatsnew.feed')

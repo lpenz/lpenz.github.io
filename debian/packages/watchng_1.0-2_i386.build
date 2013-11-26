@@ -1,0 +1,95 @@
+ dpkg-buildpackage -rfakeroot -D -us -uc -i -I
+dpkg-buildpackage: source package watchng
+dpkg-buildpackage: source version 1.0-2
+dpkg-buildpackage: source changed by Leandro Lisboa Penz <lpenz@lpenz.org>
+ dpkg-source -i -I --before-build watchng
+dpkg-buildpackage: host architecture i386
+ fakeroot debian/rules clean
+dh  clean
+   dh_testdir
+   dh_auto_clean
+make[1]: Entering directory `/home/lpenz/projs/watchng'
+rm -f watchng.1
+make[1]: Leaving directory `/home/lpenz/projs/watchng'
+   dh_clean
+ dpkg-source -i -I -b watchng
+dpkg-source: info: using source format `3.0 (quilt)'
+dpkg-source: info: building watchng using existing ./watchng_1.0.orig.tar.gz
+dpkg-source: info: building watchng in watchng_1.0-2.debian.tar.gz
+dpkg-source: info: building watchng in watchng_1.0-2.dsc
+ debian/rules build
+dh  build
+   dh_testdir
+   dh_auto_configure
+   dh_auto_build
+make[1]: Entering directory `/home/lpenz/projs/watchng'
+txt2tags -t man -i manual.t2t -o watchng.1
+txt2tags wrote /home/lpenz/projs/watchng/watchng.1
+make[1]: Leaving directory `/home/lpenz/projs/watchng'
+   dh_auto_test
+ fakeroot debian/rules binary
+dh  binary
+   dh_testroot
+   dh_prep
+   dh_installdirs
+   debian/rules override_dh_auto_install
+make[1]: Entering directory `/home/lpenz/projs/watchng'
+/usr/bin/make PREFIX=/home/lpenz/projs/watchng/debian/watchng/usr install
+make[2]: Entering directory `/home/lpenz/projs/watchng'
+mkdir -p /home/lpenz/projs/watchng/debian/watchng/usr/bin
+install watchng /home/lpenz/projs/watchng/debian/watchng/usr/bin/watchng
+mkdir -p /home/lpenz/projs/watchng/debian/watchng/usr/share/man/man1
+install watchng.1 /home/lpenz/projs/watchng/debian/watchng/usr/share/man/man1/watchng.1
+make[2]: Leaving directory `/home/lpenz/projs/watchng'
+make[1]: Leaving directory `/home/lpenz/projs/watchng'
+   dh_install
+   dh_installdocs
+   dh_installchangelogs
+   dh_installexamples
+   dh_installman
+   dh_installcatalogs
+   dh_installcron
+   dh_installdebconf
+   dh_installemacsen
+   dh_installifupdown
+   dh_installinfo
+   dh_pysupport
+dh_pysupport: This program is deprecated, you should use dh_python2 instead. Migration guide: http://deb.li/dhs2p
+   dh_installinit
+   dh_installmenu
+   dh_installmime
+   dh_installmodules
+   dh_installlogcheck
+   dh_installlogrotate
+   dh_installpam
+   dh_installppp
+   dh_installudev
+   dh_installwm
+   dh_installxfonts
+   dh_installgsettings
+   dh_bugfiles
+   dh_ucf
+   dh_lintian
+   dh_gconf
+   dh_icons
+   dh_perl
+   dh_usrlocal
+   dh_link
+   dh_compress
+   dh_fixperms
+   dh_installdeb
+   dh_gencontrol
+dpkg-gencontrol: warning: File::FcntlLock not available; using flock which is not NFS-safe
+   dh_md5sums
+   dh_builddeb
+dpkg-deb: building package `watchng' in `../watchng_1.0-2_all.deb'.
+ dpkg-genchanges  >../watchng_1.0-2_i386.changes
+dpkg-genchanges: not including original source code in upload
+ dpkg-source -i -I --after-build watchng
+dpkg-buildpackage: binary and diff upload (original source NOT included)
+Now signing changes and any dsc files...
+ signfile watchng_1.0-2.dsc Leandro Lisboa Penz <lpenz@lpenz.org>
+
+ signfile watchng_1.0-2_i386.changes Leandro Lisboa Penz <lpenz@lpenz.org>
+
+Successfully signed dsc and changes files

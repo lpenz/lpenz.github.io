@@ -32,9 +32,10 @@ index.html
 /articles/df0pred-1/*.png
 /articles/df0pred-2/*.png
 /articles/df0pred-3/*.png
-/feeds/*.xml
 /articles/bugprobhunt/*.csv
 /articles/bugprobhunt/*.png
 /articles/bugprobhunt/r1w3_n4_results.html
+/sitemap.xml
+/feeds/*.xml
 # End
 

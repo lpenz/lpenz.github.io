@@ -1,0 +1,49 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 17 Mar 2013 10:11:21 -0300
+Source: execpermfix
+Binary: execpermfix
+Architecture: source i386
+Version: 1.0.4-2
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <lpenz@lpenz.org>
+Changed-By: Leandro Lisboa Penz <lpenz@lpenz.org>
+Description: 
+ execpermfix - Fixes executable permissions
+Changes: 
+ execpermfix (1.0.4-2) unstable; urgency=low
+ .
+   * Signing with new key.
+Checksums-Sha1: 
+ ffe61a25857b4cf5cac691fa34c09071c7c2a26b 1908 execpermfix_1.0.4-2.dsc
+ 429898127c115dc2009a9ebe9a2bc01b2e01c9a3 1885 execpermfix_1.0.4-2.diff.gz
+ e80fa760f7c3520c1189da1d69cfc440e5c998c9 6726 execpermfix_1.0.4-2_i386.deb
+Checksums-Sha256: 
+ 59ee2c0f9e2f60f1428a29f0409e1898f7cd0b78457373122eef8f07727c4904 1908 execpermfix_1.0.4-2.dsc
+ cb3db4fbdf7361a0ca0b23bdc78e0566ec5e965dc39aa28afbfc180d13ec4a6c 1885 execpermfix_1.0.4-2.diff.gz
+ 1f576604f69a9508d95044c349ca7a58989ad9c71bcc0e1563357ae0a33ec472 6726 execpermfix_1.0.4-2_i386.deb
+Files: 
+ fd8e3331643486bd1a22ce8223fd42cd 1908 utils extra execpermfix_1.0.4-2.dsc
+ be25e8da56d462794b65c72f3b0fc493 1885 utils extra execpermfix_1.0.4-2.diff.gz
+ 7c59522cf7e9050765c928dee0682cd8 6726 utils extra execpermfix_1.0.4-2_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iQIcBAEBCAAGBQJRRcHyAAoJEAGXDlAFqExZYqAP/3dNvbovPbOqsbHGz3umK6ip
+2ym+wgMK7Eqiz6ab2/qk3RndLtD8Bs0SjMD3aF9etmIZzBDEMu803yoJvurZLLfS
+eshxut501yvCKEXIYdoX/sCTfHJ5X1g+YIitJg++zIEF544weT7isofe33cyIXYU
+QsHLqugXijeSZVnaswzbsPy1x9ECu66xQvygSiLrO9Kn0UxyqVc8VR5NA5SyHaGu
+Viq1Yl9kCR8Vg4G+frzwP6+LzuCD6BenymIFE/LCyiOdprhaRkXax+VT9SO41X1q
+TCvPEOCSF6iysn2UFYGz5JRaysKnRCRsSLJFG2y+d6UG2Fh/1uSy2fPOQQeBedFf
+kVFulxWSHyPYJ3m+OmlWol9xORtA/FyG43bPzaFK1kffPVdkX+xw1bacaH1JqzUe
+5GXRgv0ktgPKID4Hb97Li2ryX3mkJ8/Wn14Y/s/jAvfmjaVzC+hL8zmt7qSFmW1u
+zybCzS7bBZg7wukDzixOPD5oD9TIv+xp0qUgqoF9PnPdcZ/7u8K6QDEKLFzQ2hkJ
+eiw7fr2EvdkqxSRFQBmcgItQZfFsZbBNtPc9LfZfsA0JT499QhmyDPvuZqIqvPFh
+CmQtzsH8T8b8BtfEHOU3GHzIZ9dIrVqx62gwCapnKb9HuMSehhppzJRng8+pmSS6
++EguE3gEbcKg8m81E5v4
+=1NGm
+-----END PGP SIGNATURE-----
