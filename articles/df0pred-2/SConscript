@@ -13,5 +13,5 @@ for i in ['delta', 'deltabox', 'deltakd', 'daysleft', 'lm', 'df0ecdf']:
 for i in ['deltasummary', 'df0first', 'df0above5']:
     env.Command(i+'.txt', ['main.RData', i+'.R'], './%s.R ' % i, chdir=1)
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t page')
+env.MAKO('index.t2t', MAKOFLAGS = '-t base')
 

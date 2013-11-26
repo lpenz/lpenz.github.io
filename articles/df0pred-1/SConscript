@@ -6,5 +6,5 @@ Import(['env'])
 env.R('pointplot.png', 'main.R', chdir=1)
 env.Command('datain.Rinc', 'datain.R', 'sed "s@^\(.\)@> \\1@" $SOURCE > $TARGET')
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t page')
+env.MAKO('index.t2t', MAKOFLAGS = '-t base')
 
