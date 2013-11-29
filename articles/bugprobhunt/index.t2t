@@ -272,12 +272,17 @@ evolved as shown in the following graph:
 
  [trials20.png] 
 
-After those 20 tests, our lower estimate for \(p\) is about 15%.
+After those 20 tests, our lower estimate for \(p\) is about 12%.
 
 Suppose that we fix the bug and test it again. The following graph shows the
 statistical significance corresponding to the number of tests we do:
 
  [after20.png] 
+
+In words: we have to test 24 times after fixing the bug to reach 95% statistical
+significance, and 35 to reach 99%.
+
+Now, what happens if we test more before fixing the bug?
 
 
 
@@ -299,7 +304,7 @@ number of tests we do after fixing the bug:
 We can see in that graph that after about 11 tests we reach 95%, and after about
 16 we get to 99%. As we have tested more before fixing the bug, we found a
 higher estimate for \(p\), and that allowed us to test less after fixing the
-bug - even thought not in a substantial way.
+bug.
 
 
 

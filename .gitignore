@@ -36,7 +36,8 @@ index.html
 /articles/df0pred-1/*.png
 /articles/df0pred-2/*.png
 /articles/df0pred-3/*.png
-/articles/bugprobhunt/*.csv
+/articles/bugprobhunt/r1w*_probabilities.csv
+/articles/bugprobhunt/r1w*_results.csv
 /articles/bugprobhunt/*.png
 /articles/bugprobhunt/r1w3_n4_results.html
 /sitemap.xml

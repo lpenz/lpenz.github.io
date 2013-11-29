@@ -14,7 +14,7 @@ dat <- dat[0:num,]
 
 pmin <- tail(dat$p, 1)
 
-dat <- data.frame(t = seq(1, 20))
+dat <- data.frame(t = seq(1, 40))
 dat$significance <- 1 - (1-pmin) ^ dat$t
 
 png(output, width=800)
