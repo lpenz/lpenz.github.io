@@ -5,9 +5,9 @@ Basic statistics for programmers
 %!postproc: '!!r1w3_n4_results!!' <iframe src="r1w3_n4_results.html" width="100%" height="500"></iframe>
 
 
-Have you ever run into a bug that, no matter how precise you are trying to
-reproduce it, it only happens sometimes? And then, you think you've got it and
-finally solved it, and tested a couple of times without any manifestation. How
+Have you ever run into a bug that, no matter how careful you are trying to
+reproduce it, it only happens sometimes? And then, you think you've got it, and
+finally solved it - and tested a couple of times without any manifestation. How
 do you know that you have tested enough? Are you sure you were not "lucky" in
 your tests?
 

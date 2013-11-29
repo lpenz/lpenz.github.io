@@ -6,8 +6,9 @@ Import(['env'])
 env.Program('hasbug.c', CPPFLAGS='-g')
 
 env.Command('r1w3_n4_results.csv', ['box'], '$SOURCE -r 1 -w 3 -n 4 --output-results $TARGET', chdir=False)
+env.Command('r1w3_n4_results.t2t', ['r1w3_n4_results.csv'], './tools/csvt2ttable $SOURCE $TARGET')
+env.Depends('r1w3_n4_results.t2t', '../../tools/csvt2ttable')
 env.MAKO('r1w3_n4_results.t2t', MAKOFLAGS = '-t htmlbare')
-env.Depends('r1w3_n4_results.bhtml', 'r1w3_n4_results.csv')
 
 for rw in [(1, 3), (1, 2), (1, 1)]:
     csv = 'r%dw%d_n4_probabilities.csv' % rw
