@@ -16,7 +16,7 @@ behind it.
 
 
 
-= The Bug =
+= The Bug =[thebug]
 
 The following program is supposed to generate two random 8-bit integer and print
 them on stdout:
@@ -170,7 +170,7 @@ The fact is that, //given the data//, the estimate for \(p\)
 follows a [beta distribution http://en.wikipedia.org/wiki/Beta_distribution]
 \(Beta(k+1, n-k+1) = Beta(2, 4)\)
 ([1 http://stats.stackexchange.com/questions/13225/what-is-the-distribution-of-the-binomial-distribution-parameter-p-given-a-sampl])
-The graph below shows the distribution density of \(p\):
+The graph below shows the probability distribution density of \(p\):
 
  [r1w3_dens.png] 
 
@@ -179,46 +179,127 @@ one used for the second plot is [here $cwd$/pdensplot.R].
 
 
 
-== Increasing \(n\), narrowing down the confidence interval ==
+== Increasing \(n\), narrowing down the interval ==
 
 What happens when we test more? We obviously increase our precision, as it is at
 most \(1/n\), as we said before - there is no way to estimate that \(p=1/3\) when we
-only test twice. But, there is also another effect: the distribution for \(p\)
+only test twice. But there is also another effect: the distribution for \(p\)
 gets taller and narrower around the observed ratio \(k/n\):
 
  [pdens_many.png] 
 
-This means that we have a higher probability that \(p\) is within a given
-interval, **or** that we have a narrower interval for a given probability.
-The usually take the second approach: fix the probability, now called
-[confidence level http://en.wikipedia.org/wiki/Confidence_level] and narrow down
-the [confidence interval http://en.wikipedia.org/wiki/Confidence_interval] -
-i.e. the interval estimated for \(p\) - as we test.
 
-The typical confidence level is 95%. This means that if we repeated our test a
-huge number of times, in at least 95% of the tests we would measure \(p\) inside
-the confidence interval. This implies that we are rejecting 5% of our results
-because they are considered unlikely.
 
-Why don't we take a confidence level of 100% and be sure about the interval?
-Well, you'll notice that the density function is only 0 at 0 and 1. That means
-that a 100% confidence interval is the whole open range \((0, 1)\), no matter
-how many times we test. That would lead us nowhere.
+== Framework ==
+
+So, which value will we use for \(p\)?
+- The smaller the value of \(p\), the more we have to test to reach a given
+  confidence in the bug solution.
+- We must, then, choose the probability of error that we want to tolerate, and
+  take the //smallest// value of \(p\) that we can. A usual value is 5%.
+- That means that we take the value of \(p\) that leaves 5% of the area of the
+  density curve out on the left side.
+- That way, if the observed \(k/n\) remains somewhat constant, our estimate for
+  \(p\) will raise, converging to the "real" value.
+- As \(p\) raises, the amount of testing we have to do after fixing the bug
+  decreases.
+
+
+By using this framework we have direct, visual and tangible incentives to test
+more.
+
+In order to calculate the minimum \(p\) with the mentioned properties, we have
+to solve the following equation (where \(\alpha\) is the error we can
+tolerate):
+
+\[\sum_{k=0}^{k}{n\choose{k}}p ^k(1-p)^{n-k}=\frac{\alpha}{2} \]
+
+Fortunately, that's the formula for the confidence interval of the binomial
+distribution, and there are a lot of sites that can calculate it:
+- http://statpages.org/confint.html: \(\alpha\) here is fixed in 5%.
+- http://www.danielsoper.com/statcalc3/calc.aspx?id=85: results for \(\alpha\)
+  1%, 5% and 10%.
+- https://www.google.com.br/search?q=binomial+confidence+interval+calculator:
+  google search.
+
+
+You want to take the smaller \(p\) value provided by those calculators.
 
 
 
 = Is the bug fixed? =
 
-The code has been changed in a way that might fix the bug, but we are not sure.
-How many times should we test it, and how sure can we get?
+So, you have tested a lot and estimated \(p\). The next step is fixing the bug.
 
-For any value of \(p\) there is always the chance that we don't reproduce the
-bug, for any number of times that we test. Once again, we can take one of two
-approaches: we either test a number of times and state the probability
-\(\alpha\) of making a
-[Type I error http://en.wikipedia.org/wiki/Type_1_error#Type_I_error], or we
-keep \(\alpha\) constant (typically at 5%) and test enough times to guarantee
-it.
+After fixing the bug, you will want to test again, enough times so to be
+confident that the bug is fixed. How much testing is enough testing?
+
+Let's say that \(t\) is the number of times we test the bug after it is fixed.
+Then, if our fix is not effective and the bug still presents itself with
+the probability \(p\) that we calculated, the probability of //not// seeing the
+bug after \(t\) tests is:
+
+\[\alpha = (1-p)^t \]
+
+Here, \(\alpha\) is also the probability of making a
+[type I error http://en.wikipedia.org/wiki/Type_I_and_type_II_errors#Type_I_error],
+while \(1 - \alpha\) is the statistical significance of our tests.
+
+We now have two options:
+- arbitrarily determining a standard statistical significance and testing enough
+  times to assert it.
+- test as much as we can and report the achieved statistical significance.
+
+
+Both options are valid. The first one is not always feasible, if each trial
+takes too much time and/or there is not enough time to make the required amount
+of testing for the standard significance.
+
+The standard statistical significance in the industry is 5%, we recommend either
+that or less.
+
+
+
+= Back to the Bug =
+
+
+
+== Testing 20 times ==
+
+I made a script that ran the program presented in [The Bug #thebug] and
+registered the results. The observed \(k/n\) ration and the estimated \(p\)
+evolved as shown in the following graph:
+
+ [trials20.png] 
+
+After those 20 tests, our lower estimate for \(p\) is about 15%.
+
+Suppose that we fix the bug and test it again. The following graph shows the
+statistical significance corresponding to the number of tests we do:
+
+ [after20.png] 
+
+
+
+== Testing 5000 times ==
+
+Let's now assume that we tested 5000 times before fixing the bug. The graph
+bellow shows \(k/n\) and \(p\):
+
+ [trials5000.png] 
+
+After those 5000 tests, our lower estimate for \(p\) is about 23% - much closer
+to the real \(p\).
+
+The following graph shows the statistical significance corresponding to the
+number of tests we do after fixing the bug:
+
+ [after5000.png] 
+
+We can see in that graph that after about 11 tests we reach 95%, and after about
+16 we get to 99%. As we have tested more before fixing the bug, we found a
+higher estimate for \(p\), and that allowed us to test less after fixing the
+bug - even thought not in a substantial way.
 
 
 
