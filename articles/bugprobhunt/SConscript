@@ -11,9 +11,11 @@ env.Depends('r1w3_n4_results.t2t', '../../tools/csvt2ttable')
 env.MAKO('r1w3_n4_results.t2t', MAKOFLAGS = '-t htmlbare')
 
 for rw in [(1, 3), (1, 2), (1, 1)]:
-    csv = 'r%dw%d_n4_probabilities.csv' % rw
-    env.Command(csv, ['box'], '$SOURCE -r %d -w %d -n 4 --output-probabilities $TARGET' % rw, chdir=False)
-    env.Depends('index.bhtml', csv)
+    b = 'r%dw%d_n4_probabilities' % rw
+    env.Command(b+'.csv', ['box'], '$SOURCE -r %d -w %d -n 4 --output-probabilities $TARGET' % rw, chdir=False)
+    env.Command(b+'.t2t', [b+'.csv'], './tools/csvt2ttable $SOURCE $TARGET')
+    env.Depends(b+'.t2t', '../../tools/csvt2ttable')
+    env.Depends('index.bhtml', b+'.t2t')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
 

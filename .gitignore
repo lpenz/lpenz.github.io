@@ -25,6 +25,10 @@
 /articles/index.t2t
 /debian/index.t2t
 /articles/bugprobhunt/hasbug
+/articles/bugprobhunt/r1w1_n4_probabilities.t2t
+/articles/bugprobhunt/r1w2_n4_probabilities.t2t
+/articles/bugprobhunt/r1w3_n4_probabilities.t2t
+/articles/bugprobhunt/r1w3_n4_results.t2t
 
 # Ignore only on devel:
 index.html
