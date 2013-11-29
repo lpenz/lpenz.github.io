@@ -17,5 +17,5 @@ x <- seq(0, 1, 0.001)
 y <- dbeta(x, k+1, n-k+1)
 
 png(output, width=800)
-qplot(x, y, geom='line', xlab='p', ylab='P(p)', main=paste('p density given k', k, 'n', n))
+qplot(x, y, geom='line', xlab='p', ylab='L(p)', main=paste('p density given k', k, 'n', n))
 

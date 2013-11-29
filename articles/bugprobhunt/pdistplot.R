@@ -19,7 +19,7 @@ png(output, width=800)
 ggplot(df, aes(x = x, y = y)) +
 	opts(title=paste('p distribution for', red, 'red and', green, 'green balls')) +
 	scale_x_continuous(name='p') +
-	scale_y_continuous(name='P(k=1, n=4, p=p)') +
+	scale_y_continuous(name='L(k=1, n=4, p=p)') +
 	geom_point(size=2) + geom_linerange(aes(ymin = 0, ymax = y))
 #qplot(x, y, geom='line', xlab='p', ylab='P(p)', main=paste('p distribution for', red, 'red and', green, 'green balls'))
 

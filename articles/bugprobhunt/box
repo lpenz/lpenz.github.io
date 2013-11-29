@@ -41,7 +41,7 @@ def outputResults(opts, balls, results):
     elif opts.outresults:
         out = open(opts.outresults+'.tmp', 'w')
     for i in range(1, opts.n + 1):
-        out.write('"ball %d",' % i)
+        out.write('"trial %d",' % i)
     out.write('"\(p\) estimate"\n')
     for trial in results:
         k = 0

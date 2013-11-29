@@ -18,42 +18,71 @@ behind it.
 
 = The Bug =
 
-The following program is supposed to generate a random 16-bit integer and print
-it on stdout.
+The following program is supposed to generate two random 8-bit integer and print
+them on stdout:
 
 %!include: ``hasbug.c``
 
 On my architecture (Linux on IA-32) it has a bug that makes it print "error"
-instead of the number sometimes.
+instead of the numbers sometimes.
 
 
 
 = The Model =
 
-Every time we run the program, the bug can either show up or not. We will model
-a single program run as a
-[bernoulli trial http://en.wikipedia.org/wiki/Bernoulli_trial], with success
-defined as "seeing the bug", as that is the event we are interested in. As a
-bernoulli trial, the number of errors \(k\) of running the program \(n\) times
-follows a
+Every time we run the program, the bug can either show up or not. It has a
+non-deterministic behaviour that requires statistical analysis.
+
+We will model a single program run as a
+[Bernoulli trial http://en.wikipedia.org/wiki/Bernoulli_trial], with success
+defined as "seeing the bug", as that is the event we are interested in. We have
+the following parameters when using this model:
+- \(n\): the number of tests made;
+- \(k\): the number of times the bug was observed in the \(n\) tests;
+- \(p\): the unknown (and, most of the time, unknowable) probability of seeing
+  the bug.
+
+
+As a Bernoulli trial, the number of errors \(k\) of running the program \(n\)
+times follows a
 [binomial distribution http://en.wikipedia.org/wiki/Binomial_distribution]
-\(k \sim B(n,p)\), where \(p\) is the probability of seeing the bug in a single run.
+\(k \sim B(n,p)\). We will use this model to estimate \(p\) and to validate the
+hypotheses that the bug no longer exists, after fixing the bug in whichever
+way we can.
 
 By using this model we are implicitly assuming that all our tests are performed
-under the same conditions. In order words: if the bug happens more ofter in one
-environment, we either test always in that environment or never; if the bug
-gets more and more frequent the longer the PC is running, we reset the PC after
-each trial. The idea is to test in such a way that the parameter \(p\) is
-constant. Figuring out a single value for a parameter that keeps changing makes
-no sense, and can lead us to wrong conclusions.
+independently and identically. In order words: if the bug happens more ofter in
+one environment, we either test always in that environment or never; if the bug
+gets more and more frequent the longer the computer is running, we reset the
+computer after each trial. If we don't do that, we are effectively estimating
+the value of \(p\) with trials from different experiments, while in truth each
+experiment has it's own \(p\). We will find a single value anyway, but it has no
+meaning and can lead us to wrong conclusions.
 
-This model is the same we would use if we were taking out balls from a box with
-green and red balls. Instead of running a program, we take a ball off the box
-and look at its color: if it is
-red, we have seen the bug; if it is green, we have not. \(p\) is the number of
-red balls in the box divided by the number of green balls. The total number of
-balls in the box is not relevant to our analogy, only the red/green ratio. After
-seeing the ball, we put it back in the box, to keep \(p\) constant.
+
+
+== Physical analogy ==
+
+Another way of thinking about the model and the strategy is by creating a
+physical analogy with a box that has an unknown number of green and red balls:
+- Bernoulli trial: taking a single ball out of the box and looking at its
+  color - if it is red, we have observed the bug, otherwise we haven't. We then
+  put the ball back in the box.
+- \(n\): the total number of trials we have performed.
+- \(k\): the total number of red balls seen.
+- \(p\): the total number of red balls in the box divided by the total number of
+  green balls in the box.
+
+
+Some things become clearer when we think about this analogy:
+- If we open the box and count the balls, we can know \(p\), in contrast with
+  our original problem.
+- Without opening the box, we can estimate \(p\) by repeating the trial. As
+  \(n\) increases, our estimate for \(p\) improves. Mathematically:
+  \[p = \lim_{n\to\infty}\frac{k}{n}\]
+- Performing the trials in different conditions is like taking balls out of
+  several different boxes. The results tells us nothing about any single box.
+
 
  [boxballs.png] 
 
@@ -68,13 +97,13 @@ tested for it \(n\). Let's try that with our sample bug:
 
 ```
 $ ./hasbug
-831
+67 -68
 $ ./hasbug
--28708
+79 -101
 $ ./hasbug
 error
 $ ./hasbug
-31774
+88 -19
 ```
 
 So: \(k=1, n=4 \Rightarrow p \sim 0.25\), right? It would be better if we tested
@@ -86,22 +115,23 @@ more, but how much more, and exactly what would be better?
 
 Let's go back to our box analogy: imagine that there are 4 balls in the box, one
 red and three green. That means \(p = 1/4\). What are the possible results when
-we test four times?
+we test three times?
 
 || Red balls | Green balls | \(p\) estimate |
-| 0          | 4           | 0              |
-| 1          | 3           | 0.25           |
-| 2          | 2           | 0.5            |
-| 3          | 1           | 0.75           |
-| 4          | 0           | 1              |
+| 0          | 3           | 0%             |
+| 1          | 2           | 33%            |
+| 2          | 1           | 66%            |
+| 3          | 0           | 100%           |
 
-The less we test, the smaller is our precision. Roughly, \(p\) precision will
-be at most \(1/n\). That means that we have a precision of \(\frac{1}{1000}\)
-when we test \(1000\) times.
+The less we test, the smaller our precision is. Roughly, \(p\) precision will
+be at most \(1/n\) - in this case, 0.333. That's the step of values we can find
+for \(p\), and the minimal value for it.
+
+So, testing more improves the precision of our estimate.
 
 
 
-== \(p\) probability ==
+== \(p\) likelihood ==
 
 Let's now approach the problem from another angle: if \(p = 1/4\), what are the
 odds of seeing one error in four tests? Let's name the 4 balls as 0-red,
@@ -130,17 +160,17 @@ What about \(p = 1/2\)?
 
 So, you've seen the bug once in 4 trials. What is the value of \(p\)? You know
 that can happen 42% of the time if \(p=1/4\), but you also know it can happen
-39% of the time if \(p=1/3\). The graph bellow shows the discrete probability
+39% of the time if \(p=1/3\). The graph bellow shows the discrete likelihood
 for all \(p\) percentual values for getting 1 red and 3 green balls:
 
  [r1w3_dist.png] 
 
 
-The fact is that, //given the data//, \(p\)
+The fact is that, //given the data//, the estimate for \(p\)
 follows a [beta distribution http://en.wikipedia.org/wiki/Beta_distribution]
 \(Beta(k+1, n-k+1) = Beta(2, 4)\)
 ([1 http://stats.stackexchange.com/questions/13225/what-is-the-distribution-of-the-binomial-distribution-parameter-p-given-a-sampl])
-The graph below shows the probability distribution density of \(p\):
+The graph below shows the distribution density of \(p\):
 
  [r1w3_dens.png] 
 
