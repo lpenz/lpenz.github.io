@@ -267,8 +267,8 @@ that or less.
 == Testing 20 times ==
 
 I made a script that ran the program presented in [The Bug #thebug] and
-registered the results. The observed \(k/n\) ration and the estimated \(p\)
-evolved as shown in the following graph:
+registered the results ([data trials.csv], [script trialdoer]). The observed
+\(k/n\) ration and the estimated \(p\) evolved as shown in the following graph:
 
  [trials20.png] 
 
@@ -306,5 +306,53 @@ We can see in that graph that after about 11 tests we reach 95%, and after about
 higher estimate for \(p\), and that allowed us to test less after fixing the
 bug.
 
+
+
+= Optimal testing =
+
+We have seen that we decrease \(t\) as we increase \(n\), as that can
+potentially increases our estimated \(p\). Of course, our estimated \(p\) can
+decrease as we test, but that means that we "got lucky" in the first trials and
+we are getting to know the bug better - the estimate is approaching the real
+value in a non-deterministic way, after all.
+
+But, how much should we test before fixing the bug? Which value is an optimal
+value for \(n\)?
+
+To define an optimal value for \(n\), we will minimize the sum \(n+t\). This
+criteria gives us the benefit of minimizing the total amount of testing without
+compromising our guarantees. Minimizing the testing can be fundamental if each
+test costs significant time or resources.
+
+The graph bellow shows us the evolution of the value of \(t\) and \(t+n\) using
+the data we generated for our bug:
+
+ [tbyn.png] 
+
+We can see clearly that there are some low values of \(n\) and \(t\) that give
+us the guarantees we need. Those values are \(n = 15\) and \(t = 24\), which
+gives us \(t+n = 39\).
+
+While you can use this technique to minimize the total number of tests performed
+(even more so when testing is expensive), testing more is always a good thing,
+as it always improves our guarantee, be it in \(n\) by providing us with a
+better \(p\) or in \(t\) by increasing the significance of the test. So, test
+until you see the bug at least once, and then at least the amount specified by
+this technique - but also test more if you can, there is no upper bound.
+
+
+
+= Conclusions =
+
+When a programmer finds a bug that behaves in a non-deterministic way, he
+knows he should test enough to know more about the bug, and then even more
+after fixing it. In this article we have presented a framework that provides
+criteria to define numerically how much testing is "enough" and "even more." The
+same technique also provides a method to objectively measure the guarantee that
+the amount of testing performed provides, when it is not possible to test
+"enough."
+
+We have also provided a real example (even though the bug itself is artificial)
+where the framework is applied.
 
 
