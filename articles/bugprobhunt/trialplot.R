@@ -19,5 +19,4 @@ ggplot(data=dat, aes(x=n)) +
 	geom_hline(aes(yintercept=0.25, color="True p")) +
 	theme(legend.title = element_blank()) + ylab('k/n') +
 	labs(title = 'k/n and p estimate evolution')
-#+ opts(x=xlab='p', ylab='L(p)', main=paste('p density given k', k, 'n', n))
 

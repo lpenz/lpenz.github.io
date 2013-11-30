@@ -18,11 +18,11 @@ dat <- data.frame(t = seq(1, 40))
 dat$significance <- 1 - (1-pmin) ^ dat$t
 
 png(output, width=800)
-ggplot(data=dat, aes(x=t)) + geom_line(aes(y=significance, color="significance")) +
-	scale_y_continuous(limits = c(0, 1)) +
+ggplot(data=dat, aes(x=t)) +
+	geom_line(aes(y=significance, color="significance")) +
 	geom_hline(aes(yintercept=0.95, color="95%")) +
 	geom_hline(aes(yintercept=0.99, color="99%")) +
+	scale_y_continuous(limits = c(0, 1)) +
 	theme(legend.title = element_blank()) +
 	labs(title = 'Significance for t')
-#+ opts(x=xlab='p', ylab='L(p)', main=paste('p density given k', k, 'n', n))
 
