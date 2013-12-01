@@ -17,7 +17,7 @@ for i in glob.glob('*'):
 
 # Index:
 indexbuild = env.File('indexbuild')
-env.Command('index.t2t', articles, indexbuild.abspath + ' $TARGET $SOURCES')
+env.Command('index.t2t', [a+'/info.yaml' for a in articles], indexbuild.abspath + ' $TARGET $SOURCES')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
 htmlsitefiles.add('articles/index.html')

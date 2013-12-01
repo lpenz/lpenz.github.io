@@ -17,8 +17,8 @@ def main():
     articlesinfo = []
 
     for a in articlesdir:
-        info = '%s/info.yaml' % a
-        base = ''.join(a.split('articles/')[1:])
+        info = a
+        base = ''.join(a.split('/')[1])
         y = yaml.load(open(info).read())
         articlesinfo.append(((y['date'], y['title'], base), y['tags']))
     articlesinfo.sort()
