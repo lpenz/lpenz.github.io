@@ -8,6 +8,8 @@
 <%
 	j = []
 	for i,v in sub['articles']['sub'].items():
+		if v.get('disabled',False):
+			continue
 		if tag in v['tags']:
 			f = txt2tagsfile('articles/'+i+'/index.t2t')
 			cwd = home+'/articles/'+i

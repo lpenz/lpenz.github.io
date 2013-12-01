@@ -19,6 +19,8 @@ for i in glob.glob('../articles/*'):
         continue
     env.Depends('articles.xml', os.path.join(i, 'index.html'))
     y = yaml.load(open(os.path.join(i, 'info.yaml')).read())
+    if y.get('disabled', False):
+        continue
     for t in y['tags']:
         tags.setdefault(t, [])
         tags[t].append(i)
