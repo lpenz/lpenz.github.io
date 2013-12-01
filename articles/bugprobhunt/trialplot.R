@@ -15,8 +15,8 @@ dat <- dat[0:num,]
 png(output, width=800)
 ggplot(data=dat, aes(x=n)) +
 	geom_line(aes(y=ksn, color="k/n")) +
-	geom_line(aes(y=p, color="p estimate")) +
-	geom_hline(aes(yintercept=0.25, color="True p")) +
+	geom_line(aes(y=p, color="p min")) +
+	geom_hline(aes(yintercept=0.25, color="true p")) +
 	theme(legend.title = element_blank()) + ylab('k/n') +
-	labs(title = 'k/n and p estimate evolution')
+	labs(title = 'k/n and p min estimate evolution')
 
