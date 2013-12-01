@@ -24,6 +24,7 @@ def main():
             continue
         articlesinfo.append(((y['date'], y['title'], base), y['tags']))
     articlesinfo.sort()
+    articlesinfo.reverse()
 
     fd = open('%s.tmp' % outputfilename, 'w')
     fd.write('''Articles
