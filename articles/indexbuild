@@ -20,6 +20,8 @@ def main():
         info = a
         base = ''.join(a.split('/')[1])
         y = yaml.load(open(info).read())
+        if y.get('disabled', False):
+            continue
         articlesinfo.append(((y['date'], y['title'], base), y['tags']))
     articlesinfo.sort()
 
