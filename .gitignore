@@ -24,6 +24,11 @@
 /articles/hedsl-sharedexpenses/sharedexpenses.lhs
 /articles/index.t2t
 /debian/index.t2t
+/articles/bugprobhunt/hasbug
+/articles/bugprobhunt/r1w1_n4_probabilities.t2t
+/articles/bugprobhunt/r1w2_n4_probabilities.t2t
+/articles/bugprobhunt/r1w3_n4_probabilities.t2t
+/articles/bugprobhunt/r1w3_n4_results.t2t
 
 # Ignore only on devel:
 index.html
@@ -31,7 +36,11 @@ index.html
 /articles/df0pred-1/*.png
 /articles/df0pred-2/*.png
 /articles/df0pred-3/*.png
-/feeds/*.xml
+/articles/bugprobhunt/r1w*_probabilities.csv
+/articles/bugprobhunt/r1w*_results.csv
+/articles/bugprobhunt/*.png
+/articles/bugprobhunt/r1w3_n4_results.html
 /sitemap.xml
+/feeds/*.xml
 # End
 

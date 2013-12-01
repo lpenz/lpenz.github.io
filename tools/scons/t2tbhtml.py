@@ -4,7 +4,6 @@ import SCons.Builder
 import SCons.Util
 import SCons.Scanner
 import SCons.Tool
-import yaml
 import os
 import re
 
@@ -12,7 +11,7 @@ import re
 cre = re.compile('^%!include:\s*(.*)$', re.M)
 ids = {'`':'verb', '"':'raw', "'":'passthru' }
 
-def t2tbhtmlSourceScanner(node, env, path):
+def t2tbhtmlSourceScan(node, env):
     candidates = cre.findall(node.get_contents())
     includes = []
     for f in candidates:
@@ -20,11 +19,14 @@ def t2tbhtmlSourceScanner(node, env, path):
         if mark in ids.keys():
             if f[:2] == f[-2:] == mark*2:
                 f = f[2:-2]
+            print(f)
         else:
-            includes.extend(t2tbhtmlSourceScanner(env.File(f)))
+            includes.extend(t2tbhtmlSourceScan(env.File(f), env))
         includes.append(f)
     return includes
 
+def t2tbhtmlSourceScanner(node, env, path):
+    return t2tbhtmlSourceScan(node, env)
 
 def t2tbhtmlTargetScanner(node, env, path):
     return [os.path.join(env['TOP'], env['T2TBHTML'])]
