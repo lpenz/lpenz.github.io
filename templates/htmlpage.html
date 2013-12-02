@@ -1,15 +1,5 @@
 <%inherit file="htmlbase.html"/>
 
-<%block name="htmlheader">
-% if disabled:
-<script type="text/javascript"><!--
-	alert("This article is disabled. Be warned that it may contain even more errors and inconsistencies than a normal article.");
-	-->
-</script>
-${self.body()}
-% endif
-</%block>
-
 <%block name="htmlbody">
 
 <div id="lpenz">
