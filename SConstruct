@@ -52,6 +52,7 @@ env.SConscript('feeds/SConscript')
 
 
 # Final touches:
+env.Command('_htmlcheck_ok.txt', list(htmlsitefiles), 'htmlcheck $SOURCES && md5sum $SOURCES > $TARGET')
 env.Command('sitemap.xml', list(htmlsitefiles), 'tools/sitemapper $TARGET $SOURCES')
 env.Depends('sitemap.xml', 'tools/sitemapper')
 
