@@ -102,20 +102,20 @@ $ ./hasbug
 79 -101
 $ ./hasbug
 error
-$ ./hasbug
-88 -19
 ```
 
-So: \(k=1, n=4 \Rightarrow p \sim 0.25\), right? It would be better if we tested
-more, but how much more, and exactly what would be better?
+We know from the source code that \(p=25%\), but let's pretend that we don't, as
+will be the case with practically every non-deterministic bug. We tested 3
+times, so \(k=1, n=3 \Rightarrow p \sim 33%\), right? It would be better if we
+tested more, but how much more, and exactly what would be better?
 
 
 
 == \(p\) precision ==
 
 Let's go back to our box analogy: imagine that there are 4 balls in the box, one
-red and three green. That means \(p = 1/4\). What are the possible results when
-we test three times?
+red and three green. That means that \(p = 1/4\). What are the possible results
+when we test three times?
 
 || Red balls | Green balls | \(p\) estimate |
 | 0          | 3           | 0%             |
@@ -124,10 +124,10 @@ we test three times?
 | 3          | 0           | 100%           |
 
 The less we test, the smaller our precision is. Roughly, \(p\) precision will
-be at most \(1/n\) - in this case, 0.333. That's the step of values we can find
+be at most \(1/n\) - in this case, 33%. That's the step of values we can find
 for \(p\), and the minimal value for it.
 
-So, testing more improves the precision of our estimate.
+Testing more improves the precision of our estimate.
 
 
 
@@ -158,10 +158,13 @@ What about \(p = 1/2\)?
 
 %!include: r1w1_n4_probabilities.t2t
 
-So, you've seen the bug once in 4 trials. What is the value of \(p\)? You know
-that can happen 42% of the time if \(p=1/4\), but you also know it can happen
-39% of the time if \(p=1/3\). The graph bellow shows the discrete likelihood
-for all \(p\) percentual values for getting 1 red and 3 green balls:
+So, let's assume that you've seen the bug once in 4 trials. What is the value of
+\(p\)? You know that can happen 42% of the time if \(p=1/4\), but you also know
+it can happen 39% of the time if \(p=1/3\), and 25% of the time if \(p=1/2\).
+Which one is it?
+
+The graph bellow shows the discrete likelihood for all \(p\) percentual values
+for getting 1 red and 3 green balls:
 
  [r1w3_dist.png] 
 
@@ -190,16 +193,17 @@ gets taller and narrower around the observed ratio \(k/n\):
 
 
 
-== Framework ==
+== Investigation framework ==
 
 So, which value will we use for \(p\)?
 - The smaller the value of \(p\), the more we have to test to reach a given
   confidence in the bug solution.
 - We must, then, choose the probability of error that we want to tolerate, and
   take the //smallest// value of \(p\) that we can.
-  A usual value for the probability of error is 5%.
-- That means that we take the value of \(p\) that leaves 5% of the area of the
-  density curve out on the left side. Let's call this value let's call it
+
+  A usual value for the probability of error is 5% (2.5% on each side).
+- That means that we take the value of \(p\) that leaves 2.5% of the area of the
+  density curve out on the left side. Let's call this value
   \(p_{min}\).
 - That way, if the observed \(k/n\) remains somewhat constant,
   \(p_{min}\) will raise, converging to the "real" \(p\) value.
@@ -208,16 +212,18 @@ So, which value will we use for \(p\)?
 
 
 By using this framework we have direct, visual and tangible incentives to test
-more.
+more. We can objectively measure the potential contribution of each test.
 
 In order to calculate \(p_{min}\) with the mentioned properties, we have
-to solve the following equation (where \(\alpha\) is the error we can
-tolerate):
+to solve the following equation:
 
 \[\sum_{k=0}^{k}{n\choose{k}}p_{min} ^k(1-p_{min})^{n-k}=\frac{\alpha}{2} \]
 
-Fortunately, that's the formula for the confidence interval of the binomial
-distribution, and there are a lot of sites that can calculate it:
+\(alpha\) here is twice the error we want to tolerate: 5% for an error of 2.5%.
+
+That's not a trivial equation to solve for \(p_{min}\). Fortunately, that's
+the formula for the confidence interval of the binomial distribution, and there
+are a lot of sites that can calculate it:
 - http://statpages.org/confint.html: \(\alpha\) here is fixed in 5%.
 - http://www.danielsoper.com/statcalc3/calc.aspx?id=85: results for \(\alpha\)
   1%, 5% and 10%.
@@ -236,14 +242,14 @@ confident that the bug is fixed. How much testing is enough testing?
 
 Let's say that \(t\) is the number of times we test the bug after it is fixed.
 Then, if our fix is not effective and the bug still presents itself with
-the probability \(p_{min}\) that we calculated, the probability of //not// seeing the
-bug after \(t\) tests is:
+a probability greater than the \(p_{min}\) that we calculated, the probability
+of //not// seeing the bug after \(t\) tests is:
 
 \[\alpha = (1-p_{min})^t \]
 
 Here, \(\alpha\) is also the probability of making a
 [type I error http://en.wikipedia.org/wiki/Type_I_and_type_II_errors#Type_I_error],
-while \(1 - \alpha\) is the statistical significance of our tests.
+while \(1 - \alpha\) is the //statistical significance// of our tests.
 
 We now have two options:
 - arbitrarily determining a standard statistical significance and testing enough
@@ -251,9 +257,8 @@ We now have two options:
 - test as much as we can and report the achieved statistical significance.
 
 
-Both options are valid. The first one is not always feasible, if each trial
-takes too much time and/or there is not enough time to make the required amount
-of testing for the standard significance.
+Both options are valid. The first one is not always feasible, as the cost of
+each trial can be high in time and/or other kind of resources.
 
 The standard statistical significance in the industry is 5%, we recommend either
 that or less.
@@ -266,10 +271,10 @@ that or less.
 
 == Testing 20 times ==
 
-I made a script that ran the program presented in [The Bug #thebug] and
-registered the results ([data trials.csv], [script trialdoer]). The observed
-\(k/n\) ration and the calculated \(p_{min}\) evolved as shown in the following
-graph:
+[This file trials.csv] has the results found after running our program 5000
+times. We must never throw out data, but let's pretend that we have tested our
+program only 20 times. The observed \(k/n\) ration and the calculated
+\(p_{min}\) evolved as shown in the following graph:
 
  [trials20.png] 
 
@@ -289,8 +294,8 @@ Now, what happens if we test more before fixing the bug?
 
 == Testing 5000 times ==
 
-Let's now assume that we tested 5000 times before fixing the bug. The graph
-bellow shows \(k/n\) and \(p_{min}\):
+Let's now use all the results and assume that we tested 5000 times before fixing
+the bug. The graph bellow shows \(k/n\) and \(p_{min}\):
 
  [trials5000.png] 
 
@@ -321,7 +326,7 @@ But, how much should we test before fixing the bug? Which value is an optimal
 value for \(n\)?
 
 To define an optimal value for \(n\), we will minimize the sum \(n+t\). This
-criteria gives us the benefit of minimizing the total amount of testing without
+objective gives us the benefit of minimizing the total amount of testing without
 compromising our guarantees. Minimizing the testing can be fundamental if each
 test costs significant time or resources.
 
@@ -337,9 +342,11 @@ gives us \(t+n = 39\).
 While you can use this technique to minimize the total number of tests performed
 (even more so when testing is expensive), testing more is always a good thing,
 as it always improves our guarantee, be it in \(n\) by providing us with a
-better \(p\) or in \(t\) by increasing the significance of the test. So, test
-until you see the bug at least once, and then at least the amount specified by
-this technique - but also test more if you can, there is no upper bound.
+better \(p\) or in \(t\) by increasing the statistical significance of the
+conclusion that the bug is fixed. So, before fixing the bug, test until you see
+the bug at least once, and then at least the amount specified by this
+technique - but also test more if you can, there is no upper bound, specially
+after fixing the bug. You can then report a higher confidence in the solution.
 
 
 
