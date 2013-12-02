@@ -15,7 +15,7 @@ def main():
     else:
         o = sys.stdout
     o.write('Debian\n\n\n')
-    o.write('%!PostProc(xhtml): \'img \' \'img height="20px" \'\n')
+    o.write('%!PostProc(xhtml): \'img \' \'img height="20" \'\n')
     o.write('\n\n')
     o.write('= Configuration =\n\n')
     o.write('To use the debian repository behind this page, put [this file ../%s] in ///etc/apt/sources.list.d// or add the following line to ///etc/apt/sources.list//:\n\n' % applist)
