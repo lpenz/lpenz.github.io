@@ -11,7 +11,7 @@ finally solved it - and tested a couple of times without any manifestation. How
 do you know that you have tested enough? Are you sure you were not "lucky" in
 your tests?
 
-In this article we will see how those questions can be answered and the math
+In this article we will see how to answer those questions and the math
 behind it without going into too much detail. This is a pragmatic guide.
 
 
@@ -46,7 +46,7 @@ the following parameters when using this model:
 As a Bernoulli trial, the number of errors \(k\) of running the program \(n\)
 times follows a
 [binomial distribution http://en.wikipedia.org/wiki/Binomial_distribution]
-\(k \sim B(n,p)\). We will use this model to estimate \(p\) and to validate the
+\(k \sim B(n,p)\). We will use this model to estimate \(p\) and to confirm the
 hypotheses that the bug no longer exists, after fixing the bug in whichever
 way we can.
 
@@ -56,7 +56,7 @@ one environment, we either test always in that environment or never; if the bug
 gets more and more frequent the longer the computer is running, we reset the
 computer after each trial. If we don't do that, we are effectively estimating
 the value of \(p\) with trials from different experiments, while in truth each
-experiment has it's own \(p\). We will find a single value anyway, but it has no
+experiment has its own \(p\). We will find a single value anyway, but it has no
 meaning and can lead us to wrong conclusions.
 
 
@@ -81,7 +81,7 @@ Some things become clearer when we think about this analogy:
   \(n\) increases, our estimate for \(p\) improves. Mathematically:
   \[p = \lim_{n\to\infty}\frac{k}{n}\]
 - Performing the trials in different conditions is like taking balls out of
-  several different boxes. The results tells us nothing about any single box.
+  several different boxes. The results tell us nothing about any single box.
 
 
  [boxballs.png] 
@@ -224,7 +224,7 @@ to solve the following equation:
 That's not a trivial equation to solve for \(p_{min}\). Fortunately, that's
 the formula for the confidence interval of the binomial distribution, and there
 are a lot of sites that can calculate it:
-- http://statpages.org/confint.html: \(\alpha\) here is fixed in 5%.
+- http://statpages.org/confint.html: \(\alpha\) here is 5%.
 - http://www.danielsoper.com/statcalc3/calc.aspx?id=85: results for \(\alpha\)
   1%, 5% and 10%.
 - https://www.google.com.br/search?q=binomial+confidence+interval+calculator:
@@ -237,8 +237,8 @@ are a lot of sites that can calculate it:
 So, you have tested a lot and calculated \(p_{min}\). The next step is fixing
 the bug.
 
-After fixing the bug, you will want to test again, enough times so to be
-confident that the bug is fixed. How much testing is enough testing?
+After fixing the bug, you will want to test again, in order to
+confirm that the bug is fixed. How much testing is enough testing?
 
 Let's say that \(t\) is the number of times we test the bug after it is fixed.
 Then, if our fix is not effective and the bug still presents itself with
@@ -325,13 +325,13 @@ decrease as we test, but that means that we "got lucky" in the first trials and
 we are getting to know the bug better - the estimate is approaching the real
 value in a non-deterministic way, after all.
 
-But, how much should we test before fixing the bug? Which value is an optimal
+But, how much should we test before fixing the bug? Which value is an ideal
 value for \(n\)?
 
 To define an optimal value for \(n\), we will minimize the sum \(n+t\). This
 objective gives us the benefit of minimizing the total amount of testing without
 compromising our guarantees. Minimizing the testing can be fundamental if each
-test costs significant time or resources.
+test costs significant time and/or resources.
 
 The graph bellow shows us the evolution of the value of \(t\) and \(t+n\) using
 the data we generated for our bug:
