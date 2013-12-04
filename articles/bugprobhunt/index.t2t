@@ -1,6 +1,6 @@
 Probabilistic bug hunting
 Basic statistics for programmers
-2011-09-07
+2013-12-04
 
 %!postproc: '!!r1w3_n4_results!!' <iframe src="r1w3_n4_results.html" width="100%" height="500"></iframe>
 
@@ -12,7 +12,7 @@ do you know that you have tested enough? Are you sure you were not "lucky" in
 your tests?
 
 In this article we will see how those questions can be answered and the math
-behind it.
+behind it without going into too much detail. This is a pragmatic guide.
 
 
 
@@ -262,6 +262,9 @@ each trial can be high in time and/or other kind of resources.
 
 The standard statistical significance in the industry is 5%, we recommend either
 that or less.
+
+Formally, this is very similar to a
+[statistical hypothesis testing http://en.wikipedia.org/wiki/Hypothesis_testing].
 
 
 
