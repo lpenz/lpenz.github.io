@@ -26,11 +26,14 @@ def doit(outfile, files):
     for f in files:
         if not f.endswith('index.html'):
             continue
+        s = f.replace('.html','.t2t')
+        if not os.path.exists(s):
+            s = f
         #assert f.startswith('./')
         #f = f[2:]
         o.write('  <url>\n')
         o.write('    <loc>http://lpenz.org/%s</loc>\n' % f)
-        d = subprocess.check_output('git log -1 --format=%%ai "%s"' % f, shell=True)
+        d = subprocess.check_output('git log -1 --format=%%ai "%s"' % s, shell=True)
         if len(d) > 0:
             o.write('    <lastmod>%s</lastmod>\n' % d[0:10])
         o.write('  </url>\n')
