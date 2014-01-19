@@ -1,0 +1,8 @@
+
+import os
+
+Import(['env', 'htmlsitefiles'])
+
+env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
+htmlsitefiles.add('articles/busyna/index.html')
+

@@ -1,0 +1,111 @@
+BUild SYstems Never Again
+Rethinking the build
+2000-01-01
+
+
+= Build systems =
+
+``make`` is the classic, primordial build system. I have intimate knowledge of
+``make``, and I hate its guts. In order to use it, you have to create a file
+that tells it the dependencies and the commands used to build every file, so
+that ``make`` can build a graph internally and run only the commands that need
+to be run. It seems like a good idea, but why do we have to tell the computer
+which files are used by which program? That's dumb.
+
+Since ``make`` was created, there has been quite a few new build systems around,
+but most of them either try to be a "better make", or use make underneath. Some
+ease the creation of the Makefile by having built-in rules for specific cases,
+even though these rules can also be implemented in the Makefile itself - I don't
+get why we have those.
+% explain the build systems?
+
+The "``make``-model" seems to have defined that all build systems must use a
+graph to define the order of the commands and which should be run or not. In
+this post I'll explain an idea of a build system that does not follow this
+graph-first decision process, but uses a command-list decision process.
+
+
+
+= Busyna =
+
+As the ``make``-model has defined what a build system is, I'm calling the
+proposed tool **busyna**, which stands for BUild SYstems Never Again.
+The tool has the following requirements:
+- the developer configures it with the commands used in the build;
+- the tool finds out the files used by each command, and the files produced;
+- it is either as fast as ``make`` or faster.
+
+
+There are two main problems to solve in order to have such a tool:
+- how to deal with the list of commands, and what to do when they change;
+- how to find out the files used and produced by each command.
+
+
+We will call the first issue the **strategy** problem. ``make`` doesn't really
+solve it, as it doesn't detect when commands change - if the produced files are
+newer than the source files, the command is not run and that's it. We ought to
+do better than that.
+
+We will call the second issue the **tactical** problem. We have some options
+here, most of them not portable, and each with its own set of limitations.
+
+Each of these problem categories will be explored bellow. Keep in mind that
+busyna is a very exploratory tool by nature, and that even non-optimal options
+should be kept in it.
+
+
+
+= Strategies =
+
+Busyna is implemented in python as a library. To configure a build we can
+create an //Environment// object and call a method to add commands to it. That
+makes it interesting to have a strategy that runs the commands in the moment
+that they are added - the //immediate// strategy. This strategy has a very poor
+response to command order change: it always assumes that a different command is
+a changed command.
+
+The proper way to deal with change in command is to read all of them and use a
+linear programming algorithm. Unfortunately, that forbids us from executing
+things between programs in the python scripts that configures the build. This
+is called the //deferred// strategy.
+
+The last strategy is the //monitor// strategy. This strategy starts a process
+that monitors the files for change so that busyna already knows everything that
+is pending when the build starts. The single purpose of this strategy is speed.
+
+
+
+= Tactical =
+
+We will focus on Linux in the tactical front. The following options have been
+tried:
+- strace: run the command with strace, parse the results.
+  - pros: very hygienic;
+  - cons: slows down the commands a lot; strace can hang.
+- inotify: place monitors in the build directory and run the commands.
+  - pros: commands keep their speed, even though the monitors take time to setup
+    in the beginning of the build.
+  - cons: poor hygiene - any changes in files are attributed to the currently
+    running command; the build will not track changes to files that are outside
+    the build directory.
+
+
+These are the tactical options that are readily available. There should also be
+and option that uses some sort of LD_PRELOAD trick, but it was not explored as
+it would require building another tool. It might be the best tactic, though, and
+is an option worth exploring in the future.
+
+
+
+= Converting Makefiles =
+
+The information that the developer gives to busyna is a strict subset of what
+``make`` has. That allows us to convert Makefiles to busynarc files
+automatically: just run the provided busyna-make-convert. This tool runs
+``make`` using a special shell that records all the commands used.
+
+
+= Conclusion =
+
+
+
