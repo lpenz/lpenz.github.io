@@ -1,4 +1,4 @@
-BUild SYstems Never Again
+BUild SYstems - the Novel Approach
 Rethinking the build
 2000-01-01
 
@@ -13,14 +13,14 @@ standard that all other build systems follow.
 In order to use //make//, the developer creates a file (//Makefile//) with
 //rules// that tell the system how to build each file (//target//) and which
 other files are used (//sources//), forming a chain of dependencies. When
-//make// is invoked for the first time, it reads the rules and builds a acyclic
-directed graph internally, and then starts running the commands in an order
+//make// is invoked for the first time, it reads the rules and builds a directed
+acyclic graph internally (DAG), and then starts running the commands in an order
 that does not break any dependency. When you run //make// again, upon a
-partially built system, it only runs the commands that corresponds to rules
-that have at least one source with a //ctime// (time the file was last changed)
-newer than the target, or when the target doesn't exist. That's the main
-contribution of //make//: speeding up the build when the developer only changed
-a few files, decreasing the time of the edit-compile-test cycle.
+partially built system, it only runs the commands that corresponds to rules that
+have at least one source with a //ctime// (time the file was last changed) newer
+than the target, or when the target doesn't exist. That's the main contribution
+of //make//: speeding up the build when the developer only changed a few files,
+decreasing the time of the edit-compile-test cycle.
 
 //make// has a number of built-in generic rules with commands for several file
 extensions that the developer can use to skip the command definition part of the
@@ -34,63 +34,59 @@ when that happens. When this developer is working alone there is no problem, but
 when source code is kept under revision control in a shared repository, the only
 way to guarantee that the build is correct is by checking if any update has
 changed a build rule, and cleaning up if it did. Most developers don't do that,
-and neither clean everything to be safe, and because of that their environment
-is potentially compromised after every update.
+and neither clean everything at each update to be safe, and because of that
+their environment is potentially compromised after every update.
 
-%update, as the build rules may have changed.
-%
-%checks if any of the
-%source files is newer than the built file, and skips the commands when 
-%changed
-%last-time-of-change of each file with the last-time-of-change of its source, and
-%only runs the commands specified in the rule if the 
-%
-%basis for most build systems and ag
-%other build systems
-%
-%``make`` is the classic, primordial build system. I have intimate knowledge of
-%``make``, and I hate its guts. In order to use it, you have to create a file
-%that tells it the dependencies and the commands used to build every file, so
-%that ``make`` can build a graph internally and run only the commands that need
-%to be run. It seems like a good idea, but why do we have to tell the computer
-%which files are used by which program? That's dumb.
-%
-%Since ``make`` was created, there has been quite a few new build systems around,
-%but most of them either try to be a "better make", or use make underneath. Some
-%ease the creation of the Makefile by having built-in rules for specific cases,
-%even though these rules can also be implemented in the Makefile itself - I don't
-%get why we have those.
-%% explain the build systems?
-%
-%The "``make``-model" seems to have defined that all build systems must use a
-%graph to define the order of the commands and which should be run or not. In
-%this post I'll explain an idea of a build system that does not follow this
-%graph-first decision process, but uses a command-list decision process.
+There are more modern build systems that address these issues, like //scons//,
+for instance. scons keeps an internal state and can tell when commands
+change. It is able to deal with commands that generate more than one target
+correctly (you can't express that in a Makefile), and has more built-in rules.
+These rules can define how to detect dependencies from the source file they act
+on, but the developer still has to either write a new rule or hard-code the
+dependencies in the //SConstruct// file for the general case. scons is also
+still based on the direct acyclic graph model.
+
+There are other build systems like scons - that fix some defects of make, but
+still use the DAG model. There are some other that focus on being portable by
+changing the built-in rules with the system, and some that do some of sort of
+dependency-tracking outside of //make// before constructing a Makefile and
+calling //make// anyway. See **TODO** for a more comprehensive survey.
+
+There is nothing strictly wrong with these tools. They in fact fix make, and I
+have been using scons for most of my projects since its early days.
+
+But, thinking about it again, I think we can do better. As an exercise, what
+would a build system be if we had to design one from scratch? In my view, it
+would be just a list of commands that are skipped when they are not necessary,
+no DAG implied. If we throw in automatic dependency and target discovery, we
+have a novel tool that is different from //make// at the core.
 
 
 
 = Busyna =
 
-As the ``make``-model has defined what a build system is, I'm calling the
-proposed tool **busyna**, which stands for BUild SYstems Never Again.
-The tool has the following requirements:
-- the developer configures it with the commands used in the build;
-- the tool finds out the files used by each command, and the files produced;
-- it is either as fast as ``make`` or faster.
+As the DAG-model has defined what a build system is, we will call the proposed
+tool **busyna**, which stands for BUild SYstems - the Novel Approach. The tool
+has the following requirements:
+- the developer configures it only with the commands used in the build;
+- the tool finds out the source files used by each command, and the target
+  files;
+- it is either as fast as //make// or faster.
 
 
 There are two main problems to solve in order to have such a tool:
-- how to deal with the list of commands, and what to do when they change;
-- how to find out the files used and produced by each command.
+- how to deal with the list of commands when it changes;
+- how to find out the sources and targets of each command.
 
 
-We will call the first issue the **strategy** problem. ``make`` doesn't really
+We will call the first issue the **strategy** problem. //make// doesn't really
 solve it, as it doesn't detect when commands change - if the produced files are
 newer than the source files, the command is not run and that's it. We ought to
 do better than that.
 
-We will call the second issue the **tactical** problem. We have some options
-here, most of them not portable, and each with its own set of limitations.
+We will call the second issue the **tactical** problem. We have a number of
+options here, most of them not portable, and each with its own set of
+limitations.
 
 Each of these problem categories will be explored bellow. Keep in mind that
 busyna is a very exploratory tool by nature, and that even non-optimal options
@@ -100,7 +96,7 @@ should be kept in it.
 
 = Strategies =
 
-Busyna is implemented in python as a library. To configure a build we can
+busyna is implemented in python as a library. To configure a build we can
 create an //Environment// object and call a method to add commands to it. That
 makes it interesting to have a strategy that runs the commands in the moment
 that they are added - the //immediate// strategy. This strategy has a very poor
@@ -135,17 +131,17 @@ tried:
 
 These are the tactical options that are readily available. There should also be
 and option that uses some sort of LD_PRELOAD trick, but it was not explored as
-it would require building another tool. It might be the best tactic, though, and
-is an option worth exploring in the future.
+it would require building a custom library. It might be the best tactic, though,
+and is an option worth exploring in the future.
 
 
 
 = Converting Makefiles =
 
 The information that the developer gives to busyna is a strict subset of what
-``make`` has. That allows us to convert Makefiles to busynarc files
+//make// has. That allows us to convert Makefiles to busynarc files
 automatically: just run the provided busyna-make-convert. This tool runs
-``make`` using a special shell that records all the commands used.
+//make// using a special shell that records all the commands used.
 
 
 = Conclusion =
