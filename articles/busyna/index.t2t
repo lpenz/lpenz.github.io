@@ -5,24 +5,67 @@ Rethinking the build
 
 = Build systems =
 
-``make`` is the classic, primordial build system. I have intimate knowledge of
-``make``, and I hate its guts. In order to use it, you have to create a file
-that tells it the dependencies and the commands used to build every file, so
-that ``make`` can build a graph internally and run only the commands that need
-to be run. It seems like a good idea, but why do we have to tell the computer
-which files are used by which program? That's dumb.
+A //build system// is the tool that software developers use to automate the
+steps required to construct a software product, such as compilation, linking and
+packaging. //make// is the classic, primordial build system, which defined the
+standard that all other build systems follow.
 
-Since ``make`` was created, there has been quite a few new build systems around,
-but most of them either try to be a "better make", or use make underneath. Some
-ease the creation of the Makefile by having built-in rules for specific cases,
-even though these rules can also be implemented in the Makefile itself - I don't
-get why we have those.
-% explain the build systems?
+In order to use //make//, the developer creates a file (//Makefile//) with
+//rules// that tell the system how to build each file (//target//) and which
+other files are used (//sources//), forming a chain of dependencies. When
+//make// is invoked for the first time, it reads the rules and builds a acyclic
+directed graph internally, and then starts running the commands in an order
+that does not break any dependency. When you run //make// again, upon a
+partially built system, it only runs the commands that corresponds to rules
+that have at least one source with a //ctime// (time the file was last changed)
+newer than the target, or when the target doesn't exist. That's the main
+contribution of //make//: speeding up the build when the developer only changed
+a few files, decreasing the time of the edit-compile-test cycle.
 
-The "``make``-model" seems to have defined that all build systems must use a
-graph to define the order of the commands and which should be run or not. In
-this post I'll explain an idea of a build system that does not follow this
-graph-first decision process, but uses a command-list decision process.
+//make// has a number of built-in generic rules with commands for several file
+extensions that the developer can use to skip the command definition part of the
+rules. The developer can also put more of theses generic rules in the Makefile
+for extensions that are not supported out-of-the-box.
+
+//make// keeps no internal state. That means that it doesn't know what or how it
+built the system the last time it ran, and thus can't rebuild a target when the
+commands change - it's the responsibility of the developer to remove the target
+when that happens. When this developer is working alone there is no problem, but
+when source code is kept under revision control in a shared repository, the only
+way to guarantee that the build is correct is by checking if any update has
+changed a build rule, and cleaning up if it did. Most developers don't do that,
+and neither clean everything to be safe, and because of that their environment
+is potentially compromised after every update.
+
+%update, as the build rules may have changed.
+%
+%checks if any of the
+%source files is newer than the built file, and skips the commands when 
+%changed
+%last-time-of-change of each file with the last-time-of-change of its source, and
+%only runs the commands specified in the rule if the 
+%
+%basis for most build systems and ag
+%other build systems
+%
+%``make`` is the classic, primordial build system. I have intimate knowledge of
+%``make``, and I hate its guts. In order to use it, you have to create a file
+%that tells it the dependencies and the commands used to build every file, so
+%that ``make`` can build a graph internally and run only the commands that need
+%to be run. It seems like a good idea, but why do we have to tell the computer
+%which files are used by which program? That's dumb.
+%
+%Since ``make`` was created, there has been quite a few new build systems around,
+%but most of them either try to be a "better make", or use make underneath. Some
+%ease the creation of the Makefile by having built-in rules for specific cases,
+%even though these rules can also be implemented in the Makefile itself - I don't
+%get why we have those.
+%% explain the build systems?
+%
+%The "``make``-model" seems to have defined that all build systems must use a
+%graph to define the order of the commands and which should be run or not. In
+%this post I'll explain an idea of a build system that does not follow this
+%graph-first decision process, but uses a command-list decision process.
 
 
 
