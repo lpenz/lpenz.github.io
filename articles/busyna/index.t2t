@@ -136,15 +136,49 @@ and is an option worth exploring in the future.
 
 
 
+== Vulnerability ==
+
+All the tactics presented have a common vulnerability: the tool used **must**
+deterministically use the source files to produce the targets. There are some
+tools out there that try to do //make//'s job of checking if it is necessary to
+rebuild the target. In that case, on a second run, the tool will not write any
+files, and busyna won't be able to update the targets correctly.
+
+In an ideal world, each tool has a single job.
+
+
+
 = Converting Makefiles =
 
 The information that the developer gives to busyna is a strict subset of what
 //make// has. That allows us to convert Makefiles to busynarc files
-automatically: just run the provided busyna-make-convert. This tool runs
-//make// using a special shell that records all the commands used.
+automatically: just run the provided //busyna-make-convert//. This tool runs
+//make// using a special shell that records all the commands and creates a
+busynarc, before calling the real shell.
+
+Many Makefiles have rules to generate dependency files and automatically track
+some dependencies. There rules can be removed from the generated busynarc, as
+they are not needed and will only slow the build down.
+
+
+
+= Building the Linux kernel =
+
+And now the real test of busyna: building the Linux kernel. It is a big system,
+based on //make//, that we will configure and build. The configuration is
+minimal so that it doesn't take forever, and can be found
+[here https://raw.github.com/regit/regit-config/master/virtualbox/config-3.5-vbox-no-netfilter].
+
+The first step is converting the Makefile by using busyna-make-convert. In the
+created busynarc we can see that the kernel uses some tricks to optimize the
+build when only the configuration has changed, as documented in
+//scripts/basic/fixdep.c//.
+
 
 
 = Conclusion =
+
+
 
 
 
