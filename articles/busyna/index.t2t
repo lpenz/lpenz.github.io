@@ -86,7 +86,8 @@ do better than that.
 
 We will call the second issue the **tactical** problem. We have a number of
 options here, most of them not portable, and each with its own set of
-limitations.
+limitations. //make// doesn't have this problem either, as it doesn't track
+dependencies in the general case.
 
 Each of these problem categories will be explored bellow. Keep in mind that
 busyna is a very exploratory tool by nature, and that even non-optimal options
@@ -94,7 +95,7 @@ should be kept in it.
 
 
 
-= Strategies =
+== Strategies ==
 
 busyna is implemented in python as a library. To configure a build we can
 create an //Environment// object and call a method to add commands to it. That
@@ -114,7 +115,7 @@ is pending when the build starts. The single purpose of this strategy is speed.
 
 
 
-= Tactical =
+== Tactics ==
 
 We will focus on Linux in the tactical front. The following options have been
 tried:
@@ -136,7 +137,7 @@ and is an option worth exploring in the future.
 
 
 
-== Vulnerability ==
+=== Vulnerability ===
 
 All the tactics presented have a common vulnerability: the tool used **must**
 deterministically use the source files to produce the targets. There are some
