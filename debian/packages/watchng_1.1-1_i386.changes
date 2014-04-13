@@ -1,0 +1,52 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 12 Apr 2014 19:38:11 -0300
+Source: watchng
+Binary: watchng
+Architecture: source all
+Version: 1.1-1
+Distribution: unstable
+Urgency: medium
+Maintainer: Leandro Lisboa Penz <lpenz@lpenz.org>
+Changed-By: Leandro Lisboa Penz <lpenz@lpenz.org>
+Description: 
+ watchng    - Runs a command periodically, showing output only when it changes
+Changes: 
+ watchng (1.1-1) unstable; urgency=medium
+ .
+   * New upstream version 1.1: doc fixes.
+Checksums-Sha1: 
+ 36384a684c21883a79e7d68bf7a6a55422c72e81 1759 watchng_1.1-1.dsc
+ a5e79ff756d89347ad32b46c66ca0f5a977226da 8937 watchng_1.1.orig.tar.gz
+ 20c6e369138047a148202706e883c8c1f52db0e4 1976 watchng_1.1-1.debian.tar.xz
+ 2a6d4afe4bad394efa49745895ad473fecb44d0d 3578 watchng_1.1-1_all.deb
+Checksums-Sha256: 
+ 5d10174e1247ba3d965650a4232196aafb8b5c4d17cea39e942d06704e18660b 1759 watchng_1.1-1.dsc
+ 59f5e7df0a592708e2cde58ecba451604e8b4d539bc735e667e1801ccc541813 8937 watchng_1.1.orig.tar.gz
+ 024ed674f2b475e9b1f19708b425cb6a905efc22fc745ac8f1d111c8385a7ac3 1976 watchng_1.1-1.debian.tar.xz
+ 3361f5dc05568a3a34ddea648e56d94922ce11e82a1f9bdd14f136599ca7033a 3578 watchng_1.1-1_all.deb
+Files: 
+ e03ca07743d2a7a7f1955811d4c80617 1759 python extra watchng_1.1-1.dsc
+ 7ad2dc6c14031c677fb95011e0dce67c 8937 python extra watchng_1.1.orig.tar.gz
+ a1d410adcd8b380cea33a6691d316d9b 1976 python extra watchng_1.1-1.debian.tar.xz
+ 7a3312de1f9eeb3f9e141f2bfd065abe 3578 python extra watchng_1.1-1_all.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBCgAGBQJTSdXdAAoJEAGXDlAFqExZnHAP/0B/dhzkxcTRqG36yxSJdjwV
+1yOB4TFPzrRVcgFl5bmlRasmGM0m7AA8ysOK607awWHPtEd8rUOrf+TqP+IwziY8
+VGjNeb/LHzSb9o5oeok12MN8T2S2HfNxC5Xm47+CfnDTGcf9FcPEWsWeEUYzlNEl
+Y5X2ReMH91GJ24ZNgIdC3gvi8LmmeBTs4epi0FKPUfLK8JegYb9Xx7w5GBJlKGP7
++SKI95e4u76PFxYJ5HvgGonNwVlFHSTRyfXjGJTYThEPlaPvn4pcQqRgX/TDby9g
+0RJN4F2t4EMTsVSZk2HxChgbpeRqEv20wBacKJK4t2v2X3iHiugWYBBzB9KD8Gx4
+uE8/Zw9Bm98boe286mmcsqGhDu0EdzySD2VQ9qYt2OJsD3C+QHUEX/rcx4ei7Yae
+zg+HBKQfe+HZpQ5PAE5nkGek/E6OQYH7j34tO7MJ7YSTM0lHJx4pg65deRwLRQyf
+AQnvspeXKG/iSRFNsOFtGPgxGzvQCrN2iOPYnX6HW+/mfSr/x0rP3VubwCwzJB8Q
+8oYVuPOnPucfi7SMByLP+ZD+xdggHxBjJSsp/70k1G6RozclTthq+pW87PGD6yyU
+WYLazJVkraJ6NNTBS7TVrGkEdRIuteekkndOhDZnihTqo9k3ZyeDhTlrdF1WEqm2
+LUmWgGKPRS38nabSpm6z
+=pE0O
+-----END PGP SIGNATURE-----
