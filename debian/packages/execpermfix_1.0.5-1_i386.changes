@@ -1,0 +1,52 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 13 Apr 2014 22:11:38 -0300
+Source: execpermfix
+Binary: execpermfix
+Architecture: source i386
+Version: 1.0.5-1
+Distribution: unstable
+Urgency: low
+Maintainer: Leandro Lisboa Penz <lpenz@lpenz.org>
+Changed-By: Leandro Lisboa Penz <lpenz@lpenz.org>
+Description: 
+ execpermfix - Fixes executable permissions
+Changes: 
+ execpermfix (1.0.5-1) unstable; urgency=low
+ .
+   * New upstream version 1.0.5.
+Checksums-Sha1: 
+ c9c5ffbbb08b007f29d6fdac3f4f5f4cf765386b 1917 execpermfix_1.0.5-1.dsc
+ 0aa3de0665366669c87f0ebe3dc9858e8ed4eae8 10433 execpermfix_1.0.5.orig.tar.gz
+ da2460d6c37bd1665a749f4d34b683aea8b9dea7 2032 execpermfix_1.0.5-1.debian.tar.xz
+ f0190f96664e279e7a02ffbf1ff45a26214b6f5f 6022 execpermfix_1.0.5-1_i386.deb
+Checksums-Sha256: 
+ cd262c617bc31e1d6bcd1625560b970c19c537839b25fe1fa2d604291427df56 1917 execpermfix_1.0.5-1.dsc
+ 2cf7dbce0382c8aff0413ecc5a6b80dbebf7d10c613c551833c3c03f1b575876 10433 execpermfix_1.0.5.orig.tar.gz
+ 8128443a80161218281d158ccab0c04a6e3ebaee13ade4403441ab2cf3f6491f 2032 execpermfix_1.0.5-1.debian.tar.xz
+ 0711f859b424eb219ccd35fd9be123330f6cf95108054757281bc3a5b1adc4fa 6022 execpermfix_1.0.5-1_i386.deb
+Files: 
+ 93f6f84c8416faee5bcfa4eacf88c8b0 1917 utils extra execpermfix_1.0.5-1.dsc
+ c3264f9b9cead296a4ce5f99ddec3ebe 10433 utils extra execpermfix_1.0.5.orig.tar.gz
+ 0bca49367e92f7a535f605a2d02c3d5d 2032 utils extra execpermfix_1.0.5-1.debian.tar.xz
+ 3a6e436182c459bdc07c30ca8d41db8e 6022 utils extra execpermfix_1.0.5-1_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iQIcBAEBCgAGBQJTSzYxAAoJEAGXDlAFqExZqCMP/0j/mBASmaURLvnV/dSxwTc1
+/4pjpnCG55EdwusPgNfzket8uDMuQw6wey7rTN9+GW+BDlh8i8Cr924ehX4S85Zs
+hfmMNW1q79m73BYy/7EV4n+AI1EE1gIFxzsmCYu9wH5zA/MKLm5c5MtOlR99XfKT
+8njrDQg9QNxJxW0hekRZpp7oXDodn439/53/MyPj03ZzQiS4RwLV3vkDr1xqsHU8
+j0hCwk2em4oYslzADgbL9xfr43jwc7ws+NS+8OjP87CulWBr0i4lKhcxfXrGDPyz
+lwz7wuHTk1K4y8WGAK0AgmO15tx5lYt2SIcY0rgCWmVzNPq9pnmcVcHpzF8bFNmT
+EbeUh7lrOo3WSWnJfQ5vIkwNWZEF04wYvyTklbgTDRYq8DpBBrtHckJiubROBHGx
+ia5JO7wlfmwDM4g4cTLO8zRBVPkbdmmaXyyUemdTJAQ0CcWTVta+zAEcEx9k29YN
+ThfN7g4pvJM2xJS/FSZNfzK8lvZGN9/rt3z/e+9p9+ymfxdek2cLXcyTL2nq9hg6
+cQOmucldeLTWN9AW66EOH2ctET1a9lXvWyJbVOPAixk4PfkwN7bXWbAJex79fhJ6
+wt9+KsbUEnHMhKR9yAC2icpDOxcRNVNSHRjEi81mMGb+vuLquvX3KvcY9Buru91B
+vZBZq+XaQ5NRjJPYzaA+
+=etBe
+-----END PGP SIGNATURE-----
