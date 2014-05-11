@@ -6,6 +6,10 @@ body {
 	margin-right: auto;
 }
 
+div.invisible {
+	display: none;
+}
+
 #lpenz {
 	width:1000px;
 	position:float;
