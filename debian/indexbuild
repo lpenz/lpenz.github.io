@@ -55,7 +55,7 @@ def main():
                 vers = m.group(1)
                 continue
         assert name and desc and vers and arch
-        o.write('| %s | %s | %s |  [[../downloadicon.png] packages/%s_%s.orig.tar.gz] [[../debianswirl.png] packages/%s_%s_%s.deb]  [[../octocat.png] https://github.com/lpenz/%s]  |\n' % (
+        o.write('| %s | %s | %s |  [[../downloadicon.png] packages/%s_%s.tar.gz] [[../debianswirl.png] packages/%s_%s_%s.deb]  [[../octocat.png] https://github.com/lpenz/%s]  [[../key.png] packages/%s_%s_%s.tar.gz.asc]  |\n' % (
             name,
             desc,
             vers,
@@ -63,6 +63,7 @@ def main():
             name, re.sub('-[0-9]+$','',vers),       # download
             name, vers, arch, # deb
             name,             # github
+            name, vers, arch, # signature
             ))
     o.write('\n\n')
     o.write('They are all free software. Their source code can be found in https://github.com/lpenz, along with other projects that are not debianizable.\n\n')

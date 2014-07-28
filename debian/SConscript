@@ -1,5 +1,6 @@
 
 from glob import glob
+import re
 
 if False: Import=None; env=None; htmlsitefiles=None
 Import(['env', 'htmlsitefiles'])
@@ -18,6 +19,11 @@ if False:
 indexbuild = env.File('indexbuild')
 env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
 env.Depends('index.t2t', indexbuild)
+
+for f0 in env.Glob('packages/*.orig.tar.gz'):
+    f = re.sub('\.orig\.tar\.gz$', '.tar.gz', str(f0))
+    env.Command(f, f0, 'cp $SOURCE $TARGET')
+    env.Command(f+'.asc', f, 'gpg --detach-sign --armor $SOURCE')
 
 # TODO: manuals
 #for f in env.Glob('packages/*.orig.tar.gz'):

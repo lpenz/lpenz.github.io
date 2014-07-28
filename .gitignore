@@ -36,6 +36,8 @@
 # Ignore only on devel:
 index.html
 /debian/dists
+/debian/packages/*.tar.gz.asc
+/debian/packages/*[0-9].tar.gz
 /articles/df0pred-1/*.png
 /articles/df0pred-2/*.png
 /articles/df0pred-3/*.png
