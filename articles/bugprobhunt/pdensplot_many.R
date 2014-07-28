@@ -48,7 +48,7 @@ d <- data.frame(x = c(x,x,x,x,x,x,x,x,x),
 
 png(output, width=800)
 ggplot(data=d, aes(x=x, y=y)) + geom_line(aes(color=params)) +
-	opts(title=paste('p density for k=n/4')) +
+	ggtitle(paste('p density for k=n/4')) +
 	scale_x_continuous(name='p') +
 	scale_y_continuous(name='PDF B(k=1, n=4, p=p)')
 
