@@ -1,7 +1,6 @@
 title: Hard drive occupation prediction with R - part 2
 subtitle: Getting the probability distribution
 date: 2011-01-22
-disqus: True
 tags:
 - R
 - montecarlo
