@@ -89,8 +89,6 @@ def infoget(opts, infilename):
     y = yaml.load(open('infotree.yaml').read())
     y.update(yamlget('.'))
     y.update(yamlget(indirname))
-    if y.has_key('disqus') and not y.has_key('disqus_id'):
-        y['disqus_id'] = os.path.basename(indirname)
     y['top'], y['breadcrumbs'] = dirscalc(infilename)
     y['url'] = os.path.join(y['home'], indirname, 'index.html')
     if opts.define:
