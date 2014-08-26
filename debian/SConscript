@@ -15,15 +15,14 @@ if False:
     #env.Command('Contents.gz',  glob('incoming/*.deb'), 'apt-ftparchive contents . | gzip -9c > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET.file}', chdir=1)
     env.Command('dists/lpenz/Release',   ['dists/lpenz/main/binary-i386/Packages.bz2', 'dists/lpenz/main/binary-amd64/Packages.bz2', 'dists/lpenz/main/source/Sources.bz2', 'lpenz-apt-release.conf'], '(set -e; apt-ftparchive -c debian/lpenz-apt-release.conf release debian/dists/lpenz) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
     env.Command('dists/lpenz/Release.gpg', 'dists/lpenz/Release', 'gpg --output ${TARGET} -ba ${SOURCE}')
+    for f0 in env.Glob('packages/*.orig.tar.gz'):
+        f = re.sub('\.orig\.tar\.gz$', '.tar.gz', str(f0))
+        env.Command(f, f0, 'cp $SOURCE $TARGET')
+        env.Command(f+'.asc', f, 'gpg --detach-sign --armor $SOURCE')
 
 indexbuild = env.File('indexbuild')
 env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
 env.Depends('index.t2t', indexbuild)
-
-for f0 in env.Glob('packages/*.orig.tar.gz'):
-    f = re.sub('\.orig\.tar\.gz$', '.tar.gz', str(f0))
-    env.Command(f, f0, 'cp $SOURCE $TARGET')
-    env.Command(f+'.asc', f, 'gpg --detach-sign --armor $SOURCE')
 
 # TODO: manuals
 #for f in env.Glob('packages/*.orig.tar.gz'):
