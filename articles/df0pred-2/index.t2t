@@ -2,6 +2,8 @@ Hard drive occupation prediction - part 2
 Getting the probability distribution
 2011-01-22
 
+%!postproc(xhtml): 'naive' 'na&iuml;ve'
+
 
 On the [first $cwd$/../df0pred-1/index.html] article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
@@ -44,7 +46,7 @@ the model makes sense.
 
 
 
-= A naïve new method: averaging the difference =
+= A naive new method: averaging the difference =
 
 Instead of using the daily used disk space as input, we will use the
 daily **difference** (or delta) of used disk space. By itself, this reduces a
