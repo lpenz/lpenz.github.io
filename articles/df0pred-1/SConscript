@@ -2,7 +2,12 @@
 if False: Import=None; env=None
 Import(['env'])
 
-env.R('pointplot.png', 'main.R', chdir=1)
+if False:
+    env.R('main.RData', 'main.R')
+env.Depends('main.RData', 'duinfo.dat')
+
+env.R('pointplot.png', 'output.R', chdir=1)
+
 env.Command('datain.Rinc', 'datain.R', 'sed "s@^\(.\)@> \\1@" $SOURCE > $TARGET')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
