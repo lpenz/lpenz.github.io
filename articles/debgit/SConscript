@@ -1,6 +1,6 @@
 
-if False: Import=None; env=None; htmlsitefiles=None
-Import(['env', 'htmlsitefiles'])
+if False: Import=None; env=None
+Import(['env'])
 env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
-htmlsitefiles.add('articles/debgit/index.html')
+env.HTMLSITEFILES.add('articles/debgit/index.html')
 

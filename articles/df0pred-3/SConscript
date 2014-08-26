@@ -1,6 +1,6 @@
 
-if False: Import=None; env=None; htmlsitefiles=None
-Import(['env', 'htmlsitefiles'])
+if False: Import=None; env=None
+Import(['env'])
 
 if False:
     env.R('main.RData', 'main.R')
@@ -13,5 +13,5 @@ for i in ['mcsquantheat', 'mcspf1', 'mcscv1', 'mcscv2']:
     env.Depends(i+'.png', 'quantheatplotfunc.R')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
-htmlsitefiles.add('articles/df0pred-3/index.html')
+env.HTMLSITEFILES.add('articles/df0pred-3/index.html')
 

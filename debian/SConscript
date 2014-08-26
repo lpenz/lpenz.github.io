@@ -2,8 +2,8 @@
 from glob import glob
 import re
 
-if False: Import=None; env=None; htmlsitefiles=None
-Import(['env', 'htmlsitefiles'])
+if False: Import=None; env=None
+Import(['env'])
 
 if False:
     env.Command('dists/lpenz/main/source/Sources',        glob('packages/*.dsc'), '(set -e; cd debian; dpkg-scansources  packages) > ${TARGET.file}.tmp && mv ${TARGET.file}.tmp ${TARGET}')
@@ -34,8 +34,8 @@ for f0 in env.Glob('packages/*.orig.tar.gz'):
 #    t2t = '%s.t2t' % name
 #    env.Command(t2t, f, 'tar -xzOf $SOURCE %s_%s/manual.t2t > ${TARGET}.tmp && mv ${TARGET}.tmp $TARGET' % (name, vers))
 #    env.MAKO(t2t, MAKOFLAGS='-t htmlpage')
-#    htmlsitefiles.add('debian/%s.html' % name)
+#    env.HTMLSITEFILES.add('debian/%s.html' % name)
 
 env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
-htmlsitefiles.add('debian/index.html')
+env.HTMLSITEFILES.add('debian/index.html')
 

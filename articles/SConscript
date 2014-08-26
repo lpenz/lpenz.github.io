@@ -2,7 +2,8 @@
 import os
 import glob
 
-Import(['env', 'htmlsitefiles'])
+if False: Import=None; env=None
+Import(['env'])
 
 articles = []
 
@@ -20,5 +21,5 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', [a+'/info.yaml' for a in articles], indexbuild.abspath + ' $TARGET $SOURCES')
 
 env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
-htmlsitefiles.add('articles/index.html')
+env.HTMLSITEFILES.add('articles/index.html')
 
