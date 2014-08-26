@@ -3,6 +3,7 @@ import os
 import glob
 import yaml
 
+if False: Import=None; env=None; htmlsitefiles=None
 Import(['env', 'htmlsitefiles'])
 
 # Whatsnew feed:

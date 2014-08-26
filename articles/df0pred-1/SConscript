@@ -1,6 +1,5 @@
 
-import os
-
+if False: Import=None; env=None; htmlsitefiles=None
 Import(['env', 'htmlsitefiles'])
 
 env.R('pointplot.png', 'main.R', chdir=1)

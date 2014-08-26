@@ -1,6 +1,5 @@
 
-import os
-
+if False: Import=None; env=None; htmlsitefiles=None
 Import(['env', 'htmlsitefiles'])
 
 env.Command('sharedexpenses.lhs', 'index.t2t', 'cp $SOURCE $TARGET')

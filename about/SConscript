@@ -1,4 +1,5 @@
 
+if False: Import=None; env=None; htmlsitefiles=None
 Import(['env', 'htmlsitefiles'])
 env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
 htmlsitefiles.add('about/index.html')
