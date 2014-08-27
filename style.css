@@ -1,3 +1,51 @@
+.navbar {
+	background-color: #A6CDBC;
+	border-bottom: 2px solid #739a89;
+}
+
+/* brand: */
+.navbar-default .navbar-brand {
+	color: #000000;
+}
+.navbar-default a.navbar-brand:hover {
+	color: #000000;
+}
+
+/* navbar-nav: */
+.navbar-default .navbar-nav>li>a {
+	color: #000000;
+}
+
+.nav-tabs {
+	border-bottom: 0px;
+}
+.nav-tabs>li>a:hover {
+	border-bottom: 0px;
+	color: #000000;
+	border-top-color: #739A89;
+	border-right-color: #739A89;
+	border-left-color: #739A89;
+}
+
+/* active: */
+.navbar-default .navbar-nav>.active>a {
+	color: #000000;
+	background-color: #739a89;
+	border-top-color: #739A89;
+	border-right-color: #739A89;
+	border-left-color: #739A89;
+}
+.navbar-default .navbar-nav>.active>a:hover {
+	color: #000000;
+	background-color: #739a89;
+	border-top-color: #739A89;
+	border-right-color: #739A89;
+	border-left-color: #739A89;
+}
+
+
+
+/*
 body {
 	width: 1212px;
 	margin-top: 5px;
@@ -23,10 +71,6 @@ div.invisible {
 	margin-top:50px;
 	width: 160px;
 	height: 600px;
-	/* Tests:
-	border: 1px solid black;
-	background-color:yellow;
-	*/
 }
 
 #header {
@@ -140,3 +184,4 @@ ul {
 	margin: 0 0 0 0;
 }
 
+*/
