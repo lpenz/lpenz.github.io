@@ -23,6 +23,7 @@ def t2tbhtmlSourceScan(node, env):
         else:
             includes.extend(t2tbhtmlSourceScan(env.File(f), env))
         includes.append(f)
+    includes.append(os.path.join(env['TOP'], 't2tconfig'))
     return includes
 
 def t2tbhtmlSourceScanner(node, env, path):

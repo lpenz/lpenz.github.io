@@ -3,7 +3,6 @@
 import sys
 import yaml
 import os
-import re
 import codecs
 from tempfile import TemporaryFile, NamedTemporaryFile
 from subprocess import Popen
@@ -14,7 +13,7 @@ def txt2tagsfd(t2tinfilename, t2tinfd):
     t2tinfd.flush()
     t2toutfd = encfix(TemporaryFile())
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', t2tinfilename, '-o', '-'], stdout = t2toutfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file','t2tconfig','-H', '-i', t2tinfilename, '-o', '-'], stdout = t2toutfd)
         retcode = t2t.wait()
         if retcode < 0:
             print >>sys.stderr, "Child was terminated by signal", -retcode
@@ -103,7 +102,6 @@ def infoget(opts, infilename):
 def templated(infilename, template, y):
     from tempfile import TemporaryFile
     from os.path import isfile
-    from subprocess import Popen
 
     if not isfile(infilename):
         raise SystemExit("error: can't find %s" % infilename)

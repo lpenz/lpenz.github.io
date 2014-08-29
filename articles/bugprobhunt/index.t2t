@@ -5,6 +5,9 @@ Basic statistics for programmers
 %!postproc: '!!r1w3_n4_results!!' <iframe src="r1w3_n4_results.html" width="100%" height="500"></iframe>
 
 
+
+= Probabilistic bug hunting =
+
 Have you ever run into a bug that, no matter how careful you are trying to
 reproduce it, it only happens sometimes? And then, you think you've got it, and
 finally solved it - and tested a couple of times without any manifestation. How
@@ -16,7 +19,7 @@ behind it without going into too much detail. This is a pragmatic guide.
 
 
 
-= The Bug =[thebug]
+== The Bug ==[thebug]
 
 The following program is supposed to generate two random 8-bit integer and print
 them on stdout:
@@ -28,7 +31,7 @@ instead of the numbers sometimes.
 
 
 
-= The Model =
+== The Model ==
 
 Every time we run the program, the bug can either show up or not. It has a
 non-deterministic behaviour that requires statistical analysis.
@@ -61,7 +64,7 @@ meaning and can lead us to wrong conclusions.
 
 
 
-== Physical analogy ==
+==== Physical analogy ==
 
 Another way of thinking about the model and the strategy is by creating a
 physical analogy with a box that has an unknown number of green and red balls:
@@ -88,7 +91,7 @@ Some things become clearer when we think about this analogy:
 
 
 
-= Estimating \(p\) =
+== Estimating \(p\) ==
 
 Before we try fixing anything, we have to know more about the bug, starting by
 the probability \(p\) of reproducing it. We can estimate this probability by
@@ -111,7 +114,7 @@ tested more, but how much more, and exactly what would be better?
 
 
 
-== \(p\) precision ==
+==== \(p\) precision ==
 
 Let's go back to our box analogy: imagine that there are 4 balls in the box, one
 red and three green. That means that \(p = 1/4\). What are the possible results
@@ -131,7 +134,7 @@ Testing more improves the precision of our estimate.
 
 
 
-== \(p\) likelihood ==
+==== \(p\) likelihood ==
 
 Let's now approach the problem from another angle: if \(p = 1/4\), what are the
 odds of seeing one error in four tests? Let's name the 4 balls as 0-red,
@@ -182,7 +185,7 @@ one used for the second plot is [here $cwd$/pdensplot.R].
 
 
 
-== Increasing \(n\), narrowing down the interval ==
+==== Increasing \(n\), narrowing down the interval ==
 
 What happens when we test more? We obviously increase our precision, as it is at
 most \(1/n\), as we said before - there is no way to estimate that \(p=1/3\) when we
@@ -193,7 +196,7 @@ gets taller and narrower around the observed ratio \(k/n\):
 
 
 
-== Investigation framework ==
+==== Investigation framework ==
 
 So, which value will we use for \(p\)?
 - The smaller the value of \(p\), the more we have to test to reach a given
@@ -232,7 +235,7 @@ are a lot of sites that can calculate it:
 
 
 
-= Is the bug fixed? =
+== Is the bug fixed? ==
 
 So, you have tested a lot and calculated \(p_{min}\). The next step is fixing
 the bug.
@@ -268,11 +271,11 @@ Formally, this is very similar to a
 
 
 
-= Back to the Bug =
+== Back to the Bug ==
 
 
 
-== Testing 20 times ==
+==== Testing 20 times ==
 
 [This file trials.csv] has the results found after running our program 5000
 times. We must never throw out data, but let's pretend that we have tested our
@@ -295,7 +298,7 @@ Now, what happens if we test more before fixing the bug?
 
 
 
-== Testing 5000 times ==
+==== Testing 5000 times ==
 
 Let's now use all the results and assume that we tested 5000 times before fixing
 the bug. The graph bellow shows \(k/n\) and \(p_{min}\):
@@ -317,7 +320,7 @@ bug.
 
 
 
-= Optimal testing =
+== Optimal testing ==
 
 We have seen that we decrease \(t\) as we increase \(n\), as that can
 potentially increases our lower estimate for \(p\). Of course, that value can
@@ -353,7 +356,7 @@ after fixing the bug. You can then report a higher confidence in the solution.
 
 
 
-= Conclusions =
+== Conclusions ==
 
 When a programmer finds a bug that behaves in a non-deterministic way, he
 knows he should test enough to know more about the bug, and then even more

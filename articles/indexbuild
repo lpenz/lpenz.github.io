@@ -33,20 +33,11 @@ def main():
 
 
 The following articles are present in this page:
+
 ''')
 
     for a in articlesinfo:
-        fd.write('- %s [%s %s/index.html]' % a[0])
-        first = True
-        for t in a[1]:
-            if not first:
-                fd.write(', ')
-            else:
-                fd.write(' ')
-            first = False
-            fd.write('//%s//' % t)
-        fd.write('\n\n')
-
+        fd.write('| %s | [%s %s/index.html] | %s |\n' % (a[0][0], a[0][1], a[0][2], ', '.join(['//%s//' % t for t in a[1]])))
     fd.write('\n\n')
 
     fd.close()

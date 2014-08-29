@@ -1,7 +1,17 @@
+html, body {
+	height:100%;
+}
+
+/* navbar *******************************************************************/
+
 .navbar {
 	background-color: #A6CDBC;
 	border-bottom: 2px solid #739a89;
 }
+.nav-tabs>li {
+	margin-bottom: -2px;
+}
+
 
 /* brand: */
 .navbar-default .navbar-brand {
@@ -11,47 +21,69 @@
 	color: #000000;
 }
 
-/* navbar-nav: */
+/* navbar-nav inactive: */
+.navbar-default .nav-tabs {
+	border-bottom: 0px;
+}
 .navbar-default .navbar-nav>li>a {
 	color: #000000;
+	font-weight: bold;
+	border-top:   2px solid transparent;
+	border-right: 2px solid transparent;
+	border-left:  2px solid transparent;
 }
-
-.nav-tabs {
+.navbar-default .nav-tabs>li>a:hover {
+	color: #F0CFC2;
 	border-bottom: 0px;
-}
-.nav-tabs>li>a:hover {
-	border-bottom: 0px;
-	color: #000000;
-	border-top-color: #739A89;
-	border-right-color: #739A89;
-	border-left-color: #739A89;
+	background-color: #739A89;
+	border-top:   2px solid #739A89;
+	border-right: 2px solid #739A89;
+	border-left:  2px solid #739A89;
 }
 
 /* active: */
 .navbar-default .navbar-nav>.active>a {
 	color: #000000;
-	background-color: #739a89;
-	border-top-color: #739A89;
-	border-right-color: #739A89;
-	border-left-color: #739A89;
+	background-color: #FFFFFF;
+	border-top:   2px solid #739A89;
+	border-right: 2px solid #739A89;
+	border-left:  2px solid #739A89;
 }
 .navbar-default .navbar-nav>.active>a:hover {
 	color: #000000;
-	background-color: #739a89;
-	border-top-color: #739A89;
-	border-right-color: #739A89;
-	border-left-color: #739A89;
+	background-color: #FFFFFF;
+	border-top:   2px solid #739A89;
+	border-right: 2px solid #739A89;
+	border-left:  2px solid #739A89;
+	border-bottom:1px solid transparent;
 }
 
 
-#footer {
-	border-top: 2px solid #739A89;
-	background-color: #A6CDBC;
-	padding: 2px 2px 2px 2px;
+h1 {
 	text-align: center;
 }
-#footer img {
+
+/* footer: ******************************************************************/
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -26px; /* the bottom margin is the negative value of the footer's height */
+}
+
+.footer {
+	border-top: 2px solid #739A89;
+	background-color: #A6CDBC;
+}
+.footer>img {
 	vertical-align: text-bottom;
+}
+.footer, .push {
+	height: 26px; /* .push must be the same height as .footer */
+}
+
+#adsense {
+	/*background-color: #555555;*/
 }
 
 /*

@@ -5,6 +5,10 @@ Getting the probability distribution
 %!postproc(xhtml): 'naive' 'na&iuml;ve'
 
 
+
+= Hard drive occupation prediction - part 2 =
+= - Getting the probability distribution - =
+
 On the [first $cwd$/../df0pred-1/index.html] article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
 importing our data into [R http://en.wikipedia.org/wiki/R_programming_language]
@@ -17,7 +21,7 @@ calculating a single day.
 
 
 
-= The problem with the linear regression =
+== The problem with the linear regression ==
 
 The linear regression used in the first article has a serious
 lack of [robustness http://en.wikipedia.org/wiki/Robust_statistics].
@@ -46,7 +50,7 @@ the model makes sense.
 
 
 
-= A naive new method: averaging the difference =
+== A naive new method: averaging the difference ==
 
 Instead of using the daily used disk space as input, we will use the
 daily **difference** (or delta) of used disk space. By itself, this reduces a
@@ -67,7 +71,7 @@ value.
 
 
 
-= The real new method: days left by Monte Carlo simulation =
+== The real new method: days left by Monte Carlo simulation ==
 
 Instead of calculating the number of days left from the data, we will use a
 technique called [Monte Carlo simulation http://en.wikipedia.org/wiki/Monte_carlo_simulation]
@@ -156,7 +160,7 @@ Mix and match and see what a good convention for your case is.
 
 
 
-= Conclusion =
+== Conclusion ==
 
 This and the [previous article $cwd$/../df0pred-1/index.html] showed how to use
 statistics in R to predict when free hard-disk space will zero.
@@ -176,7 +180,7 @@ as we could. Well, [Joel is even using it to make schedules http://www.joelonsof
 
 
 
-= Further reading =
+== Further reading ==
 
 - http://www.joelonsoftware.com/items/2007/10/26.html: Joel's use of Monte Carlo
   to make schedules.
