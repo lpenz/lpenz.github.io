@@ -16,12 +16,8 @@ This page acts as a central hub to stuff I write. There is no central theme, any
 
 <% whatsnew.reverse() %>
 % for i in whatsnew:
-== ${i['date']} ==[whatsnew${i['date']}]
-
+: ${i['date']}
 ${i['news'].replace('$home$/', '')}
-
-
-
 % endfor
 
 
