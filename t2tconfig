@@ -1,0 +1,3 @@
+%!PostProc(xhtml): '<table[^>]+>' '<table class="table table-bordered">'
+%!PostProc(xhtml): '<img ([^h][^>]+)>' '<img class="img-responsive" \1>'
+%!PostProc(xhtml): '<dl>' '<dl class="dl-horizontal">'

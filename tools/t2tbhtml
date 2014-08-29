@@ -9,10 +9,10 @@ from subprocess import Popen
 
 def t2thtml(infilename):
     if not os.path.isfile(infilename):
-        raise SystemExit("error: can't find %s" % t2tfilename)
+        raise SystemExit("error: can't find %s" % infilename)
     t2toutfd = TemporaryFile()
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '-H', '-i', infilename, '-o', '-'], stdout = t2toutfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml','--config-file','t2tconfig','-H', '-i', infilename, '-o', '-'], stdout = t2toutfd)
         retcode = t2t.wait()
         if retcode < 0:
             print >>sys.stderr, "Child was terminated by signal", -retcode

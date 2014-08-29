@@ -2,44 +2,83 @@
 
 <%block name="htmlbody">
 
-<div id="lpenz">
+<div class="wrapper">
 
-<div id="header">
-	<div id="logo">
-		<a href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/logo.png" /></a>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+	  <a class="navbar-brand" href="${top}"><img alt="Avulsos by Penz" src="${top}/logo.png" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+    </div>
+
+
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav nav-tabs navbar-right" role="tablist">
+		<li
+		% if tab=="articles":
+		class="active"
+		%endif
+		><a href="${top}/articles/index.html">Articles</a></li>
+		<li
+		% if tab=="debian":
+		class="active"
+		%endif
+		><a href="${top}/debian/index.html">Debian</a></li>
+		<li
+		% if tab=="about":
+		class="active"
+		%endif
+		><a href="${top}/about/index.html">About</a></li>
+	  </ul>
 	</div>
-	<div id="breadcrumbs">
-		% for b in breadcrumbs:
-			% if not b['first']:
-				&gt;
-			% endif
-			<a href="${b['url']}">${b['title']}</a>
-		% endfor
-	</div>
-	<ul id="nav">
-		<li><a href="${top}/articles/index.html">Articles</a></li>
-		<li><a href="${top}/debian/index.html">Debian</a></li>
-		<li><a href="${top}/about/index.html">About</a></li>
-	</ul>
-</div>
-<div id="contents">
-	<h1 id="title">${title}</h1>
-	% if subtitle:
-	<h1 id="subtitle">- ${subtitle} -</h1>
+
+  </div>
+</nav>
+
+<!--
+% for b in breadcrumbs:
+	% if not b['first']:
+		&gt;
 	% endif
-	${self.body()}
+	<a href="${b['url']}">${b['title']}</a>
+% endfor
+-->
 
+<div class="row">
+
+<div class="col-xs-12 col-md-2">
 </div>
 
+<div class="col-xs-12 col-md-8">
+<div class="container">
+	${self.body()}
+</div>
+</div>
 
+<div class="col-xs-4 col-md-2" id="adsense">
+<script type="text/javascript"><!--
+google_ad_client = "ca-pub-7154717812458918";
+/* lpenz.org */
+google_ad_slot = "6390791585";
+google_ad_width = 160;
+google_ad_height = 600;
+//-->
+</script>
+<script type="text/javascript"
+src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>
+</div>
+
+</div>
+<div class="row">
 
 <div class="invisible">
   <a href="https://plus.google.com/u/0/101011717297103072571?rel=author">Google Plus authorship information</a>
-</div>
-
-<div id="footer">
-		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>
-		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
 </div>
 
 <script type="text/javascript">
@@ -57,23 +96,23 @@
 
 </script>
 
-</div>
-
-<div id="adsense">
-
-<script type="text/javascript"><!--
-google_ad_client = "ca-pub-7154717812458918";
-/* lpenz.org */
-google_ad_slot = "6390791585";
-google_ad_width = 160;
-google_ad_height = 600;
-//-->
-</script>
-<script type="text/javascript"
-src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-</script>
+<div class="push"> </div>
 
 </div>
+
+</div>
+
+<div class="footer">
+	<div class="container">
+		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>
+		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
 
 </%block>
 

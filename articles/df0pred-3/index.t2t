@@ -4,6 +4,10 @@ Predicting future ranges
 %!preproc: <mcsimulations> 10000
 
 
+
+= Hard drive occupation prediction - part 3 =
+= - Predicting future ranges - =
+
 On the [second $cwd$/../df0pred-2/index.html] article, we saw how to use a Monte
 Carlo simulation generate sample of disk space delta for future dates and
 calculate the distribution probability of zeroing free space in the future.
@@ -15,7 +19,7 @@ likely is that my disk space will zero before date X?," we will answer
 
 
 
-= The input data =
+== The input data ==
 
 [This file $cwd$/duinfospike.dat] has the dataset we will use as example. It's
 the same we used in the second part. The graph below shows it:
@@ -32,7 +36,7 @@ We then build our simulations for the next 4 months:
 
 
 
-= Visualizing the possible scenarios =
+== Visualizing the possible scenarios ==
 
 What king of data have we built in our simulations? Each simulation is
 built by sampling from the delta samples and adding to the current disk space
@@ -60,7 +64,7 @@ overlapping one another.
 
 
 
-= Visualizing the distribution for specific days =
+== Visualizing the distribution for specific days ==
 
 There is another way to look at our data: we have created, for each day, a
 sample of the possible used disk spaces. We can take any day of the simulation
@@ -79,7 +83,7 @@ By looking at this graph we can see the trend:
 
 
 
-= Visualizing the evolution of the distribution =
+== Visualizing the evolution of the distribution ==
 
 So far, we have seen how we can visualize some simulations along the 4 months
 and how we can visualize the distribution for some specific days.
@@ -91,7 +95,7 @@ built-in plot functions.
 
 
 
-== Boxplot ==
+==== Boxplot ==
 
 We can use the //boxplot// function to create a boxplot for each day in R in a
 very straightforward way:
@@ -112,7 +116,7 @@ simulations at any day:
 
 
 
-== Quantile lines ==
+==== Quantile lines ==
 
 We can use the //quantile// function to calculate the values of each
 [quantile http://en.wikipedia.org/wiki/Quantile] per day, and plot the lines:
@@ -136,7 +140,7 @@ sequence of colors that folds in the middle:
 
 
 
-== Quantile areas ==
+==== Quantile areas ==
 
 We can also abuse the //barplots// function to create an area graph. We have to
 eliminate the bar borders, zero the distance between them and plot a white bar
@@ -152,7 +156,7 @@ larger middle interval with two quantiles or a broken symmetry. The code above
 builds a larger middle interval when given an even //q//.
 
 
-== Quantile heat map ==
+==== Quantile heat map ==
 
 If we increase //q// and use //heat.colors// in a quantile area plot, we get
 something similar to a heat map:
@@ -163,7 +167,7 @@ something similar to a heat map:
 
 
 
-= Visualizing past, present and future =
+== Visualizing past, present and future ==
 
 We can also plot our data in the same graph as our simulations, by extending the
 axis of the //barplot// and using the //points// function:
@@ -175,7 +179,7 @@ axis of the //barplot// and using the //points// function:
 
 
 
-= Training set, validation set =
+== Training set, validation set ==
 
 [Cross-validation http://en.wikipedia.org/wiki/Cross-validation] is
 a technique that we can use to validate the use of Monte Carlo on our data.
@@ -210,7 +214,7 @@ cross-validation.
 
 
 
-= Conclusions =
+== Conclusions ==
 
 We can use Monte Carlo simulations not only to generate a distribution
 probability of an event as we did in the [previous $cwd$/../df0pred-2/index.html]
