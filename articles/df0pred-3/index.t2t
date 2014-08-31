@@ -95,7 +95,7 @@ built-in plot functions.
 
 
 
-==== Boxplot ==
+=== Boxplot ===
 
 We can use the //boxplot// function to create a boxplot for each day in R in a
 very straightforward way:
@@ -116,7 +116,7 @@ simulations at any day:
 
 
 
-==== Quantile lines ==
+=== Quantile lines ===
 
 We can use the //quantile// function to calculate the values of each
 [quantile http://en.wikipedia.org/wiki/Quantile] per day, and plot the lines:
@@ -140,7 +140,7 @@ sequence of colors that folds in the middle:
 
 
 
-==== Quantile areas ==
+=== Quantile areas ===
 
 We can also abuse the //barplots// function to create an area graph. We have to
 eliminate the bar borders, zero the distance between them and plot a white bar
@@ -156,7 +156,7 @@ larger middle interval with two quantiles or a broken symmetry. The code above
 builds a larger middle interval when given an even //q//.
 
 
-==== Quantile heat map ==
+=== Quantile heat map ===
 
 If we increase //q// and use //heat.colors// in a quantile area plot, we get
 something similar to a heat map:
