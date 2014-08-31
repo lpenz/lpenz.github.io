@@ -1,23 +1,16 @@
 Avulsos by Penz
 
 
+This page is basically my blog. My interests wander mostly around math,
+statistics and software.
 
-= Contents =
-
-This page acts as a central hub to stuff I write. There is no central theme, anything goes. For now, you can find here:
-- Technical [articles articles/index.html] or texts that I wrote
-- [Debian debian/index.html]-related stuff and software.
-- Information [about me about/index.html]
-
-
-
-= Whatsnew =
-
+= Posts =
 
 <% whatsnew.reverse() %>
 % for i in whatsnew:
 : ${i['date']}
 ${i['news'].replace('$home$/', '')}
+
 % endfor
 
 

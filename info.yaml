@@ -1,34 +1,62 @@
 title: Avulsos by Penz
 home: "http://lpenz.org"
+tab: home
 whatsnew:
     - date: 2010-04-11
-      news: 'New [Debianization with git-buildpackage $home$/articles/debgit/index.html] article.'
+      news: >
+        My notes on how to debianize a git repository now available online in the [Debianization with git-buildpackage $home$/articles/debgit/index.html] article 
     - date: 2010-08-15
-      news: 'New [Hard drive occupation prediction with R $home$/articles/df0pred-1/index.html] (The linear regression) article.'
-    - date: 2010-10-23
-      news: 'Main page now has a //whatsnew// section!'
-    - date: 2010-10-24
-      news: 'Whatsnew feed up and running.'
-    - date: 2010-10-25
-      news: 'Articles feed up and running.'
+      news: >
+        The
+        [Hard drive occupation prediction with R $home$/articles/df0pred-1/index.html]
+        article shows how to predict future free partition occupation by using
+        a simple linear regression.
     - date: 2011-01-22
-      news: 'New [Hard drive occupation prediction with R - Part 2 $home$/articles/df0pred-2/index.html] (Getting the probability distribution) article.'
+      news: >
+        The second article on the "HD occupation" series,
+        [Hard drive occupation prediction with R - Part 2 $home$/articles/df0pred-2/index.html],
+        shows us where the linear regression breaks (hint: real life), and uses
+        Monte Carlo simulations to build a more robust method.
     - date: 2011-02-02
-      news: 'New [Haskell eDSL Tutorial - Shared expenses $home$/articles/hedsl-sharedexpenses/index.html] article.'
+      news: >
+        The [Haskell eDSL Tutorial - Shared expenses $home$/articles/hedsl-sharedexpenses/index.html]
+        explores the concept of domain-specific-language in Haskell by tackling
+        a practical problem: sharing trip expenses.
     - date: 2011-02-16
-      news: 'New [atdtool https://github.com/lpenz/atdtool] debian package.'
+      news: >
+        [After the Deadline http://www.afterthedeadline.com/] is a English
+        language checker used by [Wordpress.com http://wordpress.com/] amon
+        others. I have built a command-line client for it: the
+        [atdtool https://github.com/lpenz/atdtool], with a Debian package
+        available in the [debian debian/index.html] page.
     - date: 2011-06-23
-      news: 'New [Hard drive occupation prediction with R - Part 3 $home$/articles/df0pred-3/index.html] (Predicting future ranges) article.'
+      news: >
+        The last article in the "HD occupation series",
+        [Hard drive occupation prediction with R - Part 3 $home$/articles/df0pred-3/index.html],
+        explores how we can use historical data and Monte Carlo simulations to
+        predict the range of possible values for HD occupation at any point in
+        the future.
     - date: 2011-11-15
-      news: 'New [google-spreadsheet-csv https://github.com/lpenz/google-spreadsheet-csv] debian package.'
+      news: >
+        [Google sheets http://www.google.com/sheets/about/] is a great tool for
+        collaboration. It's a spreadsheet where a team can simultaneously edit
+        cells online, in a clear and consistent fashion. To ease the use of the
+        product of this collaboration in other contexts, you can now use
+        [google-spreadsheet-csv https://github.com/lpenz/google-spreadsheet-csv]
+        to download and upload the CSV version of a sheet.
     - date: 2012-10-21
-      news: 'New [watchng https://github.com/lpenz/watchng] debian package.'
+      news: >
+        I always use //watch// to monitor the output of Unix processes and wait
+        for events. I sometimes wonder about the history of outputs. Enters
+        [watchng https://github.com/lpenz/watchng], a python script that shows
+        the output of a process along with the date-time, but only when this
+        output changes between two consecutive runs.
     - date: 2013-03-17
-      news: 'New gpg key; debian packages rebuilt and signed with new key.'
-    - date: 2013-04-13
-      news: 'New apt-get-snapshot debian package: gets specific package version from snapshot.debian.org.'
-    - date: 2013-05-05
-      news: 'apt-get-snapshot 1.1: important bug fixes.'
+      news: >
+        I have built a new GPG key, and re-signed all my debian packages with it.
     - date: 2013-12-09
-      news: 'New [Probabilistic bug hunting $home$/articles/bugprobhunt/index.html] article.'
+      news: >
+        The [Probabilistic bug hunting $home$/articles/bugprobhunt/index.html]
+        article shows us how to deal with software (or hardware, for that
+        matter) bugs that do not have a deterministic behaviour.
 
