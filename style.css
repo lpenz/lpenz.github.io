@@ -82,6 +82,13 @@ h1 {
 	height: 26px; /* .push must be the same height as .footer */
 }
 
+/* Headers: *****************************************************************/
+
+h1,h2,h3,h4,h5,h6 {
+	color: #256449;
+	border-bottom: 1px solid #925136;
+}
+
 #adsense {
 	/*background-color: #555555;*/
 }
