@@ -13,12 +13,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-	  <a class="navbar-brand" href="${top}"><img alt="Avulsos by Penz" src="${top}/logo.png" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+	  <a class="navbar-brand" href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/media/logo.png" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
     </div>
 
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav nav-tabs navbar-right" role="tablist">
+		<li
+		% if tab=="home":
+		class="active"
+		%endif
+		><a href="${top}/index.html">Home</a></li>
 		<li
 		% if tab=="articles":
 		class="active"
