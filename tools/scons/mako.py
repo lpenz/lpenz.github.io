@@ -14,10 +14,10 @@ def makoTargetScanner(node, env, path):
     if os.path.isfile(yfilename):
         y = yaml.load(open(yfilename).read())
         if y.has_key('template'):
-            rv.append(os.path.join(env['TOP'], 'templates', y['template'] + '.html'))
+            rv.append(os.path.join(env['TOP'], 'templates', y['template'] + '.html.mako'))
         else:
-            rv.append(os.path.join(env['TOP'], 'templates', 'htmlpage.html'))
-        rv.append(os.path.join(env['TOP'], 'templates', 'htmlbase.html'))
+            rv.append(os.path.join(env['TOP'], 'templates', 'htmlpage.html.mako'))
+        rv.append(os.path.join(env['TOP'], 'templates', 'htmlbase.html.mako'))
     return rv
 
 

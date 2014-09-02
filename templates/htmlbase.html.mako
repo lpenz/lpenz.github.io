@@ -19,7 +19,7 @@
 <link rel="icon" type="image/png" href="${top}/media/logo.png" />
 <meta name="generator" content="http://txt2tags.sf.net" />
 % if mathjax:
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"/>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 % endif
 % if disabled:
 <script type="text/javascript">

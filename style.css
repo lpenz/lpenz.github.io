@@ -93,6 +93,12 @@ h1,h2,h3,h4,h5,h6 {
 	/*background-color: #555555;*/
 }
 
+/* Other: *******************************************************************/
+
+div.center>img {
+	margin: 0 auto;
+}
+
 /*
 body {
 	width: 1212px;

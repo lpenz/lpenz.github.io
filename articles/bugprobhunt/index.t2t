@@ -2,7 +2,7 @@ Probabilistic bug hunting
 Basic statistics for programmers
 2013-12-09
 
-%!postproc: '!!r1w3_n4_results!!' <iframe src="r1w3_n4_results.html" width="100%" height="500"></iframe>
+%!postproc: '!!r1w3_n4_results!!' <iframe src="r1w3_n4_results.html" style="width:100%;height:500px;"></iframe>
 
 
 

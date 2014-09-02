@@ -108,7 +108,7 @@ def templated(infilename, template, y):
     infd = encfix(open(infilename))
     outfd = encfix(TemporaryFile())
     if template:
-        outfd.write('<%%inherit file="%s.html"/>\n' % template)
+        outfd.write('<%%inherit file="%s.html.mako"/>\n' % template)
     for l in infd:
         outfd.write(l)
     outfd.seek(0)

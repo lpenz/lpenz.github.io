@@ -1,4 +1,4 @@
-<%inherit file="htmlbase.html"/>
+<%inherit file="htmlbase.html.mako"/>
 
 <%block name="htmlbody">
 ${self.body()}

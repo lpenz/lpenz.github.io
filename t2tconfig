@@ -1,2 +1,8 @@
 %!PostProc(xhtml): '<table[^>]+>' '<table class="table table-bordered">'
 %!PostProc(xhtml): '<img ([^h][^>]+)>' '<img class="img-responsive" \1>'
+%!PostProc(xhtml): '<img ([^>]+)align="middle"' '<img \1'
+%!PostProc(xhtml): '<img ([^>]+)border="0"' '<img \1'
+%!PostProc(xhtml): '<center>' '<div class="center">'
+%!PostProc(xhtml): '</center>' '</div>'
+%!PostProc(xhtml): '<a (id="[^"]+") name="[^"]+">' '<a \1>'
+%!PostProc(xhtml): '<td align="center">' '<td style="text-align:center;">'
