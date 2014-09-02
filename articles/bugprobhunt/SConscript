@@ -35,7 +35,8 @@ env.Command('after5000.png',['afterplot.R','trials.csv'],'$SOURCES $TARGET 5000'
 
 env.Command('tbyn.png',['tbyn.R','trials.csv'],'$SOURCES $TARGET 200 300')
 
-env.Command('boxballs.png', 'boxballs.pov', 'runsilent povray ${SOURCE.file} -V +FN +O${TARGET.file} +Q11 +AM2 +H240 +W320 -D', chdir=True)
+if False:
+    env.Command('boxballs.png', 'boxballs.pov', 'runsilent povray ${SOURCE.file} -V +FN +O${TARGET.file} +Q11 +AM2 +H240 +W320 -D', chdir=True)
 
 env.Command('pdens_many.png', 'pdensplot_many.R', '$SOURCE 1 3 $TARGET')
 
