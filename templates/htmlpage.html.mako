@@ -45,77 +45,59 @@
   </div>
 </nav>
 
-<!--
-% for b in breadcrumbs:
-	% if not b['first']:
-		&gt;
-	% endif
-	<a href="${b['url']}">${b['title']}</a>
-% endfor
--->
-
+<div class="container-fluid">
 <div class="row">
 
 <div class="col-xs-12 col-md-2">
 </div>
 
 <div class="col-xs-12 col-md-8">
-<div class="container">
 	${self.body()}
-</div>
 </div>
 
 <div class="col-xs-4 col-md-2" id="adsense">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- lpenz.org -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:160px;height:600px"
-     data-ad-client="ca-pub-7154717812458918"
-     data-ad-slot="6390791585"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 </div>
 
-</div>
+</div> <!--row-->
+
 <div class="row">
 
 <div class="invisible">
   <a href="https://plus.google.com/u/0/101011717297103072571?rel=author">Google Plus authorship information</a>
 </div>
 
+<!-- google analytics -->
 <script type="text/javascript">
-
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-4182011-2']);
   _gaq.push(['_setDomainName', 'lpenz.org']);
   _gaq.push(['_trackPageview']);
-
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-
 </script>
 
 <div class="push"> </div>
 
-</div>
+</div><!--row-->
 
-</div>
+</div><!--container-->
+
+</div><!--wrapper-->
 
 <div class="footer">
-	<div class="container">
+	<div class="center">
 		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>
 		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
 	</div>
 </div>
 
+<!-- Other invisible stuff and javascripts: -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
 
 </%block>
 

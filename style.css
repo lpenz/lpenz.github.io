@@ -1,5 +1,6 @@
 html, body {
 	height:100%;
+	background-color: #A6CDBC;
 }
 
 /* navbar *******************************************************************/
@@ -58,13 +59,9 @@ html, body {
 	border-bottom:1px solid transparent;
 }
 
-
-h1 {
-	text-align: center;
-}
-
 /* footer: ******************************************************************/
 .wrapper {
+	background-color: #FFFFFF;
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
@@ -81,19 +78,31 @@ h1 {
 .footer, .push {
 	height: 26px; /* .push must be the same height as .footer */
 }
+.footer>div.center {
+	text-align: center;
+	margin: 0 auto;
+}
 
 /* Headers: *****************************************************************/
+
+h1 {
+	text-align: center;
+}
 
 h1,h2,h3,h4,h5,h6 {
 	color: #256449;
 	border-bottom: 1px solid #925136;
 }
 
+/* Other: *******************************************************************/
+
+div.contents {
+	background-color: #FFFFFF;
+}
+
 #adsense {
 	/*background-color: #555555;*/
 }
-
-/* Other: *******************************************************************/
 
 div.center>img {
 	margin: 0 auto;
