@@ -20,6 +20,8 @@ s3cmd sync --delete-removed \
 	--include=*.xml \
 	--include=*.dat \
 	--include=*.R \
+	--include=articles/bugprobhunt/box \
+	--include=articles/bugprobhunt/trials.csv \
 	--include=robots.txt \
 	--include=lpenz_2013.asc \
 	--include=debian/dists/* \
