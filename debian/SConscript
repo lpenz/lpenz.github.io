@@ -1,4 +1,5 @@
 
+import os
 from glob import glob
 import re
 
@@ -19,7 +20,8 @@ if False:
 for f0 in env.Glob('packages/*.orig.tar.gz'):
     f = re.sub('\.orig\.tar\.gz$', '.tar.gz', str(f0))
     env.Command(f, f0, 'cp $SOURCE $TARGET')
-    env.Command(f+'.asc', f, 'gpg --detach-sign --armor $SOURCE')
+    if not os.path.exists(f+'.asc'):
+        env.Command(f+'.asc', f, 'gpg --detach-sign --armor $SOURCE')
 
 indexbuild = env.File('indexbuild')
 env.Command('index.t2t', ['lpenz.list']+env.Glob('packages/*.changes'), indexbuild.abspath + ' ${TARGET} ${SOURCES}')
