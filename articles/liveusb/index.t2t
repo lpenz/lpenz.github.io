@@ -1,0 +1,57 @@
+
+
+
+Steps to create a Debian live USB:
+
+(http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html)
+fdisk <device> # The real device, not a partition
+Press o to create a new DOS partition table. 
+Press n to create a boot partition of size 32MB
+Partition number : 1
+First sector : 2048
+Last sector : 65536
+Press n to create another partition with all default parameters.
+In other words, press 'enter' for all options.
+Press a then 1 to toggle boot flag for boot partition. 
+Press t then 1 followed by 6 to change first partition's ID to FAT16
+Press w to write all changes to device
+
+Foramt both partitions
+$> mkdosfs /dev/sdh1
+$> mkfs.ext4 /dev/sdh2
+
+install syslinux in the first partition:
+syslinux /dev/sdh1
+
+Mount the second partition
+
+Install debian in the second partition with
+debootstrap --arch <arch> <distribution> /mnt/new http://ftp.debian.org/debian
+
+Mount the first partition
+Copy the kernel and initrd files to it
+# cp vmlinuz-2.6.18-4-686 disk/vmlinuz
+# cp initrd.img-2.6.18-4-686 disk/initrd.cgz
+# linux.tgz disk/linux.tgz
+
+(http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick)
+Use blkid to find out the UUID of the partitions.
+Create the file syslinux.cfg with the following:
+default current
+
+timeout 1
+prompt 1
+
+label current
+	kernel vmlinuz-3.2.0-4-amd64
+	append initrd=initrd.img-3.2.0-4-amd64 root=UUID=49072262-4209-4111-b4a6-53d07a16e9f4
+
+label backup
+	kernel vmlinuz
+	append initrd=initrd.gz root=UUID=49072262-4209-4111-b4a6-53d07a16e9f4
+
+Unmount both partitions
+
+Install mbr:
+cat /usr/lib/SYSLINUX/mbr.bin > /dev/sdc
+
