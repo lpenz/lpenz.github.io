@@ -34,6 +34,16 @@ Copy the kernel and initrd files to it
 # cp initrd.img-2.6.18-4-686 disk/initrd.cgz
 # linux.tgz disk/linux.tgz
 
+Mount devs in the second partition
+mount -t devtmpfs dev /dev
+mount -t devpts devpts /dev/pts
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+
+chroot into it
+set root password
+passwd
+
 (http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick)
 Use blkid to find out the UUID of the partitions.
 Create the file syslinux.cfg with the following:
