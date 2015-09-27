@@ -1,10 +1,43 @@
+Create a debian live USB
+How to create a customized live USB with debian
+2013-12-09
 
 
 
-Steps to create a Debian live USB:
+= Introduction =
 
-(http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html)
-fdisk <device> # The real device, not a partition
+In this article we explain how to install a Debian GNU/Linux OS in a USB drive
+as if it was a hard disk: with partitions and a bootloader.
+
+This setup is useful to debug and recover a system, or to have a "home away from
+home" environment - as long as the flash in the USB stick works.
+
+
+
+= Pre-requisites =
+
+First of all, you will need a USB drive :)
+
+We will use //debootstrap// from Debian to create the contents of the root
+partition, a partitioner (//fdisk//) and 
+
+
+
+= Creating the debian live USB =
+
+
+== 1 Partitioning ==
+
+Create two partitions in the USB drive: one with 256MB for the ///boot// that
+will hold the kernel and //syslinux//; and another with all the space available,
+that will hold the rest of the root filesystem.
+
+There are many utilities that can do that: parted, fdisk, etc. An example
+session of fdisk is below, assuming that the usb drive is at ///dev/sdc//:
+
+```
+# fdisk /dev/sdc
+
 Press o to create a new DOS partition table. 
 Press n to create a boot partition of size 32MB
 Partition number : 1
@@ -16,33 +49,57 @@ Press a then 1 to toggle boot flag for boot partition.
 Press t then 1 followed by 6 to change first partition's ID to FAT16
 Press w to write all changes to device
 
-Foramt both partitions
-$> mkdosfs /dev/sdh1
-$> mkfs.ext4 /dev/sdh2
+#
+```
 
-install syslinux in the first partition:
-syslinux /dev/sdh1
 
-Mount the second partition
 
-Install debian in the second partition with
+== 2 Installing syslinux partition ==
+
+We can now create the filesystem and install syslinux's files in it. Assuming
+that the USB drive is at ///dev/sdc// as in the previous example, we will do
+that at ///dev/sdc1//:
+```
+# mkdosfs /dev/sdc1
+```
+
+And, to install syslinux:
+```
+# syslinux /dev/sdc1
+```
+
+
+
+== 3 Installing the root partition ==
+
+First, create the filesystem:
+```
+# mkfs.ext4 /dev/sdc2
+```
+
+--------------------
+
+Mount the root partition
+
+Install debian in the root partition with
 debootstrap --arch <arch> <distribution> /mnt/new http://ftp.debian.org/debian
 
-Mount the first partition
-Copy the kernel and initrd files to it
-# cp vmlinuz-2.6.18-4-686 disk/vmlinuz
-# cp initrd.img-2.6.18-4-686 disk/initrd.cgz
-# linux.tgz disk/linux.tgz
+Mount devs in the root partition
+mount -t devtmpfs dev dev
+mount -t devpts devpts dev/pts
+mount -t proc proc proc
+mount -t sysfs sysfs sys
 
-Mount devs in the second partition
-mount -t devtmpfs dev /dev
-mount -t devpts devpts /dev/pts
-mount -t proc proc /proc
-mount -t sysfs sysfs /sys
-
-chroot into it
+chroot root /bin/sh
 set root password
 passwd
+
+Install kernel
+apt-get install --no-install-recommends linux-image-amd64 (or other)
+
+Mount the syslinux partition
+Copy the kernel and initrd files to it
+# cp root/boot/* syslinux/
 
 (http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick)
 Use blkid to find out the UUID of the partitions.
@@ -61,7 +118,19 @@ label backup
 	append initrd=initrd.gz root=UUID=49072262-4209-4111-b4a6-53d07a16e9f4
 
 Unmount both partitions
+umount dev/pts
+umount dev
+umount proc
+umount sys
+
 
 Install mbr:
 cat /usr/lib/SYSLINUX/mbr.bin > /dev/sdc
+
+
+
+= References =
+
+- http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html
+- http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick
 
