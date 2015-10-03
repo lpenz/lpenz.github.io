@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
 
 /* Returns -1 if error, other number if ok. */
 int get_random_chars(char *r1, char*r2)
