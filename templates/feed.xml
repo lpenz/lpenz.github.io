@@ -2,7 +2,7 @@
 <rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
     <channel>
         <title>${self.title()}</title>
-        <link>http://lpenz.org</link>
+        <link>http://www.lpenz.org</link>
         <description>${self.description()}</description>
         <managingEditor>lpenz@lpenz.org (Leandro Lisboa Penz)</managingEditor>
         <webMaster>lpenz@lpenz.org (Leandro Lisboa Penz)</webMaster>
@@ -16,8 +16,8 @@
         <language>en</language>
         <image>
             <title>${self.title()}</title>
-            <link>http://lpenz.org</link>
-            <url>http://lpenz.org/logo.png</url>
+            <link>http://www.lpenz.org</link>
+            <url>http://www.lpenz.org/logo.png</url>
         </image>
         <atom:link href="${self.link()}" rel="self" type="application/rss+xml"/>
 <%self:items>

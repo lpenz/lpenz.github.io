@@ -23,7 +23,7 @@ def main():
     o.write(open(applist).read())
     o.write('```\n\n')
     o.write('If you really trust me, you can add the [GPG key ../lpenz_2013.asc] I sign the repository with by issuing:\n')
-    o.write('```\nwget -O - http://lpenz.org/lpenz_2013.asc | apt-key add -\n```\n\n\n\n')
+    o.write('```\nwget -O - http://www.lpenz.org/lpenz_2013.asc | apt-key add -\n```\n\n\n\n')
     o.write('= Applications =\n\n')
     o.write('The following utilities are available in the repository:\n\n')
     o.write('|| Application | Description | Version | Get it |\n')
