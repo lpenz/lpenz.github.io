@@ -13,4 +13,4 @@ script:
   - if test -s "$TMP"; then false; else true; fi
   # static checkers:
   - flake8 . SConstruct **/SConscript
-  - py3kwarn .
+  - py3kwarn . SConstruct **/SConscript
