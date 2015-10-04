@@ -1,5 +1,6 @@
-
-if False: Import=None; env=None
+if False:
+    Import = None
+    env = None
 Import(['env'])
 
 if False:
@@ -8,8 +9,8 @@ env.Depends('main.RData', 'duinfo.dat')
 
 env.R('pointplot.png', 'output.R', chdir=1)
 
-env.Command('datain.Rinc', 'datain.R', 'sed "s@^\(.\)@> \\1@" $SOURCE > $TARGET')
+env.Command('datain.Rinc', 'datain.R',
+            'sed "s@^\(.\)@> \\1@" $SOURCE > $TARGET')
 
-env.MAKO('index.t2t', MAKOFLAGS = '-t htmlpage')
+env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/df0pred-1/index.html')
-
