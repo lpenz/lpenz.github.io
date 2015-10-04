@@ -59,4 +59,8 @@ whatsnew:
         The [Probabilistic bug hunting $home$/articles/bugprobhunt/index.html]
         article shows us how to deal with software (or hardware, for that
         matter) bugs that do not have a deterministic behaviour.
-
+    - date: 2015-10-04
+      news: >
+        The [Create a Debian bootable live USB $home$/articles/liveusb/index.html]
+        article shows my notes on how to create a rescue USB stick, or portable
+        environment.
