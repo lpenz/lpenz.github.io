@@ -1,11 +1,10 @@
-
 import os
 import glob
 
-if False: Environment=None
-env = Environment(ENV = os.environ
-    , TOP = os.path.abspath(os.path.curdir)
-    , toolpath = ['tools/scons', '/usr/lib/scons/SCons/Tool'])
+if False:
+    Environment = None
+env = Environment(ENV=os.environ, TOP=os.path.abspath(
+    os.path.curdir), toolpath=['tools/scons', '/usr/lib/scons/SCons/Tool'])
 env.HTMLSITEFILES = set()
 env.Export('env')
 
@@ -13,6 +12,8 @@ for t in ['haskell', 't2tbhtml', 'mako', 'R', 'gcc']:
     env.Tool(t)
 
 # infotree:
+
+
 def infotreeProcDir(d, l):
     if not os.path.isdir(d):
         return
@@ -50,7 +51,8 @@ env.SConscript('feeds/SConscript')
 
 
 # Final touches:
-env.Command('_linkchecker_ok.txt', list(env.HTMLSITEFILES), 'linkchecker index.html && md5sum $SOURCES > $TARGET')
-env.Command('sitemap.xml', list(env.HTMLSITEFILES), 'tools/sitemapper $TARGET $SOURCES')
+env.Command('_linkchecker_ok.txt', list(env.HTMLSITEFILES),
+            'linkchecker index.html && md5sum $SOURCES > $TARGET')
+env.Command('sitemap.xml', list(env.HTMLSITEFILES),
+            'tools/sitemapper $TARGET $SOURCES')
 env.Depends('sitemap.xml', 'tools/sitemapper')
-

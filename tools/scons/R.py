@@ -1,4 +1,3 @@
-
 import re
 import os
 
@@ -7,10 +6,11 @@ import SCons.Builder
 import SCons.Util
 
 output_re = [
-        re.compile(r'''png\('([^']+)'\)''', re.M)
-        , re.compile(r'''save\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M)
-        , re.compile(r'''sink\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M)
-        ]
+    re.compile(r'''png\('([^']+)'\)''', re.M),
+    re.compile(r'''save\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M),
+    re.compile(r'''sink\(.*file\s*=\s*'([^']+)'\s*[),]''', re.M),
+]
+
 
 def rEmitter(target, source, env):
     target = []
@@ -27,10 +27,11 @@ def rEmitter(target, source, env):
 
 
 source_re = [
-        re.compile(r'''source\('([^']+)'\)''', re.M)
-        , re.compile(r'''load\('([^']+)'\)''', re.M)
-        , re.compile(r'''read\.table\('([^']+)''', re.M)
-        ]
+    re.compile(r'''source\('([^']+)'\)''', re.M),
+    re.compile(r'''load\('([^']+)'\)''', re.M),
+    re.compile(r'''read\.table\('([^']+)''', re.M),
+]
+
 
 def rSearchDeps(node, env):
     contents = node.get_contents()
@@ -54,27 +55,25 @@ def generate(env):
     rAction = SCons.Action.Action('$RCOM', chdir=1)
 
     rScanner = SCons.Scanner.Base(
-            name = 'rScanner',
-            function = rScannerFunc,
-            skeys = ['.R'],
-            path_function = SCons.Scanner.FindPathDirs('RPATH'),
-            recursive = True)
+        name='rScanner',
+        function=rScannerFunc,
+        skeys=['.R'],
+        path_function=SCons.Scanner.FindPathDirs('RPATH'),
+        recursive=True)
 
     bld = SCons.Builder.Builder(
-            action = rAction,
-            src_suffix = '.R',
-            emitter = rEmitter,
-            source_scanner = rScanner)
+        action=rAction,
+        src_suffix='.R',
+        emitter=rEmitter,
+        source_scanner=rScanner)
 
     env['BUILDERS']['R'] = bld
     env['RPATH'] = ['.']
     env['RFLAGS'] = SCons.Util.CLVar('')
-    env['RCOM']   = './${SOURCE.file} $RFLAGS'
+    env['RCOM'] = './${SOURCE.file} $RFLAGS'
 
 
 def exists(env):
     return env.Detect('R')
 
-
 # vim: ft=scons
-

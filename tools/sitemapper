@@ -32,7 +32,7 @@ def doit(outfile, files):
         #assert f.startswith('./')
         #f = f[2:]
         o.write('  <url>\n')
-        o.write('    <loc>http://lpenz.org/%s</loc>\n' % f)
+        o.write('    <loc>http://www.lpenz.org/%s</loc>\n' % f)
         d = subprocess.check_output('git log -1 --format=%%ai "%s"' % s, shell=True)
         if len(d) > 0:
             o.write('    <lastmod>%s</lastmod>\n' % d[0:10])
