@@ -155,7 +155,7 @@ kernel.
 Mount the partition and use //debootstrap// to install the base files on it:
 ```
 mkdir -p usbroot
-mount -t auto /dev/sdc usbroot
+mount -t auto /dev/sdc2 usbroot
 debootstrap stable usbroot http://ftp.debian.org/debian
 > I: Retrieving Release.gpg 
 > I: Checking Release signature
