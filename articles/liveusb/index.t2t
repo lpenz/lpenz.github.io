@@ -251,9 +251,10 @@ ls boot/vmlinuz* boot/initrd*
 > boot/initrd.img-3.16.0-4-amd64  boot/vmlinuz-3.16.0-4-amd64
 ```
 
-And use them with the //UUID//s to create the ``boot/syslinux.sys`` file, with
+And use them with the //UUID//s to create the ``boot/syslinux.cfg`` file, with
 the following contents:
 ```
+default linux
 timeout 1
 prompt 1
 
