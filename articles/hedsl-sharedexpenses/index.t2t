@@ -117,8 +117,10 @@ make typos a compile error.
 
 ```
 
+> spent :: Person -> Int -> State (Map Person Int) ()
 > spent payer money = modify $ insertWith (+) payer money
 
+> gave :: Person -> Person -> Int -> State (Map Person Int) ()
 > gave lender borrower money = modify $ (adjust (+ money) lender) . (adjust (\ m -> m - money) borrower)
 
 ```
