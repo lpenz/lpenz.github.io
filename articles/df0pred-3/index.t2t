@@ -110,7 +110,7 @@ simulations at any day:
 - The darker area goes from the first quartile to the third - which means that
   50% of the samples are in that range
 - The lighter area has the maximum and minimum points, if they are within 1.5
-  [IQR http://en.wikipedia.org/wiki/Interquartile_range] of the upper/lower
+  [IQR https://en.wikipedia.org/wiki/Interquartile_range] of the upper/lower
   quartile.  Points out of this range are considered outliers and are not
   plotted.
 
@@ -119,7 +119,7 @@ simulations at any day:
 === Quantile lines ===
 
 We can use the //quantile// function to calculate the values of each
-[quantile http://en.wikipedia.org/wiki/Quantile] per day, and plot the lines:
+[quantile https://en.wikipedia.org/wiki/Quantile] per day, and plot the lines:
 
 %!include:``mcsquantplot.R``
 
@@ -181,7 +181,7 @@ axis of the //barplot// and using the //points// function:
 
 == Training set, validation set ==
 
-[Cross-validation http://en.wikipedia.org/wiki/Cross-validation] is
+[Cross-validation https://en.wikipedia.org/wiki/Cross-validation] is
 a technique that we can use to validate the use of Monte Carlo on our data.
 
 We first split our data in two sets: the training set and the validation set. We

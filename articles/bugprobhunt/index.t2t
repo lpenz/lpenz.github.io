@@ -37,7 +37,7 @@ Every time we run the program, the bug can either show up or not. It has a
 non-deterministic behaviour that requires statistical analysis.
 
 We will model a single program run as a
-[Bernoulli trial http://en.wikipedia.org/wiki/Bernoulli_trial], with success
+[Bernoulli trial https://en.wikipedia.org/wiki/Bernoulli_trial], with success
 defined as "seeing the bug", as that is the event we are interested in. We have
 the following parameters when using this model:
 - \(n\): the number of tests made;
@@ -48,7 +48,7 @@ the following parameters when using this model:
 
 As a Bernoulli trial, the number of errors \(k\) of running the program \(n\)
 times follows a
-[binomial distribution http://en.wikipedia.org/wiki/Binomial_distribution]
+[binomial distribution https://en.wikipedia.org/wiki/Binomial_distribution]
 \(k \sim B(n,p)\). We will use this model to estimate \(p\) and to confirm the
 hypotheses that the bug no longer exists, after fixing the bug in whichever
 way we can.
@@ -173,9 +173,9 @@ for getting 1 red and 3 green balls:
 
 
 The fact is that, //given the data//, the estimate for \(p\)
-follows a [beta distribution http://en.wikipedia.org/wiki/Beta_distribution]
+follows a [beta distribution https://en.wikipedia.org/wiki/Beta_distribution]
 \(Beta(k+1, n-k+1) = Beta(2, 4)\)
-([1 http://stats.stackexchange.com/questions/13225/what-is-the-distribution-of-the-binomial-distribution-parameter-p-given-a-sampl])
+([1 http://stats.stackexchange.com/questions/13225/what-is-the-distribution-of-the-binomial-distribution-parameter-p-given-a-samp])
 The graph below shows the probability distribution density of \(p\):
 
  [r1w3_dens.png] 
@@ -227,7 +227,7 @@ to solve the following equation:
 That's not a trivial equation to solve for \(p_{min}\). Fortunately, that's
 the formula for the confidence interval of the binomial distribution, and there
 are a lot of sites that can calculate it:
-- http://statpages.org/confint.html: \(\alpha\) here is 5%.
+- http://statpages.info/confint.html: \(\alpha\) here is 5%.
 - http://www.danielsoper.com/statcalc3/calc.aspx?id=85: results for \(\alpha\)
   1%, 5% and 10%.
 - https://www.google.com.br/search?q=binomial+confidence+interval+calculator:
@@ -251,7 +251,7 @@ of //not// seeing the bug after \(t\) tests is:
 \[\alpha = (1-p_{min})^t \]
 
 Here, \(\alpha\) is also the probability of making a
-[type I error http://en.wikipedia.org/wiki/Type_I_and_type_II_errors#Type_I_error],
+[type I error https://en.wikipedia.org/wiki/Type_I_and_type_II_errors#Type_I_error],
 while \(1 - \alpha\) is the //statistical significance// of our tests.
 
 We now have two options:
@@ -267,7 +267,7 @@ The standard statistical significance in the industry is 5%, we recommend either
 that or less.
 
 Formally, this is very similar to a
-[statistical hypothesis testing http://en.wikipedia.org/wiki/Hypothesis_testing].
+[statistical hypothesis testing https://en.wikipedia.org/wiki/Hypothesis_testing].
 
 
 

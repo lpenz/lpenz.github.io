@@ -52,7 +52,8 @@ env.SConscript('feeds/SConscript')
 
 # Final touches:
 env.Command('_linkchecker_ok.txt', list(env.HTMLSITEFILES),
-            'linkchecker index.html && md5sum $SOURCES > $TARGET')
+            'linkchecker -flinkcheckerrc '
+            'index.html && md5sum $SOURCES > $TARGET')
 env.Command('sitemap.xml', list(env.HTMLSITEFILES),
             'tools/sitemapper $TARGET $SOURCES')
 env.Depends('sitemap.xml', 'tools/sitemapper')

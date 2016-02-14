@@ -1,6 +1,0 @@
- dpkg-buildpackage -rfakeroot -D -us -uc -i -I
-dpkg-buildpackage: source package apt-get-snapshot
-dpkg-buildpackage: source version 1.1-1
-dpkg-buildpackage: source changed by Leandro Lisboa Penz <lpenz@lpenz.org>
- dpkg-source -i -I --before-build apt-get-snapshot
-dpkg-buildpackage: host architecture i386

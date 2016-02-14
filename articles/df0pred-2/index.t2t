@@ -11,7 +11,7 @@ Getting the probability distribution
 
 On the [first $cwd$/../df0pred-1/index.html] article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
-importing our data into [R http://en.wikipedia.org/wiki/R_programming_language]
+importing our data into [R https://en.wikipedia.org/wiki/R_programming_language]
 and making a linear regression.
 
 In this article we will see the problems with that method, and deploy a
@@ -24,7 +24,7 @@ calculating a single day.
 == The problem with the linear regression ==
 
 The linear regression used in the first article has a serious
-lack of [robustness http://en.wikipedia.org/wiki/Robust_statistics].
+lack of [robustness https://en.wikipedia.org/wiki/Robust_statistics].
 That means that it is very sensitive to even single departures
 from the linear pattern. For instance, if we periodically delete some big
 files in the hard disk, we end up breaking the sample in parts that cannot be
@@ -74,7 +74,7 @@ value.
 == The real new method: days left by Monte Carlo simulation ==
 
 Instead of calculating the number of days left from the data, we will use a
-technique called [Monte Carlo simulation http://en.wikipedia.org/wiki/Monte_carlo_simulation]
+technique called [Monte Carlo simulation https://en.wikipedia.org/wiki/Monte_carlo_simulation]
 to generate the distribution of days left. The idea is simple: we sample the
 data we have - daily used disk space - until the sum is above the free disk
 space; the number of samples taken is the number of days left. By doing that
@@ -135,7 +135,7 @@ as they will not disproportionally bias out results:
  [$cwd$/daysleft.png] 
 
 What we want now is the
-[empirical cumulative distribution http://en.wikipedia.org/wiki/Empirical_distribution_function].
+[empirical cumulative distribution https://en.wikipedia.org/wiki/Empirical_distribution_function].
 This function gives us the probability that we will reach df0 **before** the
 given date.
 
@@ -184,7 +184,7 @@ as we could. Well, [Joel is even using it to make schedules http://www.joelonsof
 
 - http://www.joelonsoftware.com/items/2007/10/26.html: Joel's use of Monte Carlo
   to make schedules.
-- http://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29: Wikipedia's page
+- https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29: Wikipedia's page
   on bootstrapping, which is clearer than the one on Monte Carlo simulations.
 - http://www.r-bloggers.com/: daily news and tutorials about R, very good to
   learn the language and see what people are doing with it.
