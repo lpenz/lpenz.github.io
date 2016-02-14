@@ -1,7 +1,20 @@
 language: python
+addons:
+  apt:
+    packages:
+      - graphviz
+      - txt2tags
+      - haskell-platform
+      - linkchecker
+sudo: yes
 before_install:
   # static checkers:
-  - pip install flake8 py3kwarn
+  - pip install flake8 py3kwarn pyyaml Mako
+  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
+  - chmod 755 ./travis-tool.sh
+  - ./travis-tool.sh bootstrap
+install:
+  - sudo apt-get -y install r-cran-ggplot2 python-mako r-cran-reshape haskell-platform linkchecker
 script:
   - nosetests --with-doc --exe
   # Test if we .gitignore test files:
@@ -14,3 +27,4 @@ script:
   # static checkers:
   - flake8 . SConstruct **/SConscript
   - py3kwarn . SConstruct **/SConscript
+  - scons

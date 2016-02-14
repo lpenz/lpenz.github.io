@@ -5,6 +5,8 @@
 *.pyc
 *.Rinc
 *.bhtml
+/.Rbuildignore
+/travis-tool.sh
 /index.t2t
 /infotree.yaml
 /articles0.xml
