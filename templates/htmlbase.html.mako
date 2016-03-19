@@ -13,7 +13,59 @@
 <![endif]-->
 <meta name="author" content="Leandro Lisboa Penz"/>
 <meta name="description" content="Avulsos by Penz"/>
-<link rel="stylesheet" type="text/css" href="${top}/style.css" />
+<style>
+html, body { height:100%; background-color: #A6CDBC; }
+.navbar { background-color: #A6CDBC; border-bottom: 2px solid #739a89; }
+.nav-tabs>li { margin-bottom: -2px; }
+.navbar-default .navbar-brand { color: #000000; }
+.navbar-default a.navbar-brand:hover { color: #000000; }
+.navbar-default .nav-tabs { border-bottom: 0px; }
+.navbar-default .navbar-nav>li>a {
+	color: #000000;
+	font-weight: bold;
+	border-top:   2px solid transparent;
+	border-right: 2px solid transparent;
+	border-left:  2px solid transparent;
+}
+.navbar-default .nav-tabs>li>a:hover {
+	color: #F0CFC2;
+	border-bottom: 0px;
+	background-color: #739A89;
+	border-top:   2px solid #739A89;
+	border-right: 2px solid #739A89;
+	border-left:  2px solid #739A89;
+}
+.navbar-default .navbar-nav>.active>a {
+	color: #000000;
+	background-color: #FFFFFF;
+	border-top:   2px solid #739A89;
+	border-right: 2px solid #739A89;
+	border-left:  2px solid #739A89;
+}
+.navbar-default .navbar-nav>.active>a:hover {
+	color: #000000;
+	background-color: #FFFFFF;
+	border-top:   2px solid #739A89;
+	border-right: 2px solid #739A89;
+	border-left:  2px solid #739A89;
+	border-bottom:1px solid transparent;
+}
+.wrapper {
+	background-color: #FFFFFF;
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -26px;
+}
+.footer { border-top: 2px solid #739A89; background-color: #A6CDBC; }
+.footer>img { vertical-align: text-bottom; }
+.footer, .push { height: 26px; }
+.footer>div.center { text-align: center; margin: 0 auto; }
+h1 { text-align: center; }
+h1,h2,h3,h4,h5,h6 { color: #256449; border-bottom: 1px solid #925136; }
+div.contents { background-color: #FFFFFF; }
+div.center>img { margin: 0 auto; }
+</style>
 <link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
 <link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>
 <link rel="icon" type="image/png" href="${top}/media/logo.png" />
