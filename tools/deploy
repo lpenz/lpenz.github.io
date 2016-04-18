@@ -23,7 +23,7 @@ s3cmd sync --delete-removed \
 	--include=articles/bugprobhunt/box \
 	--include=articles/bugprobhunt/trials.csv \
 	--include=robots.txt \
-	--include=lpenz_2013.asc \
+	--include=lpenz_2016.asc \
 	--include=debian/dists/* \
 	--include=debian/packages/* \
 	--include=debian/lpenz.list \
