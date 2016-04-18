@@ -1,0 +1,44 @@
+#!/bin/bash
+
+set -e -x
+
+TMPDIR=$(mktemp -d)
+trap 'rm -rf $TMPDIR' EXIT
+
+cat <<END > $TMPDIR/Dockerfile
+FROM ubuntu:14.04
+MAINTAINER lpenz@lpenz.org
+ENV DEBIAN_FRONTEND noninteractive
+RUN set -e -x; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends \
+      graphviz \
+      txt2tags \
+      haskell-platform \
+      linkchecker \
+      r-cran-ggplot2 \
+      r-cran-reshape \
+      python-mako \
+      python-yaml \
+      git \
+      python-pip \
+      python-nose \
+      scons
+RUN set -e -x; \
+    pip install flake8 py3kwarn
+RUN set -e -x; \
+    adduser --disabled-password --uid $(id -u) --gecos '' user
+USER user
+WORKDIR /home/user/${PWD##*/}
+CMD set -e -x; \
+    nosetests --with-doc --exe; \
+    flake8 . SConstruct **/SConscript; \
+    py3kwarn . SConstruct **/SConscript; \
+    scons
+END
+
+(cd "$TMPDIR"; docker build -t lpenz_github_io .)
+
+docker run --rm \
+    -v "$PWD:/home/user/${PWD##*/}" \
+    lpenz_github_io
