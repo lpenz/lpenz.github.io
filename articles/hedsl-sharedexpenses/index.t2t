@@ -216,7 +216,7 @@ shouldn't be a problem.
 
 == Further reading ==
 
-- http://paulspontifications.blogspot.com/2008/01/why-haskell-is-good-for-embedded-domain.html:
+- http://paulspontifications.blogspot.com.br/2008/01/why-haskell-is-good-for-embedded-domain.html:
   Why Haskell is Good for Embedded Domain Specific Languages
 - https://donsbot.wordpress.com/2007/03/10/practical-haskell-shell-scripting-with-error-handling-and-privilege-separation/:
   Practical Haskell: shell scripting with error handling and privilege separation
