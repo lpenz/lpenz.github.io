@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/lpenz/lpenz.github.io.svg?branch=master)](https://travis-ci.org/lpenz/lpenz.github.io)
+[![Run Status](https://api.shippable.com/projects/568983d11895ca447467411a/badge?branch=master)](https://app.shippable.com/projects/568983d11895ca447467411a)
 
 # www.lpenz.org
 
-This repository has the contents of my web page at https://www.lpenz.org
+This repository has the contents of my web page at https://www.lpenz.org/
 
 The source itself is in the *devel* branch. After making changes, it is merged
 on master, built and commited.

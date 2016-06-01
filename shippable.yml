@@ -1,0 +1,10 @@
+build:
+  pre_ci:
+    - docker build -t lpenz.github.io:latest .
+  pre_ci_boot:
+    image_name: lpenz.github.io
+    image_tag: latest
+    pull: false
+    options: "-v $PWD:/home/user/work -e MY_UID=$UID"
+  ci:
+    - umask 0; ./tests

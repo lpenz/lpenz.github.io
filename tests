@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -x
+
+nosetests --with-doc --exe
+flake8 . SConstruct **/SConscript
+echo flake8 . SConstruct **/SConscript
+py3kwarn . SConstruct **/SConscript
+scons
+
