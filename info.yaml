@@ -64,3 +64,7 @@ whatsnew:
         The [Create a Debian bootable live USB $home$/articles/liveusb/index.html]
         article shows my notes on how to create a rescue USB stick, or portable
         environment.
+    - date: 2016-07-24
+      news: >
+        The new subdomain http://cv.lpenz.org/ now has my Curriculum Vitae,
+        rendered from http://github.com/lpenz/cv with continuous deployment.

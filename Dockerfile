@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-MAINTAINER lpenz@lpenz.org
+MAINTAINER Leandro Lisboa Penz <lpenz@lpenz.org>
 
 # install debian packages:
 ENV DEBIAN_FRONTEND noninteractive
