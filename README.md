@@ -2,7 +2,7 @@
 
 # www.lpenz.org
 
-This repository has the contents of my web page at https://www.lpenz.org/
+This repository has the contents of my web page at http://www.lpenz.org/
 
 The source itself is in the *devel* branch. After making changes, it is merged
 on master, built and commited.
