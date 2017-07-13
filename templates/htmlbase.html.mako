@@ -2,6 +2,12 @@
 <html lang="en">
 
 <head>
+<link rel="me" href="https://cv.lpenz.org" />
+<link rel="me" href="https://twitter.com/lpenz" />
+<link rel="me" href="https://www.linkedin.com/in/lpenz" />
+<link rel="me" href="https://github.com/lpenz" />
+<link rel="me" href="https://stackoverflow.com/cv/lpenz" />
+<link rel="me" href="mailto:lpenz@lpenz.org" />
 <meta charset="utf-8"/>
 <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'><![endif]-->
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
