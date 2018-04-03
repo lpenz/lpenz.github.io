@@ -3,6 +3,12 @@ Debianization with git-buildpackage
 2010-04-11
 
 %!PostProc(xhtml): '<table[^>]+>' '<table class="table table-bordered">'
+%!PostProc: '\${([^}]+)}' '<%text>${\1}</%text>'
+
+
+**Updated 2018-04-03**: //git-buildpackage//'s commands have changed, so this
+article had to be fixed; I took the opportunity to improve a few things as
+well.
 
 
 
@@ -13,7 +19,7 @@ deploy it. In UNIX, the standard way to do that is by publishing the source
 code in .tar.gz format and requiring users to compile it.
 
 In Debian there is an alternative: using a .deb package. With a .deb package, a
-single ``dpkg -i <package>.deb`` installs the software.
+single ``dpkg -i ${PACKAGE}.deb`` installs the software.
 
 This article explains how to create and support a .deb package for a simple
 software maintained in git, by tracking the packaging scheme in a specific
@@ -27,15 +33,10 @@ In order to ease the packaging and keep our package warning-free, it should
 have in its main repository:
 
 - An ``AUTHORS`` file with copyright information.
-- A manual.
+- A manual: ``${PACKAGE}.1`` or similar.
 - A ``COPYING`` file with GPL information or some other license.
-- A ``Makefile`` with the targets "all", "clean" and "install". The "install" target
-  should install the binary in ``$(PREFIX)/bin`` and the manual to
-  ``$(PREFIX)/share/man/man#``. ``PREFIX`` should be, by default,
-  ``/usr/local``, so that non-debian users can still user our package.
-- A way to create ``<package>_<version>.tar.gz`` (//make dist// ?).
-  We will use it to import the original source files into the debian package
-  build structure.
+- An appropriate build file for the package. For C/C++ programs, I recommend
+  using ``cmake``; for python, ``setup.py``, etc.
 
 
 These items are not debian-specific and are useful for everyone.
@@ -44,45 +45,53 @@ These items are not debian-specific and are useful for everyone.
 
 == Initial packaging setup ==
 
-The first step is putting the ``<package>_<version>.tar.gz`` in the directory
-above the current one renamed to ``<package>_<version>.orig.tar.gz``. We will
-use it in a moment.
+The first step is creating the ``${PACKAGE}_${VERSION}.orig.tar.gz`` file. You
+can use git itself for that, by running the following commands in the
+repository:
+```
+PREFIX=${PACKAGE}_${VERSION}
+git archive --format=tar --prefix=$PREFIX/ $VERSION | gzip -c > ../$PREFIX.orig.tar.gz
+```
+
+You can check the contents of the archive with //tar//. If there are extraneous
+files in the archive, you can configure git-archove to exclude them by creating
+a ``.gitattributes`` file; for example:
+```
+.gitignore      export-ignore
+.gitattributes  export-ignore
+.travis.yml     export-ignore
+```
 
 The next step is to create the debian branches in the git repository: on the
-debian-upstream branch, we will store the upstream source, while the
-debian-debian branch will hold the debian package data.
+debian-upstream branch, we store the upstream source, while the debian-debian
+branch holds the debian package data.
 This separation provides a cleaner revision history by separating the changes
 that affect the software from the changes in the packaging.
 
 In order to create these branches, we issue the following commands in the git
 repository:
 ```
-git symbolic-ref HEAD refs/heads/debian-upstream
+git checkout --orphan debian-upstream
 git rm --cached -r .
 git clean -xfd
 git commit --allow-empty -m 'Start of debian branches.'
 git checkout -b debian-debian
 ```
 
-That will make both branches point to a root-commit with no files.
+That creates both branches as orphans, pointing to an empty root commit.
 
-We will now use the ``../<package>_<version>.orig.tar.gz`` file to create the
+We now use the ``../${PACKAGE}_${VERSION}.orig.tar.gz`` file to create the
 initial ``debian`` directory in the debian-debian branch:
 ```
-dh_make -s -p <package>_<version>
+dh_make -s -p ${PACKAGE}_${VERSION}
 ```
-We can now customize the standard ``debian`` directory created. The only required files
-that must be fixed are: ``changelog``, ``compat``, ``control``, ``copyright``
-and ``rules``.
-Besides filling package-specific information, we should also:
-- Put, in ``debian/rules`` file:
-```
-override_dh_auto_install: $(MAKE) PREFIX=$(CURDIR)/debian/<package>/usr install
-```
+We can now customize the standard ``debian`` directory created. You must edit
+the following files: ``changelog``, ``control``, ``copyright`` and ``rules``.
+Besides those, the ``compat`` file must be present; the other files can be
+safely removed.
 
-- Create a ``debian/<package>.manpages`` file with the name of the manpage file
-  of the package.
-- Create a ``debian/gbp.conf`` with the following contents:
+After changing the files that ``dh_make`` created, you should create a
+``debian/gbp.conf`` with the following contents:
 ```
 [DEFAULT]
 upstream-branch=debian-upstream
@@ -98,10 +107,10 @@ We can now commit the debian directory in the debian-debian branch.
 
 In the debian-debian branch:
 ```
-git-import-orig ../<package>_<version>.orig.tar.gz
+gbp import-orig --no-interactive ../${PACKAGE}_${VERSION}.orig.tar.gz
 ```
-That will import the original sources to the debian-upstream branch, and merge
-it with the debian-debian branch.
+That imports the original sources to the debian-upstream branch, and merge
+it into the debian-debian branch.
 
 
 
@@ -109,19 +118,20 @@ it with the debian-debian branch.
 
 To create the debian package:
 ```
-git-buildpackage --git-tag
+gbp buildpackage -us -uc --git-tag
 ```
 
 
 == Importing further versions ==
 
-Create the new ``../<package>_<version>/.orig.tar.gz`` and then:
+Create the new ``../${PACKAGE}_${VERSION}/.orig.tar.gz`` and then:
 ```
-git-import-orig ../<package>_<version>.orig.tar.gz
+gbp import-orig --no-interactive ../${PACKAGE}_${VERSION}.orig.tar.gz
 ```
-Edit the ``debian/changelog`` file (we can use //dch// for that), and create a new package:
+Edit the ``debian/changelog`` file (we can use ``dch -i -v $VERSION`` for
+that), and create a new package:
 ```
-git-buildpackage --git-tag
+gbp buildpackage -us -uc --git-tag
 ```
 Yes, it's that easy.
 

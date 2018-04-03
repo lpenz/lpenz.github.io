@@ -21,13 +21,19 @@
         </image>
         <atom:link href="${self.link()}" rel="self" type="application/rss+xml"/>
 <%self:items>
+<%!
+    def rerender(text):
+        from mako.template import Template
+        mytemplate = Template(text)
+        return mytemplate.render()
+%>
 <%def name="show(i)">
 		<item>
 			<title>${i['title']}${i['subtitle']}</title>
 			<link>${i['link']}</link>
 			<guid>${i['link']}</guid>
 			<pubDate>${rfctime(i['date'])} +0000</pubDate>
-			<description><![CDATA[${(i['description'])}]]></description>
+			<description><![CDATA[${(i['description']) | rerender}]]></description>
 		</item>
 </%def>
 </%self:items>
