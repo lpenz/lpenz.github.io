@@ -25,10 +25,9 @@ whatsnew:
     - date: 2011-02-16
       news: >
         [After the Deadline http://www.afterthedeadline.com/] is a English
-        language checker used by [Wordpress.com https://wordpress.com/] amon
+        language checker used by [Wordpress.com https://wordpress.com/] among
         others. I have built a command-line client for it: the
-        [atdtool https://github.com/lpenz/atdtool], with a Debian package
-        available in the [debian debian/index.html] page.
+        [atdtool https://github.com/lpenz/atdtool].
     - date: 2011-06-23
       news: >
         The last article in the "HD occupation series",
