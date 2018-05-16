@@ -70,3 +70,10 @@ whatsnew:
     - date: 2018-04-05
       news: >
         ``git-buildpackage`` commands changed, so the article [Debianization with git-buildpackage $home$/articles/debgit/index.html] had to be fixed and updated.
+    - date: 2018-05-16
+      news: >
+        The Debian repository was removed from this domain, as I now
+        keep all my packages
+        in [packagecloud https://packagecloud.io/lpenz/lpenz]. I have
+        also removed my GPG public key, as that was used only for
+        Debian package signing, and I have lost the private key :)
