@@ -1,9 +1,8 @@
-language: python
-sudo: required
-services:
-  - docker
+---
+language: generic
+install: docker build -t lpenz.github.io .
 script:
-  - ./docker-build
+  - docker run -it --rm -v $PWD:/home/user/work -e MY_UID=$UID lpenz.github.io
   # Test if we .gitignore test files:
   - TMP=$(tempfile)
   - git ls-files . --exclude-standard --others | tee "$TMP"
@@ -11,3 +10,4 @@ script:
   # Test if we .gitignore any tracked files:
   - git ls-files -i --exclude-standard | tee "$TMP"
   - if test -s "$TMP"; then false; else true; fi
+
