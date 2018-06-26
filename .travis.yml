@@ -10,4 +10,15 @@ script:
   # Test if we .gitignore any tracked files:
   - git ls-files -i --exclude-standard | tee "$TMP"
   - if test -s "$TMP"; then false; else true; fi
-
+  # Remove devel .gitignore directive so that built files are commited to master
+  - rm -f .gitignore
+env:
+  global:
+    secure: HXu8n+i2no703slt2Ef4o4g1LvLfLP1UYTq1iGYnmig23eoBHLb20N3+BR/cDzDUeoNyeINYXeRkLcqtHq4mNXWlS9K54nCI2Y1bWHKI4v4OOOsD/Wj5k7KW+LWEgPl5Q8XG39/ttCZJAkqePIydmBNAdvTtLCfx2hZxjqAkp/48IgXR63ug4Ac6ukzVns3R/r0nh1Gdq/QMXa/ZiRgoSfPdwRBUzUs4Y/rglgyC3AGWW29USwZrnOiJ7NN/aR4wbkGHEsEq9P0ww1TXTObWe64/axExZITEBOuFXnKmGLWwquGfwkUTiLobv5kcyhFZXfIP+n+kxn8BxE9WdQsGcm0ixdwcbTQt/r2sAgc22D5CQSdBKKBGTo07dUAkXU9GOFOssKZl1shW3fwtDiMMogEDnjBEfnDLZAMg3swHOTT/5RPowoBM4SiG+aJftFxBqiun/Zd2Lr9Cb8pCeIGULTjFg6onuKWzXt/Q7yCpDQppl7kkgapq+3QMs20AlxoDrjqxV5rVMg7RUnuD73GKGRPJxfVVOtoBcwdq6SiQSJAIMhm2o0EOOFcqLShjBuD13WwgRLLyPPMJIpoJCDEmmwoN6TQaVRADcPIhsm/zAUa3VxSEHwvGVzS43dnLU0jR+Jk0cfdqIeGf1ck0afm/Sxe1ZenSvPG0yryKxR02juc=
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: "$GITHUB_TOKEN"
+  target-branch: master
+  on:
+    branch: publish
