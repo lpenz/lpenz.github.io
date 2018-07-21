@@ -34,9 +34,12 @@ env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('index.html')
 
 # Logo:
-env.Command('media/logo.png', 'media/logo-black.svg',
+env.Command('media/logo-black.png', 'media/logo-black.svg',
             'inkscape -z -e $TARGET -w 14 -h 14 $SOURCE')
-env.HTMLSITEFILES.add('media/logo.png')
+env.HTMLSITEFILES.add('media/logo-white.png')
+env.Command('media/logo-white.png', 'media/logo-white.svg',
+            'inkscape -z -e $TARGET -w 14 -h 14 $SOURCE')
+env.HTMLSITEFILES.add('media/logo-black.png')
 
 
 # About me:

@@ -17,7 +17,7 @@
         <image>
             <title>${self.title()}</title>
             <link>http://www.lpenz.org</link>
-            <url>http://www.lpenz.org/logo.png</url>
+            <url>http://www.lpenz.org/logo-black.png</url>
         </image>
         <atom:link href="${self.link()}" rel="self" type="application/rss+xml"/>
 <%self:items>

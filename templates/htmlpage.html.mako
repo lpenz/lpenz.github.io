@@ -13,7 +13,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-	  <a class="navbar-brand" href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/media/logo.png" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+	  <a class="navbar-brand" href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/media/logo-black.png" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
     </div>
 
 
