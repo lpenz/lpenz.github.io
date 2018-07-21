@@ -9,6 +9,7 @@ RUN set -e -x; \
         graphviz txt2tags \
         haskell-platform \
         r-cran-ggplot2 r-cran-reshape \
+        inkscape \
         python-pip python-setuptools python-wheel \
         python-mako python-yaml python-nose flake8 \
         linkchecker \

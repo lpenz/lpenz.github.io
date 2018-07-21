@@ -33,6 +33,11 @@ env.Depends('index.t2t', 'infotree.yaml')
 env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('index.html')
 
+# Logo:
+env.Command('media/logo.png', 'media/logo-black.svg',
+            'inkscape -z -e $TARGET -w 14 -h 14 $SOURCE')
+env.HTMLSITEFILES.add('media/logo.png')
+
 
 # About me:
 env.SConscript('about/SConscript')
