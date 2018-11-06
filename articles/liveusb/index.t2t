@@ -4,7 +4,7 @@ How to create a customized bootable live USB with Debian
 
 
 
-= Creating a Debian bootalbe live USB =
+= Creating a Debian bootable live USB =
 
 We can install a full Linux distribution in a USB drive, and use it to boot a
 system. That is called a "live USB," and it can be used for recovery, as a
