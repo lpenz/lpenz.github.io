@@ -77,3 +77,8 @@ whatsnew:
         in [packagecloud https://packagecloud.io/lpenz/lpenz]. I have
         also removed my GPG public key, as that was used only for
         Debian package signing, and I have lost the private key :)
+    - date: 2019-01-08
+      news: >
+        Wrote down some notes on
+        [Provisioning a Raspberry Pi using ansible $home$/articles/ansiblerpi/index.html].
+        I'm currently using a hybrid Raspbian-Debian installation (Raspbianbian?)
