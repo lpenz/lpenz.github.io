@@ -22,6 +22,8 @@ def infotreeProcDir(d, l):
         l.append(os.path.relpath(i))
     for s in glob.glob(os.path.join(d, '*')):
         infotreeProcDir(s, l)
+
+
 infofiles = []
 infotreeProcDir('.', infofiles)
 env.Command('infotree.yaml', infofiles, 'tools/infotreebuild $TARGET $SOURCES')

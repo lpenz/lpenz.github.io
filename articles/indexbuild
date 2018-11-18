@@ -5,8 +5,10 @@ import os
 import yaml
 from optparse import OptionParser
 
+
 def main():
-    parser = OptionParser("usage: %prog <output.t2t> <articles directories...>")
+    parser = OptionParser(
+        "usage: %prog <output.t2t> <articles directories...>")
 
     opts, args = parser.parse_args()
     if len(args) < 2:
@@ -37,7 +39,9 @@ The following articles are present in this page:
 ''')
 
     for a in articlesinfo:
-        fd.write('| %s | [%s %s/index.html] | %s |\n' % (a[0][0], a[0][1], a[0][2], ', '.join(['//%s//' % t for t in a[1]])))
+        fd.write('| %s | [%s %s/index.html] | %s |\n' % (
+            a[0][0], a[0][1], a[0][2],
+            ', '.join(['//%s//' % t for t in a[1]])))
     fd.write('\n\n')
 
     fd.close()
@@ -46,4 +50,3 @@ The following articles are present in this page:
 
 if __name__ == "__main__":
     main()
-

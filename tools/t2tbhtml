@@ -12,16 +12,18 @@ def t2thtml(infilename):
         raise SystemExit("error: can't find %s" % infilename)
     t2toutfd = TemporaryFile()
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml','--config-file','t2tconfig','-H', '-i', infilename, '-o', '-'], stdout = t2toutfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file',
+                     't2tconfig', '-H', '-i', infilename, '-o', '-'],
+                    stdout=t2toutfd)
         retcode = t2t.wait()
         if retcode < 0:
-            print >>sys.stderr, "Child was terminated by signal", -retcode
+            sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
             sys.exit(1)
         elif retcode != 0:
-            print >>sys.stderr, "Child returned", retcode
+            sys.stderr.write("Child returned %d\n" % retcode)
             sys.exit(1)
-    except OSError, e:
-        print >>sys.stderr, "Execution failed:", e
+    except OSError as e:
+        sys.stderr.write("Execution failed: %s\n" % str(e))
         sys.exit(1)
     t2toutfd.seek(0)
     return t2toutfd
@@ -33,7 +35,7 @@ def main():
     parser = OptionParser("usage: %prog <input> <output>")
     opts, args = parser.parse_args(sys.argv[1:])
     if len(args) != 2:
-        parser.error("wrong number of arguments") # Will exit
+        parser.error("wrong number of arguments")  # Will exit
 
     infilename = args[0]
     outfilename = args[1]
@@ -42,16 +44,15 @@ def main():
 
     outfd = open(outfilename, 'w')
 
-    pipfrem = re.compile('(.*)<p>\s*</p>(.*)\s*$')
-    for l in t2toutfd:
-        l = l.rstrip()
-        m = pipfrem.match(l)
+    pipfrem = re.compile(r'(.*)<p>\s*</p>(.*)\s*$')
+    for line in t2toutfd:
+        line = line.rstrip()
+        m = pipfrem.match(line)
         if m:
-            l = m.group(1) + ' ' + m.group(2)
-        outfd.write(l)
+            line = m.group(1) + ' ' + m.group(2)
+        outfd.write(line)
         outfd.write('\n')
 
 
 if __name__ == "__main__":
     main()
-

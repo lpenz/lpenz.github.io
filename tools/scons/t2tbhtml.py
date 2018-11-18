@@ -7,7 +7,7 @@ import os
 import re
 
 
-cre = re.compile('^%!include:\s*(.*)$', re.M)
+cre = re.compile(r'^%!include:\s*(.*)$', re.M)
 ids = {'`': 'verb', '"': 'raw', "'": 'passthru'}
 
 

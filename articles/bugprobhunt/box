@@ -14,7 +14,7 @@ def buildresults(opts):
     for _ in range(0, opts.green):
         balls.append((i, 'green'))
         i = i + 1
-    results = [ [b] for b in balls]
+    results = [[b] for b in balls]
     for t in range(1, opts.n):
         results0 = list(results)
         results = []
@@ -42,7 +42,7 @@ def outputResults(opts, balls, results):
         out = open(opts.outresults+'.tmp', 'w')
     for i in range(1, opts.n + 1):
         out.write('"trial %d",' % i)
-    out.write('"\(p\) estimate"\n')
+    out.write(r'"\(p\) estimate"\n')
     for trial in results:
         k = 0
         for t in trial:
@@ -61,7 +61,7 @@ def outputProbabilities(opts, balls, results, probs):
     elif opts.outprobabilities:
         out = open(opts.outprobabilities+'.tmp', 'w')
     out.write('"k","rows","%"\n')
-    for k,rows in probs.items():
+    for k, rows in probs.items():
         out.write('%d,%d,"%0.2f%%"\n' % (k, rows, 100.0*rows/len(results)))
     if opts.outprobabilities != '-':
         out.close()
@@ -70,11 +70,15 @@ def outputProbabilities(opts, balls, results, probs):
 
 def main():
     parser = OptionParser("usage: %prog")
-    parser.add_option("-r", "--red", dest="red", type='int', help="Number of red balls")
-    parser.add_option("-w", "--green", dest="green", type='int', help="Number of green balls")
+    parser.add_option("-r", "--red", dest="red", type='int',
+                      help="Number of red balls")
+    parser.add_option("-w", "--green", dest="green",
+                      type='int', help="Number of green balls")
     parser.add_option("-n", "", dest="n", type='int', help="Number trials")
-    parser.add_option("", "--output-results", dest="outresults", help="Output file for results, or - for stdout")
-    parser.add_option("", "--output-probabilities", dest="outprobabilities", help="Output file for probabilities, or - for stdout")
+    parser.add_option("", "--output-results", dest="outresults",
+                      help="Output file for results, or - for stdout")
+    parser.add_option("", "--output-probabilities", dest="outprobabilities",
+                      help="Output file for probabilities, or - for stdout")
     opts, args = parser.parse_args()
     if len(args) != 0:
         parser.error("wrong number of arguments")
@@ -87,4 +91,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

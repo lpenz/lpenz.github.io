@@ -7,20 +7,22 @@ import codecs
 from tempfile import TemporaryFile, NamedTemporaryFile
 from subprocess import Popen
 
+
 # txt2tags render: ###########################################################
 
 def txt2tagsfd(t2tinfilename, t2tinfd):
     t2tinfd.flush()
     t2toutfd = encfix(TemporaryFile())
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file','t2tconfig','-H', '-i', t2tinfilename, '-o', '-'], stdout = t2toutfd)
+        t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file', 't2tconfig',
+                     '-H', '-i', t2tinfilename, '-o', '-'], stdout=t2toutfd)
         retcode = t2t.wait()
         if retcode < 0:
-            print >>sys.stderr, "Child was terminated by signal", -retcode
+            sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
         elif retcode != 0:
-            print >>sys.stderr, "Child returned", retcode
-    except OSError, e:
-        print >>sys.stderr, "Execution failed:", e
+            sys.stderr.write("Child returned %d\n" % retcode)
+    except OSError as e:
+        sys.stderr.write("Execution failed: %s\n" % str(e))
     t2toutfd.seek(0)
     return t2toutfd.read()
 
@@ -37,10 +39,13 @@ def txt2tags(intext):
 
 # Misc functions: ############################################################
 
+
 encoding = 'iso8859-1'
+
 
 def encfix(f):
     return codecs.getreader(encoding)(codecs.getwriter(encoding)(f))
+
 
 def rfctime(d):
     return d.strftime('%a, %d %b %Y %H:%M:%S')
@@ -56,24 +61,24 @@ def yamlget(d):
 
 
 def dirscalc(infilename):
-    dirname =  os.path.join('.', os.path.dirname(infilename))
+    dirname = os.path.join('.', os.path.dirname(infilename))
     top = ''
     breadcrumbs = []
     dirs = dirname.split(os.sep)
-    dirs = [ d for d in dirs if d != '' ]
+    dirs = [d for d in dirs if d != '']
     lvl = len(dirs) - 1
     yt = yaml.load(open('infotree.yaml').read())
     yc = yt
     p = ''
     first = True
     for d in dirs:
-        if d != '.' and yc['sub'].has_key(d):
+        if d != '.' and d in yc['sub']:
             yc = yc['sub'][d]
         p = os.path.join(p, d)
         i = 'index.html'
         for l in range(lvl, 0, -1):
             i = os.path.join('..', i)
-        breadcrumbs.append({ 'title': yc['title'], 'url': i, 'first' : first})
+        breadcrumbs.append({'title': yc['title'], 'url': i, 'first': first})
         first = False
         if lvl > 0:
             top = os.path.join(top, '..')
@@ -122,7 +127,11 @@ def makorender(data, y):
     from mako.lookup import TemplateLookup
 
     lookup = TemplateLookup(['templates'])
-    return Template(data, lookup=lookup).render_unicode(txt2tags=txt2tags, txt2tagsfile=txt2tagsfile, rfctime=rfctime, **y)
+    return Template(data, lookup=lookup).render_unicode(
+        txt2tags=txt2tags,
+        txt2tagsfile=txt2tagsfile,
+        rfctime=rfctime,
+        **y)
 
 
 # Main: ######################################################################
@@ -131,11 +140,13 @@ def main():
     from optparse import OptionParser
 
     parser = OptionParser("usage: %prog [-t template] <input> <output>")
-    parser.add_option("-t", "--template", dest="template", help="Template to use, if any")
-    parser.add_option("-d", "--define", dest="define", action="append", help="Extra definitions for rendering")
+    parser.add_option("-t", "--template", dest="template",
+                      help="Template to use, if any")
+    parser.add_option("-d", "--define", dest="define",
+                      action="append", help="Extra definitions for rendering")
     opts, args = parser.parse_args(sys.argv[1:])
     if len(args) != 2:
-        parser.error("wrong number of arguments") # Will exit
+        parser.error("wrong number of arguments")  # Will exit
 
     infilename = args[0]
     outfilename = args[1]
@@ -148,4 +159,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

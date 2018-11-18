@@ -11,7 +11,7 @@ def main():
     parser = OptionParser("usage: %prog <input> <output>")
     opts, args = parser.parse_args(sys.argv[1:])
     if len(args) != 2:
-        parser.error("wrong number of arguments") # Will exit
+        parser.error("wrong number of arguments")  # Will exit
 
     ifilename = args[0]
     ofilename = args[1]
@@ -25,8 +25,8 @@ def main():
             first = False
         o.write('| ' + ' | '.join(l) + ' |\n')
     o.close()
-    os.rename(ofilename+'.tmp',ofilename)
+    os.rename(ofilename+'.tmp', ofilename)
+
 
 if __name__ == "__main__":
     main()
-

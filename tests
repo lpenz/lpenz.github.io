@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/bin/bash
 
-set -x
+set -x -e -o pipefail
 
 nosetests --with-doc --exe
-flake8 . SConstruct **/SConscript
-echo flake8 . SConstruct **/SConscript
-py3kwarn . SConstruct **/SConscript
+find . \( -name '*.py' -o -name SConstruct -o -name SConscript \) -exec flake8 {} +
+grep -nlIr '[#]!/usr/bin/python' . | xargs flake8
+find . \( -name '*.py' -o -name SConstruct -o -name SConscript \) -exec py3kwarn {} +
+grep -nlIr '[#]!/usr/bin/python' . | xargs py3kwarn
 scons
 

@@ -22,6 +22,7 @@ def haskellAutoEmitter(target, source, env):
     target.append(base + '.o')
     return target, source
 
+
 import_re = [
     re.compile(r'^import\s+qualified\s+(\S+)', re.M),
     re.compile(r'^import\s+(\S+)', re.M),
