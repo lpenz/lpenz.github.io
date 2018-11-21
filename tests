@@ -1,11 +1,14 @@
 #!/bin/bash
 
+findfiles=( find . -type f '(' -not -path './.git/*' ')' )
+pyfilter=( '(' -name '*.py' -o -name SConstruct -o -name SConscript ')' )
+
 set -x -e -o pipefail
 
 nosetests --with-doc --exe
-find . \( -name '*.py' -o -name SConstruct -o -name SConscript \) -exec flake8 {} +
-grep -nlIr '[#]!/usr/bin/python' . | xargs flake8
-find . \( -name '*.py' -o -name SConstruct -o -name SConscript \) -exec py3kwarn {} +
-grep -nlIr '[#]!/usr/bin/python' . | xargs py3kwarn
+"${findfiles[@]}" "${pyfilter[@]}" -exec flake8 {} +
+"${findfiles[@]}" -exec grep -lI '[#]!/usr/bin/python' {} + | xargs flake8
+"${findfiles[@]}" "${pyfilter[@]}" -exec py3kwarn {} +
+"${findfiles[@]}" -exec grep -lI '[#]!/usr/bin/python' {} + | xargs py3kwarn
 scons
 
