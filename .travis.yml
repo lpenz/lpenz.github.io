@@ -12,7 +12,7 @@ jobs:
     - stage: test
       name: omnilint
       install: docker pull lpenz/omnilint
-      script: docker run --rm -v "$PWD:$PWD" -e "RWD=$PWD" -e "MY_UID=$UID" lpenz/omnilint
+      script: docker run --rm -v "$PWD:$PWD" -e "RWD=$PWD" -e "MY_UID=$UID" lpenz/omnilint omnilint-analyse --exclude-dir=external
     - name: build
       if: branch != publish
       install: docker build -t lpenz.github.io .

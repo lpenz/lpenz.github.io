@@ -1,6 +1,6 @@
 #!/bin/bash
 
-findfiles=( find . -type f '(' -not -path './.git/*' ')' )
+findfiles=( find . -type f '(' -not -path './external/*' ')' '(' -not -path './.git/*' ')' )
 pyfilter=( '(' -name '*.py' -o -name SConstruct -o -name SConscript ')' )
 
 set -x -e -o pipefail
