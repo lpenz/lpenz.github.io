@@ -78,7 +78,7 @@ div.center>img { margin: 0 auto; }
 <meta name="p:domain_verify" content="629162357f7580ddc473183d74c50ef8"/>
 <meta name="generator" content="http://txt2tags.sf.net" />
 % if mathjax:
-<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
 % endif
 % if disabled:
 <script type="text/javascript">
