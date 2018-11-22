@@ -2,65 +2,48 @@
 
 <%block name="htmlbody">
 
-<div class="wrapper">
-
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
-		<span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-	  <a class="navbar-brand" href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/media/logo-black.png" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
-    </div>
-
-
-    <div class="collapse navbar-collapse">
-      <ul class="nav navbar-nav nav-tabs navbar-right" role="tablist">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+    <a class="navbar-brand" href="${top}/index.html"><img alt="Avulsos by Penz" src="${top}/media/logo-white.png" width="20" height="20" class="d-inline-block align-middle" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse auto" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
 		<li
 		% if tab=="home":
-		class="active"
-		%endif
-		><a href="${top}/index.html">Home</a></li>
+		class="nav-item active"
+        % else:
+		class="nav-item"
+		% endif
+		><a class="nav-link" href="${top}/index.html">Home</a></li>
 		<li
 		% if tab=="articles":
-		class="active"
-		%endif
-		><a href="${top}/articles/index.html">Articles</a></li>
+		class="nav-item active"
+        % else:
+		class="nav-item"
+		% endif
+		><a class="nav-link" href="${top}/articles/index.html">Articles</a></li>
 		<li
 		% if tab=="debian":
-		class="active"
-		%endif
-		><a href="${top}/debian/index.html">Debian</a></li>
+		class="nav-item active"
+        % else:
+		class="nav-item"
+		% endif
+		><a class="nav-link" href="${top}/debian/index.html">Debian</a></li>
 		<li
 		% if tab=="about":
-		class="active"
-		%endif
-		><a href="${top}/about/index.html">About</a></li>
-	  </ul>
-	</div>
-
-  </div>
+		class="nav-item active"
+        % else:
+		class="nav-item"
+		% endif
+		><a class="nav-link" href="${top}/about/index.html">About</a></li>
+    </div>
+    </div>
 </nav>
 
-<div class="container-fluid">
-<div class="row">
-
-<div class="col-xs-12 col-md-2">
-</div>
-
-<div class="col-xs-12 col-md-8">
+<div class="container">
 	${self.body()}
-</div>
-
-<div class="col-xs-4 col-md-2" id="adsense">
-</div>
-
-</div> <!--row-->
-
-<div class="row">
 
 <div class="invisible">
   <a href="https://plus.google.com/u/0/101011717297103072571?rel=author">Google Plus authorship information</a>
@@ -76,16 +59,10 @@ ga('send', 'pageview');
 <script async src='https://www.google-analytics.com/analytics.js'></script>
 <!-- End Google Analytics -->
 
-<div class="push"> </div>
-
-</div><!--row-->
-
 </div><!--container-->
 
-</div><!--wrapper-->
-
-<div class="footer">
-	<div class="center">
+<div class="footer bg-dark text-light">
+	<div class="container">
 		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a>
 		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
 	</div>
@@ -93,8 +70,9 @@ ga('send', 'pageview');
 
 <!-- Other invisible stuff and javascripts: -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 </%block>
 
