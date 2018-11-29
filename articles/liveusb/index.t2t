@@ -73,7 +73,7 @@ Command (m for help): a
 
 Create the root partition:
 ```
-> Command (m for help): n
+Command (m for help): n
 > Partition type
 >    p   primary (1 primary, 0 extended, 3 free)
 >    e   extended (container for logical partitions)
