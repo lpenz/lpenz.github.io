@@ -16,6 +16,7 @@
 html { /* get footer on bottom: */
     position: relative;
     min-height: 100%;
+    font-size: 15px;
 }
 body {
     margin-bottom: 30px; /* Margin bottom by footer height */
