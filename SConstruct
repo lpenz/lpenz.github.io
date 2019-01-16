@@ -3,8 +3,7 @@ import glob
 
 if False:
     Environment = None
-env = Environment(ENV=os.environ, TOP=os.path.abspath(
-    os.path.curdir), toolpath=['tools/scons', '/usr/lib/scons/SCons/Tool'])
+env = Environment(ENV=os.environ, TOP=os.path.abspath(os.path.curdir))
 env.HTMLSITEFILES = set()
 env.Export('env')
 
@@ -43,27 +42,23 @@ env.Command('media/logo-white.png', 'media/logo-white.svg',
             'inkscape -z -e $TARGET -w 14 -h 14 $SOURCE')
 env.HTMLSITEFILES.add('media/logo-black.png')
 
-
 # About me:
 env.SConscript('about/SConscript')
-
 
 # Articles:
 env.SConscript('articles/SConscript')
 
-
 # Debian:
 env.SConscript('debian/SConscript')
-
 
 # Feeds:
 env.SConscript('feeds/SConscript')
 
-
 # Final touches:
-env.Command('_linkchecker_ok.txt', list(env.HTMLSITEFILES),
-            'linkchecker -flinkcheckerrc '
-            'index.html && md5sum $SOURCES > $TARGET')
+env.Command(
+    '_linkchecker_ok.txt', list(env.HTMLSITEFILES),
+    'linkchecker -flinkcheckerrc '
+    'index.html && md5sum $SOURCES > $TARGET')
 env.Command('sitemap.xml', list(env.HTMLSITEFILES),
             'tools/sitemapper $TARGET $SOURCES')
 env.Depends('sitemap.xml', 'tools/sitemapper')
