@@ -6,12 +6,14 @@ import SCons.Tool
 import os
 import re
 
+pjoin = os.path.join
 
 cre = re.compile(r'^%!include:\s*(.*)$', re.M)
 ids = {'`': 'verb', '"': 'raw', "'": 'passthru'}
 
 
 def t2tbhtmlSourceScan(node, env):
+    dirname = str(node.dir)
     candidates = cre.findall(node.get_contents())
     includes = []
     for f in candidates:
@@ -19,11 +21,12 @@ def t2tbhtmlSourceScan(node, env):
         if mark in ids.keys():
             if f[:2] == f[-2:] == mark * 2:
                 f = f[2:-2]
-            print(f)
         else:
-            includes.extend(t2tbhtmlSourceScan(env.File(f), env))
-        includes.append(f)
-    includes.append(os.path.join(env['TOP'], 't2tconfig'))
+            fileobj = env.File(pjoin(dirname, f))
+            subincludes = t2tbhtmlSourceScan(fileobj, env)
+            includes.extend(subincludes)
+        includes.append(env.File(pjoin(dirname, f)))
+    includes.append(env.File(os.path.join(env['TOP'], 't2tconfig')))
     return includes
 
 
