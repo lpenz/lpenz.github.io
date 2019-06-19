@@ -25,7 +25,7 @@
 #/articles/df0pred-3/main.RData # Commited to speed build.
 /articles/hedsl-sharedexpenses/results.txt
 /articles/hedsl-sharedexpenses/sharedexpenses
-/articles/hedsl-sharedexpenses/sharedexpenses.lhs
+# /articles/hedsl-sharedexpenses/sharedexpenses.lhs # Commited to fix weird cycle
 /articles/index.t2t
 /articles/bugprobhunt/hasbug
 /articles/bugprobhunt/r1w1_n4_probabilities.t2t

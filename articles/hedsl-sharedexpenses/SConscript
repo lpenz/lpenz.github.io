@@ -3,7 +3,7 @@ if False:
     env = None
 Import(['env'])
 
-env.Command('sharedexpenses.lhs', 'index.t2t', 'cp $SOURCE $TARGET')
+# env.Command('sharedexpenses.lhs', 'index.t2t', 'cp $SOURCE $TARGET')
 env.HASKELL_EXECUTABLE(
     'sharedexpenses.lhs',
     HASKELLFLAGS='--make -cpp -Werror -Wall -fno-warn-missing-signatures')
