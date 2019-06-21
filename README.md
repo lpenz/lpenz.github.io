@@ -1,4 +1,4 @@
-[![Run Status](https://api.shippable.com/projects/568983d11895ca447467411a/badge?branch=master)](https://app.shippable.com/projects/568983d11895ca447467411a)
+[![Build Status](https://travis-ci.org/lpenz/lpenz.github.io.png?branch=publish)](https://travis-ci.org/lpenz/lpenz.github.io) 
 
 # www.lpenz.org
 
