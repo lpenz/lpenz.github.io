@@ -82,3 +82,9 @@ whatsnew:
         Wrote down some notes on
         [Provisioning a Raspberry Pi using ansible $home$/articles/ansiblerpi/index.html].
         I'm currently using a hybrid Raspbian-Debian installation (Raspbianbian?)
+    - date: 2019-06-25
+      news: >
+        Updated the
+        [Debian live USB $home$/articles/liveusb/index.html] article with Debian
+        Stretch kernel version numbers, and with instructions on how to test
+        with qemu.

@@ -2,6 +2,8 @@ Create a Debian bootable live USB
 How to create a customized bootable live USB with Debian
 2015-10-04
 
+**Updated 2019-06-25**: use Debian Stretch explicitly (already implied
+by kernel version); suggest testing with qemu.
 
 
 = Creating a Debian bootable live USB =
@@ -152,11 +154,13 @@ mkfs.ext4 /dev/sdc2
 You can use any filesystem here, as long as it is supported by your future
 kernel.
 
-Mount the partition and use //debootstrap// to install the base files on it:
+Mount both partitions and use //debootstrap// to install the base files on it:
 ```
 mkdir -p usbroot
 mount -t auto /dev/sdc2 usbroot
-debootstrap stable usbroot http://ftp.debian.org/debian
+mkdir -p usbroot/boot
+mount -t auto /dev/sdc1 usbroot/boot
+debootstrap stretch usbroot http://ftp.debian.org/debian
 > I: Retrieving Release.gpg 
 > I: Checking Release signature
 > I: Valid Release signature (key id 75DDC3C4A499F1A18CB5F3C8CBF8D6FD518E17E1)
@@ -186,7 +190,6 @@ mount -t devtmpfs dev       usbroot/dev
 mount -t devpts   devpts    usbroot/dev/pts
 mount -t proc     proc      usbroot/proc
 mount -t sysfs    sysfs     usbroot/sys
-mount -t auto     /dev/sdc1 usbroot/boot
 ```
 
 //chroot// into root:
@@ -202,27 +205,27 @@ passwd
 > passwd: password updated successfully
 ```
 
-Install the Linux kernel:
+Install the Linux kernel and other important packages:
 ```
-apt-get install --no-install-recommends -y linux-image-amd64 syslinux
+apt-get install --no-install-recommends -y linux-image-amd64 syslinux busybox-static
 > Reading package lists... Done
 > Building dependency tree... Done
 > The following extra packages will be installed:
->   initramfs-tools klibc-utils libklibc libuuid-perl linux-base linux-image-3.16.0-4-amd64
+>   initramfs-tools klibc-utils libklibc libuuid-perl linux-base linux-image-4.9.0-9-amd64
 > Suggested packages:
 >   bash-completion linux-doc-3.16 debian-kernel-handbook grub-pc grub-efi extlinux
 > Recommended packages:
 >   busybox busybox-initramfs busybox-static firmware-linux-free irqbalance
 > The following NEW packages will be installed:
->   initramfs-tools klibc-utils libklibc libuuid-perl linux-base linux-image-3.16.0-4-amd64 linux-image-amd64
+>   initramfs-tools klibc-utils libklibc libuuid-perl linux-base linux-image-4.9.0-9-amd64 linux-image-amd64
 > 0 upgraded, 7 newly installed, 0 to remove and 0 not upgraded.
 > Need to get 34.1 MB of archives.
 > After this operation, 164 MB of additional disk space will be used.
 > (...)
 > Setting up linux-image-amd64 (3.16+63) ...
 > Processing triggers for initramfs-tools (0.120) ...
-> ln: failed to create hard link '/boot/initrd.img-3.16.0-4-amd64.dpkg-bak' => '/boot/initrd.img-3.16.0-4-amd64': Operation not permitted
-> update-initramfs: Generating /boot/initrd.img-3.16.0-4-amd64
+> ln: failed to create hard link '/boot/initrd.img-4.9.0-9-amd64.dpkg-bak' => '/boot/initrd.img-4.9.0-9-amd64': Operation not permitted
+> update-initramfs: Generating /boot/initrd.img-4.9.0-9-amd64
 ```
 
 We now have to set up our mount points in the ///etc/fstab// of the USB drive,
@@ -248,7 +251,7 @@ echo 'UUID=2420-26B1                            /boot vfat defaults         0 0'
 Figure out the name of the kernel and initrd installed on the boot partition:
 ```
 ls boot/vmlinuz* boot/initrd*
-> boot/initrd.img-3.16.0-4-amd64  boot/vmlinuz-3.16.0-4-amd64
+> boot/initrd.img-4.9.0-9-amd64  boot/vmlinuz-4.9.0-9-amd64
 ```
 
 And use them with the //UUID//s to create the ``boot/syslinux.cfg`` file, with
@@ -259,8 +262,8 @@ timeout 1
 prompt 1
 
 label linux
-    kernel vmlinuz-3.16.0-4-amd64
-    append initrd=initrd.img-3.16.0-4-amd64 root=UUID=68d66fd5-97f2-46ed-aee6-dad6f228a172 ro
+    kernel vmlinuz-4.9.0-9-amd64
+    append initrd=initrd.img-4.9.0-9-amd64 root=UUID=68d66fd5-97f2-46ed-aee6-dad6f228a172 ro
 ```
 
 Finally, write //syslinux//'s master boot record on the USB drive:
@@ -283,7 +286,15 @@ umount usbroot/boot
 umount usbroot
 ```
 
-You can now remove the USB drive and use it to boot any computer.
+We can test our system using qemu:
+```
+qemu-system-x86_64 -m 512 -hda /dev/sdc
+```
+
+We should be able to login as //root//, with the password we set above.
+
+If everything is working as expected, we can now remove the USB drive
+and use it to boot any computer.
 
 
 
@@ -296,4 +307,6 @@ the //UUID// part added.
 - http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick
 
 
-
+I've also created a
+[gist https://gist.github.com/lpenz/e7339a0b309e29698186baee92370104]
+that's easy to change, with the commands in this article.
