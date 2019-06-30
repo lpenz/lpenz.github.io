@@ -88,3 +88,10 @@ whatsnew:
         [Debian live USB $home$/articles/liveusb/index.html] article with Debian
         Stretch kernel version numbers, and with instructions on how to test
         with qemu.
+    - date: 2019-07-07
+      news: >
+        I've written down some notes on how one can go about
+        [Creating a static nix channel $home$/articles/nixchannel/index.html] that
+        can be deployed with [travis-ci https://travis-ci.com] to
+        [github pages https://pages.github.com/]. I've created one for
+        myself [here https://github.com/lpenz/nixpkgs-lpenz].

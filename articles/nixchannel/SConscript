@@ -1,0 +1,10 @@
+import os
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+Import(['env'])
+
+env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.HTMLSITEFILES.add('articles/nixchannel/index.html')
