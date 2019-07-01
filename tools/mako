@@ -154,7 +154,7 @@ def main():
     info = infoget(opts, infilename)
     htmlstr = templated(infilename, opts.template, info).replace('$cwd$/', '')
     out = encfix(open(outfilename, 'w'))
-    out.write(makorender(htmlstr, info))
+    out.write(makorender(htmlstr, info).replace('$backslash$', '\\'))
 
 
 if __name__ == "__main__":
