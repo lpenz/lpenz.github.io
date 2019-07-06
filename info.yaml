@@ -95,3 +95,9 @@ whatsnew:
         can be deployed with [travis-ci https://travis-ci.com] to
         [github pages https://pages.github.com/]. I've created one for
         myself [here https://github.com/lpenz/nixpkgs-lpenz].
+    - date: 2020-03-22
+      news: >
+        While looking up (once again) how to use LUKS, I figured I had some
+        notes laying around. Finished them up in
+        [Creating an encrypted directory-in-a-file $home$/articles/luksfile/index.html].
+
