@@ -20,6 +20,7 @@ lines bellow:
 
 ```
 
+> import Prelude as P
 > import Data.Map as Map
 > import Control.Monad.State
 
@@ -140,7 +141,7 @@ owes more pays to the one that has more credit until everybody gets paid.
 > solve st = solve' err $ Map.map ( \ m -> m - avg) st
 >     where
 >         err = 1 + size st
->         avg = round $ (toRational $ fold (+) 0 st) / (toRational $ size st)
+>         avg = round $ (toRational $ P.foldr (+) 0 st) / (toRational $ size st)
 
 > solve' _   st | Map.null st = []
 > solve' err st =
