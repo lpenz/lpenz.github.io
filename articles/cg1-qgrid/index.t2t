@@ -1,0 +1,31 @@
+Codingame - square grids
+Beating the bosses in codingame square grid games
+2019-07-07
+
+
+
+= Codingame square grid games =
+
+
+- articulation points: https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/
+
+= The games =
+
+== tron-battle ==
+
+URL: https://www.codingame.com/ide/puzzle/tron-battle
+
+Very similar to a Google AI Challenge. Links:
+
+- Winner of Google AI Challenge:
+  - Postmortem: https://www.a1k0n.net/2010/03/04/google-ai-postmortem.html
+  - Repository: https://github.com/a1k0n/tronbot/
+- Codingamer in legend: https://github.com/xavierfeltin/codinggame
+- https://project.dke.maastrichtuniversity.nl/games/files/bsc/Denteuling-paper.pdf
+
+
+Strategy:
+- Silter: boss is doing minimax with depth=3, using flood
+  evaluation. Doing that will get you very near him.
+  Make endgame evaluate only your player and you'll get to gold.
+
