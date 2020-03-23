@@ -7,6 +7,8 @@ import codecs
 from tempfile import TemporaryFile, NamedTemporaryFile
 from subprocess import Popen
 
+pjoin = os.path.join
+
 
 # txt2tags render: ###########################################################
 
@@ -36,6 +38,46 @@ def txt2tags(intext):
     t2tinfd = NamedTemporaryFile()
     t2tinfd.write('\n\n\n\n' + intext)
     return txt2tagsfd(t2tinfd.name, encfix(t2tinfd))
+
+
+# markdown render: ###########################################################
+
+def markdownfd(mdinfilename, mdinfd):
+    mdinfd.flush()
+    mdoutfd = encfix(TemporaryFile())
+    try:
+        md = Popen(['pandoc', mdinfilename], stdout=mdoutfd)
+        retcode = md.wait()
+        if retcode < 0:
+            sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
+        elif retcode != 0:
+            sys.stderr.write("Child returned %d\n" % retcode)
+    except OSError as e:
+        sys.stderr.write("Execution failed: %s\n" % str(e))
+    mdoutfd.seek(0)
+    return mdoutfd.read()
+
+
+def markdownfile(infilename):
+    mdinfd = open(infilename)
+    return markdownfd(infilename, mdinfd)
+
+
+def markdown(intext):
+    mdinfd = NamedTemporaryFile()
+    mdinfd.write('\n\n\n\n' + intext)
+    return markdownfd(mdinfd.name, encfix(mdinfd))
+
+
+# Renderer dispatcher: #######################################################
+
+def renderarticle(article):
+    path = pjoin('articles', article)
+    t2tfile = pjoin(path, 'index.t2t')
+    if os.path.exists(t2tfile):
+        return txt2tagsfile(t2tfile)
+    return ''
+
 
 # Misc functions: ############################################################
 
@@ -130,6 +172,7 @@ def makorender(data, y):
     return Template(data, lookup=lookup).render_unicode(
         txt2tags=txt2tags,
         txt2tagsfile=txt2tagsfile,
+        renderarticle=renderarticle,
         rfctime=rfctime,
         **y)
 
