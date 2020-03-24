@@ -33,7 +33,8 @@ def generate(env):
         suffix='.html',
         src_suffix='.bhtml',
         source_scanner=SCons.Tool.SourceFileScanner,
-        src_builder=[env['BUILDERS']['T2TBHTML']],
+        src_builder=[env['BUILDERS']['T2TBHTML'],
+                     env['BUILDERS']['PANDOC']],
         target_scanner=MakoTargetScanner)
     env['MAKO'] = 'tools/mako'
 

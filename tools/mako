@@ -75,6 +75,9 @@ def renderarticle(article):
     t2tfile = pjoin(path, 'index.t2t')
     if os.path.exists(t2tfile):
         return txt2tagsfile(t2tfile)
+    mdfile = pjoin(path, 'index.md')
+    if os.path.exists(mdfile):
+        return markdownfile(mdfile)
     return ''
 
 

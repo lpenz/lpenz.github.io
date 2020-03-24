@@ -7,7 +7,7 @@ env = Environment(ENV=os.environ, TOP=os.path.abspath(os.path.curdir))
 env.HTMLSITEFILES = set()
 env.Export('env')
 
-for t in ['haskell', 't2tbhtml', 'mako', 'R', 'gcc']:
+for t in ['haskell', 'pandoc', 't2tbhtml', 'mako', 'R', 'gcc']:
     env.Tool(t)
 
 # infotree:
