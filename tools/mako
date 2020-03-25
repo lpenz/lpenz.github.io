@@ -1,9 +1,8 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import yaml
 import os
-import codecs
 from tempfile import TemporaryFile, NamedTemporaryFile
 from subprocess import Popen
 
@@ -14,7 +13,7 @@ pjoin = os.path.join
 
 def txt2tagsfd(t2tinfilename, t2tinfd):
     t2tinfd.flush()
-    t2toutfd = encfix(TemporaryFile())
+    t2toutfd = TemporaryFile(mode='w+', encoding='utf-8')
     try:
         t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file', 't2tconfig',
                      '-H', '-i', t2tinfilename, '-o', '-'], stdout=t2toutfd)
@@ -30,21 +29,21 @@ def txt2tagsfd(t2tinfilename, t2tinfd):
 
 
 def txt2tagsfile(infilename):
-    t2tinfd = open(infilename)
+    t2tinfd = open(infilename, encoding='utf-8')
     return txt2tagsfd(infilename, t2tinfd)
 
 
 def txt2tags(intext):
-    t2tinfd = NamedTemporaryFile()
+    t2tinfd = NamedTemporaryFile(mode='w+', encoding='utf-8')
     t2tinfd.write('\n\n\n\n' + intext)
-    return txt2tagsfd(t2tinfd.name, encfix(t2tinfd))
+    return txt2tagsfd(t2tinfd.name, t2tinfd)
 
 
 # markdown render: ###########################################################
 
 def markdownfd(mdinfilename, mdinfd):
     mdinfd.flush()
-    mdoutfd = encfix(TemporaryFile())
+    mdoutfd = TemporaryFile(mode='w+', encoding='utf-8')
     try:
         md = Popen(['pandoc', mdinfilename], stdout=mdoutfd)
         retcode = md.wait()
@@ -59,14 +58,14 @@ def markdownfd(mdinfilename, mdinfd):
 
 
 def markdownfile(infilename):
-    mdinfd = open(infilename)
+    mdinfd = open(infilename, encoding='utf-8')
     return markdownfd(infilename, mdinfd)
 
 
 def markdown(intext):
-    mdinfd = NamedTemporaryFile()
+    mdinfd = NamedTemporaryFile(mode='w+', encoding='utf-8')
     mdinfd.write('\n\n\n\n' + intext)
-    return markdownfd(mdinfd.name, encfix(mdinfd))
+    return markdownfd(mdinfd.name, mdinfd)
 
 
 # Renderer dispatcher: #######################################################
@@ -80,14 +79,6 @@ def renderarticle(article):
 
 
 # Misc functions: ############################################################
-
-
-encoding = 'iso8859-1'
-
-
-def encfix(f):
-    return codecs.getreader(encoding)(codecs.getwriter(encoding)(f))
-
 
 def rfctime(d):
     return d.strftime('%a, %d %b %Y %H:%M:%S')
@@ -109,7 +100,7 @@ def dirscalc(infilename):
     dirs = dirname.split(os.sep)
     dirs = [d for d in dirs if d != '']
     lvl = len(dirs) - 1
-    yt = yaml.load(open('infotree.yaml').read())
+    yt = yaml.load(open('infotree.yaml', encoding='utf-8').read())
     yc = yt
     p = ''
     first = True
@@ -152,10 +143,11 @@ def templated(infilename, template, y):
 
     if not isfile(infilename):
         raise SystemExit("error: can't find %s" % infilename)
-    infd = encfix(open(infilename))
-    outfd = encfix(TemporaryFile())
+    infd = open(infilename, encoding='utf-8')
+    outfd = TemporaryFile(mode='w+', encoding='utf-8')
     if template:
-        outfd.write('<%%inherit file="%s.html.mako"/>\n' % template)
+        templateline = '<%%inherit file="%s.html.mako"/>\n' % template
+        outfd.write(templateline)
     for l in infd:
         outfd.write(l)
     outfd.seek(0)
@@ -196,7 +188,7 @@ def main():
 
     info = infoget(opts, infilename)
     htmlstr = templated(infilename, opts.template, info).replace('$cwd$/', '')
-    out = encfix(open(outfilename, 'w'))
+    out = open(outfilename, 'w', encoding='utf-8')
     out.write(makorender(htmlstr, info).replace('$backslash$', '\\'))
 
 

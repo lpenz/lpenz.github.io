@@ -10,21 +10,18 @@ RUN set -e -x; \
         haskell-platform \
         r-cran-ggplot2 r-cran-reshape \
         inkscape \
-        python-pip python-setuptools python-wheel \
-        python-mako python-yaml python-nose flake8 \
+        python3-pip python3-setuptools python3-wheel \
+        python3-mako python3-yaml python3-nose flake8 \
         linkchecker \
-        git scons
+        scons python-yaml \
+        git
 
 # setup sudo and locales
 RUN set -e -x; \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen; locale-gen; \
     sed -i '/drop_privileges/d' /usr/bin/linkchecker; \
     sed -i '/pam_rootok.so$/aauth sufficient pam_permit.so' /etc/pam.d/su
-ENV LC_ALL=en_US.UTF-8
-
-# install pip packages:
-RUN set -e -x; \
-    pip install \
-        py3kwarn==0.4.4
+ENV LC_ALL=en_US.UTF-8 \
+    HOME=/tmp
 
 CMD ./tests

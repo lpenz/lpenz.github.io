@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import sys
 import re
@@ -10,7 +10,7 @@ from subprocess import Popen
 def t2thtml(infilename):
     if not os.path.isfile(infilename):
         raise SystemExit("error: can't find %s" % infilename)
-    t2toutfd = TemporaryFile()
+    t2toutfd = TemporaryFile(mode='w+', encoding='utf-8')
     try:
         t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file',
                      't2tconfig', '-H', '-i', infilename, '-o', '-'],
