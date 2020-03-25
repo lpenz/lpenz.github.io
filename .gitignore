@@ -1,6 +1,7 @@
 # Always ignore:
 _*
 .sconsign.dblite
+_*
 *.hi
 *.o
 *.pyc
@@ -36,9 +37,7 @@ _*
 /articles/bugprobhunt/r1w3_n4_results.t2t
 /articles/bugprobhunt/r1w*_probabilities.csv
 /articles/bugprobhunt/r1w*_results.csv
-/_htmlcheck_ok.txt
-/_w3cvalidator_ok.txt
-/_linkchecker_ok.txt
+/articles/gpg/index.md
 
 # Ignore only on devel:
 index.html

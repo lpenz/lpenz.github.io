@@ -1,0 +1,34 @@
+import os
+
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+Import(["env"])
+
+env["GPGCONF"] = env.File("gpg.conf")
+env["GPGSESSION_YAML"] = env.File("_gpgsession.yml")
+env.Command("_gpgsession.yml", "gpgsession", "./$SOURCE $GPGCONF $TARGET")
+env.Depends("_gpgsession.yml", "gpg.conf")
+
+env.MAKO("_index.md", "index.md.mako", MAKOFLAGS="-i $GPGSESSION_YAML")
+env.Depends("_index.md", "_gpgsession.yml")
+
+env["PANDOC_TITLESFIX"] = env.File("indexfix.lua")
+env["PANDOC_TEMPLATE"] = env.File("tmpl.html")
+
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "_index.md",
+    PANDOCFLAGS="-N -s --toc --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako.sed", "tmpl.html")
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+
+env.HTMLSITEFILES.add("articles/gpg/index.html")

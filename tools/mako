@@ -97,6 +97,14 @@ def renderarticle(article):
     return ""
 
 
+# Renderer dispatcher: #######################################################
+
+
+def includefile(infilename):
+    with open(infilename, encoding="utf-8") as fd:
+        return fd.read()
+
+
 # Misc functions: ############################################################
 
 
@@ -186,8 +194,11 @@ def makorender(data, y):
     return Template(data, lookup=lookup).render_unicode(
         txt2tags=txt2tags,
         txt2tagsfile=txt2tagsfile,
+        includefile=includefile,
         renderarticle=renderarticle,
         rfctime=rfctime,
+        ini_bold="<b>",
+        end_bold="</b>",
         **y
     )
 

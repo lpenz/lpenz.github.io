@@ -111,3 +111,11 @@ whatsnew:
         [github project structure best practices $home$/articles/github-project-struct/index.html].
         This is probably the one article that I'll be constantly
         updating as things change.
+    - date: 2022-05-22
+      news: >
+        While looking at how to set up //verified// commits in
+        [github https://github.com], I ended up with a scheme using a
+        vaulted private master key and multiple private subkeys, with
+        notations documenting their usage. I've written down some
+        notes in
+        [Using GPG and signing git commits $home$/articles/gpg/index.html].
