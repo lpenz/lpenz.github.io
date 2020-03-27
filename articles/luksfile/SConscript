@@ -6,5 +6,5 @@ if False:
     env = None
 Import(['env'])
 
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.MAKO('index.md', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/luksfile/index.html')
