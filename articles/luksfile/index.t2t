@@ -142,9 +142,9 @@ You can now run the following command to mount the file:
 
 ```
 cryptmount mycryptlabel
-> Enter password for target "gpg":
+> Enter password for target "mycryptlabel":
 > e2fsck 1.45.5 (07-Jan-2020)
-> /dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
+> /dev/mapper/cryptdev: clean, 33/4096 files, 1896/16384 blocks
 ```
 
 Don't forget to unmount it later, and leave the shell:
