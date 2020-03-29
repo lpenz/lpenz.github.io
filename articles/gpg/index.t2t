@@ -7,13 +7,13 @@ Comment those subkeys
 = Creating and managing signature keys with GPG =
 
 	These are my notes on gpg signature management. gpg has
-	changed a lot since I last did this, and I've decided to use a
-	new strategy - might as well write it down while at it.
+	changed a lot since I last used it, and I've decided to shift
+	to a new strategy - might as well write it all down this time.
 
 github, linux packages and repositories, email... a cryptographic
 digital signature can be used in several places to
 provide //authenticity// - a reasonable proof that the artifact was
-indeed generate by the sender.
+indeed generate by the author.
 
 
 
@@ -88,83 +88,120 @@ These options make gpg show more information about the subkeys,
 information we are going to set and use.
 
 
-
-== Detour: creating an encrypted flash drive ==
+== Using a flash drive ==
 
 Part of our strategy involves keeping the master key secure. One way
 of doing that is by keeping it in a flash drive that is physically
-kept secure. We could create and work with it locally and then move it
-away, but we are instead going to work with it straight from an
-encrypted flash drive. It's worth noting that the encryption here is
-serving more to hide what is actually in the drive (steganography)
-than to make the key more secure, as the key itself is already
-encrypted with a password.
+kept secure. We could create and work with the key locally and then
+move it away, but we are instead going to work with it straight from
+a flash drive.
 
-After inserting the flash drive, figure out where it is
-with //lsblk//, set the environment variable //DEV// and use the
-following commands:
+The master key is already secured by a password, so there's no need to
+encrypt the flash drive because of it. If you want to keep other
+sensistive files there, though, you should encrypti it. You can take a
+look at the
+[Creating an encrypted directory-in-a-file $cwd$/../luks/index.html]
+article for basic instructions.
 
-```
-DEV=/dev/sdb
-sudo cryptsetup luksOpen "$DEV" cryptdev
-> Enter passphrase for /dev/sdb:
-sudo mkfs.ext4 /dev/mapper/cryptdev
-> mke2fs 1.45.6 (20-Mar-2020)
-> Creating filesystem with 1950080 4k blocks and 487680 inodes
-> Filesystem UUID: e1a5329c-24ee-4422-a193-b8e77d0b317f
-> Superblock backups stored on blocks:
->            32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
->
-> Allocating group tables: done
-> Writing inode tables: done
-> Creating journal (16384 blocks): done
-> Writing superblocks and filesystem accounting information: done
-sudo cryptsetup luksClose cryptdev
-```
-
-
-
-=== Using the encrypted drive ===
-
-Once again, figure out the device with //lsblk// and assign it to DEV:
+In my particular setup, I'm using a flash drive with a luks2-encrypted
+partition labeled //cryptflash// that I mount with:
 
 ```
-DEV=/dev/sdb
-sudo cryptsetup luksOpen "$DEV" cryptdev
-> Enter passphrase for /dev/sdb:
-sudo mkdir -p cryptdir
-sudo mount -t auto /dev/mapper/cryptdev cryptdir
+mkdir -p cryptflash
+sudo unshare -m sudo -u "$USER" -i
+cryptmount cryptflash
+> Enter password for target "cryptflash":
+> e2fsck 1.45.5 (07-Jan-2020)
+> /dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
 ```
 
-Don't forget to ``umount`` and ``luksClose`` the device after we are done:
+And umount by just exiting the namespace shell.
 
-```
-sudo umount cryptdir
-sudo cryptsetup luksClose cryptdev
-```
-
-
-
-=== Alternatives ===
-
-Note that this encrypts the whole drive for data, getting rid of the
-partition table. You can also partition the drive and encrypt a
-partition with the same commands, just changing the device.
-
-Another alternative is to encrypt just a file inside the partition,
-more details [here $cwd$/../luksfile/index.html]. Just remeber that
-hiding the data is the intent, so don't name the file something
-like ``my-gpg-master-key.ext4.luks``.
-
-You can also forego the hidding and use a regular filesystem in a
-flash drive partition.
-
+The examples below assume we are using the ``cryptflash`` directory.
 
 
 == Creating the master key ==
 
-Before creating the master key, we are going to copy //~/.gnupg//
-directory to the physically detachable drive and use ``GNUPGHOME``
+We start by assigning the directory in the detachable drive to ``GNUPGHOME``:
+
+```
+export GNUPGHOME="$HOME/cryptflash/dotgpg"
+```
+
+We create the directory and copy our ``~/.gnupg/gnupg.conf`` to it:
+
+```
+mkdir -p "$GNUPGHOME"
+cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
+```
+
+We can now generate the master key pair:
+
+```
+gpg --quick-gen-key 'Leandro Lisboa Penz <lpenz@lpenz.org>' default default 0
+> We need to generate a lot of random bytes. It is a good idea to perform
+> some other action (type on the keyboard, move the mouse, utilize the
+> disks) during the prime generation; this gives the random number
+> generator a better chance to gain enough entropy.
+> gpg: key EEDCE25A marked as ultimately trusted
+> gpg: revocation certificate stored as '/home/lpenz/cryptflash/dotgpg/openpgp-revocs.d/6B43A09310B2FBDFCA984570ACB3C6D2EEDCE25A.rev'
+> public and secret key created and signed.
+> 
+> pub   rsa3072/EEDCE25A 2020-03-29 [SC]
+>       Key fingerprint = 6B43 A093 10B2 FBDF CA98  4570 ACB3 C6D2 EEDC E25A
+>       uid                    Leandro Lisboa Penz <lpenz@lpenz.org>
+>       sig 3        EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+>       sub   rsa3072/FAA07E9B 2020-03-29 [E]
+>       sig          EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+```
+
+That command asks you for a password, and then creates the master key
+pair with default options and no expiration date. For more details on
+why a master key expiration date is irrelvant in our scenario, read
+[this https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/].
+
+---
+
+Key UUID is EEDCE25A
+
+To add another user-id:
+```
+gpg --quick-add-uid lpenz@lpenz.org 'Leandro Lisboa Penz <llpenz@gmail.com>'
+
+```
+
+
+To list public keys:
+```
+gpg -k
+> gpg: checking the trustdb
+> gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+> gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+> /home/lpenz/cryptflash/dotgpg/pubring.kbx
+> -----------------------------------------
+> pub   rsa3072/EEDCE25A 2020-03-29 [SC]
+>       Key fingerprint = 6B43 A093 10B2 FBDF CA98  4570 ACB3 C6D2 EEDC E25A
+>       uid         [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>
+>       sig 3        EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+>       sub   rsa3072/FAA07E9B 2020-03-29 [E]
+>       sig          EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+```
+
+To list private keys:
+```
+gpg -K
+> /home/lpenz/cryptflash/dotgpg/pubring.kbx
+> -----------------------------------------
+> sec   rsa3072/EEDCE25A 2020-03-29 [SC]
+>       Key fingerprint = 6B43 A093 10B2 FBDF CA98  4570 ACB3 C6D2 EEDC E25A
+>       uid         [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>
+>       sig 3        EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+>       ssb   rsa3072/FAA07E9B 2020-03-29 [E]
+>       sig          EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+```
+
+Create subkey:
+
 
 
 
@@ -178,3 +215,5 @@ directory to the physically detachable drive and use ``GNUPGHOME``
   https://debian-administration.org/article/450/Generating_a_revocation_certificate_with_gpg
 - Getting information from an armored gpg public key file:
   https://superuser.com/questions/173417/getting-information-from-an-armored-gpg-public-key-file
+- Secure yourself, Part 1: Air-gapped computer, GPG and smartcards:
+  https://viccuad.me/blog/Revisited-secure-yourself-part-1-airgapped-computer-and-gpg-smartcards
