@@ -101,7 +101,7 @@ ls -l cryptdir/
 Don't forget to unmount and close the device after using it:
 ```
 sudo umount cryptdir
-cryptsetup luksClose cryptdev
+sudo cryptsetup luksClose cryptdev
 ```
 
 
