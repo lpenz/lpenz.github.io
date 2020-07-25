@@ -1,26 +1,29 @@
-Creating and managing signature keys with GPG
-Comment those subkeys
-2020-03-22
+---
+title: Creating and managing signature keys with GPG
+subtitle: Comment those subkeys
+date: 2020-03-22
+...
 
 
 
-= Creating and managing signature keys with GPG =
+# Creating and managing signature keys with GPG
 
-	These are my notes on gpg signature management. gpg has
-	changed a lot since I last used it, and I've decided to shift
-	to a new strategy - might as well write it all down this time.
+These are my notes on gpg signature management. gpg has changed a lot
+since I last used it, and I've decided to shift to a new strategy -
+might as well write it all down this time.
 
 github, linux packages and repositories, email... a cryptographic
 digital signature can be used in several places to
-provide //authenticity// - a reasonable proof that the artifact was
+provide *authenticity* - a reasonable proof that the artifact was
 indeed generate by the author.
 
 
 
-== Basics of public key infrastructure (PKI) ==
+## Basics of public key infrastructure (PKI)
 
 In broad strokes, a digital signature works in the context of the
 following workflow:
+
 - The author generated in the past a linked pair of keys: a public key
   and a private key. The are blobs of data, with the mathematical
   property that whatever is encripted with the private key can only be
@@ -38,27 +41,27 @@ following workflow:
     corresponds to the public key used to decrypt it.
 
 
-The [wikipedia page https://en.wikipedia.org/wiki/Digital_signature]
+The [wikipedia page](https://en.wikipedia.org/wiki/Digital_signature)
 has more details.
 
 
 
-== The strategy ==
+## The strategy
 
 Using gpg to generate a pair of cryptographic keys for digital
 signatures is quite trivial. That's not what we are going to do.
 
-Our strategy, instead, is to generate a //master// key pair that we
+Our strategy, instead, is to generate a *master* key pair that we
 then use to generate several signature subkey pairs that we can then
 use in different hosts and for different services. After generating
 the keys, we put the master key away, and leave installed in each host
 only the relevant secret keys. This has some advatanges:
+
 - Minimizes the exposure of the master key, as it's not used on a
   daily basis and is not permanently installed in any host.
 - Limits what an attacker can do with a secret key that gets
   compromised - the secret key and the embedded information can't be
   changed without the master key.
-
   In contrast, a compromised top-level key can be altered by itself.
 - When a host is compromised, you know exactly which keys are
   compromised and have to be revoked, and which services have to be
@@ -70,11 +73,11 @@ master key.
 
 
 
-== Configuring gpg ==
+## Configuring gpg
 
 It's worth noting that the ages-old interface design of gpg doesn't
 support this approach in an intuitive way. The first thing we should
-do is add a couple of lines to //~/.gnupg/gpg.conf//:
+do is add a couple of lines to *~/.gnupg/gpg.conf*:
 
 ```
 utf8-strings
@@ -88,7 +91,7 @@ These options make gpg show more information about the subkeys,
 information we are going to set and use.
 
 
-== Using a flash drive ==
+## Using a flash drive
 
 Part of our strategy involves keeping the master key secure. One way
 of doing that is by keeping it in a flash drive that is physically
@@ -100,11 +103,11 @@ The master key is already secured by a password, so there's no need to
 encrypt the flash drive because of it. If you want to keep other
 sensistive files there, though, you should encrypti it. You can take a
 look at the
-[Creating an encrypted directory-in-a-file $cwd$/../luks/index.html]
+[Creating an encrypted directory-in-a-file]($cwd$/../luksfile/index.html)
 article for basic instructions.
 
 In my particular setup, I'm using a flash drive with a luks2-encrypted
-partition labeled //cryptflash// that I mount with:
+partition labeled *cryptflash* that I mount with:
 
 ```
 mkdir -p cryptflash
@@ -120,7 +123,7 @@ And umount by just exiting the namespace shell.
 The examples below assume we are using the ``cryptflash`` directory.
 
 
-== Creating the master key ==
+## Creating the master key
 
 We start by assigning the directory in the detachable drive to ``GNUPGHOME``:
 
@@ -158,7 +161,7 @@ gpg --quick-gen-key 'Leandro Lisboa Penz <lpenz@lpenz.org>' default default 0
 That command asks you for a password, and then creates the master key
 pair with default options and no expiration date. For more details on
 why a master key expiration date is irrelvant in our scenario, read
-[this https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/].
+[this](https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/).
 
 ---
 
@@ -205,15 +208,15 @@ Create subkey:
 
 
 
-== References ==
+## References
 
 - Why expiration dates are irrelevant:
-  https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/
+  <https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/>
 - Ana Guerrero López tutorial that uses subkeys:
-  http://ekaia.org/blog/2009/05/10/creating-new-gpgkey/
+  <http://ekaia.org/blog/2009/05/10/creating-new-gpgkey/>
 - Generating a revocation certificate with gpg:
-  https://debian-administration.org/article/450/Generating_a_revocation_certificate_with_gpg
+  <https://debian-administration.org/article/450/Generating_a_revocation_certificate_with_gpg>
 - Getting information from an armored gpg public key file:
-  https://superuser.com/questions/173417/getting-information-from-an-armored-gpg-public-key-file
+  <https://superuser.com/questions/173417/getting-information-from-an-armored-gpg-public-key-file>
 - Secure yourself, Part 1: Air-gapped computer, GPG and smartcards:
-  https://viccuad.me/blog/Revisited-secure-yourself-part-1-airgapped-computer-and-gpg-smartcards
+  <https://viccuad.me/blog/Revisited-secure-yourself-part-1-airgapped-computer-and-gpg-smartcards>
