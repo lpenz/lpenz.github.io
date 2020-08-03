@@ -30,11 +30,8 @@ def generate(env):
         name="makoTargetScanner", function=makoTargetScanner)
     env['BUILDERS']['MAKO'] = SCons.Builder.Builder(
         action='$MAKO $MAKOFLAGS $SOURCE $TARGET',
-        suffix='.html',
-        src_suffix='.bhtml',
+        src_suffix='.mako',
         source_scanner=SCons.Tool.SourceFileScanner,
-        src_builder=[env['BUILDERS']['T2TBHTML'],
-                     env['BUILDERS']['PANDOC']],
         target_scanner=MakoTargetScanner)
     env['MAKO'] = 'tools/mako'
 

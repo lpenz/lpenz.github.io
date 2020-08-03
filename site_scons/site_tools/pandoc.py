@@ -8,9 +8,7 @@ import SCons.Tool
 def generate(env):
     """Add Builders and construction variables for pandoc to an Environment."""
     env['BUILDERS']['PANDOC'] = SCons.Builder.Builder(
-        action='$PANDOC $PANDOCFLAGS -o $TARGET $SOURCES',
-        suffix='.bhtml',
-        src_suffix='.md')
+        action='$PANDOC $PANDOCFLAGS -o $TARGET $SOURCES')
     env['PANDOC'] = 'pandoc'
 
 

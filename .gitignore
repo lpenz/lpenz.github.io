@@ -5,6 +5,7 @@
 *.pyc
 *.Rinc
 *.bhtml
+*.bhtml.mako
 /.Rbuildignore
 /travis-tool.sh
 /index.t2t

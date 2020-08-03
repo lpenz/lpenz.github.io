@@ -31,7 +31,8 @@ env.Depends('infotree.yaml', 'tools/infotreebuild')
 # Main page:
 env.Command('index.t2t', 'index.bt2t', 'tools/mako $SOURCE $TARGET')
 env.Depends('index.t2t', 'infotree.yaml')
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.T2TBHTML('index.bhtml.mako', 'index.t2t')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('index.html')
 
 # Logo:

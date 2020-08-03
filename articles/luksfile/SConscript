@@ -6,5 +6,6 @@ if False:
     env = None
 Import(['env'])
 
-env.MAKO('index.md', MAKOFLAGS='-t htmlpage')
+env.PANDOC('index.bhtml.mako', 'index.md')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/luksfile/index.html')

@@ -32,5 +32,6 @@ for i in ['mcsquantheat', 'mcspf1', 'mcscv1', 'mcscv2']:
     env.Depends(i + '.png', 'quantheatplotfunc.R')
     env.HTMLSITEFILES.add(pjoin('articles/df0pred-3', i + '.png'))
 
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.T2TBHTML('index.bhtml.mako', 'index.t2t')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/df0pred-3/index.html')
