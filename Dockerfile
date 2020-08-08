@@ -13,6 +13,7 @@ RUN set -e -x; \
         inkscape \
         python3-pip python3-setuptools python3-wheel \
         python3-mako python3-yaml python3-nose flake8 \
+        gnupg gpg gpg-agent python3-pexpect \
         linkchecker \
         scons python-yaml \
         git

@@ -6,7 +6,15 @@ if False:
     env = None
 Import(['env'])
 
-env.MAKO('index.md', 'index.md.mako')
-env.PANDOC('index.bhtml.mako', 'index.md')
-env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
+env['GPGCONF'] = env.File('gpg.conf')
+env['GPGSESSION_TARGETS'] = [env.File('_keyuuid.txt')]
+env.Command('_genkey.txt', 'gpgsession',
+            './$SOURCE $GPGCONF $TARGET $GPGSESSION_TARGETS')
+env.SideEffect(env['GPGSESSION_TARGETS'], '_genkey.txt')
+
+env.MAKO('_index.md', 'index.md.mako')
+env.Depends('_index.md', '_genkey.txt')
+
+env.PANDOC('_index.bhtml.mako', '_index.md')
+env.MAKO('index.html', '_index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/gpg/index.html')

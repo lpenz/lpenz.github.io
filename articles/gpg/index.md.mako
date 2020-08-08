@@ -6,7 +6,7 @@ date: 2020-03-22
 
 
 
-# Creating and managing signature keys with GPG
+${"#"} Creating and managing signature keys with GPG
 
 These are my notes on gpg signature management. gpg has changed a lot
 since I last used it, and I've decided to shift to a new strategy -
@@ -19,7 +19,7 @@ indeed generate by the author.
 
 
 
-## Basics of public key infrastructure (PKI)
+${"##"} Basics of public key infrastructure (PKI)
 
 In broad strokes, a digital signature works in the context of the
 following workflow:
@@ -46,7 +46,7 @@ has more details.
 
 
 
-## The strategy
+${"##"} The strategy
 
 Using gpg to generate a pair of cryptographic keys for digital
 signatures is quite trivial. That's not what we are going to do.
@@ -73,25 +73,21 @@ master key.
 
 
 
-## Configuring gpg
+${"##"} Configuring gpg
 
 It's worth noting that the ages-old interface design of gpg doesn't
 support this approach in an intuitive way. The first thing we should
 do is add a couple of lines to *~/.gnupg/gpg.conf*:
 
 ```
-utf8-strings
-keyid-format short
-with-fingerprint
-with-sig-list
-list-options show-notations
+${ "articles/gpg/gpg.conf" | includefile }
 ```
 
 These options make gpg show more information about the subkeys,
 information we are going to set and use.
 
 
-## Using a flash drive
+${"##"} Using a flash drive
 
 Part of our strategy involves keeping the master key secure. One way
 of doing that is by keeping it in a flash drive that is physically
@@ -110,12 +106,12 @@ In my particular setup, I'm using a flash drive with a luks2-encrypted
 partition labeled *cryptflash* that I mount with:
 
 ```
-mkdir -p cryptflash
-sudo unshare -m sudo -u "$USER" -i
-cryptmount cryptflash
-> Enter password for target "cryptflash":
-> e2fsck 1.45.5 (07-Jan-2020)
-> /dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
+$ mkdir -p cryptflash
+$ sudo unshare -m sudo -u "$USER" -i
+$ cryptmount cryptflash
+Enter password for target "cryptflash":
+e2fsck 1.45.5 (07-Jan-2020)
+/dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
 ```
 
 And umount by just exiting the namespace shell.
@@ -123,39 +119,25 @@ And umount by just exiting the namespace shell.
 The examples below assume we are using the ``cryptflash`` directory.
 
 
-## Creating the master key
+${"##"} Creating the master key
 
 We start by assigning the directory in the detachable drive to ``GNUPGHOME``:
 
 ```
-export GNUPGHOME="$HOME/cryptflash/dotgpg"
+$ export GNUPGHOME="$HOME/cryptflash/dotgpg"
 ```
 
 We create the directory and copy our ``~/.gnupg/gnupg.conf`` to it:
 
 ```
-mkdir -p "$GNUPGHOME"
-cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
+$ mkdir -p "$GNUPGHOME"
+$ cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
 ```
 
 We can now generate the master key pair:
 
 ```
-gpg --quick-gen-key 'Leandro Lisboa Penz <lpenz@lpenz.org>' default default 0
-> We need to generate a lot of random bytes. It is a good idea to perform
-> some other action (type on the keyboard, move the mouse, utilize the
-> disks) during the prime generation; this gives the random number
-> generator a better chance to gain enough entropy.
-> gpg: key EEDCE25A marked as ultimately trusted
-> gpg: revocation certificate stored as '/home/lpenz/cryptflash/dotgpg/openpgp-revocs.d/6B43A09310B2FBDFCA984570ACB3C6D2EEDCE25A.rev'
-> public and secret key created and signed.
-> 
-> pub   rsa3072/EEDCE25A 2020-03-29 [SC]
->       Key fingerprint = 6B43 A093 10B2 FBDF CA98  4570 ACB3 C6D2 EEDC E25A
->       uid                    Leandro Lisboa Penz <lpenz@lpenz.org>
->       sig 3        EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
->       sub   rsa3072/FAA07E9B 2020-03-29 [E]
->       sig          EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+${ "articles/gpg/_genkey.txt" | includefile }
 ```
 
 That command asks you for a password, and then creates the master key
@@ -163,9 +145,9 @@ pair with default options and no expiration date. For more details on
 why a master key expiration date is irrelvant in our scenario, read
 [this](https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/).
 
----
+Key UUID is ``${ "articles/gpg/_keyuuid.txt" | includefile}``
 
-Key UUID is EEDCE25A
+---
 
 To add another user-id:
 ```
@@ -208,7 +190,7 @@ Create subkey:
 
 
 
-## References
+${"##"} References
 
 - Why expiration dates are irrelevant:
   <https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/>
