@@ -7,13 +7,12 @@ if False:
 Import(['env'])
 
 env['GPGCONF'] = env.File('gpg.conf')
-env['GPGSESSION_TARGETS'] = [env.File('_keyuuid.txt')]
-env.Command('_genkey.txt', 'gpgsession',
-            './$SOURCE $GPGCONF $TARGET $GPGSESSION_TARGETS')
-env.SideEffect(env['GPGSESSION_TARGETS'], '_genkey.txt')
+env['GPGSESSION_YAML'] = env.File('_gpgsession.yml')
+env.Command('_gpgsession.yml', 'gpgsession',
+            './$SOURCE $GPGCONF $TARGET')
 
-env.MAKO('_index.md', 'index.md.mako')
-env.Depends('_index.md', '_genkey.txt')
+env.MAKO('_index.md', 'index.md.mako', MAKOFLAGS='-i $GPGSESSION_YAML')
+env.Depends('_index.md', '_gpgsession.yml')
 
 env.PANDOC('_index.bhtml.mako', '_index.md')
 env.MAKO('index.html', '_index.bhtml.mako', MAKOFLAGS='-t htmlpage')

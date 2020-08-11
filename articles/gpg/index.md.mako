@@ -137,7 +137,7 @@ $ cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
 We can now generate the master key pair:
 
 ```
-${ "articles/gpg/_genkey.txt" | includefile }
+${genkey}
 ```
 
 That command asks you for a password, and then creates the master key
@@ -145,7 +145,7 @@ pair with default options and no expiration date. For more details on
 why a master key expiration date is irrelvant in our scenario, read
 [this](https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/).
 
-Key UUID is ``${ "articles/gpg/_keyuuid.txt" | includefile}``
+Key UUID is ``${uuid}``
 
 ---
 
@@ -202,3 +202,6 @@ ${"##"} References
   <https://superuser.com/questions/173417/getting-information-from-an-armored-gpg-public-key-file>
 - Secure yourself, Part 1: Air-gapped computer, GPG and smartcards:
   <https://viccuad.me/blog/Revisited-secure-yourself-part-1-airgapped-computer-and-gpg-smartcards>
+
+
+## -*- mode: markdown -*-

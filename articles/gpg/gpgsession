@@ -9,6 +9,7 @@ from contextlib import contextmanager
 import tempfile
 import pexpect
 import argparse
+import yaml
 
 pjoin = os.path.join
 
@@ -29,57 +30,36 @@ class Session(pexpect.spawn):
                                'bash', ['--norc'],
                                encoding='utf-8',
                                env=env_)
-        self.logfd = None
         self.preproc = preproc
         self.prompt = u'\\$ $'
         self.wait_prompt()
-        self.runcmd('stty cols 9999', log=False)
+        self.runcmd('stty cols 9999')
 
-    def log_str(self, s):
-        sys.stdout.write(s)
-        if self.logfd:
-            self.logfd.write(s)
-
-    def process(self, log=True):
+    def process(self):
         m = self.match
         s = m.string.replace('\r', '')
         if self.preproc:
             s = self.preproc(s)
-        if log:
-            self.log_str(s)
+        sys.stdout.write(s)
         return s
 
-    def wait_prompt(self, prompt=None, log=True):
+    def wait_prompt(self, prompt=None):
         prompt = prompt or self.prompt
         self.expect(prompt)
-        return self.process(log=log)
+        return self.process()
 
-    def runcmd(self, cmd, log=True):
+    def runcmd(self, cmd):
         self.send(cmd + '\r')
-        self.wait_prompt(log=log)
-
-    @contextmanager
-    def tmp_logfd(self, fd):
-        oldfd = self.logfd
-        self.logfd = fd
-        yield self.logfd
-        self.logfd = oldfd
-
-    @contextmanager
-    def tmp_logfile(self, filename):
-        with open(filename, 'w') as fd:
-            with self.tmp_logfd(fd):
-                yield fd
+        self.wait_prompt()
 
     def done(self):
         self.send('exit\r')
         self.expect(pexpect.EOF)
         self.wait()
-        if self.logfd:
-            self.logfd.write('\n')
 
 
-def do_main(gpgconf, genkeyfile, keyuuidfile):
+def do_main(gpgconf, outputfile):
+    data = {}
     with tempfile.TemporaryDirectory() as tmpdir:
         env = {
             'GNUPGHOME': tmpdir,
@@ -89,39 +69,38 @@ def do_main(gpgconf, genkeyfile, keyuuidfile):
                 fd.write(fd_gpgconf.read())
             fd.write('pinentry-mode loopback\n')
         p = Session(env=env, preproc=lambda s: s.replace(tmpdir + '/', ''))
-        with p.tmp_logfile(genkeyfile) as logfd:
-            p.log_str('$ ')
-            p.send('gpg --quick-gen-key '
-                   '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
-                   'default default 0\r')
-            p.wait_prompt(prompt=u': $')
-            p.send('asdfasdf\n')
-            logfd.write('\n')
-            r = subprocess.Popen(['find', '/', '-type', 'f'],
-                                 stdout=subprocess.DEVNULL,
-                                 stderr=subprocess.DEVNULL)
-            creation_info = p.wait_prompt()
-            r.kill()
-            r.wait()
-        # print('creation_info ***************************')
-        # print(creation_info)
-        with open(keyuuidfile, 'w') as fd:
-            m_uuid = re.search(
-                u'pub\\s+[^/]+/(?P<uuid>[0-9A-F]+) [0-9-]+ \\[SC\\]',
-                creation_info)
-            assert m_uuid
-            fd.write(m_uuid.group('uuid'))
-        # p.runcmd('ls -l /')
+        genkey = []
+        r = subprocess.Popen(['find', '/', '-type', 'f'],
+                             stdout=subprocess.DEVNULL,
+                             stderr=subprocess.DEVNULL)
+        p.send('gpg --quick-gen-key '
+               '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
+               'default default 0\r')
+        genkey.append(p.wait_prompt(prompt=u': $'))
+        p.send('asdfasdf\n')
+        genkey.append(p.wait_prompt())
+        r.kill()
+        r.wait()
+        genkey = ''.join(genkey)
+        genkey = re.sub('Enter passphrase: *', 'Enter passphrase:\n', genkey)
+        genkey = re.sub('[$ ]+$', '', genkey)
+        data['genkey'] = genkey
+
+        m_uuid = re.search(
+            u'pub\\s+[^/]+/(?P<uuid>[0-9A-F]+) [0-9-]+ \\[SC\\]', genkey)
+        assert m_uuid
+        data['uuid'] = m_uuid.group('uuid')
         p.done()
+    with open(outputfile, 'w') as fd:
+        yaml.dump(data, fd, indent=4)
 
 
 def main():
     parser = argparse.ArgumentParser(description='Process some integers.')
     parser.add_argument('gpgconf')
-    parser.add_argument('genkeyfile')
-    parser.add_argument('keyuuidfile')
+    parser.add_argument('outputfile')
     args = parser.parse_args()
-    do_main(args.gpgconf, args.genkeyfile, args.keyuuidfile)
+    do_main(args.gpgconf, args.outputfile)
 
 
 if __name__ == '__main__':
