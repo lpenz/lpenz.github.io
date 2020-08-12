@@ -97,7 +97,7 @@ a flash drive.
 
 The master key is already secured by a password, so there's no need to
 encrypt the flash drive because of it. If you want to keep other
-sensistive files there, though, you should encrypti it. You can take a
+sensitive files there, though, you should encrypt it. You can take a
 look at the
 [Creating an encrypted directory-in-a-file]($cwd$/../luksfile/index.html)
 article for basic instructions.
@@ -137,7 +137,7 @@ $ cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
 We can now generate the master key pair:
 
 ```
-${genkey}
+$ ${genkey}
 ```
 
 That command asks you for a password, and then creates the master key
@@ -145,16 +145,25 @@ pair with default options and no expiration date. For more details on
 why a master key expiration date is irrelvant in our scenario, read
 [this](https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/).
 
-Key UUID is ``${uuid}``
-
----
-
-To add another user-id:
-```
-gpg --quick-add-uid lpenz@lpenz.org 'Leandro Lisboa Penz <llpenz@gmail.com>'
+Our commands, from now on, are issued from gpg's prompt, that we access by asking to edit the master key, identified by its UUID ``${uuid}``:
 
 ```
+$ ${gpgedit}
+```
 
+For instance, to add a second User ID:
+```
+gpg> ${adduid}
+```
+
+Notice that, by default, the last UID becomes the primary. If you want to keep the first one as the primary, issue a `uid 1` and a `primary`:
+```
+gpg> ${uidprimary}
+```
+
+${"##"} Adding a subkey
+
+# OLD
 
 To list public keys:
 ```

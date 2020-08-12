@@ -29,11 +29,12 @@ class Session(pexpect.spawn):
         pexpect.spawn.__init__(self,
                                'bash', ['--norc'],
                                encoding='utf-8',
+                               timeout=10,
                                env=env_)
         self.preproc = preproc
-        self.prompt = u'\\$ $'
-        self.wait_prompt()
-        self.runcmd('stty cols 9999')
+        self._prompt = u'\\$ $'
+        self.waitready()
+        self.sendwait('stty cols 9999')
 
     def process(self):
         m = self.match
@@ -43,19 +44,39 @@ class Session(pexpect.spawn):
         sys.stdout.write(s)
         return s
 
-    def wait_prompt(self, prompt=None):
-        prompt = prompt or self.prompt
+    def waitready(self, prompt=None):
+        prompt = prompt or self._prompt
         self.expect(prompt)
         return self.process()
 
-    def runcmd(self, cmd):
+    @contextmanager
+    def prompt(self, prompt):
+        oldprompt = self._prompt
+        self._prompt = prompt
+        yield
+        self._prompt = oldprompt
+
+    def sendwait(self, cmd, prompt=None):
         self.send(cmd + '\r')
-        self.wait_prompt()
+        return self.waitready(prompt=prompt)
+
+    def trimprompt(self, string):
+        return re.sub(self._prompt, '', string)
 
     def done(self):
         self.send('exit\r')
         self.expect(pexpect.EOF)
         self.wait()
+
+
+@contextmanager
+def bgprocess(cmd):
+    r = subprocess.Popen(cmd,
+                         stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL)
+    yield
+    r.kill()
+    r.wait()
 
 
 def do_main(gpgconf, outputfile):
@@ -64,32 +85,55 @@ def do_main(gpgconf, outputfile):
         env = {
             'GNUPGHOME': tmpdir,
         }
+        # Create gpg.conf
         with open(pjoin(tmpdir, 'gpg.conf'), 'w') as fd:
             with open(gpgconf, 'r') as fd_gpgconf:
                 fd.write(fd_gpgconf.read())
             fd.write('pinentry-mode loopback\n')
+        # Start sesssion
         p = Session(env=env, preproc=lambda s: s.replace(tmpdir + '/', ''))
-        genkey = []
-        r = subprocess.Popen(['find', '/', '-type', 'f'],
-                             stdout=subprocess.DEVNULL,
-                             stderr=subprocess.DEVNULL)
-        p.send('gpg --quick-gen-key '
-               '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
-               'default default 0\r')
-        genkey.append(p.wait_prompt(prompt=u': $'))
-        p.send('asdfasdf\n')
-        genkey.append(p.wait_prompt())
-        r.kill()
-        r.wait()
-        genkey = ''.join(genkey)
+        with bgprocess(['find', '/', '-type', 'f']):
+            # Create key:
+            p.send('gpg --quick-gen-key '
+                   '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
+                   'default default 0\r')
+            genkey = p.waitready(prompt=u': $')
+            p.send('asdfasdf\n')
+            genkey += p.waitready()
         genkey = re.sub('Enter passphrase: *', 'Enter passphrase:\n', genkey)
         genkey = re.sub('[$ ]+$', '', genkey)
         data['genkey'] = genkey
-
+        # Figure out uuid:
         m_uuid = re.search(
             u'pub\\s+[^/]+/(?P<uuid>[0-9A-F]+) [0-9-]+ \\[SC\\]', genkey)
         assert m_uuid
-        data['uuid'] = m_uuid.group('uuid')
+        uuid = m_uuid.group('uuid')
+        data['uuid'] = uuid
+        # Go to prompt:
+        with p.prompt('gpg> $'):
+            data['gpgedit'] = p.sendwait('gpg --edit-key %s' % uuid)
+            with p.prompt(': $'):
+                # adduid
+                adduid = p.sendwait('adduid')
+                adduid += p.sendwait('Leandro Lisboa Penz')
+                adduid += p.sendwait('llpenz@gmail.com')
+                adduid += p.sendwait('', '\\? $')
+                adduid += p.sendwait('O')
+            adduid += p.sendwait('asdfasdf')
+            data['adduid'] = p.trimprompt(adduid)
+            data['uidprimary'] = p.sendwait('uid 1')
+            data['uidprimary'] += p.sendwait('primary')
+            data['uidprimary'] = p.trimprompt(data['uidprimary'])
+            with p.prompt('\\?[ ?0-9()yN/]* $'):
+                p.sendwait('addkey')
+                p.sendwait('4')
+                p.sendwait('')
+                p.sendwait('')
+                p.sendwait('y')
+            p.sendwait('y', ': $')
+            p.sendwait('asdfasdf')
+        # Exiting
+        p.sendwait('save')
         p.done()
     with open(outputfile, 'w') as fd:
         yaml.dump(data, fd, indent=4)
