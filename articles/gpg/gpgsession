@@ -10,6 +10,7 @@ import tempfile
 import pexpect
 import argparse
 import yaml
+from io import StringIO
 
 pjoin = os.path.join
 
@@ -33,21 +34,39 @@ class Session(pexpect.spawn):
                                env=env_)
         self.preproc = preproc
         self._prompt = u'\\$ $'
+        self._logfd = None
+        self._pending = ''
         self.waitready()
         self.sendwait('stty cols 9999')
 
-    def process(self):
-        m = self.match
-        s = m.string.replace('\r', '')
+    def log(self, s):
+        s = s.replace('\r', '')
         if self.preproc:
             s = self.preproc(s)
         sys.stdout.write(s)
-        return s
+        if self._logfd:
+            self._logfd.write(s)
+
+    def process(self):
+        self.log(self._pending)
+        m = self.match
+        i1, i2 = m.span()
+        self.log(m.string[0:i1])
+        self._pending = m.string[i1:]
+        # print(('lpenz', m.string[0:i1], m.string[i1:]))
 
     def waitready(self, prompt=None):
         prompt = prompt or self._prompt
         self.expect(prompt)
         return self.process()
+
+    @contextmanager
+    def logging(self):
+        fd = StringIO()
+        self._logfd = fd
+        yield fd
+        self._logfd = None
+        fd.close()
 
     @contextmanager
     def prompt(self, prompt):
@@ -92,46 +111,54 @@ def do_main(gpgconf, outputfile):
             fd.write('pinentry-mode loopback\n')
         # Start sesssion
         p = Session(env=env, preproc=lambda s: s.replace(tmpdir + '/', ''))
+        passphrase = 'asdfasdf'
         with bgprocess(['find', '/', '-type', 'f']):
             # Create key:
-            p.send('gpg --quick-gen-key '
-                   '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
-                   'default default 0\r')
-            genkey = p.waitready(prompt=u': $')
-            p.send('asdfasdf\n')
-            genkey += p.waitready()
-        genkey = re.sub('Enter passphrase: *', 'Enter passphrase:\n', genkey)
-        genkey = re.sub('[$ ]+$', '', genkey)
-        data['genkey'] = genkey
+            with p.logging() as logfd:
+                p.send('gpg --quick-gen-key '
+                       '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
+                       'default default 0\r')
+                p.waitready(prompt=u': $')
+                p.sendwait(passphrase)
+                genkey = logfd.getvalue()
+                genkey = re.sub('Enter passphrase: *', 'Enter passphrase:\n',
+                                genkey)
+                data['genkey'] = genkey
         # Figure out uuid:
         m_uuid = re.search(
             u'pub\\s+[^/]+/(?P<uuid>[0-9A-F]+) [0-9-]+ \\[SC\\]', genkey)
         assert m_uuid
         uuid = m_uuid.group('uuid')
         data['uuid'] = uuid
-        # Go to prompt:
+        # Go to editkey prompt:
         with p.prompt('gpg> $'):
-            data['gpgedit'] = p.sendwait('gpg --edit-key %s' % uuid)
-            with p.prompt(': $'):
-                # adduid
-                adduid = p.sendwait('adduid')
-                adduid += p.sendwait('Leandro Lisboa Penz')
-                adduid += p.sendwait('llpenz@gmail.com')
-                adduid += p.sendwait('', '\\? $')
-                adduid += p.sendwait('O')
-            adduid += p.sendwait('asdfasdf')
-            data['adduid'] = p.trimprompt(adduid)
-            data['uidprimary'] = p.sendwait('uid 1')
-            data['uidprimary'] += p.sendwait('primary')
-            data['uidprimary'] = p.trimprompt(data['uidprimary'])
-            with p.prompt('\\?[ ?0-9()yN/]* $'):
-                p.sendwait('addkey')
-                p.sendwait('4')
-                p.sendwait('')
-                p.sendwait('')
-                p.sendwait('y')
-            p.sendwait('y', ': $')
-            p.sendwait('asdfasdf')
+            with p.logging() as logfd:
+                p.sendwait('gpg --edit-key %s' % uuid)
+                data['gpgedit'] = logfd.getvalue()
+            with p.logging() as logfd:
+                with p.prompt(': $'):
+                    # adduid
+                    p.sendwait('adduid')
+                    p.sendwait('Leandro Lisboa Penz')
+                    p.sendwait('llpenz@gmail.com')
+                    p.sendwait('', '\\? $')
+                    p.sendwait('O')
+                p.sendwait(passphrase)
+                data['adduid'] = logfd.getvalue()
+            with p.logging() as logfd:
+                p.sendwait('uid 1')
+                p.sendwait('primary')
+                data['uidprimary'] = logfd.getvalue()
+            with p.logging() as logfd:
+                with p.prompt('\\?[ ?0-9()yN/]* $'):
+                    p.sendwait('addkey')
+                    p.sendwait('4')
+                    p.sendwait('')
+                    p.sendwait('')
+                    p.sendwait('y')
+                p.sendwait('y', ': $')
+                p.sendwait(passphrase)
+                data['addkey'] = logfd.getvalue()
         # Exiting
         p.sendwait('save')
         p.done()

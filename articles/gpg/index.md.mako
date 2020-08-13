@@ -137,7 +137,7 @@ $ cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
 We can now generate the master key pair:
 
 ```
-$ ${genkey}
+${genkey}
 ```
 
 That command asks you for a password, and then creates the master key
@@ -148,17 +148,17 @@ why a master key expiration date is irrelvant in our scenario, read
 Our commands, from now on, are issued from gpg's prompt, that we access by asking to edit the master key, identified by its UUID ``${uuid}``:
 
 ```
-$ ${gpgedit}
+${gpgedit}
 ```
 
 For instance, to add a second User ID:
 ```
-gpg> ${adduid}
+${adduid}
 ```
 
 Notice that, by default, the last UID becomes the primary. If you want to keep the first one as the primary, issue a `uid 1` and a `primary`:
 ```
-gpg> ${uidprimary}
+${uidprimary}
 ```
 
 ${"##"} Adding a subkey
