@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="me" href="https://cv.lpenz.org" />
+<link rel="me" href="https://twitter.com/lpenz" />
+<link rel="me" href="https://www.linkedin.com/in/lpenz" />
+<link rel="me" href="https://github.com/lpenz" />
+<link rel="me" href="https://stackoverflow.com/cv/lpenz" />
+<link rel="me" href="mailto:lpenz@lpenz.org" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<meta name="author" content="Leandro Lisboa Penz"/>
+<meta name="description" content="Avulsos by Penz"/>
+<style>
+html { /* get footer on bottom: */
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 30px; /* Margin bottom by footer height */
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px; /* Set the fixed height of the footer here */
+    line-height: 30px; /* Vertically center the text there */
+    /* background-color: #f5f5f5; */
+}
+nav.navbar {
+    margin-bottom: 2em; /* space between navbar and contents */
+}
+pre {
+    background-color: #f5f5f5;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 1em;
+}
+h2, h3, h4, h5, h6 {
+    margin-top: 1em;
+}
+div.center > img { margin: 0 auto; } /* center images by default */
+</style>
+<link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
+<link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>
+<link rel="icon" type="image/png" href="../../media/logo-black.png" />
+<meta name="p:domain_verify" content="629162357f7580ddc473183d74c50ef8"/>
+<meta name="generator" content="http://txt2tags.sf.net" />
+<title>Creating an encrypted directory-in-a-file</title>
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+    <a class="navbar-brand" href="../../index.html"><img alt="Avulsos by Penz" src="../../media/logo-white.png" width="20" height="20" class="d-inline-block align-middle" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse auto" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../index.html">Home</a></li>
+		<li
+		class="nav-item active"
+		><a class="nav-link" href="../../articles/index.html">Articles</a></li>
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../debian/index.html">Debian</a></li>
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../about/index.html">About</a></li>
+    </div>
+    </div>
+</nav>
+
+<div class="container">
+	
+
+<h1>Creating an encrypted directory-in-a-file</h1>
+
+<p>
+LUKS can be used to create a file with a whole encrypted filesystem
+inside, that we can mount and manipulate in-place.
+</p>
+<p>
+This article has my notes on how to create the file and set up the
+mounting system.
+</p>
+<p>
+Obs: to ease copy-and-pasting, we show the commands without prompt, and
+prepend ``&gt; `` to the output of commands in the examples.
+</p>
+
+<h2>File creation</h2>
+
+<p>
+We'll use <b>cryptsetup</b> to create the file, it's available in all
+major distributions.
+</p>
+<p>
+First, create a file with the desired size (64MB in this case):
+</p>
+
+<pre>
+  dd if=/dev/zero of=cryptfile.img bs=1M count=64
+  &gt; 64+0 records in
+  &gt; 64+0 records out
+  &gt; 67108864 bytes (67 MB, 64 MiB) copied, 1.36272 s, 49.2 MB/s
+</pre>
+
+<p>
+Note: be aware that ext4 doesn't support devices with less than 32MB
+</p>
+<p>
+Use <i>cryptsetup luksFormat</i> to format it; we also choose the
+passphrase in this step:
+</p>
+
+<pre>
+  sudo cryptsetup luksFormat cryptfile.img
+  &gt;
+  &gt; WARNING!
+  &gt; ========
+  &gt; This will overwrite data on cryptfile.img irrevocably.
+  &gt;
+  &gt; Are you sure? (Type 'yes' in capital letters): YES
+  &gt; Enter passphrase for cryptfile.img:
+  &gt; Verify passphrase:
+</pre>
+
+<p>
+Use <i>cryptsetup luksOpen</i> to bind the file to a block device that
+can be manipulated as if it was a partition:
+</p>
+
+<pre>
+  sudo cryptsetup luksOpen cryptfile.img cryptdev
+  &gt; Enter passphrase for cryptfile.img:
+</pre>
+
+<p>
+After <i>cryptsetup luksOpen</i>, we are able to access the new block
+device at <code>/dev/mapper/cryptdev</code>. It's now time to create the
+filesystem structure:
+</p>
+
+<pre>
+  sudo mkfs.ext4 /dev/mapper/cryptdev
+  &gt; mke2fs 1.45.5 (07-Jan-2020)
+  &gt; Creating filesystem with 49152 1k blocks and 12288 inodes
+  &gt; Filesystem UUID: c08602c2-acf7-4acf-b007-dce1200067d7
+  &gt; Superblock backups stored on blocks:
+  &gt;            8193, 24577, 40961
+  &gt;
+  &gt; Allocating group tables: done
+  &gt; Writing inode tables: done
+  &gt; Creating journal (4096 blocks): done
+  &gt; Writing superblocks and filesystem accounting information: done
+</pre>
+
+<p>
+We can now finally close the device
+</p>
+
+<pre>
+  sudo cryptsetup luksClose cryptdev
+</pre>
+
+<h2>Testing by mounting</h2>
+
+<p>
+To mount the file, first get the block device again:
+</p>
+
+<pre>
+  sudo cryptsetup luksOpen cryptfile.img cryptdev
+  &gt; Enter passphrase for cryptfile.img:
+</pre>
+
+<p>
+And then mount as usual:
+</p>
+
+<pre>
+  mkdir -p cryptdir
+  sudo mount -t auto /dev/mapper/cryptdev cryptdir
+</pre>
+
+<p>
+We always end up with a <i>lost+found</i> directory when we use the usual linux filesystems:
+</p>
+
+<pre>
+  ls -l cryptdir/
+  &gt; total 12
+  &gt; drwx------ 2 root root 12288 Mar 22 17:47 lost+found
+</pre>
+
+<p>
+Don't forget to unmount and close the device after using it:
+</p>
+
+<pre>
+  sudo umount cryptdir
+  sudo cryptsetup luksClose cryptdev
+</pre>
+
+<h2>Setting up user mount</h2>
+
+<p>
+<b>cryptmount</b> allows us to mount configured encrypted files without
+root permissions.
+</p>
+<p>
+Create a <i>/etc/cryptmount/cmtab</i> file with the following contents:
+</p>
+
+<pre>
+  mycryptlabel {
+      dev=$(HOME)/cryptfile.img
+      dir=$(HOME)/cryptdir
+      fstype=auto
+      keyformat=luks
+  }
+</pre>
+
+<p>
+cryptmount is now able to mount the file.
+</p>
+
+<h2>Mounting</h2>
+
+<p>
+Before mounting, you may want to go into a private mount namespace:
+</p>
+
+<pre>
+  sudo unshare -m sudo -u "$USER" -i
+  &gt; [sudo] password for $USER:
+</pre>
+
+<p>
+That starts a new shell in a new private mount namespace. Everything
+you mount from this shell it will be available only to processes
+started from this shell, and all mounts will be automatically
+unmounted when the last of these processes exit.
+</p>
+<p>
+You can now run the following command to mount the file:
+</p>
+
+<pre>
+  cryptmount mycryptlabel
+  &gt; Enter password for target "mycryptlabel":
+  &gt; e2fsck 1.45.5 (07-Jan-2020)
+  &gt; /dev/mapper/cryptdev: clean, 33/4096 files, 1896/16384 blocks
+</pre>
+
+<p>
+Don't forget to unmount it later, and leave the shell:
+</p>
+
+<pre>
+  cryptmount -u mycryptlabel
+  exit
+</pre>
+
+<h2>Final remarks</h2>
+
+<p>
+It should be said that these notes only touch the surface of
+cryptsetup and cryptmount. They have a lot of options and can be used
+in many different ways.
+</p>
+<p>
+One interesting option is to keep the cryptographic key in a separate
+file. That can be useful if you want to keep a rather large mountable
+file in an exposed backed-up piece of infrastructure while minimizing
+exposure.
+</p>
+<p>
+All of these commands can be used to create and mount an encrypted
+partition, just replace <i>cryptfile.img</i> with the path to the
+partition block device. You can also create an encrypted partition
+that encompasses an entire flash drive, leaving it without a partition
+table at all, by using the appropriate block device.
+</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://linux.die.net/man/8/cryptsetup">https://linux.die.net/man/8/cryptsetup</a>
+</li>
+<li><a href="https://linux.die.net/man/8/cryptmount">https://linux.die.net/man/8/cryptmount</a>
+</li>
+<li><a href="https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/">https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/</a>
+ 
+</li>
+</ul>
+
+
+
+<!-- Google Analytics -->
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', 'UA-4182011-2', 'auto');
+ga('set', 'anonymizeIp', true);
+ga('send', 'pageview');
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<!-- End Google Analytics -->
+
+</div><!--container-->
+
+<div class="footer bg-dark text-light">
+	<div class="container">
+		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a>
+		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</div>
+</div>
+
+<!-- Other invisible stuff and javascripts: -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+<!-- vim: ft=html
+-->
+

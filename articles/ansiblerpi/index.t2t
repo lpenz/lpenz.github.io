@@ -1,0 +1,217 @@
+Provisioning a Raspberry Pi using ansible
+From first steps
+2019-01-08
+
+
+
+= Provisioning a Raspberry Pi using ansible =
+
+These are my notes on how to get started provisioning Raspbian with
+ansible.
+
+
+
+== Before using ansible ==
+
+We have to get a working Raspbian installation before using ansible on
+the device.
+
+
+
+=== Installing Raspbian ===
+
+The first step is downloading and installing Raspbian in the SD card
+you're going to use in the Pi. You can find the Raspbian image here:
+https://www.raspberrypi.org/downloads/raspbian/. Prefer the "lite"
+image, as it allows you to start from a cleaner point.
+
+To install the image, use an adapter to plug the SD card into a
+computer. You can figure out the ``/dev/`` device that got assigned by
+using ``lsblk`` before and after plugging the card. Let's assume it
+got assigned to ``/dev/sdc``, for the sake of illustration. The next
+step is writting the Raspbian image to it:
+
+```
+unzip -p *-raspbian-stretch-lite.zip | sudo dd of=/dev/sdc bs=4M oflag=dsync status=progress
+```
+
+You can now insert the card into the Raspberry Pi board.
+
+
+
+=== Initial Raspbian setup ===
+
+Raspbian comes with a initial user **pi**, password **raspberry**,
+that can use sudo freely.  **ssh** is installed, but
+disabled. Changing the password and enabling ssh are the next steps,
+in a console session that should look like the following:
+
+```
+> raspberrypi login: pi
+> Password:
+passwd
+> Changing password for pi.
+> (current) UNIX password:
+> Enter new UNIX password:
+> Retype new UNIX password:
+> passwd: password updated successfully
+sudo systemctl enable ssh.service
+(...)
+```
+
+
+
+=== Alternative initial setup ===
+
+Another way to do the initial image setup is by mounting in your system and
+changing the required files before writting it in the SD card. To mount the
+image:
+- Extract it from the zip file:
+
+```
+unzip *-raspbian-*-lite.zip
+```
+
+- Using ``losetup``, map the file to a loopback device, and list the loopback
+  devices to figure out where it was mapped:
+
+```
+sudo losetup -f *-raspbian-*-lite.img
+sudo losetup -l
+> NAME       SIZELIMIT OFFSET AUTOCLEAR RO BACK-FILE             DIO LOG-SEC
+> /dev/loop0         0      0         0  0 *-raspbian-*-lite.img   0     512
+```
+
+From here on we assume that the file was mapped to ``/dev/loop0``.
+
+- Tell the kernel to make the partitions available at ``/dev/`` using
+  ``partx``, figure out where they are using ``lsblk``:
+
+```
+sudo partx -a /dev/loop0
+lsblk /dev/loop0
+> NAME      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+> loop0       7:0    0  1.8G  0 loop
+> ├─loop0p1 259:0    0 43.8M  0 loop
+> └─loop0p2 259:1    0  1.7G  0 loop
+```
+
+- Mount the partition in a temporary directory:
+
+```
+mkdir rpi
+sudo mount /dev/loop0p2 rpi
+```
+
+- You can now modify the files in the ``rpi`` directory. Use
+  ``openssl passwd -1 <password>`` to get the string to use in the
+  ``etc/shadow`` file as the password of the ``pi`` user. You can also change
+  also change the name of the user, just be careful to change it everywhere
+  needed:
+  - ``/etc/passwd``
+  - ``/etc/shadow``
+  - ``/etc/subuid``
+  - ``/etc/group``
+  - ``/etc/gshadow``
+  - ``/etc/subgid``
+  - And rename ``/home/pi``
+  -
+
+  To enable ssh, you should create init and systemd links:
+
+```
+sudo ln -s /lib/systemd/system/ssh.service rpi/etc/systemd/system/sshd.service
+sudo ln -s /lib/systemd/system/ssh.service rpi/etc/systemd/system/multi-user.target.wants/ssh.service
+for d in rc2.d rc3.d rc4.d rc5.d; do (cd rpi/etc/$d; sudo ln -sf ../init.d/ssh S01ssh); done
+find rpi/etc/rc* -name 'K*ssh' -exec sudo rm {} +
+```
+
+  Other, security related things to do:
+
+```
+sudo rm rpi/etc/sudoers.d/010_pi-nopasswd
+```
+
+  You can also change other things if you want. When you are done, proceed to
+  the next item.
+
+- Unmount the partition, remove the temporary directory and unmap the loopback
+  device:
+
+```
+sudo umount rpi
+rmdir rpi
+sudo losetup -d /dev/loop0
+```
+
+- Write the image to the SD card as before:
+
+```
+sudo dd if=*-raspbian-*-lite.img of=/dev/sdc bs=4M oflag=dsync status=progress
+```
+
+
+
+== Using ansible ==
+
+You can now use ansible from any computer to provision the Pi. I'd
+recommend, though, using //python3// as the interpreter on the Pi, as
+it has more modules available - *apt_repository*, for instance, is not
+directly usable with the default python2 interpreter.
+
+A basic playbook that runs tasks as root looks like the following
+(save it as ``playbook-sudo-rpi.yml``):
+
+```
+---
+- hosts: all
+  become: yes
+  become_user: root
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - debug: msg="Ansible running in {{ansible_lsb.id}}!"
+```
+
+Assuming that the playbook as available as ``playbook.yml``, and that
+``raspberrypi`` is a name that can be resolved to the device, you can
+run the playbook with the following command:
+```
+ansible-playbook -i raspberrypi, -u pi playbook-sudo-rpi.yml -K
+```
+(you can also replace ``raspberrypi`` with the actual IP address of
+the device)
+
+
+
+=== Setting up Debian repositories ===
+
+Because Raspbian is based on Debian and upstream Debian has support for the
+architecture of the Raspberry Pi B+, you can configure and use upstream Debian
+repositories and packages in the Pi. To do that, use the follwing snippet:
+```
+(...)
+  tasks:
+    - name: install apt pinning config
+      copy: src=apt-pinning dest=/etc/apt/preferences.d/99pinning owner=root group=root mode=0644
+    - name: install Debian apt key
+      apt_key: url='https://ftp-master.debian.org/keys/archive-key-9.asc' id='E1CF20DDFFE4B89E802658F1E0B11894F66AEC98' state=present
+      notify: apt-update
+    - name: install Debian apt repositories
+      apt_repository: repo='deb http://ftp.debian.org/debian {{item}} main contrib non-free' state=present
+      with_items:
+        - stable
+        - testing
+        - unstable
+        - experimental
+      notify: apt-update
+  handlers:
+    - name: apt-update
+      apt: update-cache=yes
+```
+
+The [apt-pinning apt-pinning] file should contain something like the following:
+
+%!include: ``apt-pinning``
+
+

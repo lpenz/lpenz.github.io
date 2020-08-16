@@ -1,0 +1,57 @@
+<p>
+The following articles are present in this page:
+</p>
+
+<table class="table table-bordered">
+<tr>
+<td>2020-03-22</td>
+<td><a href="luksfile/index.html">Creating an encrypted directory-in-a-file</a></td>
+<td><i>linux</i>, <i>cryptography</i></td>
+</tr>
+<tr>
+<td>2019-07-07</td>
+<td><a href="nixchannel/index.html">Creating a static nix channel</a></td>
+<td><i>cache</i>, <i>github</i>, <i>nix</i>, <i>nixos</i>, <i>nixpkgs</i>, <i>nix-channel</i>, <i>repository</i>, <i>travis-ci</i></td>
+</tr>
+<tr>
+<td>2019-01-08</td>
+<td><a href="ansiblerpi/index.html">Provisioning a Raspberry Pi using ansible</a></td>
+<td><i>linux</i>, <i>raspberrypi</i></td>
+</tr>
+<tr>
+<td>2015-10-04</td>
+<td><a href="liveusb/index.html">Create a debian bootable live USB</a></td>
+<td><i>linux</i></td>
+</tr>
+<tr>
+<td>2013-12-09</td>
+<td><a href="bugprobhunt/index.html">Probabilistic bug hunting</a></td>
+<td><i>programming</i>, <i>R</i>, <i>statistics</i></td>
+</tr>
+<tr>
+<td>2011-06-23</td>
+<td><a href="df0pred-3/index.html">Hard drive occupation prediction with R - part 3</a></td>
+<td><i>R</i>, <i>montecarlo</i>, <i>statistics</i></td>
+</tr>
+<tr>
+<td>2011-02-02</td>
+<td><a href="hedsl-sharedexpenses/index.html">Haskell eDSL Tutorial - Shared expenses</a></td>
+<td><i>haskell</i>, <i>dsl</i></td>
+</tr>
+<tr>
+<td>2011-01-22</td>
+<td><a href="df0pred-2/index.html">Hard drive occupation prediction with R - part 2</a></td>
+<td><i>R</i>, <i>montecarlo</i>, <i>statistics</i></td>
+</tr>
+<tr>
+<td>2010-08-15</td>
+<td><a href="df0pred-1/index.html">Hard drive occupation prediction with R</a></td>
+<td><i>R</i>, <i>statistics</i></td>
+</tr>
+<tr>
+<td>2010-04-11</td>
+<td><a href="debgit/index.html">Debianization with git-buildpackage</a></td>
+<td><i>debian</i>, <i>git</i></td>
+</tr>
+</table>
+
