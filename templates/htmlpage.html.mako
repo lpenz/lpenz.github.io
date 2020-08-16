@@ -45,10 +45,6 @@
 <div class="container">
 	${self.body()}
 
-<div class="invisible">
-  <a href="https://plus.google.com/u/0/101011717297103072571?rel=author">Google Plus authorship information</a>
-</div>
-
 <!-- Google Analytics -->
 <script>
 window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
