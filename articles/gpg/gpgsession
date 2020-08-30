@@ -57,7 +57,11 @@ class Session(pexpect.spawn):
 
     def waitready(self, prompt=None):
         prompt = prompt or self._prompt
-        self.expect(prompt)
+        try:
+            self.expect(prompt)
+        except pexpect.TIMEOUT:
+            print(self._pending)
+            raise
         return self.process()
 
     @contextmanager
@@ -98,6 +102,10 @@ def bgprocess(cmd):
     r.wait()
 
 
+def passfix(s):
+    return re.sub('Enter passphrase: *', 'Enter passphrase:\n', s)
+
+
 def do_main(gpgconf, outputfile):
     data = {}
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -115,52 +123,56 @@ def do_main(gpgconf, outputfile):
         with bgprocess(['find', '/', '-type', 'f']):
             # Create key:
             with p.logging() as logfd:
-                p.send('gpg --quick-gen-key '
-                       '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
-                       'default default 0\r')
-                p.waitready(prompt=u': $')
+                p.sendwait(
+                    'gpg --quick-gen-key '
+                    '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
+                    'default sign 0', ': $')
                 p.sendwait(passphrase)
-                genkey = logfd.getvalue()
-                genkey = re.sub('Enter passphrase: *', 'Enter passphrase:\n',
-                                genkey)
+                genkey = passfix(logfd.getvalue())
                 data['genkey'] = genkey
         # Figure out uuid:
-        m_uuid = re.search(
-            u'pub\\s+[^/]+/(?P<uuid>[0-9A-F]+) [0-9-]+ \\[SC\\]', genkey)
-        assert m_uuid
-        uuid = m_uuid.group('uuid')
-        data['uuid'] = uuid
+        m_masteruuid = re.search(
+            'gpg: key ([0-9A-F]+) marked as ultimately trusted', genkey)
+        masteruuid = m_masteruuid.group(1)
+        data['masteruuid'] = masteruuid
+        re_uuid = re.compile(u'(ssb|sec) +rsa[0-9]+/(?P<uuid>[0-9A-F]+)')
         # Go to editkey prompt:
-        with p.prompt('gpg> $'):
-            with p.logging() as logfd:
-                p.sendwait('gpg --edit-key %s' % uuid)
-                data['gpgedit'] = logfd.getvalue()
-            with p.logging() as logfd:
-                with p.prompt(': $'):
-                    # adduid
-                    p.sendwait('adduid')
-                    p.sendwait('Leandro Lisboa Penz')
-                    p.sendwait('llpenz@gmail.com')
-                    p.sendwait('', '\\? $')
-                    p.sendwait('O')
+        with p.logging() as logfd:
+            with p.prompt(': $'):
+                p.sendwait('gpg --edit-key %s adduid save' % masteruuid)
+                p.sendwait('Leandro Lisboa Penz')
+                p.sendwait('llpenz@gmail.com')
+                p.sendwait('', '\\? $')
+                p.sendwait('O')
+            with bgprocess(['find', '/', '-type', 'f']):
                 p.sendwait(passphrase)
                 data['adduid'] = logfd.getvalue()
-            with p.logging() as logfd:
-                p.sendwait('uid 1')
-                p.sendwait('primary')
-                data['uidprimary'] = logfd.getvalue()
-            with p.logging() as logfd:
-                with p.prompt('\\?[ ?0-9()yN/]* $'):
-                    p.sendwait('addkey')
-                    p.sendwait('4')
-                    p.sendwait('')
-                    p.sendwait('')
-                    p.sendwait('y')
-                p.sendwait('y', ': $')
-                p.sendwait(passphrase)
-                data['addkey'] = logfd.getvalue()
-        # Exiting
-        p.sendwait('save')
+        with p.logging() as logfd:
+            p.sendwait('gpg --edit-key %s uid 1 primary save' % masteruuid)
+            data['uidprimary'] = logfd.getvalue()
+        with p.logging() as logfd:
+            with p.prompt('\\?[ ?0-9()yN/]* $'):
+                p.sendwait('gpg --edit-key %s addkey save' % masteruuid)
+                p.sendwait('4')
+                p.sendwait('')
+                p.sendwait('')
+                p.sendwait('y')
+            p.sendwait('y', ': $')
+            p.sendwait(passphrase)
+            data['addkey'] = passfix(logfd.getvalue())
+        m_uuid = re_uuid.findall(data['addkey'])
+        print(m_uuid)
+        data['subkeyuuid'] = [u[1] for u in m_uuid if u[0] == 'ssb'][0]
+        with p.logging() as logfd:
+            p.sendwait('gpg --edit-key %s notation save' % data['subkeyuuid'],
+                       ': $')
+            p.sendwait('host@lpenz.org=darkstar')
+            data['notation1'] = passfix(logfd.getvalue())
+        with p.logging() as logfd:
+            p.sendwait('gpg --edit-key %s notation save' % data['subkeyuuid'],
+                       ': $')
+            p.sendwait('service@lpenz.org=github.com')
+            data['notation2'] = passfix(logfd.getvalue())
         p.done()
     with open(outputfile, 'w') as fd:
         yaml.dump(data, fd, indent=4)

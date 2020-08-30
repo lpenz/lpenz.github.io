@@ -73,7 +73,13 @@ master key.
 
 
 
-${"##"} Configuring gpg
+${"##"} Master key setup
+
+The instruction in this section are the initial setup and master key
+creation. It should be done only once.
+
+
+${"###"} Configuring gpg
 
 It's worth noting that the ages-old interface design of gpg doesn't
 support this approach in an intuitive way. The first thing we should
@@ -87,7 +93,7 @@ These options make gpg show more information about the subkeys,
 information we are going to set and use.
 
 
-${"##"} Using a flash drive
+${"###"} Using a flash drive
 
 Part of our strategy involves keeping the master key secure. One way
 of doing that is by keeping it in a flash drive that is physically
@@ -119,9 +125,10 @@ And umount by just exiting the namespace shell.
 The examples below assume we are using the ``cryptflash`` directory.
 
 
-${"##"} Creating the master key
+${"###"} Creating the master key
 
-We start by assigning the directory in the detachable drive to ``GNUPGHOME``:
+We start by assigning the directory in the detachable drive to
+``GNUPGHOME``:
 
 ```
 $ export GNUPGHOME="$HOME/cryptflash/dotgpg"
@@ -145,23 +152,68 @@ pair with default options and no expiration date. For more details on
 why a master key expiration date is irrelvant in our scenario, read
 [this](https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/).
 
-Our commands, from now on, are issued from gpg's prompt, that we access by asking to edit the master key, identified by its UUID ``${uuid}``:
+Our commands, from now on, are issued from gpg's prompt, that we
+access by asking to edit the master key, identified by its UUID
+``${masteruuid}``:
 
-```
-${gpgedit}
-```
+!!!!!!
 
 For instance, to add a second User ID:
 ```
 ${adduid}
 ```
 
-Notice that, by default, the last UID becomes the primary. If you want to keep the first one as the primary, issue a `uid 1` and a `primary`:
+Notice that, by default, the last UID becomes the primary. If you want
+to keep the first one as the primary, select it with `uid 1` and mark
+it with `primary`:
 ```
 ${uidprimary}
 ```
 
+And this is the setup. After it is done, you can just exit the the
+shell to get the flash drive unmounted. Keep it safe.
+
+
 ${"##"} Adding a subkey
+
+The single purpose of the master key is the generation of subkeys -
+one for each combination of host and service, in a matrix-like
+fashion. That allows us to track down all services affected by a
+vulnerable host, and act accordingly.
+
+First, we insert the master key flash drive, mount it in a private
+namespace, make gpg use it, and edit our master key:
+
+```
+$ sudo unshare -m sudo -u "$USER" -i
+$ cryptmount cryptflash
+Enter password for target "cryptflash":
+e2fsck 1.45.5 (07-Jan-2020)
+/dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
+$ export GNUPGHOME="$HOME/cryptflash/dotgpg"
+$ gpg --edit-key ${masteruuid}
+gpg>
+```
+
+To add a subkey:
+
+```
+${addkey}
+```
+
+We can now document the host where the private key is installed, along
+with the service that has the corresponding public key, using
+*notations*. Notations are key-value tags assigned to a key, where
+the key has the format `id@domain`, where *domain* acts as a
+namespace - more information in [RFC4880].
+
+For my keys, I'm using `host@lpenz.org` for the hosts and
+`service@lpenz.org` for the systems:
+
+```
+${notation1}
+${notation2}
+```
 
 # OLD
 
@@ -212,5 +264,6 @@ ${"##"} References
 - Secure yourself, Part 1: Air-gapped computer, GPG and smartcards:
   <https://viccuad.me/blog/Revisited-secure-yourself-part-1-airgapped-computer-and-gpg-smartcards>
 
+- [RFC4880]: https://tools.ietf.org/html/rfc4880#section-5.2.3.16
 
 ## -*- mode: markdown -*-
