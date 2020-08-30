@@ -18,7 +18,7 @@ RUN set -e -x; \
         scons python-yaml \
         git
 
-# setup sudo and locales
+# setup su and locales
 RUN set -e -x; \
     echo 'en_US.UTF-8 UTF-8' >> /etc/locale.gen; locale-gen; \
     sed -i '/drop_privileges/d' /usr/bin/linkchecker; \
