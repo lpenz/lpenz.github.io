@@ -8,15 +8,14 @@ date: 2020-03-22
 
 ${"#"} Creating and managing signature keys with GPG
 
-These are my notes on gpg signature management. gpg has changed a lot
-since I last used it, and I've decided to shift to a new strategy -
-might as well write it all down this time.
-
 github, linux packages and repositories, email... a cryptographic
 digital signature can be used in several places to
 provide *authenticity* - a reasonable proof that the artifact was
 indeed generate by the author.
 
+These are my notes on gpg signature management. gpg has changed a lot
+since I last used it, and I've decided to shift to a new strategy -
+might as well write it all down this time.
 
 
 ${"##"} Basics of public key infrastructure (PKI)
@@ -24,20 +23,21 @@ ${"##"} Basics of public key infrastructure (PKI)
 In broad strokes, a digital signature works in the context of the
 following workflow:
 
-- The author generated in the past a linked pair of keys: a public key
-  and a private key. The are blobs of data, with the mathematical
+- In the past, the author generated in a linked pair of keys: a public
+  one and a private one. They are blobs of data, with the mathematical
   property that whatever is encripted with the private key can only be
   decrypted with the matching public key.
 - The author sends away the public key, registers it on services, etc.
+  (that's why it's called "public")
 - To sign an artifact, the author calculates its hash, encrypts this
   hash with the secret key, and attaches the hash to the artifact.
   The encrypted hash is the digital signature.
 - To check the signature, a recipient calculates the artifact's hash
   the same way the author did, and decrypts the received hash using
   the author's well-known public key. The match between the calculated
-  and decrypted hashes mean two things:
-  - That the artifact was not tampered
-  - And that the decrypted hash was encrypted with the secret key that
+  and decrypted hashes implies two things:
+  - That the artifact was not tampered;
+  - That the decrypted hash was encrypted with the secret key that
     corresponds to the public key used to decrypt it.
 
 
@@ -52,7 +52,7 @@ Using gpg to generate a pair of cryptographic keys for digital
 signatures is quite trivial. That's not what we are going to do.
 
 Our strategy, instead, is to generate a *master* key pair that we
-then use to generate several signature subkey pairs that we can then
+then use to generate several signature subkey pairs, that we can then
 use in different hosts and for different services. After generating
 the keys, we put the master key away, and leave installed in each host
 only the relevant secret keys. This has some advatanges:
@@ -112,9 +112,9 @@ In my particular setup, I'm using a flash drive with a luks2-encrypted
 partition labeled *cryptflash* that I mount with:
 
 ```
-$ mkdir -p cryptflash
-$ sudo unshare -m sudo -u "$USER" -i
-$ cryptmount cryptflash
+$ {b}mkdir -p cryptflash{/b}
+$ {b}sudo unshare -m sudo -u "$USER" -i{/b}
+$ {b}cryptmount cryptflash{/b}
 Enter password for target "cryptflash":
 e2fsck 1.45.5 (07-Jan-2020)
 /dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
@@ -131,14 +131,14 @@ We start by assigning the directory in the detachable drive to
 ``GNUPGHOME``:
 
 ```
-$ export GNUPGHOME="$HOME/cryptflash/dotgpg"
+$ {b}export GNUPGHOME="$HOME/cryptflash/dotgpg"{/b}
 ```
 
 We create the directory and copy our ``~/.gnupg/gnupg.conf`` to it:
 
 ```
-$ mkdir -p "$GNUPGHOME"
-$ cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"
+$ {b}mkdir -p "$GNUPGHOME"{/b}
+$ {b}cp "$HOME/.gnupg/gpg.conf" "$GNUPGHOME/"{/b}
 ```
 
 We can now generate the master key pair:
@@ -185,14 +185,12 @@ First, we insert the master key flash drive, mount it in a private
 namespace, make gpg use it, and edit our master key:
 
 ```
-$ sudo unshare -m sudo -u "$USER" -i
-$ cryptmount cryptflash
+$ {b}sudo unshare -m sudo -u "$USER" -i{/b}
+$ {b}cryptmount cryptflash{/b}
 Enter password for target "cryptflash":
 e2fsck 1.45.5 (07-Jan-2020)
 /dev/mapper/gpg: clean, 33/4096 files, 1896/16384 blocks
-$ export GNUPGHOME="$HOME/cryptflash/dotgpg"
-$ gpg --edit-key ${masteruuid}
-gpg>
+$ {b}export GNUPGHOME="$HOME/cryptflash/dotgpg"{/b}
 ```
 
 To add a subkey:

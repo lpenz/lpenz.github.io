@@ -31,6 +31,7 @@ class Session(pexpect.spawn):
                                'bash', ['--norc'],
                                encoding='utf-8',
                                timeout=10,
+                               echo=False,
                                env=env_)
         self.preproc = preproc
         self._prompt = u'\\$ $'
@@ -40,7 +41,7 @@ class Session(pexpect.spawn):
         self.sendwait('stty cols 9999')
 
     def log(self, s):
-        s = s.replace('\r', '')
+        # s = s.replace('\r', '')
         if self.preproc:
             s = self.preproc(s)
         sys.stdout.write(s)
@@ -49,10 +50,11 @@ class Session(pexpect.spawn):
 
     def process(self):
         self.log(self._pending)
+        self._pending = ''
         m = self.match
         i1, i2 = m.span()
         self.log(m.string[0:i1])
-        self._pending = m.string[i1:]
+        self._pending += m.string[i1:]
         # print(('lpenz', m.string[0:i1], m.string[i1:]))
 
     def waitready(self, prompt=None):
@@ -79,6 +81,11 @@ class Session(pexpect.spawn):
         yield
         self._prompt = oldprompt
 
+    def send(self, s):
+        # ini/end_bold smuggles html <b> through pandoc
+        self._pending += '{b}%s{/b}\n' % s
+        pexpect.spawn.send(self, s)
+
     def sendwait(self, cmd, prompt=None):
         self.send(cmd + '\r')
         return self.waitready(prompt=prompt)
@@ -102,8 +109,9 @@ def bgprocess(cmd):
     r.wait()
 
 
-def passfix(s):
-    return re.sub('Enter passphrase: *', 'Enter passphrase:\n', s)
+def passfix(s, passphrase):
+    return re.sub('Enter passphrase: *({b}.*{/b}[^ ]+) *',
+                  'Enter passphrase: \\1', s)
 
 
 def do_main(gpgconf, outputfile):
@@ -128,7 +136,7 @@ def do_main(gpgconf, outputfile):
                     '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
                     'default sign 0', ': $')
                 p.sendwait(passphrase)
-                genkey = passfix(logfd.getvalue())
+                genkey = passfix(logfd.getvalue(), passphrase)
                 data['genkey'] = genkey
         # Figure out uuid:
         m_masteruuid = re.search(
@@ -159,7 +167,7 @@ def do_main(gpgconf, outputfile):
                 p.sendwait('y')
             p.sendwait('y', ': $')
             p.sendwait(passphrase)
-            data['addkey'] = passfix(logfd.getvalue())
+            data['addkey'] = passfix(logfd.getvalue(), passphrase)
         m_uuid = re_uuid.findall(data['addkey'])
         print(m_uuid)
         data['subkeyuuid'] = [u[1] for u in m_uuid if u[0] == 'ssb'][0]
@@ -167,12 +175,12 @@ def do_main(gpgconf, outputfile):
             p.sendwait('gpg --edit-key %s notation save' % data['subkeyuuid'],
                        ': $')
             p.sendwait('host@lpenz.org=darkstar')
-            data['notation1'] = passfix(logfd.getvalue())
+            data['notation1'] = passfix(logfd.getvalue(), passphrase)
         with p.logging() as logfd:
             p.sendwait('gpg --edit-key %s notation save' % data['subkeyuuid'],
                        ': $')
             p.sendwait('service@lpenz.org=github.com')
-            data['notation2'] = passfix(logfd.getvalue())
+            data['notation2'] = passfix(logfd.getvalue(), passphrase)
         p.done()
     with open(outputfile, 'w') as fd:
         yaml.dump(data, fd, indent=4)

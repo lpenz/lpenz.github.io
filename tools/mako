@@ -177,6 +177,8 @@ def makorender(data, y):
         includefile=includefile,
         renderarticle=renderarticle,
         rfctime=rfctime,
+        ini_bold="<b>",
+        end_bold="</b>",
         **y)
 
 
