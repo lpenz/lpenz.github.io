@@ -8,6 +8,9 @@ date: 2020-03-22
 
 ${"#"} Creating and managing signature keys with GPG
 
+
+${"##"} Introduction
+
 github, linux packages and repositories, email... a cryptographic
 digital signature can be used in several places to
 provide *authenticity* - a reasonable proof that the artifact was
@@ -18,7 +21,7 @@ since I last used it, and I've decided to shift to a new strategy -
 might as well write it all down this time.
 
 
-${"##"} Basics of public key infrastructure (PKI)
+${"###"} Basics of public key infrastructure (PKI)
 
 In broad strokes, a digital signature works in the context of the
 following workflow:
@@ -46,7 +49,7 @@ has more details.
 
 
 
-${"##"} The strategy
+${"###"} The strategy
 
 Using gpg to generate a pair of cryptographic keys for digital
 signatures is quite trivial. That's not what we are going to do.
@@ -79,20 +82,6 @@ The instruction in this section are the initial setup and master key
 creation. It should be done only once.
 
 
-${"###"} Configuring gpg
-
-It's worth noting that the ages-old interface design of gpg doesn't
-support this approach in an intuitive way. The first thing we should
-do is add a couple of lines to *~/.gnupg/gpg.conf*:
-
-```
-${ "articles/gpg/gpg.conf" | includefile }
-```
-
-These options make gpg show more information about the subkeys,
-information we are going to set and use.
-
-
 ${"###"} Using a flash drive
 
 Part of our strategy involves keeping the master key secure. One way
@@ -123,6 +112,20 @@ e2fsck 1.45.5 (07-Jan-2020)
 And umount by just exiting the namespace shell.
 
 The examples below assume we are using the ``cryptflash`` directory.
+
+
+${"###"} Configuring gpg
+
+It's worth noting that the ages-old interface design of gpg doesn't
+support this approach in an intuitive way. The first thing we should
+do is add a couple of lines to *~/.gnupg/gpg.conf*:
+
+```
+${ "articles/gpg/gpg.conf" | includefile }
+```
+
+These options make gpg show more information about the subkeys,
+information we are going to set and use.
 
 
 ${"###"} Creating the master key
