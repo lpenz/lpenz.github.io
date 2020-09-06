@@ -20,6 +20,8 @@ These are my notes on gpg signature management. gpg has changed a lot
 since I last used it, and I've decided to shift to a new strategy -
 might as well write it all down this time.
 
+The notation in this article uses {b}bold{/b} for user input.
+
 
 ${"###"} Basics of public key infrastructure (PKI)
 
@@ -40,8 +42,8 @@ following workflow:
   the author's well-known public key. The match between the calculated
   and decrypted hashes implies two things:
   - That the artifact was not tampered;
-  - That the decrypted hash was encrypted with the secret key that
-    corresponds to the public key used to decrypt it.
+  - That the received hash was encrypted with the secret key that
+    matches the public key of that author.
 
 
 The [wikipedia page](https://en.wikipedia.org/wiki/Digital_signature)
@@ -117,8 +119,9 @@ The examples below assume we are using the ``cryptflash`` directory.
 ${"###"} Configuring gpg
 
 It's worth noting that the ages-old interface design of gpg doesn't
-support this approach in an intuitive way. The first thing we should
-do is add a couple of lines to *~/.gnupg/gpg.conf*:
+support this approach in an intuitive way with the default
+configuration. The first thing we should do is add a couple of lines
+to *~/.gnupg/gpg.conf*:
 
 ```
 ${ "articles/gpg/gpg.conf" | includefile }
@@ -155,13 +158,14 @@ pair with default options and no expiration date. For more details on
 why a master key expiration date is irrelvant in our scenario, read
 [this](https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/).
 
-Our commands, from now on, are issued from gpg's prompt, that we
-access by asking to edit the master key, identified by its UUID
-``${masteruuid}``:
+Keep in mind that gpg's interface is... weird. It has its own REPL
+that you can use if you want. In this article we are always invoking
+it from the shell and passing the commands as arguments; we finish
+with ``save`` because that's the command that commits the changes and
+gets out of the REPL.
 
-!!!!!!
+If you have a secondary email, you should add another User ID:
 
-For instance, to add a second User ID:
 ```
 ${adduid}
 ```
@@ -212,44 +216,24 @@ For my keys, I'm using `host@lpenz.org` for the hosts and
 `service@lpenz.org` for the systems:
 
 ```
-${notation1}
-${notation2}
+{notation1}
+{notation2}
 ```
 
-# OLD
 
-To list public keys:
+${"##"} Listing keys
+
+To list the public keys:
+
 ```
-gpg -k
-> gpg: checking the trustdb
-> gpg: marginals needed: 3  completes needed: 1  trust model: pgp
-> gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
-> /home/lpenz/cryptflash/dotgpg/pubring.kbx
-> -----------------------------------------
-> pub   rsa3072/EEDCE25A 2020-03-29 [SC]
->       Key fingerprint = 6B43 A093 10B2 FBDF CA98  4570 ACB3 C6D2 EEDC E25A
->       uid         [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>
->       sig 3        EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
->       sub   rsa3072/FAA07E9B 2020-03-29 [E]
->       sig          EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+${listpub}
 ```
 
-To list private keys:
+To list the private keys:
+
 ```
-gpg -K
-> /home/lpenz/cryptflash/dotgpg/pubring.kbx
-> -----------------------------------------
-> sec   rsa3072/EEDCE25A 2020-03-29 [SC]
->       Key fingerprint = 6B43 A093 10B2 FBDF CA98  4570 ACB3 C6D2 EEDC E25A
->       uid         [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>
->       sig 3        EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
->       ssb   rsa3072/FAA07E9B 2020-03-29 [E]
->       sig          EEDCE25A 2020-03-29  Leandro Lisboa Penz <lpenz@lpenz.org>
+${listpriv}
 ```
-
-Create subkey:
-
-
 
 
 ${"##"} References

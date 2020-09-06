@@ -127,7 +127,7 @@ def do_main(gpgconf, outputfile):
             fd.write('pinentry-mode loopback\n')
         # Start sesssion
         p = Session(env=env, preproc=lambda s: s.replace(tmpdir + '/', ''))
-        passphrase = 'asdfasdf'
+        passphrase = 'mypassphrase'
         with bgprocess(['find', '/', '-type', 'f']):
             # Create key:
             with p.logging() as logfd:
@@ -143,6 +143,9 @@ def do_main(gpgconf, outputfile):
             'gpg: key ([0-9A-F]+) marked as ultimately trusted', genkey)
         masteruuid = m_masteruuid.group(1)
         data['masteruuid'] = masteruuid
+        m_masterfpr = re.search('Key fingerprint = ([ A-F0-9]+)', genkey)
+        masterfpr = m_masterfpr.group(1)
+        data['masterfpr'] = masterfpr
         re_uuid = re.compile(u'(ssb|sec) +rsa[0-9]+/(?P<uuid>[0-9A-F]+)')
         # Go to editkey prompt:
         with p.logging() as logfd:
@@ -154,13 +157,17 @@ def do_main(gpgconf, outputfile):
                 p.sendwait('O')
             with bgprocess(['find', '/', '-type', 'f']):
                 p.sendwait(passphrase)
-                data['adduid'] = logfd.getvalue()
+            data['adduid'] = logfd.getvalue()
         with p.logging() as logfd:
-            p.sendwait('gpg --edit-key %s uid 1 primary save' % masteruuid)
+            p.sendwait('gpg --edit-key %s uid 2 primary save' % masteruuid)
+            p.sendwait('gpg -k')
             data['uidprimary'] = logfd.getvalue()
         with p.logging() as logfd:
             with p.prompt('\\?[ ?0-9()yN/]* $'):
-                p.sendwait('gpg --edit-key %s addkey save' % masteruuid)
+                p.sendwait('gpg'
+                           ' --cert-notation host@lpenz.org=darkstar'
+                           ' --cert-notation service@lpenz.org=github'
+                           ' --edit-key %s addkey save' % masteruuid)
                 p.sendwait('4')
                 p.sendwait('')
                 p.sendwait('')
@@ -169,18 +176,13 @@ def do_main(gpgconf, outputfile):
             p.sendwait(passphrase)
             data['addkey'] = passfix(logfd.getvalue(), passphrase)
         m_uuid = re_uuid.findall(data['addkey'])
-        print(m_uuid)
         data['subkeyuuid'] = [u[1] for u in m_uuid if u[0] == 'ssb'][0]
         with p.logging() as logfd:
-            p.sendwait('gpg --edit-key %s notation save' % data['subkeyuuid'],
-                       ': $')
-            p.sendwait('host@lpenz.org=darkstar')
-            data['notation1'] = passfix(logfd.getvalue(), passphrase)
+            p.sendwait('gpg -k')
+            data['listpub'] = passfix(logfd.getvalue(), passphrase)
         with p.logging() as logfd:
-            p.sendwait('gpg --edit-key %s notation save' % data['subkeyuuid'],
-                       ': $')
-            p.sendwait('service@lpenz.org=github.com')
-            data['notation2'] = passfix(logfd.getvalue(), passphrase)
+            p.sendwait('gpg -K')
+            data['listpriv'] = passfix(logfd.getvalue(), passphrase)
         p.done()
     with open(outputfile, 'w') as fd:
         yaml.dump(data, fd, indent=4)
