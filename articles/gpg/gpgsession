@@ -4,6 +4,7 @@
 import sys
 import os
 import re
+import functools
 import subprocess
 from contextlib import contextmanager
 import tempfile
@@ -24,16 +25,19 @@ def chdir(d):
 
 
 class Session(pexpect.spawn):
-    def __init__(self, env, preproc=None):
+    def __init__(self, env=None, preproc=None, data=None):
         env_ = {'PS1': '\\$ ', 'PS2': '=>'}
-        env_.update(env)
-        pexpect.spawn.__init__(self,
-                               'bash', ['--norc'],
-                               encoding='utf-8',
-                               timeout=10,
-                               echo=False,
-                               env=env_)
+        env_.update(env or {})
+        pexpect.spawn.__init__(
+            self,
+            'bash',
+            ['--norc'],
+            encoding='utf-8',
+            timeout=10,
+            # echo=False,
+            env=env_)
         self.preproc = preproc
+        self.data = data
         self._prompt = u'\\$ $'
         self._logfd = None
         self._pending = ''
@@ -41,7 +45,6 @@ class Session(pexpect.spawn):
         self.sendwait('stty cols 9999')
 
     def log(self, s):
-        # s = s.replace('\r', '')
         if self.preproc:
             s = self.preproc(s)
         sys.stdout.write(s)
@@ -67,11 +70,13 @@ class Session(pexpect.spawn):
         return self.process()
 
     @contextmanager
-    def logging(self):
+    def logging(self, key=None):
         fd = StringIO()
         self._logfd = fd
         yield fd
         self._logfd = None
+        if self.data is not None and key:
+            self.data[key] = fd.getvalue()
         fd.close()
 
     @contextmanager
@@ -109,35 +114,39 @@ def bgprocess(cmd):
     r.wait()
 
 
-def passfix(s, passphrase):
-    return re.sub('Enter passphrase: *({b}.*{/b}[^ ]+) *',
-                  'Enter passphrase: \\1', s)
+def logfix(passphrase, s):
+    s = re.sub('/tmp/tmp[a-z0-9_]{8}/', '', s)
+    s = re.sub('Enter passphrase: {b}.*{/b}\\s*',
+               'Enter passphrase: {b}lpenzmypassphrase{/b}\n',
+               s,
+               flags=re.MULTILINE)
+    return s
+
+
+def gpgconfwrite(gpgconf, d):
+    with open(pjoin(d, 'gpg.conf'), 'w') as fd:
+        with open(gpgconf, 'r') as fd_gpgconf:
+            fd.write(fd_gpgconf.read())
+        fd.write('pinentry-mode loopback\n')
 
 
 def do_main(gpgconf, outputfile):
     data = {}
+    passphrase = 'mypassphrase'
+    p = Session(data=data, preproc=functools.partial(logfix, passphrase))
     with tempfile.TemporaryDirectory() as tmpdir:
-        env = {
-            'GNUPGHOME': tmpdir,
-        }
-        # Create gpg.conf
-        with open(pjoin(tmpdir, 'gpg.conf'), 'w') as fd:
-            with open(gpgconf, 'r') as fd_gpgconf:
-                fd.write(fd_gpgconf.read())
-            fd.write('pinentry-mode loopback\n')
+        gpgconfwrite(gpgconf, tmpdir)
         # Start sesssion
-        p = Session(env=env, preproc=lambda s: s.replace(tmpdir + '/', ''))
-        passphrase = 'mypassphrase'
+        p.sendwait('export GNUPGHOME=%s' % tmpdir)
         with bgprocess(['find', '/', '-type', 'f']):
             # Create key:
-            with p.logging() as logfd:
+            with p.logging('genkey') as logfd:
                 p.sendwait(
                     'gpg --quick-gen-key '
                     '\'Leandro Lisboa Penz <lpenz@lpenz.org>\' '
                     'default sign 0', ': $')
                 p.sendwait(passphrase)
-                genkey = passfix(logfd.getvalue(), passphrase)
-                data['genkey'] = genkey
+                genkey = logfd.getvalue()
         # Figure out uuid:
         m_masteruuid = re.search(
             'gpg: key ([0-9A-F]+) marked as ultimately trusted', genkey)
@@ -148,7 +157,7 @@ def do_main(gpgconf, outputfile):
         data['masterfpr'] = masterfpr
         re_uuid = re.compile(u'(ssb|sec) +rsa[0-9]+/(?P<uuid>[0-9A-F]+)')
         # Go to editkey prompt:
-        with p.logging() as logfd:
+        with p.logging('adduid'):
             with p.prompt(': $'):
                 p.sendwait('gpg --edit-key %s adduid save' % masteruuid)
                 p.sendwait('Leandro Lisboa Penz')
@@ -157,12 +166,10 @@ def do_main(gpgconf, outputfile):
                 p.sendwait('O')
             with bgprocess(['find', '/', '-type', 'f']):
                 p.sendwait(passphrase)
-            data['adduid'] = logfd.getvalue()
-        with p.logging() as logfd:
+        with p.logging('uidprimary'):
             p.sendwait('gpg --edit-key %s uid 2 primary save' % masteruuid)
             p.sendwait('gpg -k')
-            data['uidprimary'] = logfd.getvalue()
-        with p.logging() as logfd:
+        with p.logging('subkeyadd') as logfd:
             with p.prompt('\\?[ ?0-9()yN/]* $'):
                 p.sendwait('gpg'
                            ' --cert-notation host@lpenz.org=darkstar'
@@ -174,15 +181,40 @@ def do_main(gpgconf, outputfile):
                 p.sendwait('y')
             p.sendwait('y', ': $')
             p.sendwait(passphrase)
-            data['addkey'] = passfix(logfd.getvalue(), passphrase)
-        m_uuid = re_uuid.findall(data['addkey'])
-        data['subkeyuuid'] = [u[1] for u in m_uuid if u[0] == 'ssb'][0]
-        with p.logging() as logfd:
+        for host in ['redplanet', 'brightmoon']:
+            for service in ['github', 'email']:
+                with p.prompt('\\?[ ?0-9()yN/]* $'):
+                    p.sendwait('gpg'
+                               ' --cert-notation host@lpenz.org=%s'
+                               ' --cert-notation service@lpenz.org=%s'
+                               ' --edit-key %s addkey save' %
+                               (host, service, masteruuid))
+                    p.sendwait('4')
+                    p.sendwait('')
+                    p.sendwait('')
+                    p.sendwait('y')
+                p.sendwait('y', ': $')
+                p.sendwait(passphrase)
+        m_uuid = re_uuid.findall(data['subkeyadd'])
+        subkeyuuid = [u[1] for u in m_uuid if u[0] == 'ssb'][0]
+        data['subkeyuuid'] = subkeyuuid
+        with p.logging('listpub') as logfd:
             p.sendwait('gpg -k')
-            data['listpub'] = passfix(logfd.getvalue(), passphrase)
-        with p.logging() as logfd:
+        with p.logging('listpriv') as logfd:
             p.sendwait('gpg -K')
-            data['listpriv'] = passfix(logfd.getvalue(), passphrase)
+        with p.logging('subkeyexport') as logfd:
+            p.sendwait(
+                'gpg --armor --output /tmp/newkey.sec.gpg'
+                ' --export-secret-subkey %s!' % subkeyuuid, ': $')
+            p.sendwait(passphrase)
+        with tempfile.TemporaryDirectory() as tmpdir2:
+            with p.logging('subkeyimport') as logfd:
+                p.sendwait('export GNUPGHOME=%s' % tmpdir2)
+                gpgconfwrite(gpgconf, tmpdir2)
+                p.sendwait('gpg --import /tmp/newkey.sec.gpg', ': $')
+                p.sendwait(passphrase)
+                p.sendwait('gpg -k')
+                p.sendwait('gpg -K')
         p.done()
     with open(outputfile, 'w') as fd:
         yaml.dump(data, fd, indent=4)

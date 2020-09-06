@@ -189,7 +189,7 @@ fashion. That allows us to track down all services affected by a
 vulnerable host, and act accordingly.
 
 First, we insert the master key flash drive, mount it in a private
-namespace, make gpg use it, and edit our master key:
+namespace and make gpg use it.
 
 ```
 $ {b}sudo unshare -m sudo -u "$USER" -i{/b}
@@ -200,24 +200,42 @@ e2fsck 1.45.5 (07-Jan-2020)
 $ {b}export GNUPGHOME="$HOME/cryptflash/dotgpg"{/b}
 ```
 
-To add a subkey:
+
+${"###"} Creating the subkey
+
+Before adding the subkey, we have to decide what we are going to use
+it for so that we can put this information inside a *notation*.
+Notations are key-value tags assigned to a key, where the key has the
+format `id@domain`, where *domain* acts as a namespace - more
+information in [RFC4880]. We can also use a second notation to
+identify the host where the key is installed. I'm actually using
+`host@lpenz.org` for the hosts and `service@lpenz.org` for the
+services.
+
+So, to add a subkey for *github* that is installed in the host
+*darkstar*:
 
 ```
-${addkey}
+${subkeyadd}
 ```
 
-We can now document the host where the private key is installed, along
-with the service that has the corresponding public key, using
-*notations*. Notations are key-value tags assigned to a key, where
-the key has the format `id@domain`, where *domain* acts as a
-namespace - more information in [RFC4880].
 
-For my keys, I'm using `host@lpenz.org` for the hosts and
-`service@lpenz.org` for the systems:
+${"###"} Exporting the new subkey
+
+After creating the new subkey in the master key flash drive, we have
+to export the pair and then import it in the host where it will be
+used.
 
 ```
-{notation1}
-{notation2}
+${subkeyexport}
+```
+
+
+${"###"} Importing the new subkey in the target system
+
+
+```
+${subkeyimport}
 ```
 
 
