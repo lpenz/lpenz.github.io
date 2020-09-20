@@ -264,5 +264,3 @@ ${"#"} References
   <https://viccuad.me/blog/Revisited-secure-yourself-part-1-airgapped-computer-and-gpg-smartcards>
 
 - [RFC4880]: https://tools.ietf.org/html/rfc4880#section-5.2.3.16
-
-## -*- mode: markdown -*-
