@@ -2,11 +2,10 @@ Create a Debian bootable live USB
 How to create a customized bootable live USB with Debian
 2015-10-04
 
+
+
 **Updated 2019-06-25**: use Debian Stretch explicitly (already implied
 by kernel version); suggest testing with qemu.
-
-
-= Creating a Debian bootable live USB =
 
 We can install a full Linux distribution in a USB drive, and use it to boot a
 system. That is called a "live USB," and it can be used for recovery, as a
@@ -22,7 +21,7 @@ prepend ``>`` to the output of commands on most examples.
 
 
 
-== 1 Partitioning ==
+= 1 Partitioning =
 
 After inserting the USB drive, it will appear as a block device under ///dev//,
 usually //sd[a-z]//. Take a note on the device name. We will use ///dev/sdc//
@@ -119,7 +118,7 @@ type - that is required //syslinux//.
 
 
 
-== 2 Installing the bootloader ==
+= 2 Installing the bootloader =
 
 Create a FAT16 filesystem on the boot device:
 ```
@@ -134,7 +133,7 @@ syslinux /dev/sdc1
 
 
 
-== 3 Installing the base system in the root partition ==
+= 3 Installing the base system in the root partition =
 
 Create the filesystem:
 ```
@@ -180,7 +179,7 @@ debootstrap stretch usbroot http://ftp.debian.org/debian
 
 
 
-== 4 On-root configuration ==
+= 4 On-root configuration =
 
 We will have to //chroot// into our root filesystem to configure it further.
 
@@ -273,7 +272,7 @@ cat /usr/lib/SYSLINUX/mbr.bin > /dev/sdc
 
 
 
-== 5 Closing up ==
+= 5 Closing up =
 
 We are now ready to leave the //chroot// and umount all devices:
 ```
@@ -298,7 +297,7 @@ and use it to boot any computer.
 
 
 
-== References ==
+= References =
 
 This article is, in fact, basically a rehash of the following references with
 the //UUID// part added.

@@ -4,8 +4,6 @@ Haskell eDSL Tutorial - Shared expenses
 
 
 
-= Haskell eDSL Tutorial - Shared expenses =
-
 People have created
 [interesting http://ashish.typepad.com/ashishs_niti/2007/06/another_dsl_emb.html]
 and
@@ -28,7 +26,7 @@ lines bellow:
 
 
 
-== Why haskell ==
+= Why haskell =
 
 The first reason to use haskell for an eDSL is that it has a very clean syntax:
 - a function and its arguments are separated by spaces, not by parenthesis and
@@ -44,7 +42,7 @@ eDSL, as we will see.
 
 
 
-== The shared expenses problem ==
+= The shared expenses problem =
 
 Lets say that you went on a trip with 3 friends, and there are some costs that
 are shared by everyone. You want to record these expenses and then everyone can
@@ -80,7 +78,7 @@ convoluted. We also avoid using floating point numbers for a similar reason.
 
 
 
-== The state monad ==
+= The state monad =
 
 By programming a new monad you get the "programmable semicolon" that people talk
 so much about. That allows you to make a custom program flow different from
@@ -112,7 +110,7 @@ make typos a compile error.
 
 
 
-== Spending and giving ==
+= Spending and giving =
 
 //spent// and //gave// are functions that update our state:
 
@@ -131,7 +129,7 @@ while //gave// adds the amount to the lender and subtract it from the borrower.
 
 
 
-== Solving ==
+= Solving =
 
 To solve the shared expenses problem, we will use a simple algorithm: he who
 owes more pays to the one that has more credit until everybody gets paid.
@@ -177,7 +175,7 @@ linear programming.
 
 
 
-== Plumbing ==
+= Plumbing =
 
 The function ``sharedexpenses`` is the one that glues the eDSL and the state
 monad, while the ``main`` function is the one that plugs it with
@@ -198,7 +196,7 @@ Running this program provides us the following results:
 
 
 
-== Conclusions ==
+= Conclusions =
 
 We have seen what is an eDSL by building a solution to a real, day-to-day
 problem. No hidden enchantments or dark arts involved: you don't have to build a
@@ -215,7 +213,7 @@ shouldn't be a problem.
 
 
 
-== Further reading ==
+= Further reading =
 
 - http://paulspontifications.blogspot.com.br/2008/01/why-haskell-is-good-for-embedded-domain.html:
   Why Haskell is Good for Embedded Domain Specific Languages

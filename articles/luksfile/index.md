@@ -5,8 +5,6 @@ date: 2020-03-22
 ...
 
 
-# Creating an encrypted directory-in-a-file
-
 LUKS can be used to create a file with a whole encrypted filesystem
 inside, that we can mount and manipulate in-place.
 

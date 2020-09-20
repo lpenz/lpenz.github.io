@@ -4,8 +4,6 @@ Updated with travis-ci and github pages
 
 
 
-= Creating a static nix channel with binary cache =
-
 TL;DR: full example at https://github.com/lpenz/nixpkgs-lpenz/
 
 [Nix https://nixos.org] is a packet manager for Unix-like systems that
@@ -21,7 +19,7 @@ You should also check out [Cachix https://cachix.org/], as an
 alternative to what is described here.
 
 
-== Generating key pair ==
+= Generating key pair =
 
 The first step in creating a repository is generating a key pair:
 
@@ -36,7 +34,7 @@ place). The second file has the public key that we will use to
 authenticate the packages in the clients.
 
 
-== Setting up the repository in github and travis-ci ==
+= Setting up the repository in github and travis-ci =
 
 This article is not going into the details of how to create a repository and populate it with nix derivations. Here are some references on that:
 - https://nixos.org/nixos/nix-pills/generic-builders.html
@@ -56,7 +54,7 @@ practices at
 to avoid problems.
 
 
-=== Creating the channel ===
+== Creating the channel ==
 
 A channel is simply a ``nixexprs.tar.xz`` with all nix derivation
 files, and a ``binary-cache-url`` file that, as the name implies,
@@ -83,7 +81,7 @@ touch _output/index.html
 ```
 
 
-=== Creating the binary cache ===
+== Creating the binary cache ==
 
 To create the binary cache, start by building the packages with:
 ```
@@ -103,7 +101,7 @@ nix copy --to "file:///$PWD/_output/cache"
 ```
 
 
-=== .travis.yml deploy section ===
+== .travis.yml deploy section ==
 
 Detailed instructions on how to set this up are at
 [GitHub Pages Deployment https://docs.travis-ci.com/user/deployment/pages/].
@@ -122,7 +120,7 @@ deploy:
 ```
 
 
-== Using the channel ==
+= Using the channel =
 
 To use the channel, add the channel URL to nix:
 ```
@@ -143,7 +141,7 @@ Note that we have to also add the default, as that line is an absolute
 configuration.
 
 
-== Conclusions ==
+= Conclusions =
 
 Nix is very versatile, and one way to use it is an overlay
 distribution, by installing [nixpkgs https://github.com/NixOS/nixpkgs]

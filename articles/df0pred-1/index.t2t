@@ -4,9 +4,6 @@ The linear regression
 
 
 
-= Hard drive occupation prediction with R =
-= - The linear regression - =
-
 On some environments, disk space usage can be pretty predictable. In this post,
 we will see how to do a linear regression to estimate when free space will reach
 zero, and how to assess the quality of such regression, all using
@@ -15,7 +12,7 @@ statistical software environment.
 
 
 
-== Prerequisites ==
+= Prerequisites =
 
 The first thing we need is the data. By running a simple
 ``(date --utc; df -k; echo) >> /var/dflog.txt``
@@ -42,7 +39,7 @@ call the date the free space reaches 0 as the **df0**.
 
 
 
-== Starting up ==
+= Starting up =
 
 After running **R** in the shell prompt, we get the usual license and basic help
 information.
@@ -68,7 +65,7 @@ From our example, we get:
 
 
 
-== Linear model ==
+= Linear model =
 
 We can now create and take a look at our linear model object:
 ```
@@ -90,7 +87,7 @@ The example plot, with the line:
 
 
 
-== Evaluating the model ==
+= Evaluating the model =
 
 R provides us with a very generic command that generates statistical information
 about objects: **summary**. Let's use it on our linear model objects:
@@ -134,7 +131,7 @@ well, we can use it to predict hard-disk shortage.
 
 
 
-== Predicting disk-free-zero ==
+= Predicting disk-free-zero =
 
 Until now, we represented disk space as a function of time, creating a model
 that allows us to predict the used disk space given the date. But what we really
@@ -161,7 +158,7 @@ current pattern holds until then.
 
 
 
-== Conclusion ==
+= Conclusion =
 
 The linear model can give us the predicted hard disk space usage at any future
 date, as long as collected data pattern **is linear**. If the data we collected
@@ -181,7 +178,7 @@ in general.
 
 
 
-== Further reading ==
+= Further reading =
 
 - http://www.cyclismo.org/tutorial/R/index.html: R tutorial
 - http://www.r-tutor.com/: An R introduction to statistics
