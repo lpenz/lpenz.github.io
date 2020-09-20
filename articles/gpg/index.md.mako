@@ -5,11 +5,7 @@ date: 2020-03-22
 ...
 
 
-
-${"#"} Creating and managing signature keys with GPG
-
-
-${"##"} Introduction
+${"#"} Introduction
 
 github, linux packages and repositories, email... a cryptographic
 digital signature can be used in several places to
@@ -23,7 +19,7 @@ might as well write it all down this time.
 The notation in this article uses {b}bold{/b} for user input.
 
 
-${"###"} Basics of public key infrastructure (PKI)
+${"##"} Basics of public key infrastructure (PKI)
 
 In broad strokes, a digital signature works in the context of the
 following workflow:
@@ -51,7 +47,7 @@ has more details.
 
 
 
-${"###"} The strategy
+${"##"} The strategy
 
 Using gpg to generate a pair of cryptographic keys for digital
 signatures is quite trivial. That's not what we are going to do.
@@ -78,13 +74,13 @@ master key.
 
 
 
-${"##"} Master key setup
+${"#"} Master key setup
 
 The instruction in this section are the initial setup and master key
 creation. It should be done only once.
 
 
-${"###"} Using a flash drive
+${"##"} Using a flash drive
 
 Part of our strategy involves keeping the master key secure. One way
 of doing that is by keeping it in a flash drive that is physically
@@ -116,7 +112,7 @@ And umount by just exiting the namespace shell.
 The examples below assume we are using the ``cryptflash`` directory.
 
 
-${"###"} Configuring gpg
+${"##"} Configuring gpg
 
 It's worth noting that the ages-old interface design of gpg doesn't
 support this approach in an intuitive way with the default
@@ -131,7 +127,7 @@ These options make gpg show more information about the subkeys,
 information we are going to set and use.
 
 
-${"###"} Creating the master key
+${"##"} Creating the master key
 
 We start by assigning the directory in the detachable drive to
 ``GNUPGHOME``:
@@ -181,7 +177,7 @@ And this is the setup. After it is done, you can just exit the the
 shell to get the flash drive unmounted. Keep it safe.
 
 
-${"##"} Adding a subkey
+${"#"} Adding a subkey
 
 The single purpose of the master key is the generation of subkeys -
 one for each combination of host and service, in a matrix-like
@@ -201,7 +197,7 @@ $ {b}export GNUPGHOME="$HOME/cryptflash/dotgpg"{/b}
 ```
 
 
-${"###"} Creating the subkey
+${"##"} Creating the subkey
 
 Before adding the subkey, we have to decide what we are going to use
 it for so that we can put this information inside a *notation*.
@@ -220,7 +216,7 @@ ${subkeyadd}
 ```
 
 
-${"###"} Exporting the new subkey
+${"##"} Exporting the new subkey
 
 After creating the new subkey in the master key flash drive, we have
 to export the pair and then import it in the host where it will be
@@ -231,7 +227,7 @@ ${subkeyexport}
 ```
 
 
-${"###"} Importing the new subkey in the target system
+${"##"} Importing the new subkey in the target system
 
 
 ```
@@ -239,7 +235,7 @@ ${subkeyimport}
 ```
 
 
-${"##"} Listing keys
+${"#"} Listing keys
 
 To list the public keys:
 
@@ -254,7 +250,7 @@ ${listpriv}
 ```
 
 
-${"##"} References
+${"#"} References
 
 - Why expiration dates are irrelevant:
   <https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/>
