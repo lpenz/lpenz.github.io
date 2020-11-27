@@ -12,5 +12,6 @@ env.R('pointplot.png', 'output.R', chdir=1)
 env.Command('datain.Rinc', 'datain.R',
             r'sed "s@^\(.\)@> \\1@" $SOURCE > $TARGET')
 
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.T2TBHTML('index.bhtml.mako', 'index.t2t')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/df0pred-1/index.html')

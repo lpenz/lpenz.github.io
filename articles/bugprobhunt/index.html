@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */
@@ -81,9 +81,9 @@ div.center > img { margin: 0 auto; } /* center images by default */
 </nav>
 
 <div class="container">
-	
 
-<h1>Probabilistic bug hunting</h1>
+<h1 id="title">Probabilistic bug hunting</h1>
+
 
 <p>
 Have you ever run into a bug that, no matter how careful you are trying to
@@ -150,7 +150,7 @@ On my architecture (Linux on IA-32) it has a bug that makes it print "error"
 instead of the numbers sometimes.
 </p>
 
-<h2>The Model</h2>
+<h1>The Model</h1>
 
 <p>
 Every time we run the program, the bug can either show up or not. It has a
@@ -192,7 +192,7 @@ experiment has its own \(p\). We will find a single value anyway, but it has no
 meaning and can lead us to wrong conclusions.
 </p>
 
-<h3>Physical analogy</h3>
+<h2>Physical analogy</h2>
 
 <p>
 Another way of thinking about the model and the strategy is by creating a
@@ -232,7 +232,7 @@ Some things become clearer when we think about this analogy:
 
  <div class="center"><img class="img-responsive"  src="boxballs.png"  alt=""/></div>
 
-<h2>Estimating \(p\)</h2>
+<h1>Estimating \(p\)</h1>
 
 <p>
 Before we try fixing anything, we have to know more about the bug, starting by
@@ -257,7 +257,7 @@ times, so \(k=1, n=3 \Rightarrow p \sim 33%\), right? It would be better if we
 tested more, but how much more, and exactly what would be better?
 </p>
 
-<h3>\(p\) precision</h3>
+<h2>\(p\) precision</h2>
 
 <p>
 Let's go back to our box analogy: imagine that there are 4 balls in the box, one
@@ -302,7 +302,7 @@ for \(p\), and the minimal value for it.
 Testing more improves the precision of our estimate.
 </p>
 
-<h3>\(p\) likelihood</h3>
+<h2>\(p\) likelihood</h2>
 
 <p>
 Let's now approach the problem from another angle: if \(p = 1/4\), what are the
@@ -455,7 +455,7 @@ The R script used to generate the first plot is <a href="pdistplot.R">here</a>, 
 one used for the second plot is <a href="pdensplot.R">here</a>.
 </p>
 
-<h3>Increasing \(n\), narrowing down the interval</h3>
+<h2>Increasing \(n\), narrowing down the interval</h2>
 
 <p>
 What happens when we test more? We obviously increase our precision, as it is at
@@ -465,7 +465,7 @@ gets taller and narrower around the observed ratio \(k/n\):
 </p>
  <div class="center"><img class="img-responsive"  src="pdens_many.png"  alt=""/></div>
 
-<h3>Investigation framework</h3>
+<h2>Investigation framework</h2>
 
 <p>
 So, which value will we use for \(p\)?
@@ -523,7 +523,7 @@ are a lot of sites that can calculate it:
 </li>
 </ul>
 
-<h2>Is the bug fixed?</h2>
+<h1>Is the bug fixed?</h1>
 
 <p>
 So, you have tested a lot and calculated \(p_{min}\). The next step is fixing
@@ -572,9 +572,9 @@ Formally, this is very similar to a
 <a href="https://en.wikipedia.org/wiki/Hypothesis_testing">statistical hypothesis testing</a>.
 </p>
 
-<h2>Back to the Bug</h2>
+<h1>Back to the Bug</h1>
 
-<h3>Testing 20 times</h3>
+<h2>Testing 20 times</h2>
 
 <p>
 <a href="trials.csv">This file</a> has the results found after running our program 5000
@@ -599,7 +599,7 @@ significance, and 35 to reach 99%.
 Now, what happens if we test more before fixing the bug?
 </p>
 
-<h3>Testing 5000 times</h3>
+<h2>Testing 5000 times</h2>
 
 <p>
 Let's now use all the results and assume that we tested 5000 times before fixing
@@ -622,7 +622,7 @@ higher \(p_{min}\), and that allowed us to test less after fixing the
 bug.
 </p>
 
-<h2>Optimal testing</h2>
+<h1>Optimal testing</h1>
 
 <p>
 We have seen that we decrease \(t\) as we increase \(n\), as that can
@@ -662,7 +662,7 @@ technique - but also test more if you can, there is no upper bound, specially
 after fixing the bug. You can then report a higher confidence in the solution.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 When a programmer finds a bug that behaves in a non-deterministic way, he

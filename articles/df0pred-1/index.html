@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */
@@ -80,11 +80,9 @@ div.center > img { margin: 0 auto; } /* center images by default */
 </nav>
 
 <div class="container">
-	
 
-<h1>Hard drive occupation prediction with R</h1>
+<h1 id="title">Hard drive occupation prediction with R</h1>
 
-<h1>- The linear regression -</h1>
 
 <p>
 On some environments, disk space usage can be pretty predictable. In this post,
@@ -94,7 +92,7 @@ zero, and how to assess the quality of such regression, all using
 statistical software environment.
 </p>
 
-<h2>Prerequisites</h2>
+<h1>Prerequisites</h1>
 
 <p>
 The first thing we need is the data. By running a simple
@@ -126,7 +124,7 @@ All number in the file are in MB units, and we assume an HD of 500GB. We will
 call the date the free space reaches 0 as the <b>df0</b>.
 </p>
 
-<h2>Starting up</h2>
+<h1>Starting up</h1>
 
 <p>
 After running <b>R</b> in the shell prompt, we get the usual license and basic help
@@ -164,7 +162,7 @@ From our example, we get:
 </p>
  <div class="center"><img class="img-responsive"  src="pointplot.png"  alt=""/></div>
 
-<h2>Linear model</h2>
+<h1>Linear model</h1>
 
 <p>
 We can now create and take a look at our linear model object:
@@ -202,7 +200,7 @@ The example plot, with the line:
 </p>
  <div class="center"><img class="img-responsive"  src="lmplot.png"  alt=""/></div>
 
-<h2>Evaluating the model</h2>
+<h1>Evaluating the model</h1>
 
 <p>
 R provides us with a very generic command that generates statistical information
@@ -293,7 +291,7 @@ Now that we are (hopefully) convinced that our linear model fits our data
 well, we can use it to predict hard-disk shortage.
 </p>
 
-<h2>Predicting disk-free-zero</h2>
+<h1>Predicting disk-free-zero</h1>
 
 <p>
 Until now, we represented disk space as a function of time, creating a model
@@ -334,7 +332,7 @@ There we are: df0 will be at the above date <b>if</b> the
 current pattern holds until then.
 </p>
 
-<h2>Conclusion</h2>
+<h1>Conclusion</h1>
 
 <p>
 The linear model can give us the predicted hard disk space usage at any future
@@ -356,7 +354,7 @@ statistical distribution for the date of exhaustion, which is a lot more useful
 in general.
 </p>
 
-<h2>Further reading</h2>
+<h1>Further reading</h1>
 
 <ul>
 <li><a href="http://www.cyclismo.org/tutorial/R/index.html">http://www.cyclismo.org/tutorial/R/index.html</a>: R tutorial

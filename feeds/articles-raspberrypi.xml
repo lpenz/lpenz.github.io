@@ -26,22 +26,19 @@
 			<link>http://www.lpenz.org/articles/ansiblerpi</link>
 			<guid>http://www.lpenz.org/articles/ansiblerpi</guid>
 			<pubDate>Tue, 08 Jan 2019 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Provisioning a Raspberry Pi using ansible</h1>
-
-<p>
+			<description><![CDATA[<p>
 These are my notes on how to get started provisioning Raspbian with
 ansible.
 </p>
 
-<h2>Before using ansible</h2>
+<h1>Before using ansible</h1>
 
 <p>
 We have to get a working Raspbian installation before using ansible on
 the device.
 </p>
 
-<h3>Installing Raspbian</h3>
+<h2>Installing Raspbian</h2>
 
 <p>
 The first step is downloading and installing Raspbian in the SD card
@@ -65,7 +62,7 @@ step is writting the Raspbian image to it:
 You can now insert the card into the Raspberry Pi board.
 </p>
 
-<h3>Initial Raspbian setup</h3>
+<h2>Initial Raspbian setup</h2>
 
 <p>
 Raspbian comes with a initial user <b>pi</b>, password <b>raspberry</b>,
@@ -87,7 +84,7 @@ in a console session that should look like the following:
   (...)
 </pre>
 
-<h3>Alternative initial setup</h3>
+<h2>Alternative initial setup</h2>
 
 <p>
 Another way to do the initial image setup is by mounting in your system and
@@ -212,7 +209,7 @@ From here on we assume that the file was mapped to <code>/dev/loop0</code>.
 </li>
 </ul>
 
-<h2>Using ansible</h2>
+<h1>Using ansible</h1>
 
 <p>
 You can now use ansible from any computer to provision the Pi. I'd
@@ -251,7 +248,7 @@ run the playbook with the following command:
 the device)
 </p>
 
-<h3>Setting up Debian repositories</h3>
+<h2>Setting up Debian repositories</h2>
 
 <p>
 Because Raspbian is based on Debian and upstream Debian has support for the

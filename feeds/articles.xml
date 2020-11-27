@@ -26,22 +26,19 @@
 			<link>http://www.lpenz.org/articles/ansiblerpi</link>
 			<guid>http://www.lpenz.org/articles/ansiblerpi</guid>
 			<pubDate>Tue, 08 Jan 2019 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Provisioning a Raspberry Pi using ansible</h1>
-
-<p>
+			<description><![CDATA[<p>
 These are my notes on how to get started provisioning Raspbian with
 ansible.
 </p>
 
-<h2>Before using ansible</h2>
+<h1>Before using ansible</h1>
 
 <p>
 We have to get a working Raspbian installation before using ansible on
 the device.
 </p>
 
-<h3>Installing Raspbian</h3>
+<h2>Installing Raspbian</h2>
 
 <p>
 The first step is downloading and installing Raspbian in the SD card
@@ -65,7 +62,7 @@ step is writting the Raspbian image to it:
 You can now insert the card into the Raspberry Pi board.
 </p>
 
-<h3>Initial Raspbian setup</h3>
+<h2>Initial Raspbian setup</h2>
 
 <p>
 Raspbian comes with a initial user <b>pi</b>, password <b>raspberry</b>,
@@ -87,7 +84,7 @@ in a console session that should look like the following:
   (...)
 </pre>
 
-<h3>Alternative initial setup</h3>
+<h2>Alternative initial setup</h2>
 
 <p>
 Another way to do the initial image setup is by mounting in your system and
@@ -212,7 +209,7 @@ From here on we assume that the file was mapped to <code>/dev/loop0</code>.
 </li>
 </ul>
 
-<h2>Using ansible</h2>
+<h1>Using ansible</h1>
 
 <p>
 You can now use ansible from any computer to provision the Pi. I'd
@@ -251,7 +248,7 @@ run the playbook with the following command:
 the device)
 </p>
 
-<h3>Setting up Debian repositories</h3>
+<h2>Setting up Debian repositories</h2>
 
 <p>
 Because Raspbian is based on Debian and upstream Debian has support for the
@@ -319,10 +316,7 @@ The <a href="apt-pinning">apt-pinning</a> file should contain something like the
 			<link>http://www.lpenz.org/articles/bugprobhunt</link>
 			<guid>http://www.lpenz.org/articles/bugprobhunt</guid>
 			<pubDate>Mon, 09 Dec 2013 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Probabilistic bug hunting</h1>
-
-<p>
+			<description><![CDATA[<p>
 Have you ever run into a bug that, no matter how careful you are trying to
 reproduce it, it only happens sometimes? And then, you think you've got it, and
 finally solved it - and tested a couple of times without any manifestation. How
@@ -387,7 +381,7 @@ On my architecture (Linux on IA-32) it has a bug that makes it print "error"
 instead of the numbers sometimes.
 </p>
 
-<h2>The Model</h2>
+<h1>The Model</h1>
 
 <p>
 Every time we run the program, the bug can either show up or not. It has a
@@ -429,7 +423,7 @@ experiment has its own \(p\). We will find a single value anyway, but it has no
 meaning and can lead us to wrong conclusions.
 </p>
 
-<h3>Physical analogy</h3>
+<h2>Physical analogy</h2>
 
 <p>
 Another way of thinking about the model and the strategy is by creating a
@@ -469,7 +463,7 @@ Some things become clearer when we think about this analogy:
 
  <div class="center"><img class="img-responsive"  src="boxballs.png"  alt=""/></div> 
 
-<h2>Estimating \(p\)</h2>
+<h1>Estimating \(p\)</h1>
 
 <p>
 Before we try fixing anything, we have to know more about the bug, starting by
@@ -494,7 +488,7 @@ times, so \(k=1, n=3 \Rightarrow p \sim 33%\), right? It would be better if we
 tested more, but how much more, and exactly what would be better?
 </p>
 
-<h3>\(p\) precision</h3>
+<h2>\(p\) precision</h2>
 
 <p>
 Let's go back to our box analogy: imagine that there are 4 balls in the box, one
@@ -539,7 +533,7 @@ for \(p\), and the minimal value for it.
 Testing more improves the precision of our estimate.
 </p>
 
-<h3>\(p\) likelihood</h3>
+<h2>\(p\) likelihood</h2>
 
 <p>
 Let's now approach the problem from another angle: if \(p = 1/4\), what are the
@@ -692,7 +686,7 @@ The R script used to generate the first plot is <a href="http://www.lpenz.org/ar
 one used for the second plot is <a href="http://www.lpenz.org/articles/bugprobhunt/pdensplot.R">here</a>.
 </p>
 
-<h3>Increasing \(n\), narrowing down the interval</h3>
+<h2>Increasing \(n\), narrowing down the interval</h2>
 
 <p>
 What happens when we test more? We obviously increase our precision, as it is at
@@ -702,7 +696,7 @@ gets taller and narrower around the observed ratio \(k/n\):
 </p>
  <div class="center"><img class="img-responsive"  src="pdens_many.png"  alt=""/></div> 
 
-<h3>Investigation framework</h3>
+<h2>Investigation framework</h2>
 
 <p>
 So, which value will we use for \(p\)?
@@ -760,7 +754,7 @@ are a lot of sites that can calculate it:
 </li>
 </ul>
 
-<h2>Is the bug fixed?</h2>
+<h1>Is the bug fixed?</h1>
 
 <p>
 So, you have tested a lot and calculated \(p_{min}\). The next step is fixing
@@ -809,9 +803,9 @@ Formally, this is very similar to a
 <a href="https://en.wikipedia.org/wiki/Hypothesis_testing">statistical hypothesis testing</a>.
 </p>
 
-<h2>Back to the Bug</h2>
+<h1>Back to the Bug</h1>
 
-<h3>Testing 20 times</h3>
+<h2>Testing 20 times</h2>
 
 <p>
 <a href="trials.csv">This file</a> has the results found after running our program 5000
@@ -836,7 +830,7 @@ significance, and 35 to reach 99%.
 Now, what happens if we test more before fixing the bug?
 </p>
 
-<h3>Testing 5000 times</h3>
+<h2>Testing 5000 times</h2>
 
 <p>
 Let's now use all the results and assume that we tested 5000 times before fixing
@@ -859,7 +853,7 @@ higher \(p_{min}\), and that allowed us to test less after fixing the
 bug.
 </p>
 
-<h2>Optimal testing</h2>
+<h1>Optimal testing</h1>
 
 <p>
 We have seen that we decrease \(t\) as we increase \(n\), as that can
@@ -899,7 +893,7 @@ technique - but also test more if you can, there is no upper bound, specially
 after fixing the bug. You can then report a higher confidence in the solution.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 When a programmer finds a bug that behaves in a non-deterministic way, he
@@ -932,9 +926,6 @@ downloaded in <a href="https://github.com/lpenz/lpenz.github.io">https://github.
 article had to be fixed; I took the opportunity to improve a few things as
 well.
 </p>
-
-<h1>Debianization with git-buildpackage</h1>
-
 <p>
 After building some useful piece of software, one has to decide how to best
 deploy it. In UNIX, the standard way to do that is by publishing the source
@@ -950,7 +941,7 @@ software maintained in git, by tracking the packaging scheme in a specific
 branch on the same repository.
 </p>
 
-<h2>Prerequisites</h2>
+<h1>Prerequisites</h1>
 
 <p>
 In order to ease the packaging and keep our package warning-free, it should
@@ -973,7 +964,7 @@ have in its main repository:
 These items are not debian-specific and are useful for everyone.
 </p>
 
-<h2>Initial packaging setup</h2>
+<h1>Initial packaging setup</h1>
 
 <p>
 The first step is creating the <code>${PACKAGE}_${VERSION}.orig.tar.gz</code> file. You
@@ -1051,7 +1042,7 @@ After changing the files that <code>dh_make</code> created, you should create a
 We can now commit the debian directory in the debian-debian branch.
 </p>
 
-<h2>Importing the sources</h2>
+<h1>Importing the sources</h1>
 
 <p>
 In the debian-debian branch:
@@ -1066,7 +1057,7 @@ That imports the original sources to the debian-upstream branch, and merge
 it into the debian-debian branch.
 </p>
 
-<h2>Creating the package</h2>
+<h1>Creating the package</h1>
 
 <p>
 To create the debian package:
@@ -1076,7 +1067,7 @@ To create the debian package:
   gbp buildpackage -us -uc --git-tag
 </pre>
 
-<h2>Importing further versions</h2>
+<h1>Importing further versions</h1>
 
 <p>
 Create the new <code>../${PACKAGE}_${VERSION}/.orig.tar.gz</code> and then:
@@ -1099,7 +1090,7 @@ that), and create a new package:
 Yes, it's that easy.
 </p>
 
-<h2>Final remarks</h2>
+<h1>Final remarks</h1>
 
 <p>
 After an initial expensive setup, package creation of further versions is
@@ -1133,12 +1124,7 @@ Further information:
 			<link>http://www.lpenz.org/articles/df0pred-1</link>
 			<guid>http://www.lpenz.org/articles/df0pred-1</guid>
 			<pubDate>Sun, 15 Aug 2010 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Hard drive occupation prediction with R</h1>
-
-<h1>- The linear regression -</h1>
-
-<p>
+			<description><![CDATA[<p>
 On some environments, disk space usage can be pretty predictable. In this post,
 we will see how to do a linear regression to estimate when free space will reach
 zero, and how to assess the quality of such regression, all using
@@ -1146,7 +1132,7 @@ zero, and how to assess the quality of such regression, all using
 statistical software environment.
 </p>
 
-<h2>Prerequisites</h2>
+<h1>Prerequisites</h1>
 
 <p>
 The first thing we need is the data. By running a simple
@@ -1178,7 +1164,7 @@ All number in the file are in MB units, and we assume an HD of 500GB. We will
 call the date the free space reaches 0 as the <b>df0</b>.
 </p>
 
-<h2>Starting up</h2>
+<h1>Starting up</h1>
 
 <p>
 After running <b>R</b> in the shell prompt, we get the usual license and basic help
@@ -1216,7 +1202,7 @@ From our example, we get:
 </p>
  <div class="center"><img class="img-responsive"  src="http://www.lpenz.org/articles/df0pred-1/pointplot.png"  alt=""/></div> 
 
-<h2>Linear model</h2>
+<h1>Linear model</h1>
 
 <p>
 We can now create and take a look at our linear model object:
@@ -1254,7 +1240,7 @@ The example plot, with the line:
 </p>
  <div class="center"><img class="img-responsive"  src="http://www.lpenz.org/articles/df0pred-1/lmplot.png"  alt=""/></div> 
 
-<h2>Evaluating the model</h2>
+<h1>Evaluating the model</h1>
 
 <p>
 R provides us with a very generic command that generates statistical information
@@ -1345,7 +1331,7 @@ Now that we are (hopefully) convinced that our linear model fits our data
 well, we can use it to predict hard-disk shortage.
 </p>
 
-<h2>Predicting disk-free-zero</h2>
+<h1>Predicting disk-free-zero</h1>
 
 <p>
 Until now, we represented disk space as a function of time, creating a model
@@ -1386,7 +1372,7 @@ There we are: df0 will be at the above date <b>if</b> the
 current pattern holds until then.
 </p>
 
-<h2>Conclusion</h2>
+<h1>Conclusion</h1>
 
 <p>
 The linear model can give us the predicted hard disk space usage at any future
@@ -1408,7 +1394,7 @@ statistical distribution for the date of exhaustion, which is a lot more useful
 in general.
 </p>
 
-<h2>Further reading</h2>
+<h1>Further reading</h1>
 
 <ul>
 <li><a href="http://www.cyclismo.org/tutorial/R/index.html">http://www.cyclismo.org/tutorial/R/index.html</a>: R tutorial
@@ -1437,12 +1423,7 @@ in general.
 			<link>http://www.lpenz.org/articles/df0pred-2</link>
 			<guid>http://www.lpenz.org/articles/df0pred-2</guid>
 			<pubDate>Sat, 22 Jan 2011 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Hard drive occupation prediction - part 2</h1>
-
-<h1>- Getting the probability distribution -</h1>
-
-<p>
+			<description><![CDATA[<p>
 On the <a href="http://www.lpenz.org/articles/df0pred-2/../df0pred-1/index.html">first</a> article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
 importing our data into <a href="https://en.wikipedia.org/wiki/R_programming_language">R</a>
@@ -1455,7 +1436,7 @@ probability distribution for the date of disk space exhaustion instead of
 calculating a single day.
 </p>
 
-<h2>The problem with the linear regression</h2>
+<h1>The problem with the linear regression</h1>
 
 <p>
 The linear regression used in the first article has a serious
@@ -1487,7 +1468,7 @@ when there is human intervention. We should always look at the graph to see if
 the model makes sense.
 </p>
 
-<h2>A na&iuml;ve new method: averaging the difference</h2>
+<h1>A na&iuml;ve new method: averaging the difference</h1>
 
 <p>
 Instead of using the daily used disk space as input, we will use the
@@ -1510,7 +1491,7 @@ would still not have the probability distribution for the date, only a single
 value.
 </p>
 
-<h2>The real new method: days left by Monte Carlo simulation</h2>
+<h1>The real new method: days left by Monte Carlo simulation</h1>
 
 <p>
 Instead of calculating the number of days left from the data, we will use a
@@ -1662,7 +1643,7 @@ rise above 5%:
 Mix and match and see what a good convention for your case is.
 </p>
 
-<h2>Conclusion</h2>
+<h1>Conclusion</h1>
 
 <p>
 This and the <a href="http://www.lpenz.org/articles/df0pred-2/../df0pred-1/index.html">previous article</a> showed how to use
@@ -1684,7 +1665,7 @@ start recording data and use Monte Carlo in some way to make predictions
 as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html">Joel is even using it to make schedules</a>.
 </p>
 
-<h2>Further reading</h2>
+<h1>Further reading</h1>
 
 <ul>
 <li><a href="http://www.joelonsoftware.com/items/2007/10/26.html">http://www.joelonsoftware.com/items/2007/10/26.html</a>: Joel's use of Monte Carlo
@@ -1707,12 +1688,7 @@ as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html"
 			<link>http://www.lpenz.org/articles/df0pred-3</link>
 			<guid>http://www.lpenz.org/articles/df0pred-3</guid>
 			<pubDate>Thu, 23 Jun 2011 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Hard drive occupation prediction - part 3</h1>
-
-<h1>- Predicting future ranges -</h1>
-
-<p>
+			<description><![CDATA[<p>
 On the <a href="http://www.lpenz.org/articles/df0pred-3/../df0pred-2/index.html">second</a> article, we saw how to use a Monte
 Carlo simulation generate sample of disk space delta for future dates and
 calculate the distribution probability of zeroing free space in the future.
@@ -1724,7 +1700,7 @@ likely is that my disk space will zero before date X?," we will answer
 "how much disk space will I need by date X, and with what probability?"
 </p>
 
-<h2>The input data</h2>
+<h1>The input data</h1>
 
 <p>
 <a href="http://www.lpenz.org/articles/df0pred-3/duinfospike.dat">This file</a> has the dataset we will use as example. It's
@@ -1772,7 +1748,7 @@ We then build our simulations for the next 4 months:
   
 </pre>
 
-<h2>Visualizing the possible scenarios</h2>
+<h1>Visualizing the possible scenarios</h1>
 
 <p>
 What king of data have we built in our simulations? Each simulation is
@@ -1817,7 +1793,7 @@ show the density. There are 10000 black lines there, with many of them
 overlapping one another.
 </p>
 
-<h2>Visualizing the distribution for specific days</h2>
+<h1>Visualizing the distribution for specific days</h1>
 
 <p>
 There is another way to look at our data: we have created, for each day, a
@@ -1853,7 +1829,7 @@ By looking at this graph we can see the trend:
 </li>
 </ul>
 
-<h2>Visualizing the evolution of the distribution</h2>
+<h1>Visualizing the evolution of the distribution</h1>
 
 <p>
 So far, we have seen how we can visualize some simulations along the 4 months
@@ -1866,7 +1842,7 @@ axes, but there are other options, most of them involving some abuse of the
 built-in plot functions.
 </p>
 
-<h3>Boxplot</h3>
+<h2>Boxplot</h2>
 
 <p>
 We can use the <i>boxplot</i> function to create a boxplot for each day in R in a
@@ -1897,7 +1873,7 @@ simulations at any day:
 </li>
 </ul>
 
-<h3>Quantile lines</h3>
+<h2>Quantile lines</h2>
 
 <p>
 We can use the <i>quantile</i> function to calculate the values of each
@@ -1937,7 +1913,7 @@ sequence of colors that folds in the middle:
   }
 </pre>
 
-<h3>Quantile areas</h3>
+<h2>Quantile areas</h2>
 
 <p>
 We can also abuse the <i>barplots</i> function to create an area graph. We have to
@@ -1966,7 +1942,7 @@ larger middle interval with two quantiles or a broken symmetry. The code above
 builds a larger middle interval when given an even <i>q</i>.
 </p>
 
-<h3>Quantile heat map</h3>
+<h2>Quantile heat map</h2>
 
 <p>
 If we increase <i>q</i> and use <i>heat.colors</i> in a quantile area plot, we get
@@ -1988,7 +1964,7 @@ something similar to a heat map:
 
  <div class="center"><img class="img-responsive"  src="http://www.lpenz.org/articles/df0pred-3/mcsquantheat.png"  alt=""/></div> 
 
-<h2>Visualizing past, present and future</h2>
+<h1>Visualizing past, present and future</h1>
 
 <p>
 We can also plot our data in the same graph as our simulations, by extending the
@@ -2023,7 +1999,7 @@ axis of the <i>barplot</i> and using the <i>points</i> function:
 
  <div class="center"><img class="img-responsive"  src="http://www.lpenz.org/articles/df0pred-3/mcspf1.png"  alt=""/></div> 
 
-<h2>Training set, validation set</h2>
+<h1>Training set, validation set</h1>
 
 <p>
 <a href="https://en.wikipedia.org/wiki/Cross-validation">Cross-validation</a> is
@@ -2085,7 +2061,7 @@ whole data set as the training set and as the validation set. That is not
 cross-validation.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 We can use Monte Carlo simulations not only to generate a distribution
@@ -2115,10 +2091,7 @@ going to happen.
 			<link>http://www.lpenz.org/articles/hedsl-sharedexpenses</link>
 			<guid>http://www.lpenz.org/articles/hedsl-sharedexpenses</guid>
 			<pubDate>Wed, 02 Feb 2011 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Haskell eDSL Tutorial - Shared expenses</h1>
-
-<p>
+			<description><![CDATA[<p>
 People have created
 <a href="http://ashish.typepad.com/ashishs_niti/2007/06/another_dsl_emb.html">interesting</a>
 and
@@ -2140,7 +2113,7 @@ lines bellow:
   
 </pre>
 
-<h2>Why haskell</h2>
+<h1>Why haskell</h1>
 
 <p>
 The first reason to use haskell for an eDSL is that it has a very clean syntax:
@@ -2163,7 +2136,7 @@ When combined, these features allow us to leave very little haskell in our
 eDSL, as we will see.
 </p>
 
-<h2>The shared expenses problem</h2>
+<h1>The shared expenses problem</h1>
 
 <p>
 Lets say that you went on a trip with 3 friends, and there are some costs that
@@ -2204,7 +2177,7 @@ The haskell leaks we have in the records are the backticks (<code>`</code>) and 
 convoluted. We also avoid using floating point numbers for a similar reason.
 </p>
 
-<h2>The state monad</h2>
+<h1>The state monad</h1>
 
 <p>
 By programming a new monad you get the "programmable semicolon" that people talk
@@ -2241,7 +2214,7 @@ runtime mistake; by using a strong type and defining the friends explicitly, we
 make typos a compile error.
 </p>
 
-<h2>Spending and giving</h2>
+<h1>Spending and giving</h1>
 
 <p>
 <i>spent</i> and <i>gave</i> are functions that update our state:
@@ -2262,7 +2235,7 @@ make typos a compile error.
 while <i>gave</i> adds the amount to the lender and subtract it from the borrower.
 </p>
 
-<h2>Solving</h2>
+<h1>Solving</h1>
 
 <p>
 To solve the shared expenses problem, we will use a simple algorithm: he who
@@ -2311,7 +2284,7 @@ but we get good enough results most of the times - and it is a lot simpler than
 linear programming.
 </p>
 
-<h2>Plumbing</h2>
+<h1>Plumbing</h1>
 
 <p>
 The function <code>sharedexpenses</code> is the one that glues the eDSL and the state
@@ -2338,7 +2311,7 @@ Running this program provides us the following results:
   Harry pays 100 to Angel
 </pre>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 We have seen what is an eDSL by building a solution to a real, day-to-day
@@ -2355,7 +2328,7 @@ the <a href="http://www.haskell.org/platform/">haskell platform</a> available, t
 shouldn't be a problem.
 </p>
 
-<h2>Further reading</h2>
+<h1>Further reading</h1>
 
 <ul>
 <li><a href="http://paulspontifications.blogspot.com.br/2008/01/why-haskell-is-good-for-embedded-domain.html">http://paulspontifications.blogspot.com.br/2008/01/why-haskell-is-good-for-embedded-domain.html</a>:
@@ -2382,9 +2355,6 @@ shouldn't be a problem.
 <b>Updated 2019-06-25</b>: use Debian Stretch explicitly (already implied
 by kernel version); suggest testing with qemu.
 </p>
-
-<h1>Creating a Debian bootable live USB</h1>
-
 <p>
 We can install a full Linux distribution in a USB drive, and use it to boot a
 system. That is called a "live USB," and it can be used for recovery, as a
@@ -2401,7 +2371,7 @@ Obs: to ease copy-and-pasting, we show the commands without prompt, and
 prepend <code>&gt;</code> to the output of commands on most examples.
 </p>
 
-<h2>1 Partitioning</h2>
+<h1>1 Partitioning</h1>
 
 <p>
 After inserting the USB drive, it will appear as a block device under <i>/dev</i>,
@@ -2522,7 +2492,7 @@ type - that is required <i>syslinux</i>.
 <a href="http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html">using-syslinux-to-boot-debootstraped</a>)
 </p>
 
-<h2>2 Installing the bootloader</h2>
+<h1>2 Installing the bootloader</h1>
 
 <p>
 Create a FAT16 filesystem on the boot device:
@@ -2541,7 +2511,7 @@ Install <i>syslinux</i> on it:
   syslinux /dev/sdc1
 </pre>
 
-<h2>3 Installing the base system in the root partition</h2>
+<h1>3 Installing the base system in the root partition</h1>
 
 <p>
 Create the filesystem:
@@ -2592,7 +2562,7 @@ Mount both partitions and use <i>debootstrap</i> to install the base files on it
   &gt; I: Base system installed successfully.
 </pre>
 
-<h2>4 On-root configuration</h2>
+<h1>4 On-root configuration</h1>
 
 <p>
 We will have to <i>chroot</i> into our root filesystem to configure it further.
@@ -2711,7 +2681,7 @@ Finally, write <i>syslinux</i>'s master boot record on the USB drive:
   cat /usr/lib/SYSLINUX/mbr.bin &gt; /dev/sdc
 </pre>
 
-<h2>5 Closing up</h2>
+<h1>5 Closing up</h1>
 
 <p>
 We are now ready to leave the <i>chroot</i> and umount all devices:
@@ -2743,7 +2713,7 @@ If everything is working as expected, we can now remove the USB drive
 and use it to boot any computer.
 </p>
 
-<h2>References</h2>
+<h1>References</h1>
 
 <p>
 This article is, in fact, basically a rehash of the following references with
@@ -2771,229 +2741,91 @@ that's easy to change, with the commands in this article.
 			<link>http://www.lpenz.org/articles/luksfile</link>
 			<guid>http://www.lpenz.org/articles/luksfile</guid>
 			<pubDate>Sun, 22 Mar 2020 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Creating an encrypted directory-in-a-file</h1>
-
-<p>
-LUKS can be used to create a file with a whole encrypted filesystem
-inside, that we can mount and manipulate in-place.
-</p>
-<p>
-This article has my notes on how to create the file and set up the
-mounting system.
-</p>
-<p>
-Obs: to ease copy-and-pasting, we show the commands without prompt, and
-prepend ``&gt; `` to the output of commands in the examples.
-</p>
-
-<h2>File creation</h2>
-
-<p>
-We'll use <b>cryptsetup</b> to create the file, it's available in all
-major distributions.
-</p>
-<p>
-First, create a file with the desired size (64MB in this case):
-</p>
-
-<pre>
-  dd if=/dev/zero of=cryptfile.img bs=1M count=64
-  &gt; 64+0 records in
-  &gt; 64+0 records out
-  &gt; 67108864 bytes (67 MB, 64 MiB) copied, 1.36272 s, 49.2 MB/s
-</pre>
-
-<p>
-Note: be aware that ext4 doesn't support devices with less than 32MB
-</p>
-<p>
-Use <i>cryptsetup luksFormat</i> to format it; we also choose the
-passphrase in this step:
-</p>
-
-<pre>
-  sudo cryptsetup luksFormat cryptfile.img
-  &gt;
-  &gt; WARNING!
-  &gt; ========
-  &gt; This will overwrite data on cryptfile.img irrevocably.
-  &gt; 
-  &gt; Are you sure? (Type 'yes' in capital letters): YES
-  &gt; Enter passphrase for cryptfile.img:
-  &gt; Verify passphrase:
-</pre>
-
-<p>
-Use <i>cryptsetup luksOpen</i> to bind the file to a block device that
-can be manipulated as if it was a partition:
-</p>
-
-<pre>
-  sudo cryptsetup luksOpen cryptfile.img cryptdev
-  &gt; Enter passphrase for cryptfile.img:
-</pre>
-
-<p>
-After <i>cryptsetup luksOpen</i>, we are able to access the new block
-device at <code>/dev/mapper/cryptdev</code>. It's now time to create the
-filesystem structure:
-</p>
-
-<pre>
-  sudo mkfs.ext4 /dev/mapper/cryptdev
-  &gt; mke2fs 1.45.5 (07-Jan-2020)
-  &gt; Creating filesystem with 49152 1k blocks and 12288 inodes
-  &gt; Filesystem UUID: c08602c2-acf7-4acf-b007-dce1200067d7
-  &gt; Superblock backups stored on blocks:
-  &gt;            8193, 24577, 40961
-  &gt; 
-  &gt; Allocating group tables: done
-  &gt; Writing inode tables: done
-  &gt; Creating journal (4096 blocks): done
-  &gt; Writing superblocks and filesystem accounting information: done
-</pre>
-
-<p>
-We can now finally close the device
-</p>
-
-<pre>
-  sudo cryptsetup luksClose cryptdev
-</pre>
-
-<h2>Testing by mounting</h2>
-
-<p>
-To mount the file, first get the block device again:
-</p>
-
-<pre>
-  sudo cryptsetup luksOpen cryptfile.img cryptdev
-  &gt; Enter passphrase for cryptfile.img:
-</pre>
-
-<p>
-And then mount as usual:
-</p>
-
-<pre>
-  mkdir -p cryptdir
-  sudo mount -t auto /dev/mapper/cryptdev cryptdir
-</pre>
-
-<p>
-We always end up with a <i>lost+found</i> directory when we use the usual linux filesystems:
-</p>
-
-<pre>
-  ls -l cryptdir/
-  &gt; total 12
-  &gt; drwx------ 2 root root 12288 Mar 22 17:47 lost+found
-</pre>
-
-<p>
-Don't forget to unmount and close the device after using it:
-</p>
-
-<pre>
-  sudo umount cryptdir
-  sudo cryptsetup luksClose cryptdev
-</pre>
-
-<h2>Setting up user mount</h2>
-
-<p>
-<b>cryptmount</b> allows us to mount configured encrypted files without
-root permissions.
-</p>
-<p>
-Create a <i>/etc/cryptmount/cmtab</i> file with the following contents:
-</p>
-
-<pre>
-  mycryptlabel {
-      dev=$(HOME)/cryptfile.img
-      dir=$(HOME)/cryptdir
-      fstype=auto
-      keyformat=luks
-  }
-</pre>
-
-<p>
-cryptmount is now able to mount the file.
-</p>
-
-<h2>Mounting</h2>
-
-<p>
-Before mounting, you may want to go into a private mount namespace:
-</p>
-
-<pre>
-  sudo unshare -m sudo -u "$USER" -i
-  &gt; [sudo] password for $USER:
-</pre>
-
-<p>
-That starts a new shell in a new private mount namespace. Everything
-you mount from this shell it will be available only to processes
-started from this shell, and all mounts will be automatically
-unmounted when the last of these processes exit.
-</p>
-<p>
-You can now run the following command to mount the file:
-</p>
-
-<pre>
-  cryptmount mycryptlabel
-  &gt; Enter password for target "mycryptlabel":
-  &gt; e2fsck 1.45.5 (07-Jan-2020)
-  &gt; /dev/mapper/cryptdev: clean, 33/4096 files, 1896/16384 blocks
-</pre>
-
-<p>
-Don't forget to unmount it later, and leave the shell:
-</p>
-
-<pre>
-  cryptmount -u mycryptlabel
-  exit
-</pre>
-
-<h2>Final remarks</h2>
-
-<p>
-It should be said that these notes only touch the surface of
-cryptsetup and cryptmount. They have a lot of options and can be used
-in many different ways.
-</p>
-<p>
-One interesting option is to keep the cryptographic key in a separate
-file. That can be useful if you want to keep a rather large mountable
-file in an exposed backed-up piece of infrastructure while minimizing
-exposure.
-</p>
-<p>
-All of these commands can be used to create and mount an encrypted
-partition, just replace <i>cryptfile.img</i> with the path to the
-partition block device. You can also create an encrypted partition
-that encompasses an entire flash drive, leaving it without a partition
-table at all, by using the appropriate block device.
-</p>
-
-<h2>References</h2>
-
+			<description><![CDATA[<p>LUKS can be used to create a file with a whole encrypted filesystem inside, that we can mount and manipulate in-place.</p>
+<p>This article has my notes on how to create the file and set up the mounting system.</p>
+<p>Obs: to ease copy-and-pasting, we show the commands without prompt, and prepend <code>&gt;</code> to the output of commands in the examples.</p>
+<h2 id="file-creation">File creation</h2>
+<p>We’ll use <strong>cryptsetup</strong> to create the file, it’s available in all major distributions.</p>
+<p>First, create a file with the desired size (64MB in this case):</p>
+<pre><code>dd if=/dev/zero of=cryptfile.img bs=1M count=64
+&gt; 64+0 records in
+&gt; 64+0 records out
+&gt; 67108864 bytes (67 MB, 64 MiB) copied, 1.36272 s, 49.2 MB/s</code></pre>
+<p>Note: be aware that ext4 doesn’t support devices with less than 32MB</p>
+<p>Use <em>cryptsetup luksFormat</em> to format it; we also choose the passphrase in this step:</p>
+<pre><code>sudo cryptsetup luksFormat cryptfile.img
+&gt;
+&gt; WARNING!
+&gt; ========
+&gt; This will overwrite data on cryptfile.img irrevocably.
+&gt; 
+&gt; Are you sure? (Type &#39;yes&#39; in capital letters): YES
+&gt; Enter passphrase for cryptfile.img:
+&gt; Verify passphrase:</code></pre>
+<p>Use <em>cryptsetup luksOpen</em> to bind the file to a block device that can be manipulated as if it was a partition:</p>
+<pre><code>sudo cryptsetup luksOpen cryptfile.img cryptdev
+&gt; Enter passphrase for cryptfile.img:</code></pre>
+<p>After <em>cryptsetup luksOpen</em>, we are able to access the new block device at <code>/dev/mapper/cryptdev</code>. It’s now time to create the filesystem structure:</p>
+<pre><code>sudo mkfs.ext4 /dev/mapper/cryptdev
+&gt; mke2fs 1.45.5 (07-Jan-2020)
+&gt; Creating filesystem with 49152 1k blocks and 12288 inodes
+&gt; Filesystem UUID: c08602c2-acf7-4acf-b007-dce1200067d7
+&gt; Superblock backups stored on blocks:
+&gt;            8193, 24577, 40961
+&gt; 
+&gt; Allocating group tables: done
+&gt; Writing inode tables: done
+&gt; Creating journal (4096 blocks): done
+&gt; Writing superblocks and filesystem accounting information: done</code></pre>
+<p>We can now finally close the device</p>
+<pre><code>sudo cryptsetup luksClose cryptdev</code></pre>
+<h2 id="testing-by-mounting">Testing by mounting</h2>
+<p>To mount the file, first get the block device again:</p>
+<pre><code>sudo cryptsetup luksOpen cryptfile.img cryptdev
+&gt; Enter passphrase for cryptfile.img:</code></pre>
+<p>And then mount as usual:</p>
+<pre><code>mkdir -p cryptdir
+sudo mount -t auto /dev/mapper/cryptdev cryptdir</code></pre>
+<p>We always end up with a <em>lost+found</em> directory when we use the usual linux filesystems:</p>
+<pre><code>ls -l cryptdir/
+&gt; total 12
+&gt; drwx------ 2 root root 12288 Mar 22 17:47 lost+found</code></pre>
+<p>Don’t forget to unmount and close the device after using it:</p>
+<pre><code>sudo umount cryptdir
+sudo cryptsetup luksClose cryptdev</code></pre>
+<h2 id="setting-up-user-mount">Setting up user mount</h2>
+<p><strong>cryptmount</strong> allows us to mount configured encrypted files without root permissions.</p>
+<p>Create a <em>/etc/cryptmount/cmtab</em> file with the following contents:</p>
+<pre><code>mycryptlabel {
+    dev=$(HOME)/cryptfile.img
+    dir=$(HOME)/cryptdir
+    fstype=auto
+    keyformat=luks
+}</code></pre>
+<p>cryptmount is now able to mount the file.</p>
+<h2 id="mounting">Mounting</h2>
+<p>Before mounting, you may want to go into a private mount namespace:</p>
+<pre><code>sudo unshare -m sudo -u &quot;$USER&quot; -i
+&gt; [sudo] password for $USER:</code></pre>
+<p>That starts a new shell in a new private mount namespace. Everything you mount from this shell it will be available only to processes started from this shell, and all mounts will be automatically unmounted when the last of these processes exit.</p>
+<p>You can now run the following command to mount the file:</p>
+<pre><code>cryptmount mycryptlabel
+&gt; Enter password for target &quot;mycryptlabel&quot;:
+&gt; e2fsck 1.45.5 (07-Jan-2020)
+&gt; /dev/mapper/cryptdev: clean, 33/4096 files, 1896/16384 blocks</code></pre>
+<p>Don’t forget to unmount it later, and leave the shell:</p>
+<pre><code>cryptmount -u mycryptlabel
+exit</code></pre>
+<h2 id="final-remarks">Final remarks</h2>
+<p>It should be said that these notes only touch the surface of cryptsetup and cryptmount. They have a lot of options and can be used in many different ways.</p>
+<p>One interesting option is to keep the cryptographic key in a separate file. That can be useful if you want to keep a rather large mountable file in an exposed backed-up piece of infrastructure while minimizing exposure.</p>
+<p>All of these commands can be used to create and mount an encrypted partition, just replace <em>cryptfile.img</em> with the path to the partition block device. You can also create an encrypted partition that encompasses an entire flash drive, leaving it without a partition table at all, by using the appropriate block device.</p>
+<h2 id="references">References</h2>
 <ul>
-<li><a href="https://linux.die.net/man/8/cryptsetup">https://linux.die.net/man/8/cryptsetup</a>
-</li>
-<li><a href="https://linux.die.net/man/8/cryptmount">https://linux.die.net/man/8/cryptmount</a>
-</li>
-<li><a href="https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/">https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/</a>
-<p></p>
-</li>
+<li><a href="https://linux.die.net/man/8/cryptsetup" class="uri">https://linux.die.net/man/8/cryptsetup</a></li>
+<li><a href="https://linux.die.net/man/8/cryptmount" class="uri">https://linux.die.net/man/8/cryptmount</a></li>
+<li><a href="https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/" class="uri">https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/</a></li>
 </ul>
-
 ]]></description>
 		</item>
 
@@ -3003,10 +2835,7 @@ table at all, by using the appropriate block device.
 			<link>http://www.lpenz.org/articles/nixchannel</link>
 			<guid>http://www.lpenz.org/articles/nixchannel</guid>
 			<pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Creating a static nix channel with binary cache</h1>
-
-<p>
+			<description><![CDATA[<p>
 TL;DR: full example at <a href="https://github.com/lpenz/nixpkgs-lpenz/">https://github.com/lpenz/nixpkgs-lpenz/</a>
 </p>
 <p>
@@ -3025,7 +2854,7 @@ You should also check out <a href="https://cachix.org/">Cachix</a>, as an
 alternative to what is described here.
 </p>
 
-<h2>Generating key pair</h2>
+<h1>Generating key pair</h1>
 
 <p>
 The first step in creating a repository is generating a key pair:
@@ -3043,7 +2872,7 @@ place). The second file has the public key that we will use to
 authenticate the packages in the clients.
 </p>
 
-<h2>Setting up the repository in github and travis-ci</h2>
+<h1>Setting up the repository in github and travis-ci</h1>
 
 <p>
 This article is not going into the details of how to create a repository and populate it with nix derivations. Here are some references on that:
@@ -3071,7 +2900,7 @@ practices at
 to avoid problems.
 </p>
 
-<h3>Creating the channel</h3>
+<h2>Creating the channel</h2>
 
 <p>
 A channel is simply a <code>nixexprs.tar.xz</code> with all nix derivation
@@ -3107,7 +2936,7 @@ Nix also tries to retrieve the channel URL by itself - create a
   touch _output/index.html
 </pre>
 
-<h3>Creating the binary cache</h3>
+<h2>Creating the binary cache</h2>
 
 <p>
 To create the binary cache, start by building the packages with:
@@ -3135,7 +2964,7 @@ And finally, copy the results from the store to the cache directory:
   nix copy --to "file:///$PWD/_output/cache"
 </pre>
 
-<h3>.travis.yml deploy section</h3>
+<h2>.travis.yml deploy section</h2>
 
 <p>
 Detailed instructions on how to set this up are at
@@ -3157,7 +2986,7 @@ The deploy section of <code>.travis.yml</code> ends up looking like the followin
       branch: master
 </pre>
 
-<h2>Using the channel</h2>
+<h1>Using the channel</h1>
 
 <p>
 To use the channel, add the channel URL to nix:
@@ -3185,7 +3014,7 @@ Note that we have to also add the default, as that line is an absolute
 configuration.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 Nix is very versatile, and one way to use it is an overlay

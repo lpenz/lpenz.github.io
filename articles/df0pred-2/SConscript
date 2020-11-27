@@ -22,5 +22,6 @@ for i in ['deltasummary', 'df0first', 'df0above5']:
     env.Command(i + '.txt', ['main.RData', i + '.R'], './%s.R ' % i, chdir=1)
     env.HTMLSITEFILES.add(pjoin('articles/df0pred-2', i + '.txt'))
 
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.T2TBHTML('index.bhtml.mako', 'index.t2t')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/df0pred-2/index.html')

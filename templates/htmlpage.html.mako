@@ -43,7 +43,10 @@
 </nav>
 
 <div class="container">
-	${self.body()}
+
+<h1 id="title">${title}</h1>
+
+${self.body()}
 
 <!-- Google Analytics -->
 <script>

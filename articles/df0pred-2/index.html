@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */
@@ -80,11 +80,9 @@ div.center > img { margin: 0 auto; } /* center images by default */
 </nav>
 
 <div class="container">
-	
 
-<h1>Hard drive occupation prediction - part 2</h1>
+<h1 id="title">Hard drive occupation prediction with R - part 2</h1>
 
-<h1>- Getting the probability distribution -</h1>
 
 <p>
 On the <a href="../df0pred-1/index.html">first</a> article, we saw a quick-and-dirty method to
@@ -99,7 +97,7 @@ probability distribution for the date of disk space exhaustion instead of
 calculating a single day.
 </p>
 
-<h2>The problem with the linear regression</h2>
+<h1>The problem with the linear regression</h1>
 
 <p>
 The linear regression used in the first article has a serious
@@ -131,7 +129,7 @@ when there is human intervention. We should always look at the graph to see if
 the model makes sense.
 </p>
 
-<h2>A na&iuml;ve new method: averaging the difference</h2>
+<h1>A na&iuml;ve new method: averaging the difference</h1>
 
 <p>
 Instead of using the daily used disk space as input, we will use the
@@ -154,7 +152,7 @@ would still not have the probability distribution for the date, only a single
 value.
 </p>
 
-<h2>The real new method: days left by Monte Carlo simulation</h2>
+<h1>The real new method: days left by Monte Carlo simulation</h1>
 
 <p>
 Instead of calculating the number of days left from the data, we will use a
@@ -306,7 +304,7 @@ rise above 5%:
 Mix and match and see what a good convention for your case is.
 </p>
 
-<h2>Conclusion</h2>
+<h1>Conclusion</h1>
 
 <p>
 This and the <a href="../df0pred-1/index.html">previous article</a> showed how to use
@@ -328,7 +326,7 @@ start recording data and use Monte Carlo in some way to make predictions
 as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html">Joel is even using it to make schedules</a>.
 </p>
 
-<h2>Further reading</h2>
+<h1>Further reading</h1>
 
 <ul>
 <li><a href="http://www.joelonsoftware.com/items/2007/10/26.html">http://www.joelonsoftware.com/items/2007/10/26.html</a>: Joel's use of Monte Carlo

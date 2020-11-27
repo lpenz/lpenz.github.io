@@ -4,21 +4,19 @@ From first steps
 
 
 
-= Provisioning a Raspberry Pi using ansible =
-
 These are my notes on how to get started provisioning Raspbian with
 ansible.
 
 
 
-== Before using ansible ==
+= Before using ansible =
 
 We have to get a working Raspbian installation before using ansible on
 the device.
 
 
 
-=== Installing Raspbian ===
+== Installing Raspbian ==
 
 The first step is downloading and installing Raspbian in the SD card
 you're going to use in the Pi. You can find the Raspbian image here:
@@ -39,7 +37,7 @@ You can now insert the card into the Raspberry Pi board.
 
 
 
-=== Initial Raspbian setup ===
+== Initial Raspbian setup ==
 
 Raspbian comes with a initial user **pi**, password **raspberry**,
 that can use sudo freely.  **ssh** is installed, but
@@ -61,7 +59,7 @@ sudo systemctl enable ssh.service
 
 
 
-=== Alternative initial setup ===
+== Alternative initial setup ==
 
 Another way to do the initial image setup is by mounting in your system and
 changing the required files before writting it in the SD card. To mount the
@@ -152,7 +150,7 @@ sudo dd if=*-raspbian-*-lite.img of=/dev/sdc bs=4M oflag=dsync status=progress
 
 
 
-== Using ansible ==
+= Using ansible =
 
 You can now use ansible from any computer to provision the Pi. I'd
 recommend, though, using //python3// as the interpreter on the Pi, as
@@ -184,7 +182,7 @@ the device)
 
 
 
-=== Setting up Debian repositories ===
+== Setting up Debian repositories ==
 
 Because Raspbian is based on Debian and upstream Debian has support for the
 architecture of the Raspberry Pi B+, you can configure and use upstream Debian

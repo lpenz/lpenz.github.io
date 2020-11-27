@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/lpenz/lpenz.github.io.png?branch=publish)](https://travis-ci.org/lpenz/lpenz.github.io) 
+[![CI](https://github.com/lpenz/lpenz.github.io/workflows/CI/badge.svg?branch=publish)](https://github.com/lpenz/lpenz.github.io/actions/)
 
 # www.lpenz.org
 

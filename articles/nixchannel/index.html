@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */
@@ -80,9 +80,9 @@ div.center > img { margin: 0 auto; } /* center images by default */
 </nav>
 
 <div class="container">
-	
 
-<h1>Creating a static nix channel with binary cache</h1>
+<h1 id="title">Creating a static nix channel</h1>
+
 
 <p>
 TL;DR: full example at <a href="https://github.com/lpenz/nixpkgs-lpenz/">https://github.com/lpenz/nixpkgs-lpenz/</a>
@@ -103,7 +103,7 @@ You should also check out <a href="https://cachix.org/">Cachix</a>, as an
 alternative to what is described here.
 </p>
 
-<h2>Generating key pair</h2>
+<h1>Generating key pair</h1>
 
 <p>
 The first step in creating a repository is generating a key pair:
@@ -121,7 +121,7 @@ place). The second file has the public key that we will use to
 authenticate the packages in the clients.
 </p>
 
-<h2>Setting up the repository in github and travis-ci</h2>
+<h1>Setting up the repository in github and travis-ci</h1>
 
 <p>
 This article is not going into the details of how to create a repository and populate it with nix derivations. Here are some references on that:
@@ -149,7 +149,7 @@ practices at
 to avoid problems.
 </p>
 
-<h3>Creating the channel</h3>
+<h2>Creating the channel</h2>
 
 <p>
 A channel is simply a <code>nixexprs.tar.xz</code> with all nix derivation
@@ -185,7 +185,7 @@ Nix also tries to retrieve the channel URL by itself - create a
   touch _output/index.html
 </pre>
 
-<h3>Creating the binary cache</h3>
+<h2>Creating the binary cache</h2>
 
 <p>
 To create the binary cache, start by building the packages with:
@@ -213,7 +213,7 @@ And finally, copy the results from the store to the cache directory:
   nix copy --to "file:///$PWD/_output/cache"
 </pre>
 
-<h3>.travis.yml deploy section</h3>
+<h2>.travis.yml deploy section</h2>
 
 <p>
 Detailed instructions on how to set this up are at
@@ -235,7 +235,7 @@ The deploy section of <code>.travis.yml</code> ends up looking like the followin
       branch: master
 </pre>
 
-<h2>Using the channel</h2>
+<h1>Using the channel</h1>
 
 <p>
 To use the channel, add the channel URL to nix:
@@ -263,7 +263,7 @@ Note that we have to also add the default, as that line is an absolute
 configuration.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 Nix is very versatile, and one way to use it is an overlay

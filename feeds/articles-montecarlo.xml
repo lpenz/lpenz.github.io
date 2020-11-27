@@ -26,12 +26,7 @@
 			<link>http://www.lpenz.org/articles/df0pred-2</link>
 			<guid>http://www.lpenz.org/articles/df0pred-2</guid>
 			<pubDate>Sat, 22 Jan 2011 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Hard drive occupation prediction - part 2</h1>
-
-<h1>- Getting the probability distribution -</h1>
-
-<p>
+			<description><![CDATA[<p>
 On the <a href="http://www.lpenz.org/articles/df0pred-2/../df0pred-1/index.html">first</a> article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
 importing our data into <a href="https://en.wikipedia.org/wiki/R_programming_language">R</a>
@@ -44,7 +39,7 @@ probability distribution for the date of disk space exhaustion instead of
 calculating a single day.
 </p>
 
-<h2>The problem with the linear regression</h2>
+<h1>The problem with the linear regression</h1>
 
 <p>
 The linear regression used in the first article has a serious
@@ -76,7 +71,7 @@ when there is human intervention. We should always look at the graph to see if
 the model makes sense.
 </p>
 
-<h2>A na&iuml;ve new method: averaging the difference</h2>
+<h1>A na&iuml;ve new method: averaging the difference</h1>
 
 <p>
 Instead of using the daily used disk space as input, we will use the
@@ -99,7 +94,7 @@ would still not have the probability distribution for the date, only a single
 value.
 </p>
 
-<h2>The real new method: days left by Monte Carlo simulation</h2>
+<h1>The real new method: days left by Monte Carlo simulation</h1>
 
 <p>
 Instead of calculating the number of days left from the data, we will use a
@@ -251,7 +246,7 @@ rise above 5%:
 Mix and match and see what a good convention for your case is.
 </p>
 
-<h2>Conclusion</h2>
+<h1>Conclusion</h1>
 
 <p>
 This and the <a href="http://www.lpenz.org/articles/df0pred-2/../df0pred-1/index.html">previous article</a> showed how to use
@@ -273,7 +268,7 @@ start recording data and use Monte Carlo in some way to make predictions
 as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html">Joel is even using it to make schedules</a>.
 </p>
 
-<h2>Further reading</h2>
+<h1>Further reading</h1>
 
 <ul>
 <li><a href="http://www.joelonsoftware.com/items/2007/10/26.html">http://www.joelonsoftware.com/items/2007/10/26.html</a>: Joel's use of Monte Carlo
@@ -296,12 +291,7 @@ as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html"
 			<link>http://www.lpenz.org/articles/df0pred-3</link>
 			<guid>http://www.lpenz.org/articles/df0pred-3</guid>
 			<pubDate>Thu, 23 Jun 2011 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Hard drive occupation prediction - part 3</h1>
-
-<h1>- Predicting future ranges -</h1>
-
-<p>
+			<description><![CDATA[<p>
 On the <a href="http://www.lpenz.org/articles/df0pred-3/../df0pred-2/index.html">second</a> article, we saw how to use a Monte
 Carlo simulation generate sample of disk space delta for future dates and
 calculate the distribution probability of zeroing free space in the future.
@@ -313,7 +303,7 @@ likely is that my disk space will zero before date X?," we will answer
 "how much disk space will I need by date X, and with what probability?"
 </p>
 
-<h2>The input data</h2>
+<h1>The input data</h1>
 
 <p>
 <a href="http://www.lpenz.org/articles/df0pred-3/duinfospike.dat">This file</a> has the dataset we will use as example. It's
@@ -361,7 +351,7 @@ We then build our simulations for the next 4 months:
   
 </pre>
 
-<h2>Visualizing the possible scenarios</h2>
+<h1>Visualizing the possible scenarios</h1>
 
 <p>
 What king of data have we built in our simulations? Each simulation is
@@ -406,7 +396,7 @@ show the density. There are 10000 black lines there, with many of them
 overlapping one another.
 </p>
 
-<h2>Visualizing the distribution for specific days</h2>
+<h1>Visualizing the distribution for specific days</h1>
 
 <p>
 There is another way to look at our data: we have created, for each day, a
@@ -442,7 +432,7 @@ By looking at this graph we can see the trend:
 </li>
 </ul>
 
-<h2>Visualizing the evolution of the distribution</h2>
+<h1>Visualizing the evolution of the distribution</h1>
 
 <p>
 So far, we have seen how we can visualize some simulations along the 4 months
@@ -455,7 +445,7 @@ axes, but there are other options, most of them involving some abuse of the
 built-in plot functions.
 </p>
 
-<h3>Boxplot</h3>
+<h2>Boxplot</h2>
 
 <p>
 We can use the <i>boxplot</i> function to create a boxplot for each day in R in a
@@ -486,7 +476,7 @@ simulations at any day:
 </li>
 </ul>
 
-<h3>Quantile lines</h3>
+<h2>Quantile lines</h2>
 
 <p>
 We can use the <i>quantile</i> function to calculate the values of each
@@ -526,7 +516,7 @@ sequence of colors that folds in the middle:
   }
 </pre>
 
-<h3>Quantile areas</h3>
+<h2>Quantile areas</h2>
 
 <p>
 We can also abuse the <i>barplots</i> function to create an area graph. We have to
@@ -555,7 +545,7 @@ larger middle interval with two quantiles or a broken symmetry. The code above
 builds a larger middle interval when given an even <i>q</i>.
 </p>
 
-<h3>Quantile heat map</h3>
+<h2>Quantile heat map</h2>
 
 <p>
 If we increase <i>q</i> and use <i>heat.colors</i> in a quantile area plot, we get
@@ -577,7 +567,7 @@ something similar to a heat map:
 
  <div class="center"><img class="img-responsive"  src="http://www.lpenz.org/articles/df0pred-3/mcsquantheat.png"  alt=""/></div> 
 
-<h2>Visualizing past, present and future</h2>
+<h1>Visualizing past, present and future</h1>
 
 <p>
 We can also plot our data in the same graph as our simulations, by extending the
@@ -612,7 +602,7 @@ axis of the <i>barplot</i> and using the <i>points</i> function:
 
  <div class="center"><img class="img-responsive"  src="http://www.lpenz.org/articles/df0pred-3/mcspf1.png"  alt=""/></div> 
 
-<h2>Training set, validation set</h2>
+<h1>Training set, validation set</h1>
 
 <p>
 <a href="https://en.wikipedia.org/wiki/Cross-validation">Cross-validation</a> is
@@ -674,7 +664,7 @@ whole data set as the training set and as the validation set. That is not
 cross-validation.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 We can use Monte Carlo simulations not only to generate a distribution

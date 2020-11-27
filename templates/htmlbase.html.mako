@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */

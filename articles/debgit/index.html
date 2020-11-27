@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */
@@ -80,15 +80,15 @@ div.center > img { margin: 0 auto; } /* center images by default */
 </nav>
 
 <div class="container">
-	
+
+<h1 id="title">Debianization with git-buildpackage</h1>
+
+
 <p>
 <b>Updated 2018-04-03</b>: <i>git-buildpackage</i>'s commands have changed, so this
 article had to be fixed; I took the opportunity to improve a few things as
 well.
 </p>
-
-<h1>Debianization with git-buildpackage</h1>
-
 <p>
 After building some useful piece of software, one has to decide how to best
 deploy it. In UNIX, the standard way to do that is by publishing the source
@@ -104,7 +104,7 @@ software maintained in git, by tracking the packaging scheme in a specific
 branch on the same repository.
 </p>
 
-<h2>Prerequisites</h2>
+<h1>Prerequisites</h1>
 
 <p>
 In order to ease the packaging and keep our package warning-free, it should
@@ -127,7 +127,7 @@ have in its main repository:
 These items are not debian-specific and are useful for everyone.
 </p>
 
-<h2>Initial packaging setup</h2>
+<h1>Initial packaging setup</h1>
 
 <p>
 The first step is creating the <code>${PACKAGE}_${VERSION}.orig.tar.gz</code> file. You
@@ -205,7 +205,7 @@ After changing the files that <code>dh_make</code> created, you should create a
 We can now commit the debian directory in the debian-debian branch.
 </p>
 
-<h2>Importing the sources</h2>
+<h1>Importing the sources</h1>
 
 <p>
 In the debian-debian branch:
@@ -220,7 +220,7 @@ That imports the original sources to the debian-upstream branch, and merge
 it into the debian-debian branch.
 </p>
 
-<h2>Creating the package</h2>
+<h1>Creating the package</h1>
 
 <p>
 To create the debian package:
@@ -230,7 +230,7 @@ To create the debian package:
   gbp buildpackage -us -uc --git-tag
 </pre>
 
-<h2>Importing further versions</h2>
+<h1>Importing further versions</h1>
 
 <p>
 Create the new <code>../${PACKAGE}_${VERSION}/.orig.tar.gz</code> and then:
@@ -253,7 +253,7 @@ that), and create a new package:
 Yes, it's that easy.
 </p>
 
-<h2>Final remarks</h2>
+<h1>Final remarks</h1>
 
 <p>
 After an initial expensive setup, package creation of further versions is

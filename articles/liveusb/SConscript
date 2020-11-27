@@ -8,5 +8,6 @@ if False:
 
 Import(['env'])
 
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.T2TBHTML('index.bhtml.mako', 'index.t2t')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/liveusb/index.html')

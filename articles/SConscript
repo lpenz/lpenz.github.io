@@ -22,5 +22,6 @@ indexbuild = env.File('indexbuild')
 env.Command('index.t2t', [a + '/info.yaml' for a in articles],
             indexbuild.abspath + ' $TARGET $SOURCES')
 
-env.MAKO('index.t2t', MAKOFLAGS='-t htmlpage')
+env.T2TBHTML('index.bhtml.mako', 'index.t2t')
+env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
 env.HTMLSITEFILES.add('articles/index.html')

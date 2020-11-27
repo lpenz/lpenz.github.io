@@ -31,9 +31,6 @@
 article had to be fixed; I took the opportunity to improve a few things as
 well.
 </p>
-
-<h1>Debianization with git-buildpackage</h1>
-
 <p>
 After building some useful piece of software, one has to decide how to best
 deploy it. In UNIX, the standard way to do that is by publishing the source
@@ -49,7 +46,7 @@ software maintained in git, by tracking the packaging scheme in a specific
 branch on the same repository.
 </p>
 
-<h2>Prerequisites</h2>
+<h1>Prerequisites</h1>
 
 <p>
 In order to ease the packaging and keep our package warning-free, it should
@@ -72,7 +69,7 @@ have in its main repository:
 These items are not debian-specific and are useful for everyone.
 </p>
 
-<h2>Initial packaging setup</h2>
+<h1>Initial packaging setup</h1>
 
 <p>
 The first step is creating the <code>${PACKAGE}_${VERSION}.orig.tar.gz</code> file. You
@@ -150,7 +147,7 @@ After changing the files that <code>dh_make</code> created, you should create a
 We can now commit the debian directory in the debian-debian branch.
 </p>
 
-<h2>Importing the sources</h2>
+<h1>Importing the sources</h1>
 
 <p>
 In the debian-debian branch:
@@ -165,7 +162,7 @@ That imports the original sources to the debian-upstream branch, and merge
 it into the debian-debian branch.
 </p>
 
-<h2>Creating the package</h2>
+<h1>Creating the package</h1>
 
 <p>
 To create the debian package:
@@ -175,7 +172,7 @@ To create the debian package:
   gbp buildpackage -us -uc --git-tag
 </pre>
 
-<h2>Importing further versions</h2>
+<h1>Importing further versions</h1>
 
 <p>
 Create the new <code>../${PACKAGE}_${VERSION}/.orig.tar.gz</code> and then:
@@ -198,7 +195,7 @@ that), and create a new package:
 Yes, it's that easy.
 </p>
 
-<h2>Final remarks</h2>
+<h1>Final remarks</h1>
 
 <p>
 After an initial expensive setup, package creation of further versions is

@@ -34,11 +34,11 @@ nav.navbar {
 pre {
     background-color: #f5f5f5;
 }
-h1 {
+#title {
     text-align: center;
     margin-bottom: 1em;
 }
-h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 1em;
 }
 div.center > img { margin: 0 auto; } /* center images by default */
@@ -80,11 +80,9 @@ div.center > img { margin: 0 auto; } /* center images by default */
 </nav>
 
 <div class="container">
-	
 
-<h1>Hard drive occupation prediction - part 3</h1>
+<h1 id="title">Hard drive occupation prediction with R - part 3</h1>
 
-<h1>- Predicting future ranges -</h1>
 
 <p>
 On the <a href="../df0pred-2/index.html">second</a> article, we saw how to use a Monte
@@ -98,7 +96,7 @@ likely is that my disk space will zero before date X?," we will answer
 "how much disk space will I need by date X, and with what probability?"
 </p>
 
-<h2>The input data</h2>
+<h1>The input data</h1>
 
 <p>
 <a href="duinfospike.dat">This file</a> has the dataset we will use as example. It's
@@ -146,7 +144,7 @@ We then build our simulations for the next 4 months:
 
 </pre>
 
-<h2>Visualizing the possible scenarios</h2>
+<h1>Visualizing the possible scenarios</h1>
 
 <p>
 What king of data have we built in our simulations? Each simulation is
@@ -191,7 +189,7 @@ show the density. There are 10000 black lines there, with many of them
 overlapping one another.
 </p>
 
-<h2>Visualizing the distribution for specific days</h2>
+<h1>Visualizing the distribution for specific days</h1>
 
 <p>
 There is another way to look at our data: we have created, for each day, a
@@ -227,7 +225,7 @@ By looking at this graph we can see the trend:
 </li>
 </ul>
 
-<h2>Visualizing the evolution of the distribution</h2>
+<h1>Visualizing the evolution of the distribution</h1>
 
 <p>
 So far, we have seen how we can visualize some simulations along the 4 months
@@ -240,7 +238,7 @@ axes, but there are other options, most of them involving some abuse of the
 built-in plot functions.
 </p>
 
-<h3>Boxplot</h3>
+<h2>Boxplot</h2>
 
 <p>
 We can use the <i>boxplot</i> function to create a boxplot for each day in R in a
@@ -271,7 +269,7 @@ simulations at any day:
 </li>
 </ul>
 
-<h3>Quantile lines</h3>
+<h2>Quantile lines</h2>
 
 <p>
 We can use the <i>quantile</i> function to calculate the values of each
@@ -311,7 +309,7 @@ sequence of colors that folds in the middle:
   }
 </pre>
 
-<h3>Quantile areas</h3>
+<h2>Quantile areas</h2>
 
 <p>
 We can also abuse the <i>barplots</i> function to create an area graph. We have to
@@ -340,7 +338,7 @@ larger middle interval with two quantiles or a broken symmetry. The code above
 builds a larger middle interval when given an even <i>q</i>.
 </p>
 
-<h3>Quantile heat map</h3>
+<h2>Quantile heat map</h2>
 
 <p>
 If we increase <i>q</i> and use <i>heat.colors</i> in a quantile area plot, we get
@@ -362,7 +360,7 @@ something similar to a heat map:
 
  <div class="center"><img class="img-responsive"  src="mcsquantheat.png"  alt=""/></div>
 
-<h2>Visualizing past, present and future</h2>
+<h1>Visualizing past, present and future</h1>
 
 <p>
 We can also plot our data in the same graph as our simulations, by extending the
@@ -397,7 +395,7 @@ axis of the <i>barplot</i> and using the <i>points</i> function:
 
  <div class="center"><img class="img-responsive"  src="mcspf1.png"  alt=""/></div>
 
-<h2>Training set, validation set</h2>
+<h1>Training set, validation set</h1>
 
 <p>
 <a href="https://en.wikipedia.org/wiki/Cross-validation">Cross-validation</a> is
@@ -459,7 +457,7 @@ whole data set as the training set and as the validation set. That is not
 cross-validation.
 </p>
 
-<h2>Conclusions</h2>
+<h1>Conclusions</h1>
 
 <p>
 We can use Monte Carlo simulations not only to generate a distribution

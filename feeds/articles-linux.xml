@@ -26,22 +26,19 @@
 			<link>http://www.lpenz.org/articles/ansiblerpi</link>
 			<guid>http://www.lpenz.org/articles/ansiblerpi</guid>
 			<pubDate>Tue, 08 Jan 2019 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Provisioning a Raspberry Pi using ansible</h1>
-
-<p>
+			<description><![CDATA[<p>
 These are my notes on how to get started provisioning Raspbian with
 ansible.
 </p>
 
-<h2>Before using ansible</h2>
+<h1>Before using ansible</h1>
 
 <p>
 We have to get a working Raspbian installation before using ansible on
 the device.
 </p>
 
-<h3>Installing Raspbian</h3>
+<h2>Installing Raspbian</h2>
 
 <p>
 The first step is downloading and installing Raspbian in the SD card
@@ -65,7 +62,7 @@ step is writting the Raspbian image to it:
 You can now insert the card into the Raspberry Pi board.
 </p>
 
-<h3>Initial Raspbian setup</h3>
+<h2>Initial Raspbian setup</h2>
 
 <p>
 Raspbian comes with a initial user <b>pi</b>, password <b>raspberry</b>,
@@ -87,7 +84,7 @@ in a console session that should look like the following:
   (...)
 </pre>
 
-<h3>Alternative initial setup</h3>
+<h2>Alternative initial setup</h2>
 
 <p>
 Another way to do the initial image setup is by mounting in your system and
@@ -212,7 +209,7 @@ From here on we assume that the file was mapped to <code>/dev/loop0</code>.
 </li>
 </ul>
 
-<h2>Using ansible</h2>
+<h1>Using ansible</h1>
 
 <p>
 You can now use ansible from any computer to provision the Pi. I'd
@@ -251,7 +248,7 @@ run the playbook with the following command:
 the device)
 </p>
 
-<h3>Setting up Debian repositories</h3>
+<h2>Setting up Debian repositories</h2>
 
 <p>
 Because Raspbian is based on Debian and upstream Debian has support for the
@@ -323,9 +320,6 @@ The <a href="apt-pinning">apt-pinning</a> file should contain something like the
 <b>Updated 2019-06-25</b>: use Debian Stretch explicitly (already implied
 by kernel version); suggest testing with qemu.
 </p>
-
-<h1>Creating a Debian bootable live USB</h1>
-
 <p>
 We can install a full Linux distribution in a USB drive, and use it to boot a
 system. That is called a "live USB," and it can be used for recovery, as a
@@ -342,7 +336,7 @@ Obs: to ease copy-and-pasting, we show the commands without prompt, and
 prepend <code>&gt;</code> to the output of commands on most examples.
 </p>
 
-<h2>1 Partitioning</h2>
+<h1>1 Partitioning</h1>
 
 <p>
 After inserting the USB drive, it will appear as a block device under <i>/dev</i>,
@@ -463,7 +457,7 @@ type - that is required <i>syslinux</i>.
 <a href="http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html">using-syslinux-to-boot-debootstraped</a>)
 </p>
 
-<h2>2 Installing the bootloader</h2>
+<h1>2 Installing the bootloader</h1>
 
 <p>
 Create a FAT16 filesystem on the boot device:
@@ -482,7 +476,7 @@ Install <i>syslinux</i> on it:
   syslinux /dev/sdc1
 </pre>
 
-<h2>3 Installing the base system in the root partition</h2>
+<h1>3 Installing the base system in the root partition</h1>
 
 <p>
 Create the filesystem:
@@ -533,7 +527,7 @@ Mount both partitions and use <i>debootstrap</i> to install the base files on it
   &gt; I: Base system installed successfully.
 </pre>
 
-<h2>4 On-root configuration</h2>
+<h1>4 On-root configuration</h1>
 
 <p>
 We will have to <i>chroot</i> into our root filesystem to configure it further.
@@ -652,7 +646,7 @@ Finally, write <i>syslinux</i>'s master boot record on the USB drive:
   cat /usr/lib/SYSLINUX/mbr.bin &gt; /dev/sdc
 </pre>
 
-<h2>5 Closing up</h2>
+<h1>5 Closing up</h1>
 
 <p>
 We are now ready to leave the <i>chroot</i> and umount all devices:
@@ -684,7 +678,7 @@ If everything is working as expected, we can now remove the USB drive
 and use it to boot any computer.
 </p>
 
-<h2>References</h2>
+<h1>References</h1>
 
 <p>
 This article is, in fact, basically a rehash of the following references with
@@ -712,229 +706,91 @@ that's easy to change, with the commands in this article.
 			<link>http://www.lpenz.org/articles/luksfile</link>
 			<guid>http://www.lpenz.org/articles/luksfile</guid>
 			<pubDate>Sun, 22 Mar 2020 00:00:00 +0000</pubDate>
-			<description><![CDATA[
-<h1>Creating an encrypted directory-in-a-file</h1>
-
-<p>
-LUKS can be used to create a file with a whole encrypted filesystem
-inside, that we can mount and manipulate in-place.
-</p>
-<p>
-This article has my notes on how to create the file and set up the
-mounting system.
-</p>
-<p>
-Obs: to ease copy-and-pasting, we show the commands without prompt, and
-prepend ``&gt; `` to the output of commands in the examples.
-</p>
-
-<h2>File creation</h2>
-
-<p>
-We'll use <b>cryptsetup</b> to create the file, it's available in all
-major distributions.
-</p>
-<p>
-First, create a file with the desired size (64MB in this case):
-</p>
-
-<pre>
-  dd if=/dev/zero of=cryptfile.img bs=1M count=64
-  &gt; 64+0 records in
-  &gt; 64+0 records out
-  &gt; 67108864 bytes (67 MB, 64 MiB) copied, 1.36272 s, 49.2 MB/s
-</pre>
-
-<p>
-Note: be aware that ext4 doesn't support devices with less than 32MB
-</p>
-<p>
-Use <i>cryptsetup luksFormat</i> to format it; we also choose the
-passphrase in this step:
-</p>
-
-<pre>
-  sudo cryptsetup luksFormat cryptfile.img
-  &gt;
-  &gt; WARNING!
-  &gt; ========
-  &gt; This will overwrite data on cryptfile.img irrevocably.
-  &gt; 
-  &gt; Are you sure? (Type 'yes' in capital letters): YES
-  &gt; Enter passphrase for cryptfile.img:
-  &gt; Verify passphrase:
-</pre>
-
-<p>
-Use <i>cryptsetup luksOpen</i> to bind the file to a block device that
-can be manipulated as if it was a partition:
-</p>
-
-<pre>
-  sudo cryptsetup luksOpen cryptfile.img cryptdev
-  &gt; Enter passphrase for cryptfile.img:
-</pre>
-
-<p>
-After <i>cryptsetup luksOpen</i>, we are able to access the new block
-device at <code>/dev/mapper/cryptdev</code>. It's now time to create the
-filesystem structure:
-</p>
-
-<pre>
-  sudo mkfs.ext4 /dev/mapper/cryptdev
-  &gt; mke2fs 1.45.5 (07-Jan-2020)
-  &gt; Creating filesystem with 49152 1k blocks and 12288 inodes
-  &gt; Filesystem UUID: c08602c2-acf7-4acf-b007-dce1200067d7
-  &gt; Superblock backups stored on blocks:
-  &gt;            8193, 24577, 40961
-  &gt; 
-  &gt; Allocating group tables: done
-  &gt; Writing inode tables: done
-  &gt; Creating journal (4096 blocks): done
-  &gt; Writing superblocks and filesystem accounting information: done
-</pre>
-
-<p>
-We can now finally close the device
-</p>
-
-<pre>
-  sudo cryptsetup luksClose cryptdev
-</pre>
-
-<h2>Testing by mounting</h2>
-
-<p>
-To mount the file, first get the block device again:
-</p>
-
-<pre>
-  sudo cryptsetup luksOpen cryptfile.img cryptdev
-  &gt; Enter passphrase for cryptfile.img:
-</pre>
-
-<p>
-And then mount as usual:
-</p>
-
-<pre>
-  mkdir -p cryptdir
-  sudo mount -t auto /dev/mapper/cryptdev cryptdir
-</pre>
-
-<p>
-We always end up with a <i>lost+found</i> directory when we use the usual linux filesystems:
-</p>
-
-<pre>
-  ls -l cryptdir/
-  &gt; total 12
-  &gt; drwx------ 2 root root 12288 Mar 22 17:47 lost+found
-</pre>
-
-<p>
-Don't forget to unmount and close the device after using it:
-</p>
-
-<pre>
-  sudo umount cryptdir
-  sudo cryptsetup luksClose cryptdev
-</pre>
-
-<h2>Setting up user mount</h2>
-
-<p>
-<b>cryptmount</b> allows us to mount configured encrypted files without
-root permissions.
-</p>
-<p>
-Create a <i>/etc/cryptmount/cmtab</i> file with the following contents:
-</p>
-
-<pre>
-  mycryptlabel {
-      dev=$(HOME)/cryptfile.img
-      dir=$(HOME)/cryptdir
-      fstype=auto
-      keyformat=luks
-  }
-</pre>
-
-<p>
-cryptmount is now able to mount the file.
-</p>
-
-<h2>Mounting</h2>
-
-<p>
-Before mounting, you may want to go into a private mount namespace:
-</p>
-
-<pre>
-  sudo unshare -m sudo -u "$USER" -i
-  &gt; [sudo] password for $USER:
-</pre>
-
-<p>
-That starts a new shell in a new private mount namespace. Everything
-you mount from this shell it will be available only to processes
-started from this shell, and all mounts will be automatically
-unmounted when the last of these processes exit.
-</p>
-<p>
-You can now run the following command to mount the file:
-</p>
-
-<pre>
-  cryptmount mycryptlabel
-  &gt; Enter password for target "mycryptlabel":
-  &gt; e2fsck 1.45.5 (07-Jan-2020)
-  &gt; /dev/mapper/cryptdev: clean, 33/4096 files, 1896/16384 blocks
-</pre>
-
-<p>
-Don't forget to unmount it later, and leave the shell:
-</p>
-
-<pre>
-  cryptmount -u mycryptlabel
-  exit
-</pre>
-
-<h2>Final remarks</h2>
-
-<p>
-It should be said that these notes only touch the surface of
-cryptsetup and cryptmount. They have a lot of options and can be used
-in many different ways.
-</p>
-<p>
-One interesting option is to keep the cryptographic key in a separate
-file. That can be useful if you want to keep a rather large mountable
-file in an exposed backed-up piece of infrastructure while minimizing
-exposure.
-</p>
-<p>
-All of these commands can be used to create and mount an encrypted
-partition, just replace <i>cryptfile.img</i> with the path to the
-partition block device. You can also create an encrypted partition
-that encompasses an entire flash drive, leaving it without a partition
-table at all, by using the appropriate block device.
-</p>
-
-<h2>References</h2>
-
+			<description><![CDATA[<p>LUKS can be used to create a file with a whole encrypted filesystem inside, that we can mount and manipulate in-place.</p>
+<p>This article has my notes on how to create the file and set up the mounting system.</p>
+<p>Obs: to ease copy-and-pasting, we show the commands without prompt, and prepend <code>&gt;</code> to the output of commands in the examples.</p>
+<h2 id="file-creation">File creation</h2>
+<p>We’ll use <strong>cryptsetup</strong> to create the file, it’s available in all major distributions.</p>
+<p>First, create a file with the desired size (64MB in this case):</p>
+<pre><code>dd if=/dev/zero of=cryptfile.img bs=1M count=64
+&gt; 64+0 records in
+&gt; 64+0 records out
+&gt; 67108864 bytes (67 MB, 64 MiB) copied, 1.36272 s, 49.2 MB/s</code></pre>
+<p>Note: be aware that ext4 doesn’t support devices with less than 32MB</p>
+<p>Use <em>cryptsetup luksFormat</em> to format it; we also choose the passphrase in this step:</p>
+<pre><code>sudo cryptsetup luksFormat cryptfile.img
+&gt;
+&gt; WARNING!
+&gt; ========
+&gt; This will overwrite data on cryptfile.img irrevocably.
+&gt; 
+&gt; Are you sure? (Type &#39;yes&#39; in capital letters): YES
+&gt; Enter passphrase for cryptfile.img:
+&gt; Verify passphrase:</code></pre>
+<p>Use <em>cryptsetup luksOpen</em> to bind the file to a block device that can be manipulated as if it was a partition:</p>
+<pre><code>sudo cryptsetup luksOpen cryptfile.img cryptdev
+&gt; Enter passphrase for cryptfile.img:</code></pre>
+<p>After <em>cryptsetup luksOpen</em>, we are able to access the new block device at <code>/dev/mapper/cryptdev</code>. It’s now time to create the filesystem structure:</p>
+<pre><code>sudo mkfs.ext4 /dev/mapper/cryptdev
+&gt; mke2fs 1.45.5 (07-Jan-2020)
+&gt; Creating filesystem with 49152 1k blocks and 12288 inodes
+&gt; Filesystem UUID: c08602c2-acf7-4acf-b007-dce1200067d7
+&gt; Superblock backups stored on blocks:
+&gt;            8193, 24577, 40961
+&gt; 
+&gt; Allocating group tables: done
+&gt; Writing inode tables: done
+&gt; Creating journal (4096 blocks): done
+&gt; Writing superblocks and filesystem accounting information: done</code></pre>
+<p>We can now finally close the device</p>
+<pre><code>sudo cryptsetup luksClose cryptdev</code></pre>
+<h2 id="testing-by-mounting">Testing by mounting</h2>
+<p>To mount the file, first get the block device again:</p>
+<pre><code>sudo cryptsetup luksOpen cryptfile.img cryptdev
+&gt; Enter passphrase for cryptfile.img:</code></pre>
+<p>And then mount as usual:</p>
+<pre><code>mkdir -p cryptdir
+sudo mount -t auto /dev/mapper/cryptdev cryptdir</code></pre>
+<p>We always end up with a <em>lost+found</em> directory when we use the usual linux filesystems:</p>
+<pre><code>ls -l cryptdir/
+&gt; total 12
+&gt; drwx------ 2 root root 12288 Mar 22 17:47 lost+found</code></pre>
+<p>Don’t forget to unmount and close the device after using it:</p>
+<pre><code>sudo umount cryptdir
+sudo cryptsetup luksClose cryptdev</code></pre>
+<h2 id="setting-up-user-mount">Setting up user mount</h2>
+<p><strong>cryptmount</strong> allows us to mount configured encrypted files without root permissions.</p>
+<p>Create a <em>/etc/cryptmount/cmtab</em> file with the following contents:</p>
+<pre><code>mycryptlabel {
+    dev=$(HOME)/cryptfile.img
+    dir=$(HOME)/cryptdir
+    fstype=auto
+    keyformat=luks
+}</code></pre>
+<p>cryptmount is now able to mount the file.</p>
+<h2 id="mounting">Mounting</h2>
+<p>Before mounting, you may want to go into a private mount namespace:</p>
+<pre><code>sudo unshare -m sudo -u &quot;$USER&quot; -i
+&gt; [sudo] password for $USER:</code></pre>
+<p>That starts a new shell in a new private mount namespace. Everything you mount from this shell it will be available only to processes started from this shell, and all mounts will be automatically unmounted when the last of these processes exit.</p>
+<p>You can now run the following command to mount the file:</p>
+<pre><code>cryptmount mycryptlabel
+&gt; Enter password for target &quot;mycryptlabel&quot;:
+&gt; e2fsck 1.45.5 (07-Jan-2020)
+&gt; /dev/mapper/cryptdev: clean, 33/4096 files, 1896/16384 blocks</code></pre>
+<p>Don’t forget to unmount it later, and leave the shell:</p>
+<pre><code>cryptmount -u mycryptlabel
+exit</code></pre>
+<h2 id="final-remarks">Final remarks</h2>
+<p>It should be said that these notes only touch the surface of cryptsetup and cryptmount. They have a lot of options and can be used in many different ways.</p>
+<p>One interesting option is to keep the cryptographic key in a separate file. That can be useful if you want to keep a rather large mountable file in an exposed backed-up piece of infrastructure while minimizing exposure.</p>
+<p>All of these commands can be used to create and mount an encrypted partition, just replace <em>cryptfile.img</em> with the path to the partition block device. You can also create an encrypted partition that encompasses an entire flash drive, leaving it without a partition table at all, by using the appropriate block device.</p>
+<h2 id="references">References</h2>
 <ul>
-<li><a href="https://linux.die.net/man/8/cryptsetup">https://linux.die.net/man/8/cryptsetup</a>
-</li>
-<li><a href="https://linux.die.net/man/8/cryptmount">https://linux.die.net/man/8/cryptmount</a>
-</li>
-<li><a href="https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/">https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/</a>
-<p></p>
-</li>
+<li><a href="https://linux.die.net/man/8/cryptsetup" class="uri">https://linux.die.net/man/8/cryptsetup</a></li>
+<li><a href="https://linux.die.net/man/8/cryptmount" class="uri">https://linux.die.net/man/8/cryptmount</a></li>
+<li><a href="https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/" class="uri">https://willhaley.com/blog/encrypted-file-container-disk-image-in-linux/</a></li>
 </ul>
-
 ]]></description>
 		</item>
 

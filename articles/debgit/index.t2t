@@ -6,13 +6,10 @@ Debianization with git-buildpackage
 %!PostProc: '\${([^}]+)}' '<%text>${\1}</%text>'
 
 
+
 **Updated 2018-04-03**: //git-buildpackage//'s commands have changed, so this
 article had to be fixed; I took the opportunity to improve a few things as
 well.
-
-
-
-= Debianization with git-buildpackage =
 
 After building some useful piece of software, one has to decide how to best
 deploy it. In UNIX, the standard way to do that is by publishing the source
@@ -27,7 +24,7 @@ branch on the same repository.
 
 
 
-== Prerequisites ==
+= Prerequisites =
 
 In order to ease the packaging and keep our package warning-free, it should
 have in its main repository:
@@ -43,7 +40,7 @@ These items are not debian-specific and are useful for everyone.
 
 
 
-== Initial packaging setup ==
+= Initial packaging setup =
 
 The first step is creating the ``${PACKAGE}_${VERSION}.orig.tar.gz`` file. You
 can use git itself for that, by running the following commands in the
@@ -103,7 +100,7 @@ We can now commit the debian directory in the debian-debian branch.
 
 
 
-== Importing the sources ==
+= Importing the sources =
 
 In the debian-debian branch:
 ```
@@ -114,7 +111,7 @@ it into the debian-debian branch.
 
 
 
-== Creating the package ==
+= Creating the package =
 
 To create the debian package:
 ```
@@ -122,7 +119,7 @@ gbp buildpackage -us -uc --git-tag
 ```
 
 
-== Importing further versions ==
+= Importing further versions =
 
 Create the new ``../${PACKAGE}_${VERSION}/.orig.tar.gz`` and then:
 ```
@@ -137,7 +134,7 @@ Yes, it's that easy.
 
 
 
-== Final remarks ==
+= Final remarks =
 
 After an initial expensive setup, package creation of further versions is
 mostly painless, which is the whole point of git-buildpackage and friends.
