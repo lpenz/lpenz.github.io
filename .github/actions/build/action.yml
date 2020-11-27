@@ -1,0 +1,6 @@
+---
+name: build
+description: 'Build www.lpenz.org page'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
