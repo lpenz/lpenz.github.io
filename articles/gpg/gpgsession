@@ -38,10 +38,11 @@ class Session(pexpect.spawn):
             env=env_)
         self.preproc = preproc
         self.data = data
-        self._prompt = u'\\$ $'
+        self._prompt = u'[#$] $'
         self._logfd = None
         self._pending = ''
         self.waitready()
+        self.sendwait('export PS1="$ "')
         self.sendwait('stty cols 9999')
 
     def log(self, s):
@@ -94,9 +95,6 @@ class Session(pexpect.spawn):
     def sendwait(self, cmd, prompt=None):
         self.send(cmd + '\r')
         return self.waitready(prompt=prompt)
-
-    def trimprompt(self, string):
-        return re.sub(self._prompt, '', string)
 
     def done(self):
         self.send('exit\r')
