@@ -37,10 +37,12 @@ pre {
 #title {
     text-align: center;
     margin-bottom: 1em;
+    font-size: 2.5rem;
 }
-h1, h2, h3, h4, h5, h6 {
-    margin-top: 1em;
-}
+h1, h2, h3, h4, h5, h6 { margin-top: 1em;}
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.4rem; }
+h3, h4, h5, h6 { font-size: 1.2rem; }
 div.center > img { margin: 0 auto; } /* center images by default */
 </style>
 <link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
