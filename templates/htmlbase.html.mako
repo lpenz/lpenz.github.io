@@ -32,7 +32,9 @@ nav.navbar {
     margin-bottom: 2em; /* space between navbar and contents */
 }
 pre {
-    background-color: #f5f5f5;
+    background-color: #f1f1f1;
+    border-left: 4px solid #d9d9d9;
+    padding: 15px;
 }
 #title {
     text-align: center;
