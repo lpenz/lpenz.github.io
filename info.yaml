@@ -100,4 +100,7 @@ whatsnew:
         While looking up (once again) how to use LUKS, I figured I had some
         notes laying around. Finished them up in
         [Creating an encrypted directory-in-a-file $home$/articles/luksfile/index.html].
-
+    - date: 2021-06-07
+      news: >
+        [Creating a pmount-compatible encrypted USB drive $home$/articles/cryptusb/index.html]
+        has notes specific on how to use LUKS to encrypt removable media.

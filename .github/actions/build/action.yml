@@ -2,5 +2,9 @@
 name: build
 description: 'Build www.lpenz.org page'
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "composite"
+  steps:
+    - run: docker build -t container .
+      shell: bash
+    - run: docker run --rm --privileged -v "$PWD:$PWD" -w "$PWD" --name container container
+      shell: bash

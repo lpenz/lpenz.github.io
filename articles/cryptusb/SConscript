@@ -1,0 +1,31 @@
+import os
+
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+Import(["env"])
+
+env["SESSION_YAML"] = env.File("_session.yaml")
+env.Command("_session.yaml", "session", "./$SOURCE $CONF $TARGET")
+
+env.MAKO("_index.md", "index.md.mako", MAKOFLAGS="-i $SESSION_YAML")
+env.Depends("_index.md", "_session.yaml")
+
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "_index.md",
+    PANDOCFLAGS="-N -s --toc --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage -r '#dollar#=$'")
+
+env.HTMLSITEFILES.add("articles/cryptusb/index.html")
