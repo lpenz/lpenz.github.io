@@ -45,7 +45,26 @@ h1, h2, h3, h4, h5, h6 { margin-top: 1em;}
 h1 { font-size: 1.6rem; }
 h2 { font-size: 1.4rem; }
 h3, h4, h5, h6 { font-size: 1.2rem; }
+div#main {
+    padding-bottom: 1em;
+}
 div.center > img { margin: 0 auto; } /* center images by default */
+div#toc {
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    display: table;
+}
+div#toc .toctitle {
+    font-weight: 700;
+    text-align: center;
+    margin-top: 1em;
+}
+div#toc ul {
+    padding-right: 1em;
+}
+div#toc li, div#toc ul, div#toc ul li {
+    list-style: outside none none !important;
+}
 </style>
 <link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
 <link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>

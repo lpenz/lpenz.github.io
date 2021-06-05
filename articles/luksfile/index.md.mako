@@ -5,6 +5,8 @@ date: 2020-03-22
 ...
 
 
+${"#"} Introduction
+
 LUKS can be used to create a file with a whole encrypted filesystem
 inside, that we can mount and manipulate in-place.
 
@@ -15,7 +17,7 @@ Obs: to ease copy-and-pasting, we show the commands without prompt, and
 prepend ``> `` to the output of commands in the examples.
 
 
-## File creation
+${"#"} File creation
 
 We'll use **cryptsetup** to create the file, it's available in all
 major distributions.
@@ -76,7 +78,7 @@ sudo cryptsetup luksClose cryptdev
 ```
 
 
-## Testing by mounting
+${"#"} Testing by mounting
 
 To mount the file, first get the block device again:
 ```
@@ -104,7 +106,7 @@ sudo cryptsetup luksClose cryptdev
 ```
 
 
-## Setting up user mount
+${"#"} Setting up user mount
 
 **cryptmount** allows us to mount configured encrypted files without
 root permissions.
@@ -123,7 +125,7 @@ mycryptlabel {
 cryptmount is now able to mount the file.
 
 
-## Mounting
+${"#"} Mounting
 
 Before mounting, you may want to go into a private mount namespace:
 
@@ -154,7 +156,7 @@ exit
 ```
 
 
-## Final remarks
+${"#"} Final remarks
 
 It should be said that these notes only touch the surface of
 cryptsetup and cryptmount. They have a lot of options and can be used
@@ -172,7 +174,7 @@ that encompasses an entire flash drive, leaving it without a partition
 table at all, by using the appropriate block device.
 
 
-## References
+${"#"} References
 
 - <https://linux.die.net/man/8/cryptsetup>
 - <https://linux.die.net/man/8/cryptmount>
