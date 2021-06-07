@@ -16,16 +16,16 @@ def main():
     ifilename = args[0]
     ofilename = args[1]
 
-    o = open(ofilename+'.tmp', 'w')
-    o.write('\n\n\n\n')
+    o = open(ofilename + ".tmp", "w")
+    o.write("\n\n\n\n")
     first = True
     for l in csv.reader(open(ifilename)):
         if first:
-            o.write('|')
+            o.write("|")
             first = False
-        o.write('| ' + ' | '.join(l) + ' |\n')
+        o.write("| " + " | ".join(l) + " |\n")
     o.close()
-    os.rename(ofilename+'.tmp', ofilename)
+    os.rename(ofilename + ".tmp", ofilename)
 
 
 if __name__ == "__main__":

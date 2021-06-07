@@ -1,15 +1,19 @@
 import os
+
 pjoin = os.path.join
 
 if False:
     Import = None
     env = None
-Import(['env'])
+Import(["env"])
 
-env.MAKO('_index.md', 'index.md.mako')
-env['PANDOC_TEMPLATE'] = env.File('../../templates/pandoctoc.tmpl.html')
-env.PANDOC('_index.bhtml.mako', '_index.md',
-           PANDOCFLAGS='-N -s --toc --template=$PANDOC_TEMPLATE')
-env.Depends('_index.bhtml.mako', env['PANDOC_TEMPLATE'])
-env.MAKO('index.html', '_index.bhtml.mako', MAKOFLAGS='-t htmlpage')
-env.HTMLSITEFILES.add('articles/luksfile/index.html')
+env.MAKO("_index.md", "index.md.mako")
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+env.PANDOC(
+    "_index.bhtml.mako",
+    "_index.md",
+    PANDOCFLAGS="-N -s --toc --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako", env["PANDOC_TEMPLATE"])
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/luksfile/index.html")

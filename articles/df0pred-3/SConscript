@@ -1,37 +1,41 @@
 import os
+
 pjoin = os.path.join
 
 if False:
     Import = None
     env = None
-Import(['env'])
+Import(["env"])
 
 if False:
-    env.R('main.RData', 'main.R')
-env.Depends('main.RData', 'duinfospike.dat')
+    env.R("main.RData", "main.R")
+env.Depends("main.RData", "duinfospike.dat")
 
-for i in ['usd',
-          'mcs',
-          'mcs3',
-          'mcsdaydens',
-          'mcsbox',
-          'mcsquant',
-          'mcsquantbar',
-          'mcsquantheat',
-          'mcspf1',
-          'mcscv1',
-          'mcscv2']:
+for i in [
+    "usd",
+    "mcs",
+    "mcs3",
+    "mcsdaydens",
+    "mcsbox",
+    "mcsquant",
+    "mcsquantbar",
+    "mcsquantheat",
+    "mcspf1",
+    "mcscv1",
+    "mcscv2",
+]:
     env.Command(
-        i + '.png',
-        ['main.RData', 'plot.R', 'funcs.R', i + 'plot.R'],
-        './plot.R ' + i,
-        chdir=1)
-    env.HTMLSITEFILES.add(pjoin('articles/df0pred-3', i + '.png'))
+        i + ".png",
+        ["main.RData", "plot.R", "funcs.R", i + "plot.R"],
+        "./plot.R " + i,
+        chdir=1,
+    )
+    env.HTMLSITEFILES.add(pjoin("articles/df0pred-3", i + ".png"))
 
-for i in ['mcsquantheat', 'mcspf1', 'mcscv1', 'mcscv2']:
-    env.Depends(i + '.png', 'quantheatplotfunc.R')
-    env.HTMLSITEFILES.add(pjoin('articles/df0pred-3', i + '.png'))
+for i in ["mcsquantheat", "mcspf1", "mcscv1", "mcscv2"]:
+    env.Depends(i + ".png", "quantheatplotfunc.R")
+    env.HTMLSITEFILES.add(pjoin("articles/df0pred-3", i + ".png"))
 
-env.T2TBHTML('index.bhtml.mako', 'index.t2t')
-env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
-env.HTMLSITEFILES.add('articles/df0pred-3/index.html')
+env.T2TBHTML("index.bhtml.mako", "index.t2t")
+env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/df0pred-3/index.html")

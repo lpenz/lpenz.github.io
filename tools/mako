@@ -11,12 +11,26 @@ pjoin = os.path.join
 
 # txt2tags render: ###########################################################
 
+
 def txt2tagsfd(t2tinfilename, t2tinfd):
     t2tinfd.flush()
-    t2toutfd = TemporaryFile(mode='w+', encoding='utf-8')
+    t2toutfd = TemporaryFile(mode="w+", encoding="utf-8")
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file', 't2tconfig',
-                     '-H', '-i', t2tinfilename, '-o', '-'], stdout=t2toutfd)
+        t2t = Popen(
+            [
+                "txt2tags",
+                "-t",
+                "xhtml",
+                "--config-file",
+                "t2tconfig",
+                "-H",
+                "-i",
+                t2tinfilename,
+                "-o",
+                "-",
+            ],
+            stdout=t2toutfd,
+        )
         retcode = t2t.wait()
         if retcode < 0:
             sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
@@ -29,23 +43,24 @@ def txt2tagsfd(t2tinfilename, t2tinfd):
 
 
 def txt2tagsfile(infilename):
-    t2tinfd = open(infilename, encoding='utf-8')
+    t2tinfd = open(infilename, encoding="utf-8")
     return txt2tagsfd(infilename, t2tinfd)
 
 
 def txt2tags(intext):
-    t2tinfd = NamedTemporaryFile(mode='w+', encoding='utf-8')
-    t2tinfd.write('\n\n\n\n' + intext)
+    t2tinfd = NamedTemporaryFile(mode="w+", encoding="utf-8")
+    t2tinfd.write("\n\n\n\n" + intext)
     return txt2tagsfd(t2tinfd.name, t2tinfd)
 
 
 # markdown render: ###########################################################
 
+
 def markdownfd(mdinfilename, mdinfd):
     mdinfd.flush()
-    mdoutfd = TemporaryFile(mode='w+', encoding='utf-8')
+    mdoutfd = TemporaryFile(mode="w+", encoding="utf-8")
     try:
-        md = Popen(['pandoc', mdinfilename], stdout=mdoutfd)
+        md = Popen(["pandoc", mdinfilename], stdout=mdoutfd)
         retcode = md.wait()
         if retcode < 0:
             sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
@@ -58,87 +73,90 @@ def markdownfd(mdinfilename, mdinfd):
 
 
 def markdownfile(infilename):
-    mdinfd = open(infilename, encoding='utf-8')
+    mdinfd = open(infilename, encoding="utf-8")
     return markdownfd(infilename, mdinfd)
 
 
 def markdown(intext):
-    mdinfd = NamedTemporaryFile(mode='w+', encoding='utf-8')
-    mdinfd.write('\n\n\n\n' + intext)
+    mdinfd = NamedTemporaryFile(mode="w+", encoding="utf-8")
+    mdinfd.write("\n\n\n\n" + intext)
     return markdownfd(mdinfd.name, mdinfd)
 
 
 # Renderer dispatcher: #######################################################
 
+
 def renderarticle(article):
-    path = pjoin('articles', article)
-    t2tfile = pjoin(path, 'index.t2t')
+    path = pjoin("articles", article)
+    t2tfile = pjoin(path, "index.t2t")
     if os.path.exists(t2tfile):
         return txt2tagsfile(t2tfile)
-    mdfile = pjoin(path, 'index.md')
+    mdfile = pjoin(path, "index.md")
     if os.path.exists(mdfile):
         return markdownfile(mdfile)
-    return ''
+    return ""
 
 
 # Misc functions: ############################################################
 
+
 def rfctime(d):
-    return d.strftime('%a, %d %b %Y %H:%M:%S')
+    return d.strftime("%a, %d %b %Y %H:%M:%S")
 
 
 # Info get: ##################################################################
 
+
 def yamlget(d):
-    yfilename = os.path.join(d, 'info.yaml')
+    yfilename = os.path.join(d, "info.yaml")
     if not os.path.isfile(yfilename):
         return {}
     return yaml.load(open(yfilename).read())
 
 
 def dirscalc(infilename):
-    dirname = os.path.join('.', os.path.dirname(infilename))
-    top = ''
+    dirname = os.path.join(".", os.path.dirname(infilename))
+    top = ""
     breadcrumbs = []
     dirs = dirname.split(os.sep)
-    dirs = [d for d in dirs if d != '']
+    dirs = [d for d in dirs if d != ""]
     lvl = len(dirs) - 1
-    yt = yaml.load(open('infotree.yaml', encoding='utf-8').read())
+    yt = yaml.load(open("infotree.yaml", encoding="utf-8").read())
     yc = yt
-    p = ''
+    p = ""
     first = True
     for d in dirs:
-        if d != '.' and d in yc['sub']:
-            yc = yc['sub'][d]
+        if d != "." and d in yc["sub"]:
+            yc = yc["sub"][d]
         p = os.path.join(p, d)
-        i = 'index.html'
+        i = "index.html"
         for l in range(lvl, 0, -1):
-            i = os.path.join('..', i)
-        breadcrumbs.append({'title': yc['title'], 'url': i, 'first': first})
+            i = os.path.join("..", i)
+        breadcrumbs.append({"title": yc["title"], "url": i, "first": first})
         first = False
         if lvl > 0:
-            top = os.path.join(top, '..')
+            top = os.path.join(top, "..")
         lvl = lvl - 1
-    if top == '':
-        top = '.'
+    if top == "":
+        top = "."
     return top, breadcrumbs
 
 
 def infoget(opts, infilename):
     indirname = os.path.dirname(infilename)
-    y = yaml.load(open('infotree.yaml').read())
-    y.update(yamlget('.'))
+    y = yaml.load(open("infotree.yaml").read())
+    y.update(yamlget("."))
     y.update(yamlget(indirname))
-    y['top'], y['breadcrumbs'] = dirscalc(infilename)
-    y['url'] = os.path.join(y['home'], indirname, 'index.html')
-    if opts.define:
-        for d in opts.define:
-            kv = d.split('=')
-            y[kv[0]] = kv[1]
+    y["top"], y["breadcrumbs"] = dirscalc(infilename)
+    y["url"] = os.path.join(y["home"], indirname, "index.html")
+    for d in opts.define:
+        kv = d.split("=")
+        y[kv[0]] = kv[1]
     return y
 
 
 # Process input file: ########################################################
+
 
 def templated(infilename, template, y):
     from tempfile import TemporaryFile
@@ -146,8 +164,8 @@ def templated(infilename, template, y):
 
     if not isfile(infilename):
         raise SystemExit("error: can't find %s" % infilename)
-    infd = open(infilename, encoding='utf-8')
-    outfd = TemporaryFile(mode='w+', encoding='utf-8')
+    infd = open(infilename, encoding="utf-8")
+    outfd = TemporaryFile(mode="w+", encoding="utf-8")
     if template:
         templateline = '<%%inherit file="%s.html.mako"/>\n' % template
         outfd.write(templateline)
@@ -159,32 +177,55 @@ def templated(infilename, template, y):
 
 # Render output: #############################################################
 
+
 def makorender(data, y):
     from mako.template import Template
     from mako.lookup import TemplateLookup
 
-    lookup = TemplateLookup(['templates'])
+    lookup = TemplateLookup(["templates"])
     return Template(data, lookup=lookup).render_unicode(
         txt2tags=txt2tags,
         txt2tagsfile=txt2tagsfile,
         renderarticle=renderarticle,
         rfctime=rfctime,
-        **y)
+        **y
+    )
 
 
 # Main: ######################################################################
+
 
 def main():
     from optparse import OptionParser
 
     parser = OptionParser("usage: %prog [-t template] <input> <output>")
-    parser.add_option("-t", "--template", dest="template",
-                      help="Template to use, if any")
-    parser.add_option("-d", "--define", dest="define",
-                      action="append", help="Extra definitions for rendering")
-    parser.add_option("-i", "--import", dest="importfile",
-                      action="append", help="Import data from yaml file",
-                      default=[])
+    parser.add_option(
+        "-t", "--template", dest="template", help="Template to use, if any"
+    )
+    parser.add_option(
+        "-d",
+        "--define",
+        dest="define",
+        action="append",
+        default=[],
+        help="Extra definitions for rendering",
+    )
+    parser.add_option(
+        "-r",
+        "--replace",
+        dest="replace",
+        action="append",
+        default=[],
+        help="Raw strings to replace at the last step",
+    )
+    parser.add_option(
+        "-i",
+        "--import",
+        dest="importfile",
+        action="append",
+        help="Import data from yaml file",
+        default=[],
+    )
     opts, args = parser.parse_args(sys.argv[1:])
     if len(args) != 2:
         parser.error("wrong number of arguments")  # Will exit
@@ -196,9 +237,13 @@ def main():
     for filename in opts.importfile:
         d = yaml.load(open(filename))
         info.update(d)
-    htmlstr = templated(infilename, opts.template, info).replace('$cwd$/', '')
-    out = open(outfilename, 'w', encoding='utf-8')
-    out.write(makorender(htmlstr, info).replace('$backslash$', '\\'))
+    htmlstr = templated(infilename, opts.template, info).replace("$cwd$/", "")
+    out = open(outfilename, "w", encoding="utf-8")
+    final = makorender(htmlstr, info).replace("$backslash$", "\\")
+    for rep in opts.replace:
+        kv = rep.split("=")
+        final = final.replace(kv[0], kv[1])
+    out.write(final)
 
 
 if __name__ == "__main__":

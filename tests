@@ -5,8 +5,10 @@ pyfilter=( '(' -name '*.py' -o -name SConstruct -o -name SConscript ')' )
 
 set -x -e -o pipefail
 
+scons
 nosetests3 --with-doc --exe
 "${findfiles[@]}" "${pyfilter[@]}" -exec flake8 {} +
 "${findfiles[@]}" -exec grep -lI '[#]!/usr/bin/python' {} + | xargs flake8
-scons
+"${findfiles[@]}" "${pyfilter[@]}" -exec black --check --diff {} +
+"${findfiles[@]}" -exec grep -lI '[#]!/usr/bin/python' {} + | xargs black --check --diff
 

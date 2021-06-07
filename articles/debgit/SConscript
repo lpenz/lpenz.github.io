@@ -1,7 +1,7 @@
 if False:
     Import = None
     env = None
-Import(['env'])
-env.T2TBHTML('index.bhtml.mako', 'index.t2t')
-env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
-env.HTMLSITEFILES.add('articles/debgit/index.html')
+Import(["env"])
+env.T2TBHTML("index.bhtml.mako", "index.t2t")
+env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/debgit/index.html")

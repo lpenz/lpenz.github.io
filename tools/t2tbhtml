@@ -10,11 +10,23 @@ from subprocess import Popen
 def t2thtml(infilename):
     if not os.path.isfile(infilename):
         raise SystemExit("error: can't find %s" % infilename)
-    t2toutfd = TemporaryFile(mode='w+', encoding='utf-8')
+    t2toutfd = TemporaryFile(mode="w+", encoding="utf-8")
     try:
-        t2t = Popen(['txt2tags', '-t', 'xhtml', '--config-file',
-                     't2tconfig', '-H', '-i', infilename, '-o', '-'],
-                    stdout=t2toutfd)
+        t2t = Popen(
+            [
+                "txt2tags",
+                "-t",
+                "xhtml",
+                "--config-file",
+                "t2tconfig",
+                "-H",
+                "-i",
+                infilename,
+                "-o",
+                "-",
+            ],
+            stdout=t2toutfd,
+        )
         retcode = t2t.wait()
         if retcode < 0:
             sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
@@ -42,16 +54,16 @@ def main():
 
     t2toutfd = t2thtml(infilename)
 
-    outfd = open(outfilename, 'w')
+    outfd = open(outfilename, "w")
 
-    pipfrem = re.compile(r'(.*)<p>\s*</p>(.*)\s*$')
+    pipfrem = re.compile(r"(.*)<p>\s*</p>(.*)\s*$")
     for line in t2toutfd:
         line = line.rstrip()
         m = pipfrem.match(line)
         if m:
-            line = m.group(1) + ' ' + m.group(2)
+            line = m.group(1) + " " + m.group(2)
         outfd.write(line)
-        outfd.write('\n')
+        outfd.write("\n")
 
 
 if __name__ == "__main__":

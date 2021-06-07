@@ -17,19 +17,19 @@ def main(argv=None):
         parser.error("wrong number of arguments")  # Will exit
     outputfilename = args[0]
 
-    top = {'sub': {}}
+    top = {"sub": {}}
     for filename in args[1:]:
         dirname = os.path.dirname(filename)
         cur = top
-        if dirname != '':
+        if dirname != "":
             for d in dirname.split(os.sep):
-                if d not in cur['sub']:
-                    cur['sub'][d] = {'sub': {}}
-                cur = cur['sub'][d]
+                if d not in cur["sub"]:
+                    cur["sub"][d] = {"sub": {}}
+                cur = cur["sub"][d]
         y = yaml.load(open(filename).read())
         for k in y:
             cur[k] = y[k]
-    out = open(outputfilename, 'w')
+    out = open(outputfilename, "w")
     yaml.dump(top, stream=out)
 
 

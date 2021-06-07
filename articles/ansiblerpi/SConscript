@@ -1,11 +1,12 @@
 import os
+
 pjoin = os.path.join
 
 if False:
     Import = None
     env = None
-Import(['env'])
+Import(["env"])
 
-env.T2TBHTML('index.bhtml.mako', 'index.t2t')
-env.MAKO('index.html', 'index.bhtml.mako', MAKOFLAGS='-t htmlpage')
-env.HTMLSITEFILES.add('articles/ansiblerpi/index.html')
+env.T2TBHTML("index.bhtml.mako", "index.t2t")
+env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/ansiblerpi/index.html")

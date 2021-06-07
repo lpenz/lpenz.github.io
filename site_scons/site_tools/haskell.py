@@ -4,12 +4,12 @@ import SCons.Action
 import SCons.Builder
 import SCons.Util
 
-main_re = re.compile(r'^main\s*::\s*IO\s+\(\)', re.M)
+main_re = re.compile(r"^main\s*::\s*IO\s+\(\)", re.M)
 
 
 def haskellExecutableEmitter(target, source, env):
     base = SCons.Util.splitext(str(source[0]))[0]
-    target.append(base + '.o')
+    target.append(base + ".o")
     target.append(base)
     return target, source
 
@@ -19,13 +19,13 @@ def haskellAutoEmitter(target, source, env):
     contents = source[0].get_contents()
     if main_re.findall(contents):
         return base, source
-    target.append(base + '.o')
+    target.append(base + ".o")
     return target, source
 
 
 import_re = [
-    re.compile(r'^import\s+qualified\s+(\S+)', re.M),
-    re.compile(r'^import\s+(\S+)', re.M),
+    re.compile(r"^import\s+qualified\s+(\S+)", re.M),
+    re.compile(r"^import\s+(\S+)", re.M),
 ]
 
 
@@ -34,15 +34,14 @@ def haskellSearchDeps(root, node, env, path):
     rv = []
     for r in import_re:
         for d in r.findall(contents):
-            dbasenamehs = d + '.hs'
-            for dbasenameobj in [d + '.o', d + '.hi']:
+            dbasenamehs = d + ".hs"
+            for dbasenameobj in [d + ".o", d + ".hi"]:
                 dpathobj = SCons.Node.FS.find_file(dbasenameobj, path)
                 if dpathobj:
                     rv.append(dpathobj)
             dpathhs = SCons.Node.FS.find_file(dbasenamehs, path)
             if dpathhs:
-                rv.extend(
-                    haskellSearchDeps(root, env.File(dpathhs), env, path))
+                rv.extend(haskellSearchDeps(root, env.File(dpathhs), env, path))
     return rv
 
 
@@ -54,58 +53,63 @@ def generateAuto(env):
     """Add Builders and construction variables for HASKELL to an
     Environment."""
 
-    HaskellAction = SCons.Action.Action('$HASKELLCOM', '$HASKELLCOMSTR')
+    HaskellAction = SCons.Action.Action("$HASKELLCOM", "$HASKELLCOMSTR")
 
     HaskellScanner = SCons.Scanner.Base(
-        name='haskellScanner',
+        name="haskellScanner",
         function=haskellScannerFunc,
-        skeys=['.hs', '.lhs'],
-        path_function=SCons.Scanner.FindPathDirs('HASKELLPATH'),
-        recursive=True)
+        skeys=[".hs", ".lhs"],
+        path_function=SCons.Scanner.FindPathDirs("HASKELLPATH"),
+        recursive=True,
+    )
 
     bld = SCons.Builder.Builder(
         action=HaskellAction,
-        src_suffix='.hs',
-        suffix='.hi',
+        src_suffix=".hs",
+        suffix=".hi",
         emitter=haskellAutoEmitter,
-        source_scanner=HaskellScanner)
+        source_scanner=HaskellScanner,
+    )
 
-    env['BUILDERS']['HASKELL'] = bld
+    env["BUILDERS"]["HASKELL"] = bld
 
-    env['HASKELLBIN'] = 'ghc'
-    env['HASKELLPATH'] = []
-    env['HASKELLINCPREFIX'] = '-i'
-    env['HASKELLINCSUFFIX'] = ''
-    env['HASKELLINCFLAGS'] = \
-        '$( ${_concat('\
-        'HASKELLINCPREFIX, HASKELLPATH, HASKELLINCSUFFIX,' \
-        '__env__, RDirs, TARGET, SOURCE'\
-        ')} $)'
-    env['HASKELLFLAGS'] = SCons.Util.CLVar('--make -cpp -Wall -Werror ')
-    env['HASKELLCOM'] = '$HASKELLBIN $HASKELLFLAGS $HASKELLINCFLAGS $SOURCE'
+    env["HASKELLBIN"] = "ghc"
+    env["HASKELLPATH"] = []
+    env["HASKELLINCPREFIX"] = "-i"
+    env["HASKELLINCSUFFIX"] = ""
+    env["HASKELLINCFLAGS"] = (
+        "$( ${_concat("
+        "HASKELLINCPREFIX, HASKELLPATH, HASKELLINCSUFFIX,"
+        "__env__, RDirs, TARGET, SOURCE"
+        ")} $)"
+    )
+    env["HASKELLFLAGS"] = SCons.Util.CLVar("--make -cpp -Wall -Werror ")
+    env["HASKELLCOM"] = "$HASKELLBIN $HASKELLFLAGS $HASKELLINCFLAGS $SOURCE"
 
 
 def generateExecutable(env):
     """Add Builders and construction variables for HASKELL to an
     Environment."""
 
-    HaskellAction = SCons.Action.Action('$HASKELLCOM', '$HASKELLCOMSTR')
+    HaskellAction = SCons.Action.Action("$HASKELLCOM", "$HASKELLCOMSTR")
 
     HaskellScanner = SCons.Scanner.Base(
-        name='haskellScanner',
+        name="haskellScanner",
         function=haskellScannerFunc,
-        skeys=['.hs', '.lhs'],
-        path_function=SCons.Scanner.FindPathDirs('HASKELLPATH'),
-        recursive=True)
+        skeys=[".hs", ".lhs"],
+        path_function=SCons.Scanner.FindPathDirs("HASKELLPATH"),
+        recursive=True,
+    )
 
     bld = SCons.Builder.Builder(
         action=HaskellAction,
-        src_suffix='.hs',
-        suffix='.hi',
+        src_suffix=".hs",
+        suffix=".hi",
         emitter=haskellExecutableEmitter,
-        source_scanner=HaskellScanner)
+        source_scanner=HaskellScanner,
+    )
 
-    env['BUILDERS']['HASKELL_EXECUTABLE'] = bld
+    env["BUILDERS"]["HASKELL_EXECUTABLE"] = bld
 
 
 def generate(env):
@@ -114,6 +118,7 @@ def generate(env):
 
 
 def exists(env):
-    return env.Detect('HASKELL')
+    return env.Detect("HASKELL")
+
 
 # vim: ft=scons

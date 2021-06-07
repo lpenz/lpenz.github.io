@@ -12,7 +12,7 @@ RUN set -e -x; \
         pandoc \
         inkscape \
         python3-pip python3-setuptools python3-wheel \
-        python3-mako python3-yaml python3-nose flake8 \
+        python3-mako python3-yaml python3-nose flake8 black \
         linkchecker \
         scons python-yaml \
         git
