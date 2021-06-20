@@ -6,5 +6,5 @@ runs:
   steps:
     - run: docker build -t container .
       shell: bash
-    - run: docker run --rm --privileged -v "$PWD:$PWD" -w "$PWD" --name container container
+    - run: docker run --rm --privileged -v "$PWD:$PWD" -w "$PWD" -u "$UID" --name container container
       shell: bash

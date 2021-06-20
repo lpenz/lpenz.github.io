@@ -29,4 +29,5 @@ RUN set -e -x; \
 ENV LC_ALL=en_US.UTF-8 \
     HOME=/tmp
 
-CMD ["/bin/bash", "-c", "su -c \"useradd -M -u $UID user\"; ./tests"]
+COPY entrypoint /
+CMD /entrypoint
