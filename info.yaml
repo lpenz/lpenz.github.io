@@ -104,3 +104,10 @@ whatsnew:
       news: >
         [Creating a pmount-compatible encrypted USB drive $home$/articles/cryptusb/index.html]
         has notes specific on how to use LUKS to encrypt removable media.
+    - date: 2021-07-11
+      news: >
+        I've been standardizing my github repositories and found some
+        common patterns, now documented in
+        [github project structure best practices $home$/articles/github-project-struct/index.html].
+        This is probably the one article that I'll be constantly
+        updating as things change.
