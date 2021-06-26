@@ -41,10 +41,11 @@ pre {
     margin-bottom: 1em;
     font-size: 2.5rem;
 }
-h1, h2, h3, h4, h5, h6 { margin-top: 1em;}
+h1, h2, h3, h4, h5, h6 { margin-top: 1em; margin-bottom: 1em; }
 h1 { font-size: 1.6rem; }
 h2 { font-size: 1.4rem; }
 h3, h4, h5, h6 { font-size: 1.2rem; }
+td > ul { margin-bottom: 0px; }
 div#main {
     padding-bottom: 1em;
 }
