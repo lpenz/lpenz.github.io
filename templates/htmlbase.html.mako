@@ -46,6 +46,9 @@ h1 { font-size: 1.6rem; }
 h2 { font-size: 1.4rem; }
 h3, h4, h5, h6 { font-size: 1.2rem; }
 td > ul { margin-bottom: 0px; }
+em {
+    color: indigo;
+}
 div#main {
     padding-bottom: 1em;
 }
