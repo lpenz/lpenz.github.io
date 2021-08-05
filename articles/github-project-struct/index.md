@@ -193,7 +193,9 @@ something similar to:
 ```
 
 That deploys on commits. To deploy on tags, use `version_tagged`
-instead of `version_commit`.
+instead of `version_commit`. The action is also able to check if the
+tag matches the version in the language-specific project file, for
+some languages.
 
 
 ### Debian on packagecloud
