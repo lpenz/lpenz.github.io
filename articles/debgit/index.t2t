@@ -2,7 +2,7 @@ Debianization with git-buildpackage
 
 2010-04-11
 
-%!PostProc(xhtml): '<table[^>]+>' '<table class="table table-bordered">'
+%!PostProc(html): '<table[^>]+>' '<table class="table table-bordered">'
 %!PostProc: '\${([^}]+)}' '<%text>${\1}</%text>'
 
 

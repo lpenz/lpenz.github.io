@@ -26,7 +26,7 @@ def main(argv=None):
                 if d not in cur["sub"]:
                     cur["sub"][d] = {"sub": {}}
                 cur = cur["sub"][d]
-        y = yaml.load(open(filename).read())
+        y = yaml.safe_load(open(filename).read())
         for k in y:
             cur[k] = y[k]
     out = open(outputfilename, "w")

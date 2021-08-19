@@ -11,7 +11,7 @@ def makoTargetScanner(node, env, path):
     rv = [os.path.join(env["TOP"], f) for f in [env["MAKO"], "infotree.yaml"]]
     yfilename = os.path.join(os.path.dirname(str(node)), "info.yaml")
     if os.path.isfile(yfilename):
-        y = yaml.load(open(yfilename).read())
+        y = yaml.safe_load(open(yfilename).read())
         if "template" in y:
             rv.append(
                 os.path.join(env["TOP"], "templates", y["template"] + ".html.mako")

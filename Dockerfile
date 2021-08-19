@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 MAINTAINER Leandro Lisboa Penz <lpenz@lpenz.org>
 
 # install debian packages:
@@ -14,9 +14,9 @@ RUN set -e -x; \
         python3-pip python3-setuptools python3-wheel \
         python3-mako python3-yaml python3-nose flake8 black \
         sudo python3-pexpect \
-        cryptsetup udftools \
+        cryptsetup fdisk udftools \
         linkchecker \
-        scons python-yaml \
+        scons \
         git
 
 # setup locales, sudo and su

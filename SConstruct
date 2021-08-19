@@ -13,14 +13,14 @@ for t in ["haskell", "pandoc", "t2tbhtml", "mako", "R", "gcc"]:
 # infotree:
 
 
-def infotreeProcDir(d, l):
+def infotreeProcDir(d, infofiles):
     if not os.path.isdir(d):
         return
     i = os.path.join(d, "info.yaml")
     if os.path.isfile(i):
-        l.append(os.path.relpath(i))
+        infofiles.append(os.path.relpath(i))
     for s in glob.glob(os.path.join(d, "*")):
-        infotreeProcDir(s, l)
+        infotreeProcDir(s, infofiles)
 
 
 infofiles = []
@@ -39,13 +39,13 @@ env.HTMLSITEFILES.add("index.html")
 env.Command(
     "media/logo-black.png",
     "media/logo-black.svg",
-    "inkscape -z -e $TARGET -w 14 -h 14 $SOURCE",
+    "inkscape -z --export-type=png -o $TARGET -w 14 -h 14 $SOURCE",
 )
 env.HTMLSITEFILES.add("media/logo-white.png")
 env.Command(
     "media/logo-white.png",
     "media/logo-white.svg",
-    "inkscape -z -e $TARGET -w 14 -h 14 $SOURCE",
+    "inkscape -z --export-type=png -o $TARGET -w 14 -h 14 $SOURCE",
 )
 env.HTMLSITEFILES.add("media/logo-black.png")
 

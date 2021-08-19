@@ -20,7 +20,7 @@ for i in glob.glob("../articles/*"):
     if not os.path.isdir(i):
         continue
     env.Depends("articles.xml", os.path.join(i, "index.html"))
-    y = yaml.load(open(os.path.join(i, "info.yaml")).read())
+    y = yaml.safe_load(open(os.path.join(i, "info.yaml")).read())
     if y.get("disabled", False):
         continue
     for t in y["tags"]:

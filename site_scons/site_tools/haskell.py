@@ -16,7 +16,7 @@ def haskellExecutableEmitter(target, source, env):
 
 def haskellAutoEmitter(target, source, env):
     base = SCons.Util.splitext(str(source[0]))[0]
-    contents = source[0].get_contents()
+    contents = source[0].get_text_contents()
     if main_re.findall(contents):
         return base, source
     target.append(base + ".o")
@@ -30,7 +30,7 @@ import_re = [
 
 
 def haskellSearchDeps(root, node, env, path):
-    contents = node.get_contents()
+    contents = node.get_text_contents()
     rv = []
     for r in import_re:
         for d in r.findall(contents):

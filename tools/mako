@@ -20,7 +20,7 @@ def txt2tagsfd(t2tinfilename, t2tinfd):
             [
                 "txt2tags",
                 "-t",
-                "xhtml",
+                "html",
                 "--config-file",
                 "t2tconfig",
                 "-H",
@@ -111,7 +111,7 @@ def yamlget(d):
     yfilename = os.path.join(d, "info.yaml")
     if not os.path.isfile(yfilename):
         return {}
-    return yaml.load(open(yfilename).read())
+    return yaml.safe_load(open(yfilename).read())
 
 
 def dirscalc(infilename):
@@ -121,7 +121,7 @@ def dirscalc(infilename):
     dirs = dirname.split(os.sep)
     dirs = [d for d in dirs if d != ""]
     lvl = len(dirs) - 1
-    yt = yaml.load(open("infotree.yaml", encoding="utf-8").read())
+    yt = yaml.safe_load(open("infotree.yaml", encoding="utf-8").read())
     yc = yt
     p = ""
     first = True
@@ -130,7 +130,7 @@ def dirscalc(infilename):
             yc = yc["sub"][d]
         p = os.path.join(p, d)
         i = "index.html"
-        for l in range(lvl, 0, -1):
+        for _ in range(lvl, 0, -1):
             i = os.path.join("..", i)
         breadcrumbs.append({"title": yc["title"], "url": i, "first": first})
         first = False
@@ -144,7 +144,7 @@ def dirscalc(infilename):
 
 def infoget(opts, infilename):
     indirname = os.path.dirname(infilename)
-    y = yaml.load(open("infotree.yaml").read())
+    y = yaml.safe_load(open("infotree.yaml").read())
     y.update(yamlget("."))
     y.update(yamlget(indirname))
     y["top"], y["breadcrumbs"] = dirscalc(infilename)
@@ -169,8 +169,8 @@ def templated(infilename, template, y):
     if template:
         templateline = '<%%inherit file="%s.html.mako"/>\n' % template
         outfd.write(templateline)
-    for l in infd:
-        outfd.write(l)
+    for line in infd:
+        outfd.write(line)
     outfd.seek(0)
     return outfd.read()
 
@@ -235,7 +235,7 @@ def main():
 
     info = infoget(opts, infilename)
     for filename in opts.importfile:
-        d = yaml.load(open(filename))
+        d = yaml.safe_load(open(filename))
         info.update(d)
     htmlstr = templated(infilename, opts.template, info).replace("$cwd$/", "")
     out = open(outfilename, "w", encoding="utf-8")

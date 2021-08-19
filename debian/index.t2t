@@ -1,7 +1,7 @@
 Debian
 
 
-%!PostProc(xhtml): 'img ' 'img height="20" '
+%!PostProc(html): 'img ' 'img height="20" '
 
 
 

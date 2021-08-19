@@ -16,7 +16,7 @@ def t2thtml(infilename):
             [
                 "txt2tags",
                 "-t",
-                "xhtml",
+                "html",
                 "--config-file",
                 "t2tconfig",
                 "-H",

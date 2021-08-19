@@ -19,7 +19,7 @@ def rEmitter(target, source, env):
         deps = rSearchDeps(s, env)
         deps.append(s)
         for d in deps:
-            contents = d.get_contents()
+            contents = d.get_text_contents()
             for r in output_re:
                 for t in r.findall(contents):
                     target.append(os.path.join(sdir, t))
@@ -34,7 +34,7 @@ source_re = [
 
 
 def rSearchDeps(node, env):
-    contents = node.get_contents()
+    contents = node.get_text_contents()
     rv = []
     for r in source_re:
         for d in r.findall(contents):

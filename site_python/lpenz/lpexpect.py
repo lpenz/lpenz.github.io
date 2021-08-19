@@ -17,7 +17,7 @@ class Session(pexpect.spawn):
             "bash",
             ["--norc"],
             encoding="utf-8",
-            timeout=10,
+            timeout=30,
             # echo=False,
             env=env_,
         )

@@ -18,12 +18,12 @@ def main():
 
     access_key = None
     secret_key = None
-    for l in open(os.path.join(os.environ["HOME"], ".s3cfg")):
-        m = re.match(r"^access_key\s*=\s*([A-Z0-9]+)\s*$", l)
+    for line in open(os.path.join(os.environ["HOME"], ".s3cfg")):
+        m = re.match(r"^access_key\s*=\s*([A-Z0-9]+)\s*$", line)
         if m:
             access_key = m.group(1)
             continue
-        m = re.match(r"^secret_key\s*=\s*([a-zA-Z0-9]+)\s*$", l)
+        m = re.match(r"^secret_key\s*=\s*([a-zA-Z0-9]+)\s*$", line)
         if m:
             secret_key = m.group(1)
     assert access_key
@@ -44,7 +44,7 @@ def main():
             key.name.endswith(".html")
             and "xhtml1-transitional" in open(key.name).read()
         ):
-            mimet = "application/xhtml+xml"
+            mimet = "text/html"
         elif key.name.endswith(".dat"):
             mimet = ms.file(key.name)
         else:  # dicover:

@@ -14,7 +14,7 @@ ids = {"`": "verb", '"': "raw", "'": "passthru"}
 
 def t2tbhtmlSourceScan(node, env):
     dirname = str(node.dir)
-    candidates = cre.findall(node.get_contents())
+    candidates = cre.findall(node.get_text_contents())
     includes = []
     for f in candidates:
         mark = f[0]
