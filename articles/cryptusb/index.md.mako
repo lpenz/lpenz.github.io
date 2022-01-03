@@ -6,7 +6,7 @@ date: 2021-06-05
 
 ${"#"} Why pmount
 
-There are many ways to set up the way removable media is mounted (or even
+There are many ways to set up how removable media is mounted (or even
 auto-mounted) in linux. Out of those, *pmount* provides the following
 advantages:
 
@@ -42,9 +42,8 @@ of `lsblk` and get an immediate feedback when the drive is detected.
 ${"#"} Creating the luks-encrypted partition
 
 All examples assume that an empty USB drive was inserted and identified as
-`/dev/sdb`. Do not use the commands below if you don't understand what they are
-doing. If you have a second hard-drive identified as `/dev/sdb`, for instance,
-the commands below will make it unusable.
+`/dev/sdb`. The commands below are dangerous, do not use them if you don't
+understand what they are doing.
 
 
 ${"##"} Partition the drive
@@ -86,10 +85,11 @@ ${luksopen}
 We now have to create the filesystem. The
 [pmount manual](https://linux.die.net/man/1/pmount) has a list of supported
 filesystems. *ext4* is the most popular one for non-removable drives, but it's
-not great for drives that we want to use in multiple systems, as it hard-codes
-the UIDs. That means that we won't have the proper permissions when we plug
-the drive in other systems where our UID has a different numerical value. We'd
-then have to use *sudo*, which nullifies one of the advantages of *pmount*.
+not great for drives that we want to use in multiple systems, as the UIDs are
+hard-coded in the FS. That means that we don't have the proper permissions when
+we plug the drive in other systems where our UID has a different numerical
+value. We'd then have to use *sudo*, which nullifies one of the advantages of
+*pmount*.
 
 For this reason, we are using
 [UDF](https://en.wikipedia.org/wiki/Universal_Disk_Format) for the partition:
@@ -107,12 +107,12 @@ ${luksclose}
 
 ${"#"} Mounting/unmounting the drive
 
-We can *luksOpen* the device and just use the regular *mount* to access the
-files. But using pmount is much more convenient, as it takes care of doing both
+We could *luksOpen* the device and just use the regular *mount* to access the
+files - but using pmount is much more convenient, as it takes care of doing both
 steps and doesn't require any configuration or permissions.
 
-All partitions in block devices pop up in `/dev/disk/by-label/` as a symbolic
-link to the underlying `/dev` entry. We can simply use that path as the
+All partitions in block devices pop up in `/dev/disk/by-label/` as symbolic
+links to the underlying `/dev` entry. We can simply use that path as the
 argument to pmount to get the corresponding filesystem mounted at `/media/`:
 
 ```
