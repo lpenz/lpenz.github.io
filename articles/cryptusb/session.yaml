@@ -1,0 +1,31 @@
+fdisk: "$ {b}sudo fdisk /dev/sdb{/b}\nWelcome to fdisk (util-linux 2.36.1).\r\nChanges\
+    \ will remain in memory only, until you decide to write them.\r\nBe careful before\
+    \ using the write command.\nDevice does not contain a recognized partition table.\r\
+    \nCreated a new DOS disklabel with disk identifier 0x0677b040.\nCommand (m for\
+    \ help): {b}n{/b}\nPartition type\r\n   p   primary (0 primary, 0 extended, 4\
+    \ free)\r\n   e   extended (container for logical partitions)\r\nSelect (default\
+    \ p): {b}p{/b}\nPartition number (1-4, default 1): {b}{/b}\nFirst sector (2048-102399,\
+    \ default 2048): {b}{/b}\nLast sector, +/-sectors or +/-size{K,M,G,T,P} (2048-102399,\
+    \ default 102399): {b}{/b}\nCreated a new partition 1 of type 'Linux' and of size\
+    \ 49 MiB.\nCommand (m for help): {b}w{/b}\nThe partition table has been altered.\r\
+    \nSyncing disks."
+luksclose: $ {b}sudo cryptsetup luksClose cryptdev{/b}
+luksformat: "$ {b}part=/dev/sdb1{/b}\n$ {b}sudo cryptsetup luksFormat --label cryptflash\
+    \ \"$part\"{/b}\nWARNING: Device /dev/sdb1 already contains a 'dos' partition\
+    \ signature.\nWARNING!\r\n========\r\nThis will overwrite data on /dev/sdb1 irrevocably.\n\
+    Are you sure? (Type 'yes' in capital letters): {b}YES{/b}\nEnter passphrase for\
+    \ /dev/sdb1: {b}mypassphrase{/b}\n\r\nVerify passphrase: {b}mypassphrase{/b}"
+luksopen: '$ {b}sudo cryptsetup luksOpen "$part" cryptdev{/b}
+
+    Enter passphrase for /dev/sdb1: {b}mypassphrase{/b}'
+mkfs: "$ {b}sudo mkfs.udf -l cryptflash /dev/mapper/cryptdev{/b}\nfilename=/dev/mapper/cryptdev\r\
+    \nlabel=cryptflash\r\nuuid=61d338188d37bb6e\r\nblocksize=512\r\nblocks=69632\r\
+    \nudfrev=2.01\r\nstart=0, blocks=64, type=ERASE\nstart=64, blocks=13, type=VRS\n\
+    start=77, blocks=19, type=ERASE\nstart=96, blocks=16, type=MVDS\nstart=112, blocks=16,\
+    \ type=ERASE\nstart=128, blocks=16, type=LVID\nstart=144, blocks=112, type=ERASE\n\
+    start=256, blocks=1, type=ANCHOR\nstart=257, blocks=69112, type=PSPACE\nstart=69369,\
+    \ blocks=6, type=ERASE\nstart=69375, blocks=1, type=ANCHOR\nstart=69376, blocks=96,\
+    \ type=ERASE\nstart=69472, blocks=16, type=RVDS\nstart=69488, blocks=143, type=ERASE\n\
+    start=69631, blocks=1, type=ANCHOR\nmkudffs: Warning: Creating new UDF filesystem\
+    \ on partition, and not on whole disk device\r\nmkudffs: Warning: UDF filesystem\
+    \ on partition cannot be read on Apple systems"

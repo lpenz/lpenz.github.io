@@ -7,11 +7,12 @@ if False:
     env = None
 Import(["env"])
 
-env["SESSION_YAML"] = env.File("_session.yaml")
-env.Command("_session.yaml", "session", "./$SOURCE $CONF $TARGET")
+# env["SESSION_YAML"] = env.File("_session.yaml")
+# env.Command("_session.yaml", "session", "./$SOURCE $CONF $TARGET")
+env["SESSION_YAML"] = env.File("session.yaml")
 
 env.MAKO("_index.md", "index.md.mako", MAKOFLAGS="-i $SESSION_YAML")
-env.Depends("_index.md", "_session.yaml")
+env.Depends("_index.md", env["SESSION_YAML"])
 
 env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
 
