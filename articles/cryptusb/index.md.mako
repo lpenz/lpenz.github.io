@@ -87,8 +87,8 @@ We now have to create the filesystem. The
 [pmount manual](https://linux.die.net/man/1/pmount) has a list of supported
 filesystems. *ext4* is the most popular one for non-removable drives, but it's
 not great for drives that we want to use in multiple systems, as it hard-codes
-the UIDs. That means that if we won't have the proper permissions if we plug
-the drive in another system where our UID has a different numerical value. We'd
+the UIDs. That means that we won't have the proper permissions when we plug
+the drive in other systems where our UID has a different numerical value. We'd
 then have to use *sudo*, which nullifies one of the advantages of *pmount*.
 
 For this reason, we are using
