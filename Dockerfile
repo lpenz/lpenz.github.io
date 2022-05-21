@@ -15,6 +15,7 @@ RUN set -e -x; \
         python3-mako python3-yaml python3-nose flake8 black \
         sudo python3-pexpect \
         cryptsetup fdisk udftools \
+        gnupg gpg gpg-agent \
         linkchecker \
         scons \
         git
