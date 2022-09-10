@@ -424,6 +424,8 @@ ${"#"} References
   <https://security.stackexchange.com/questions/14718/does-openpgp-key-expiration-add-to-security/>
 - Ana Guerrero López tutorial that uses subkeys:
   <http://ekaia.org/blog/2009/05/10/creating-new-gpgkey/>
+- There's also a Debian page about subkeys:
+  <https://wiki.debian.org/Subkeys>
 - Generating a revocation certificate with gpg:
   <https://debian-administration.org/article/450/Generating_a_revocation_certificate_with_gpg>
 - Getting information from an armored gpg public key file:
