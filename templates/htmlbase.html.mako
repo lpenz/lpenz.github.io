@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>${title}</title>
+% if mathjax:
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
+% endif
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <link rel="me" href="https://cv.lpenz.org" />
 <link rel="me" href="https://twitter.com/lpenz" />
 <link rel="me" href="https://www.linkedin.com/in/lpenz" />
 <link rel="me" href="https://github.com/lpenz" />
 <link rel="me" href="https://stackoverflow.com/cv/lpenz" />
 <link rel="me" href="mailto:lpenz@lpenz.org" />
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <meta name="author" content="Leandro Lisboa Penz"/>
 <meta name="description" content="Avulsos by Penz"/>
 <style>
@@ -75,9 +79,6 @@ div#toc li, div#toc ul, div#toc ul li {
 <link rel="icon" type="image/png" href="${top}/media/logo-black.png" />
 <meta name="p:domain_verify" content="629162357f7580ddc473183d74c50ef8"/>
 <meta name="generator" content="http://txt2tags.sf.net" />
-% if mathjax:
-<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML' async></script>
-% endif
 % if disabled:
 <script type="text/javascript">
 	//<![CDATA[
@@ -85,7 +86,6 @@ div#toc li, div#toc ul, div#toc ul li {
 	//]]>
 </script>
 % endif
-<title>${title}</title>
 <%block name="htmlheader"/>
 </head>
 
