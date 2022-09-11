@@ -20,7 +20,9 @@ def doit(outfile, files):
             s = f
         o.write("  <url>\n")
         o.write("    <loc>http://www.lpenz.org/%s</loc>\n" % f)
-        d = subprocess.check_output('git log -1 --format=%%ai "%s"' % s, shell=True)
+        d = subprocess.check_output(
+            'git log -1 --format=%%ai "%s"' % s, shell=True, text=True
+        )
         if len(d) > 0:
             o.write("    <lastmod>%s</lastmod>\n" % d[0:10])
         o.write("  </url>\n")
