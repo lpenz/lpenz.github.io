@@ -285,7 +285,7 @@ def do_main(gpgconf, outputfile):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("gpgconf")
     parser.add_argument("outputfile")
     args = parser.parse_args()

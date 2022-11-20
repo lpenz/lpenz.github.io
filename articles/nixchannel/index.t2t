@@ -92,7 +92,7 @@ Then sign the results:
 ```
 export NIX_SECRET_KEY_FILE="$PWD/nix-cache-priv-key.pem"
 echo "$NIX_CACHE_PRIV_KEY" > "$NIX_SECRET_KEY_FILE"
-nix sign-paths
+nix store sign -k "$NIX_SECRET_KEY_FILE"
 ```
 
 And finally, copy the results from the store to the cache directory:
