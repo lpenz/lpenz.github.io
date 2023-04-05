@@ -38,6 +38,7 @@ _*
 /articles/bugprobhunt/r1w*_probabilities.csv
 /articles/bugprobhunt/r1w*_results.csv
 /articles/gpg/index.md
+/articles/rust-snippets/*/target
 
 # Ignore only on devel:
 index.html

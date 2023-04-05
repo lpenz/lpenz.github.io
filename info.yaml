@@ -123,4 +123,6 @@ whatsnew:
       news: >
         [Debian Bookworm https://en.wikipedia.org/wiki/Debian_version_history]
         was just released. Time to update the environment (Dockerfile) that builds this website.
-
+    - date: 2023-07-30
+      news: >
+        New article: [Rust snippets $home$/articles/rust-snippets/index.html].

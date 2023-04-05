@@ -1,0 +1,49 @@
+import os
+
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+Import(["env"])
+
+# Grab some files and put them in _data.yml:
+env["DATA_YAML"] = env.File("_data.yml")
+env.Command(
+    "_data.yml",
+    [
+        "files2yaml",
+        "snippets/src/bin/tool.rs",
+        "snippets/src/libmain.rs",
+        "snippets/src/cmd.rs",
+        "snippets/src/myerrorcrateless.rs",
+        "snippets-async/src/bin/tool.rs",
+        "snippets-async/src/libmain.rs",
+        "snippets-async/src/cmd.rs",
+    ],
+    "./$SOURCES -o $TARGET",
+)
+
+# Mako first pass, render _data.yml, from markdown to markdown:
+env.MAKO("_index.md", "index.md.mako", MAKOFLAGS="-i $DATA_YAML")
+env.Depends("_index.md", env["DATA_YAML"])
+
+# Pandoc from .md into bhtml.mako
+env["PANDOC_TITLESFIX"] = env.File("indexfix.lua")
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "_index.md",
+    PANDOCFLAGS="-N -s -f markdown -t html --toc --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+
+# Mako second pass, into HTML:
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+
+env.HTMLSITEFILES.add("articles/rust-snippets/index.html")
