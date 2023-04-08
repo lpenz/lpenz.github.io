@@ -16,14 +16,14 @@ env.MAKO("_index.md", "index.md.mako", MAKOFLAGS="-i $GPGSESSION_YAML")
 env.Depends("_index.md", "_gpgsession.yml")
 
 env["PANDOC_TITLESFIX"] = env.File("indexfix.lua")
-env["PANDOC_TEMPLATE"] = env.File("tmpl.html")
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
 
 env.PANDOC(
     "_index.bhtml.mako.sed",
     "_index.md",
     PANDOCFLAGS="-N -s --toc --template=$PANDOC_TEMPLATE",
 )
-env.Depends("_index.bhtml.mako.sed", "tmpl.html")
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Command(
     "_index.bhtml.mako",
     "_index.bhtml.mako.sed",
