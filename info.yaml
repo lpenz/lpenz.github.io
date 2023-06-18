@@ -119,3 +119,9 @@ whatsnew:
         notations documenting their usage. I've written down some
         notes in
         [Using GPG and signing git commits $home$/articles/gpg/index.html].
+    - date: 2023-06-18
+      news: >
+        [Debian Bookworm (12) https://en.wikipedia.org/wiki/Debian_version_history#Debian_12_(Bookworm)]
+        was just released. Time to update the environment (Dockerfile) that
+        builds this website.
+
