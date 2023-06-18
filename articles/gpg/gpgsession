@@ -149,9 +149,7 @@ def do_main(gpgconf, outputfile):
         with p.logging("gpglist1"):
             p.sendwait("gpg -k")
         # Figure out uuid:
-        m_masteruuid = re.search(
-            "gpg: key ([0-9A-F]+) marked as ultimately trusted", genkey
-        )
+        m_masteruuid = re.search("pub *[^/]+/([0-9A-F]+) ", genkey)
         masteruuid = m_masteruuid.group(1)
         p.sendwait("masterkeyid=%s" % masteruuid)
         data["masteruuid"] = masteruuid
@@ -265,6 +263,7 @@ def do_main(gpgconf, outputfile):
             p.sendwait('git config --global user.name "Leandro Lisboa Penz"')
             p.sendwait('git config --global user.email "lpenz@lpenz.org"')
             p.sendwait("git config --global init.defaultBranch main")
+            p.sendwait("git config --global core.pager ''")
             p.sendwait("git config --global user.signingkey %s" % subkeyuuid)
             with tempfile.TemporaryDirectory() as tmpdir3:
                 p.sendwait("cd %s" % tmpdir3)

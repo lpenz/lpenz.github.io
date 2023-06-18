@@ -23,7 +23,7 @@ class Session(pexpect.spawn):
         )
         self.preproc = preproc
         self.data = data
-        self._prompt = u"[#$] $"
+        self._prompt = "[#$] $"
         self._logfd = None
         self._pending = ""
         self.waitready()

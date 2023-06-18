@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:bookworm
 MAINTAINER Leandro Lisboa Penz <lpenz@lpenz.org>
 
 # install debian packages:
@@ -7,7 +7,7 @@ RUN set -e -x; \
     apt-get update; \
     apt-get install -y --no-install-recommends locales \
         graphviz txt2tags \
-        haskell-platform \
+        ghc \
         r-cran-ggplot2 r-cran-reshape \
         pandoc \
         inkscape \

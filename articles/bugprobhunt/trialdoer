@@ -20,10 +20,10 @@ def binP(N, p, x1, x2):
         tot += v
         if k >= x1 and k <= x2:
             s += v
-        if tot > 10 ** 30:
-            s = s / 10 ** 30
-            tot = tot / 10 ** 30
-            v = v / 10 ** 30
+        if tot > 10**30:
+            s = s / 10**30
+            tot = tot / 10**30
+            v = v / 10**30
         k += 1
         v = v * q * (N + 1 - k) / k
     return s / tot
@@ -54,7 +54,7 @@ def calcBin(vx, vN, vCL=95):
         vsH = vP
         p = vTL / 100
 
-        while (vsH - vsL) > 10 ** -5:
+        while (vsH - vsL) > 10**-5:
             if binP(vN, v, vx, vN) > p:
                 vsH = v
                 v = (vsL + v) / 2
@@ -70,7 +70,7 @@ def calcBin(vx, vN, vCL=95):
         vsL = vP
         vsH = 1
         p = vTU / 100
-        while (vsH - vsL) > 10 ** -5:
+        while (vsH - vsL) > 10**-5:
             if binP(vN, v, 0, vx) < p:
                 vsH = v
                 v = (vsL + v) / 2
