@@ -48,16 +48,6 @@
 
 ${self.body()}
 
-<!-- Google Analytics -->
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-4182011-2', 'auto');
-ga('set', 'anonymizeIp', true);
-ga('send', 'pageview');
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-<!-- End Google Analytics -->
-
 </div><!--container-->
 
 <div class="footer bg-dark text-light">
