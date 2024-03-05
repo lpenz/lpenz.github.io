@@ -1,0 +1,15 @@
+if False:
+    Import = None
+    env = None
+Import(["env"])
+
+# env.Command('sharedexpenses.lhs', 'index.t2t', 'cp $SOURCE $TARGET')
+env.HASKELL_EXECUTABLE(
+    "sharedexpenses.lhs",
+    HASKELLFLAGS="--make -cpp -Werror -Wall -fno-warn-missing-signatures",
+)
+env.Command("results.txt", "sharedexpenses", "$SOURCE > $TARGET")
+
+env.T2TBHTML("index.bhtml.mako", "index.t2t")
+env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/hedsl-sharedexpenses/index.html")

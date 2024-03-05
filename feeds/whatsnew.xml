@@ -1,0 +1,346 @@
+<?xml version="1.0"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Avulsos by Penz - Whatsnew</title>
+        <link>http://www.lpenz.org</link>
+        <description>Whatsnew in Avulsos by Penz page.</description>
+        <managingEditor>lpenz@lpenz.org (Leandro Lisboa Penz)</managingEditor>
+        <webMaster>lpenz@lpenz.org (Leandro Lisboa Penz)</webMaster>
+        <docs>http://www.rssboard.org/rss-specification</docs>
+
+        <pubDate>Sun, 30 Jul 2023 00:00:00 +0000</pubDate>
+        <lastBuildDate>Sun, 30 Jul 2023 00:00:00 +0000</lastBuildDate>
+
+        <language>en</language>
+        <image>
+            <title>Avulsos by Penz - Whatsnew</title>
+            <link>http://www.lpenz.org</link>
+            <url>http://www.lpenz.org/logo-black.png</url>
+        </image>
+        <atom:link href="http://www.lpenz.org/feeds/whatsnew.xml" rel="self" type="application/rss+xml"/>
+
+		
+		<item>
+			<title>News for 2010-04-11</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2010-04-11</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2010-04-11</guid>
+			<pubDate>Sun, 11 Apr 2010 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+My notes on how to debianize a git repository now available online in the <a href="http://www.lpenz.org/articles/debgit/index.html">Debianization with git-buildpackage</a> article 
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2010-08-15</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2010-08-15</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2010-08-15</guid>
+			<pubDate>Sun, 15 Aug 2010 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The <a href="http://www.lpenz.org/articles/df0pred-1/index.html">Hard drive occupation prediction with R</a> article shows how to predict future free partition occupation by using a simple linear regression.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2011-01-22</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2011-01-22</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2011-01-22</guid>
+			<pubDate>Sat, 22 Jan 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The second article on the "HD occupation" series, <a href="http://www.lpenz.org/articles/df0pred-2/index.html">Hard drive occupation prediction with R - Part 2</a>, shows us where the linear regression breaks (hint: real life), and uses Monte Carlo simulations to build a more robust method.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2011-02-02</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2011-02-02</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2011-02-02</guid>
+			<pubDate>Wed, 02 Feb 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The <a href="http://www.lpenz.org/articles/hedsl-sharedexpenses/index.html">Haskell eDSL Tutorial - Shared expenses</a> explores the concept of domain-specific-language in Haskell by tackling a practical problem: sharing trip expenses.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2011-02-16</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2011-02-16</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2011-02-16</guid>
+			<pubDate>Wed, 16 Feb 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+<a href="http://www.afterthedeadline.com/">After the Deadline</a> is a English language checker used by <a href="https://wordpress.com/">Wordpress.com</a> among others. I have built a command-line client for it: the <a href="https://github.com/lpenz/atdtool">atdtool</a>.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2011-06-23</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2011-06-23</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2011-06-23</guid>
+			<pubDate>Thu, 23 Jun 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The last article in the "HD occupation series", <a href="http://www.lpenz.org/articles/df0pred-3/index.html">Hard drive occupation prediction with R - Part 3</a>, explores how we can use historical data and Monte Carlo simulations to predict the range of possible values for HD occupation at any point in the future.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2011-11-15</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2011-11-15</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2011-11-15</guid>
+			<pubDate>Tue, 15 Nov 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+<a href="http://www.google.com/sheets/about/">Google sheets</a> is a great tool for collaboration. It's a spreadsheet where a team can simultaneously edit cells online, in a clear and consistent fashion. To ease the use of the product of this collaboration in other contexts, you can now use <a href="https://github.com/lpenz/google-spreadsheet-csv">google-spreadsheet-csv</a> to download and upload the CSV version of a sheet.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2012-10-21</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2012-10-21</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2012-10-21</guid>
+			<pubDate>Sun, 21 Oct 2012 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+I always use <em>watch</em> to monitor the output of Unix processes and wait for events. I sometimes wonder about the history of outputs. Enters <a href="https://github.com/lpenz/watchng">watchng</a>, a python script that shows the output of a process along with the date-time, but only when this output changes between two consecutive runs.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2013-03-17</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2013-03-17</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2013-03-17</guid>
+			<pubDate>Sun, 17 Mar 2013 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+I have built a new GPG key, and re-signed all my debian packages with it.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2013-12-09</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2013-12-09</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2013-12-09</guid>
+			<pubDate>Mon, 09 Dec 2013 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The <a href="http://www.lpenz.org/articles/bugprobhunt/index.html">Probabilistic bug hunting</a> article shows us how to deal with software (or hardware, for that matter) bugs that do not have a deterministic behaviour.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2015-10-04</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2015-10-04</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2015-10-04</guid>
+			<pubDate>Sun, 04 Oct 2015 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The <a href="http://www.lpenz.org/articles/liveusb/index.html">Create a Debian bootable live USB</a> article shows my notes on how to create a rescue USB stick, or portable environment.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2016-07-24</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2016-07-24</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2016-07-24</guid>
+			<pubDate>Sun, 24 Jul 2016 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The new subdomain <a href="http://cv.lpenz.org/">http://cv.lpenz.org/</a> now has my Curriculum Vitae, rendered from <a href="http://github.com/lpenz/cv">http://github.com/lpenz/cv</a> with continuous deployment.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2018-04-05</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2018-04-05</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2018-04-05</guid>
+			<pubDate>Thu, 05 Apr 2018 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+<code>git-buildpackage</code> commands changed, so the article <a href="http://www.lpenz.org/articles/debgit/index.html">Debianization with git-buildpackage</a> had to be fixed and updated.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2018-05-16</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2018-05-16</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2018-05-16</guid>
+			<pubDate>Wed, 16 May 2018 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+The Debian repository was removed from this domain, as I now keep all my packages in <a href="https://packagecloud.io/lpenz/lpenz">packagecloud</a>. I have also removed my GPG public key, as that was used only for Debian package signing, and I have lost the private key :)
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2019-01-08</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2019-01-08</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2019-01-08</guid>
+			<pubDate>Tue, 08 Jan 2019 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+Wrote down some notes on <a href="http://www.lpenz.org/articles/ansiblerpi/index.html">Provisioning a Raspberry Pi using ansible</a>. I'm currently using a hybrid Raspbian-Debian installation (Raspbianbian?)
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2019-06-25</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2019-06-25</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2019-06-25</guid>
+			<pubDate>Tue, 25 Jun 2019 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+Updated the <a href="http://www.lpenz.org/articles/liveusb/index.html">Debian live USB</a> article with Debian Stretch kernel version numbers, and with instructions on how to test with qemu.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2019-07-07</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2019-07-07</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2019-07-07</guid>
+			<pubDate>Sun, 07 Jul 2019 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+I've written down some notes on how one can go about <a href="http://www.lpenz.org/articles/nixchannel/index.html">Creating a static nix channel</a> that can be deployed with <a href="https://travis-ci.com">travis-ci</a> to <a href="https://pages.github.com/">github pages</a>. I've created one for myself <a href="https://github.com/lpenz/nixpkgs-lpenz">here</a>.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2020-03-22</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2020-03-22</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2020-03-22</guid>
+			<pubDate>Sun, 22 Mar 2020 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+While looking up (once again) how to use LUKS, I figured I had some notes laying around. Finished them up in <a href="http://www.lpenz.org/articles/luksfile/index.html">Creating an encrypted directory-in-a-file</a>.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2021-06-07</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2021-06-07</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2021-06-07</guid>
+			<pubDate>Mon, 07 Jun 2021 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+<a href="http://www.lpenz.org/articles/cryptusb/index.html">Creating a pmount-compatible encrypted USB drive</a> has notes specific on how to use LUKS to encrypt removable media.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2021-07-11</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2021-07-11</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2021-07-11</guid>
+			<pubDate>Sun, 11 Jul 2021 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+I've been standardizing my github repositories and found some common patterns, now documented in <a href="http://www.lpenz.org/articles/github-project-struct/index.html">github project structure best practices</a>. This is probably the one article that I'll be constantly updating as things change.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2022-05-22</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2022-05-22</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2022-05-22</guid>
+			<pubDate>Sun, 22 May 2022 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+While looking at how to set up <em>verified</em> commits in <a href="https://github.com">github</a>, I ended up with a scheme using a vaulted private master key and multiple private subkeys, with notations documenting their usage. I've written down some notes in <a href="http://www.lpenz.org/articles/gpg/index.html">Using GPG and signing git commits</a>.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2023-06-18</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2023-06-18</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2023-06-18</guid>
+			<pubDate>Sun, 18 Jun 2023 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+<a href="https://en.wikipedia.org/wiki/Debian_version_history">Debian Bookworm</a> was just released. Time to update the environment (Dockerfile) that builds this website.
+</p>
+</div>
+]]></description>
+		</item>
+
+		
+		<item>
+			<title>News for 2023-07-30</title>
+			<link>http://www.lpenz.org/index.html#whatsnew2023-07-30</link>
+			<guid>http://www.lpenz.org/index.html#whatsnew2023-07-30</guid>
+			<pubDate>Sun, 30 Jul 2023 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+New article: <a href="http://www.lpenz.org/articles/rust-snippets/index.html">Rust snippets</a>.
+</p>
+</div>
+]]></description>
+		</item>
+
+
+    </channel>
+</rss>

@@ -1,0 +1,32 @@
+#!/bin/bash
+
+git update-server-info
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$BRANCH" != "master" ]; then
+	echo "deploy can only be used in mater branch; current branch: $BRANCH" >&2
+	exit 1
+fi
+
+set -e -x
+
+s3cmd sync --delete-removed \
+	--exclude=* \
+	--include=*.html \
+	--include=*.css \
+	--include=*.png \
+	--include=*.ico \
+	--include=*.xml \
+	--include=*.dat \
+	--include=*.R \
+	--include=articles/bugprobhunt/box \
+	--include=articles/bugprobhunt/trials.csv \
+	--include=robots.txt \
+	--include=.git/* \
+	--exclude=.git/gitk.cache \
+	--exclude=templates/* \
+	. s3://lpenz.org
+
+tools/s3fixmeta
+

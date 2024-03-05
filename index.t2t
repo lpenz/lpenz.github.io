@@ -1,0 +1,105 @@
+Avulsos by Penz
+
+
+This page is basically my blog. My interests wander mostly around math,
+statistics and software.
+
+= Posts =
+
+
+: 2023-07-30
+New article: [Rust snippets articles/rust-snippets/index.html].
+
+
+: 2023-06-18
+[Debian Bookworm https://en.wikipedia.org/wiki/Debian_version_history] was just released. Time to update the environment (Dockerfile) that builds this website.
+
+
+: 2022-05-22
+While looking at how to set up //verified// commits in [github https://github.com], I ended up with a scheme using a vaulted private master key and multiple private subkeys, with notations documenting their usage. I've written down some notes in [Using GPG and signing git commits articles/gpg/index.html].
+
+
+: 2021-07-11
+I've been standardizing my github repositories and found some common patterns, now documented in [github project structure best practices articles/github-project-struct/index.html]. This is probably the one article that I'll be constantly updating as things change.
+
+
+: 2021-06-07
+[Creating a pmount-compatible encrypted USB drive articles/cryptusb/index.html] has notes specific on how to use LUKS to encrypt removable media.
+
+
+: 2020-03-22
+While looking up (once again) how to use LUKS, I figured I had some notes laying around. Finished them up in [Creating an encrypted directory-in-a-file articles/luksfile/index.html].
+
+
+: 2019-07-07
+I've written down some notes on how one can go about [Creating a static nix channel articles/nixchannel/index.html] that can be deployed with [travis-ci https://travis-ci.com] to [github pages https://pages.github.com/]. I've created one for myself [here https://github.com/lpenz/nixpkgs-lpenz].
+
+
+: 2019-06-25
+Updated the [Debian live USB articles/liveusb/index.html] article with Debian Stretch kernel version numbers, and with instructions on how to test with qemu.
+
+
+: 2019-01-08
+Wrote down some notes on [Provisioning a Raspberry Pi using ansible articles/ansiblerpi/index.html]. I'm currently using a hybrid Raspbian-Debian installation (Raspbianbian?)
+
+
+: 2018-05-16
+The Debian repository was removed from this domain, as I now keep all my packages in [packagecloud https://packagecloud.io/lpenz/lpenz]. I have also removed my GPG public key, as that was used only for Debian package signing, and I have lost the private key :)
+
+
+: 2018-04-05
+``git-buildpackage`` commands changed, so the article [Debianization with git-buildpackage articles/debgit/index.html] had to be fixed and updated.
+
+
+: 2016-07-24
+The new subdomain http://cv.lpenz.org/ now has my Curriculum Vitae, rendered from http://github.com/lpenz/cv with continuous deployment.
+
+
+: 2015-10-04
+The [Create a Debian bootable live USB articles/liveusb/index.html] article shows my notes on how to create a rescue USB stick, or portable environment.
+
+
+: 2013-12-09
+The [Probabilistic bug hunting articles/bugprobhunt/index.html] article shows us how to deal with software (or hardware, for that matter) bugs that do not have a deterministic behaviour.
+
+
+: 2013-03-17
+I have built a new GPG key, and re-signed all my debian packages with it.
+
+
+: 2012-10-21
+I always use //watch// to monitor the output of Unix processes and wait for events. I sometimes wonder about the history of outputs. Enters [watchng https://github.com/lpenz/watchng], a python script that shows the output of a process along with the date-time, but only when this output changes between two consecutive runs.
+
+
+: 2011-11-15
+[Google sheets http://www.google.com/sheets/about/] is a great tool for collaboration. It's a spreadsheet where a team can simultaneously edit cells online, in a clear and consistent fashion. To ease the use of the product of this collaboration in other contexts, you can now use [google-spreadsheet-csv https://github.com/lpenz/google-spreadsheet-csv] to download and upload the CSV version of a sheet.
+
+
+: 2011-06-23
+The last article in the "HD occupation series", [Hard drive occupation prediction with R - Part 3 articles/df0pred-3/index.html], explores how we can use historical data and Monte Carlo simulations to predict the range of possible values for HD occupation at any point in the future.
+
+
+: 2011-02-16
+[After the Deadline http://www.afterthedeadline.com/] is a English language checker used by [Wordpress.com https://wordpress.com/] among others. I have built a command-line client for it: the [atdtool https://github.com/lpenz/atdtool].
+
+
+: 2011-02-02
+The [Haskell eDSL Tutorial - Shared expenses articles/hedsl-sharedexpenses/index.html] explores the concept of domain-specific-language in Haskell by tackling a practical problem: sharing trip expenses.
+
+
+: 2011-01-22
+The second article on the "HD occupation" series, [Hard drive occupation prediction with R - Part 2 articles/df0pred-2/index.html], shows us where the linear regression breaks (hint: real life), and uses Monte Carlo simulations to build a more robust method.
+
+
+: 2010-08-15
+The [Hard drive occupation prediction with R articles/df0pred-1/index.html] article shows how to predict future free partition occupation by using a simple linear regression.
+
+
+: 2010-04-11
+My notes on how to debianize a git repository now available online in the [Debianization with git-buildpackage articles/debgit/index.html] article 
+
+
+
+
+% vim: ft=txt2tags
+

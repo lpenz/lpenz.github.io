@@ -1,0 +1,67 @@
+#!/usr/bin/python3
+
+import os
+import re
+from boto.s3.connection import S3Connection
+import sys
+import mimetypes
+import magic
+
+
+def main():
+    from optparse import OptionParser
+
+    parser = OptionParser("usage: %prog")
+    opts, args = parser.parse_args(sys.argv[1:])
+    if len(args) != 0:
+        parser.error("wrong number of arguments")  # Will exit
+
+    access_key = None
+    secret_key = None
+    for line in open(os.path.join(os.environ["HOME"], ".s3cfg")):
+        m = re.match(r"^access_key\s*=\s*([A-Z0-9]+)\s*$", line)
+        if m:
+            access_key = m.group(1)
+            continue
+        m = re.match(r"^secret_key\s*=\s*([a-zA-Z0-9]+)\s*$", line)
+        if m:
+            secret_key = m.group(1)
+    assert access_key
+    assert secret_key
+
+    bucket = S3Connection(access_key, secret_key).get_bucket("lpenz.org")
+    ms = magic.open(magic.MIME)
+    ms.load()
+    keys = bucket.list()
+    keynamemax = max([len(k.name) for k in keys])
+
+    def msg(k, x):
+        return sys.stdout.write(("%%-%ds %%s\n" % (keynamemax + 1)) % (k.name, x))
+
+    for key in keys:
+        s3_content_type = bucket.lookup(key.name).content_type
+        if (
+            key.name.endswith(".html")
+            and "xhtml1-transitional" in open(key.name).read()
+        ):
+            mimet = "text/html"
+        elif key.name.endswith(".dat"):
+            mimet = ms.file(key.name)
+        else:  # dicover:
+            mimet, _ = mimetypes.guess_type(key.name)
+            if not mimet:
+                mimet = ms.file(key.name)
+        if not mimet:
+            msg(key, "unable to discover type, keeping [%s]" % (s3_content_type))
+            continue
+        if s3_content_type == mimet:
+            # msg(key, 'type [%s] ok!' % (s3_content_type))
+            continue
+        msg(key, "fixing type, old [%s] will be [%s]" % (s3_content_type, mimet))
+        key.copy(
+            key.bucket, key.name, preserve_acl=True, metadata={"Content-Type": mimet}
+        )
+
+
+if __name__ == "__main__":
+    main()

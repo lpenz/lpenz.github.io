@@ -1,0 +1,19 @@
+
+Call:
+lm(formula = usd ~ day)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3612.1 -1412.8   300.7  1278.9  3301.0 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -6.425e+06  3.904e+04  -164.6   <2e-16 ***
+day          4.667e+02  2.686e+00   173.7   <2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1697 on 161 degrees of freedom
+Multiple R-squared:  0.9947,	Adjusted R-squared:  0.9947 
+F-statistic: 3.019e+04 on 1 and 161 DF,  p-value: < 2.2e-16
+
