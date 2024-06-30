@@ -46,6 +46,10 @@ pretty much always like the following:
 ${snippets_src_bin_tool_rs}
 ```
 
+It's worth making this `main` function the only `pub` in the crate if
+you want to use a standard CI that includes [cargo-semver-checks] like
+[ghworkflow-rust].
+
 
 ${"##"} Crates
 
@@ -106,6 +110,10 @@ And add `#[tokio::main]` and `async` to the top-level `main`:
 ```rust
 ${snippets_async_src_bin_tool_rs}
 ```
+
+Again, it's worth making this `main` function the only `pub` in the
+crate if you want to use a standard CI that includes
+[cargo-semver-checks] like [ghworkflow-rust].
 
 
 # Errors
@@ -341,3 +349,5 @@ hashmap.entry(key).or_insert_with(|| vec![]).push(9);
 [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber
 [color_eyre]: https://docs.rs/color-eyre/latest/color_eyre/
 [`RUST_LOG`]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html
+[cargo-semver-checks]: https://crates.io/crates/cargo-semver-checks
+[ghworkflow-rust]: https://github.com/lpenz/ghworkflow-rust
