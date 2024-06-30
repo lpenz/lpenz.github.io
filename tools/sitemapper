@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+import sys
+import os
+import subprocess
+
+
+def doit(outfile, files):
+    if outfile != "-":
+        o = open(outfile + ".tmp", "w")
+    else:
+        o = sys.stdout
+    o.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    o.write('<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">\n')
+    for f in files:
+        if not f.endswith("index.html"):
+            continue
+        s = f.replace(".html", ".t2t")
+        if not os.path.exists(s):
+            s = f
+        o.write("  <url>\n")
+        o.write("    <loc>http://www.lpenz.org/%s</loc>\n" % f)
+        d = subprocess.check_output(
+            'git log -1 --format=%%ai "%s"' % s, shell=True, text=True
+        )
+        if len(d) > 0:
+            o.write("    <lastmod>%s</lastmod>\n" % d[0:10])
+        o.write("  </url>\n")
+    o.write("</urlset>\n")
+    if outfile != "-":
+        o.close()
+        os.rename(outfile + ".tmp", outfile)
+
+
+# Main: ######################################################################
+
+
+def main():
+    from optparse import OptionParser
+
+    parser = OptionParser("usage: %prog <output> <sitefiles>")
+    opts, args = parser.parse_args(sys.argv[1:])
+    if len(args) < 2:
+        parser.error("wrong number of arguments")  # Will exit
+    doit(args[0], args[1:])
+
+
+if __name__ == "__main__":
+    main()

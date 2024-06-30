@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Avulsos by Penz - Articles tagged as gpg </title>
+        <link>http://www.lpenz.org</link>
+        <description>Articles tagged as gpg in Avulsos by Penz page.</description>
+        <managingEditor>lpenz@lpenz.org (Leandro Lisboa Penz)</managingEditor>
+        <webMaster>lpenz@lpenz.org (Leandro Lisboa Penz)</webMaster>
+        <docs>http://www.rssboard.org/rss-specification</docs>
+
+        <pubDate>Sun, 22 May 2022 00:00:00 +0000</pubDate>
+        <lastBuildDate>Sun, 22 May 2022 00:00:00 +0000</lastBuildDate>
+
+        <language>en</language>
+        <image>
+            <title>Avulsos by Penz - Articles tagged as gpg </title>
+            <link>http://www.lpenz.org</link>
+            <url>http://www.lpenz.org/logo-black.png</url>
+        </image>
+        <atom:link href="http://www.lpenz.org/feeds/articles.xml" rel="self" type="application/rss+xml"/>
+
+
+
+		<item>
+			<title>Using GPG and signing git commits</title>
+			<link>http://www.lpenz.org/articles/gpg</link>
+			<guid>http://www.lpenz.org/articles/gpg</guid>
+			<pubDate>Sun, 22 May 2022 00:00:00 +0000</pubDate>
+			<description><![CDATA[]]></description>
+		</item>
+
+
+    </channel>
+</rss>

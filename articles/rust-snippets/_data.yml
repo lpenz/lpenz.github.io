@@ -1,0 +1,46 @@
+snippets_async_src_bin_tool_rs: "// Copyright information ...\n\n#[tokio::main]\n\
+    async fn main() -> Result<(), Box<dyn std::error::Error>> {\n    color_eyre::install()?;\n\
+    \    tracing_subscriber::fmt()\n        .with_span_events(tracing_subscriber::fmt::format::FmtSpan::ACTIVE)\n\
+    \        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())\n\
+    \        .init();\n    snippets::main().await?;\n    Ok(())\n}\n"
+snippets_async_src_cmd_rs: "use tokio::process::Command;\n\npub async fn run_commands()\
+    \ -> std::io::Result<()> {\n    let output = Command::new(\"ls\").args([\"-l\"\
+    , \"/\"]).output().await?;\n    println!(\"{:?}\", output.status);\n    println!(\"\
+    {:?}\", output.stdout);\n    Ok(())\n}\n"
+snippets_async_src_libmain_rs: "// Copyright information ...\nuse clap::Parser;\n\
+    use color_eyre::Result;\n\n#[derive(Parser, Debug)]\n#[command(author, version,\
+    \ about, long_about = None)]\nstruct Cli {\n    // Add command-line arguments\
+    \ to this struct, with documentation\n}\n\n#[tracing::instrument]\npub async fn\
+    \ main() -> Result<()> {\n    let args = Cli::parse();\n    // Program goes here\n\
+    \    // Example trace:\n    tracing::info!(\"args struct: {:?}\", args);\n   \
+    \ // Return Ok(()) on success\n    Ok(())\n}\n"
+snippets_src_bin_tool_rs: "// Copyright information ...\n\nfn main() -> Result<(),\
+    \ Box<dyn std::error::Error>> {\n    color_eyre::install()?;\n    tracing_subscriber::fmt()\n\
+    \        .with_span_events(tracing_subscriber::fmt::format::FmtSpan::ACTIVE)\n\
+    \        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())\n\
+    \        .init();\n    snippets::main()?;\n    Ok(())\n}\n"
+snippets_src_cmd_rs: "use std::io::{BufRead, BufReader, Error, ErrorKind};\nuse std::process::{Command,\
+    \ Stdio};\n\npub fn run_commands() -> std::io::Result<()> {\n    let mut child\
+    \ = Command::new(\"ls\")\n        .args([\"-l\", \"/\"])\n        .stdout(Stdio::piped())\n\
+    \        .spawn()?;\n    let stdout = child\n        .stdout\n        .as_mut()\n\
+    \        .ok_or(Error::from(ErrorKind::BrokenPipe))?;\n    for line in BufReader::new(stdout).lines()\
+    \ {\n        println!(\"{:?}\", line);\n    }\n    let result = child.wait()?;\n\
+    \    println!(\"{:?}\", result);\n    Ok(())\n}\n"
+snippets_src_libmain_rs: "// Copyright information ...\nuse clap::Parser;\nuse color_eyre::Result;\n\
+    \n#[derive(Parser, Debug)]\n#[command(author, version, about, long_about = None)]\n\
+    struct Cli {\n    // Add command-line arguments to this struct, with documentation\n\
+    }\n\n#[tracing::instrument]\npub fn main() -> Result<()> {\n    let args = Cli::parse();\n\
+    \    // Program goes here\n    // Example trace:\n    tracing::info!(\"args struct:\
+    \ {:?}\", args);\n    // Return Ok(()) on success\n    Ok(())\n}\n"
+snippets_src_myerrorcrateless_rs: "use std::error;\nuse std::fmt;\nuse std::io;\n\
+    use std::num;\n\n#[derive(Debug)]\nenum MyError {\n    Io(io::Error),\n    Parse(num::ParseIntError),\n\
+    }\n\nimpl fmt::Display for MyError {\n    fn fmt(&self, f: &mut fmt::Formatter)\
+    \ -> fmt::Result {\n        match *self {\n            MyError::Io(ref err) =>\
+    \ write!(f, \"IO error: {}\", err),\n            MyError::Parse(ref err) => write!(f,\
+    \ \"Parse error: {}\", err),\n        }\n    }\n}\n\nimpl error::Error for MyError\
+    \ {\n    fn source(&self) -> Option<&(dyn error::Error + 'static)> {\n       \
+    \ match *self {\n            MyError::Io(ref err) => Some(err),\n            MyError::Parse(ref\
+    \ err) => Some(err),\n        }\n    }\n}\n\nimpl From<io::Error> for MyError\
+    \ {\n    fn from(err: io::Error) -> MyError {\n        MyError::Io(err)\n    }\n\
+    }\n\nimpl From<num::ParseIntError> for MyError {\n    fn from(err: num::ParseIntError)\
+    \ -> MyError {\n        MyError::Parse(err)\n    }\n}\n"

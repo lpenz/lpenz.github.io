@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Haskell eDSL Tutorial - Shared expenses</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="me" href="https://cv.lpenz.org" />
+<link rel="me" href="https://twitter.com/lpenz" />
+<link rel="me" href="https://www.linkedin.com/in/lpenz" />
+<link rel="me" href="https://github.com/lpenz" />
+<link rel="me" href="https://stackoverflow.com/cv/lpenz" />
+<link rel="me" href="mailto:lpenz@lpenz.org" />
+<meta name="author" content="Leandro Lisboa Penz"/>
+<meta name="description" content="Avulsos by Penz"/>
+<style>
+html { /* get footer on bottom: */
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 30px; /* Margin bottom by footer height */
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px; /* Set the fixed height of the footer here */
+    line-height: 30px; /* Vertically center the text there */
+    /* background-color: #f5f5f5; */
+}
+nav.navbar {
+    margin-bottom: 2em; /* space between navbar and contents */
+}
+pre {
+    background-color: #f1f1f1;
+    border-left: 4px solid #d9d9d9;
+    padding: 15px;
+}
+#title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 2.5rem;
+}
+h1, h2, h3, h4, h5, h6 { margin-top: 1em; margin-bottom: 1em; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.4rem; }
+h3, h4, h5, h6 { font-size: 1.2rem; }
+td > ul { margin-bottom: 0px; }
+em {
+    color: indigo;
+}
+div#main {
+    padding-bottom: 1em;
+}
+div.center > img { margin: 0 auto; } /* center images by default */
+div#toc {
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    display: table;
+}
+div#toc .toctitle {
+    font-weight: 700;
+    text-align: center;
+    margin-top: 1em;
+}
+div#toc ul {
+    padding-right: 1em;
+}
+div#toc li, div#toc ul, div#toc ul li {
+    list-style: outside none none !important;
+}
+</style>
+<link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
+<link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>
+<link rel="icon" type="image/png" href="../../media/logo-black.png" />
+<meta name="p:domain_verify" content="629162357f7580ddc473183d74c50ef8"/>
+<meta name="generator" content="http://txt2tags.sf.net" />
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+    <a class="navbar-brand" href="../../index.html"><img alt="Avulsos by Penz" src="../../media/logo-white.png" width="20" height="20" class="d-inline-block align-middle" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse auto" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../index.html">Home</a></li>
+		<li
+		class="nav-item active"
+		><a class="nav-link" href="../../articles/index.html">Articles</a></li>
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../debian/index.html">Debian</a></li>
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../about/index.html">About</a></li>
+    </div>
+    </div>
+</nav>
+
+<div class="container" id="main">
+
+<h1 id="title">Haskell eDSL Tutorial - Shared expenses</h1>
+
+
+<div class="body" id="body">
+<p>
+People have created
+<a href="http://ashish.typepad.com/ashishs_niti/2007/06/another_dsl_emb.html">interesting</a>
+and
+<a href="http://augustss.blogspot.com/2009/02/more-basic-not-that-anybody-should-care.html">weird</a>
+embedded domain-specific languages in haskell. In this article, we will see what
+an eDSL really is by building one to record shared expenses and calculate the
+payments.
+</p>
+<p>
+This article is written in literal-haskell style, so that you can simply paste it in a
+<em>file.lhs</em> and then <em>runhaskell file.lhs</em> to run it. That's why we need the
+lines bellow:
+</p>
+
+<pre>
+
+&gt; import Data.Map as Map
+&gt; import Control.Monad.State
+
+</pre>
+
+<section>
+<h1>Why haskell</h1>
+
+<p>
+The first reason to use haskell for an eDSL is that it has a very clean syntax:
+</p>
+
+<ul>
+<li>a function and its arguments are separated by spaces, not by parenthesis and
+  commas - parenthesis are only used to make nested function calls;
+</li>
+<li>there is a syntax sugar for monads that let us avoid writing the monadic
+  operators <em>&gt;&gt;</em> and <em>&gt;&gt;=</em> - it allows us to bind monads by using newlines;
+</li>
+<li>type inference allows us to skip type annotations and declarations, even
+  though we are using a strongly typed language.
+</li>
+</ul>
+
+<p>
+When combined, these features allow us to leave very little haskell in our
+eDSL, as we will see.
+</p>
+
+</section>
+<section>
+<h1>The shared expenses problem</h1>
+
+<p>
+Lets say that you went on a trip with 3 friends, and there are some costs that
+are shared by everyone. You want to record these expenses and then everyone can
+pay up once the trip is over.
+</p>
+<p>
+In other words, you want records to look like this:
+</p>
+
+<pre>
+
+&gt; trip = sharedexpenses $ do
+&gt;     dexter `spent` 5300
+&gt;     angel  `spent` 2700
+&gt;     debra  `spent`  800
+&gt;     harry  `spent` 1900
+&gt;     debra  `spent` 1700
+&gt;     angel  `spent` 2200
+
+</pre>
+
+<p>
+Also, you want to be able to record transactions in which people lend money
+straight to each other:
+</p>
+
+<pre>
+
+&gt;     dexter `gave` harry $ 2000
+&gt;     angel  `gave` debra $ 3200
+
+</pre>
+
+<p>
+The haskell leaks we have in the records are the backticks (<code>`</code>) and the
+<code>$</code>. We could get rid of them also, but the plumbing would get a lot more
+convoluted. We also avoid using floating point numbers for a similar reason.
+</p>
+
+</section>
+<section>
+<h1>The state monad</h1>
+
+<p>
+By programming a new monad you get the "programmable semicolon" that people talk
+so much about. That allows you to make a custom program flow different from
+the standard top-down - it allows built-in backtracking, for instance.
+</p>
+<p>
+But that is not an eDSL requirement. For our shared-expenses example, top-down
+is just fine. The only thing we need is a way to store the expenses each person
+had, and a simple
+<a href="http://hackage.haskell.org/package/mtl/docs/Control-Monad-State.html">state monad</a>
+with a
+<a href="http://hackage.haskell.org/package/containers/docs/Data-Map.html">map</a>
+inside can solve our problem.
+</p>
+<p>
+In the next step we define what a person is and who our friends are:
+</p>
+
+<pre>
+
+&gt; newtype Person = Person { name :: String } deriving (Eq, Ord, Show)
+
+&gt; dexter = Person "Dexter"
+&gt; angel  = Person "Angel"
+&gt; debra  = Person "Debra"
+&gt; harry  = Person "Harry"
+
+</pre>
+
+<p>
+We could skip this step and just use strings here, but that would make typos a
+runtime mistake; by using a strong type and defining the friends explicitly, we
+make typos a compile error.
+</p>
+
+</section>
+<section>
+<h1>Spending and giving</h1>
+
+<p>
+<em>spent</em> and <em>gave</em> are functions that update our state:
+</p>
+
+<pre>
+
+&gt; spent :: Person -&gt; Int -&gt; State (Map Person Int) ()
+&gt; spent payer money = modify $ insertWith (+) payer money
+
+&gt; gave :: Person -&gt; Person -&gt; Int -&gt; State (Map Person Int) ()
+&gt; gave lender borrower money = modify $ (adjust (+ money) lender) . (adjust (\ m -&gt; m - money) borrower)
+
+</pre>
+
+<p>
+<em>spent</em> adds the given amount to the element indexed by the person in the map,
+while <em>gave</em> adds the amount to the lender and subtract it from the borrower.
+</p>
+
+</section>
+<section>
+<h1>Solving</h1>
+
+<p>
+To solve the shared expenses problem, we will use a simple algorithm: he who
+owes more pays to the one that has more credit until everybody gets paid.
+</p>
+
+<pre>
+
+&gt; solve st = solve' err $ Map.map ( \ m -&gt; m - avg) st
+&gt;     where
+&gt;         err = 1 + size st
+&gt;         avg = round $ (toRational $ fold (+) 0 st) / (toRational $ size st)
+
+&gt; solve' _   st | Map.null st = []
+&gt; solve' err st =
+&gt;     (name payer ++ " pays " ++ show amount ++ " to " ++ name receiver) : solve' err newstate
+&gt;     where
+&gt;         (payer,    debt)   = foldrWithKey (getpers True)  (Person "", 0) st
+&gt;         (receiver, credit) = foldrWithKey (getpers False) (Person "", 0) st
+&gt;         getpers True  p m (_,  m0) | m &lt; m0 = (p, m) -- Gets payer.
+&gt;         getpers False p m (_,  m0) | m &gt; m0 = (p, m) -- Gets receiver.
+&gt;         getpers _     _ _ e                 = e
+&gt;         amount = min (-debt) credit
+&gt;         newstate = Map.filter ( \ c -&gt; c &lt; -err || err &lt; c) $ mapWithKey statefix st
+&gt;         statefix p m | p == receiver = m - amount
+&gt;         statefix p m | p == payer = m + amount
+&gt;         statefix _ m = m
+
+</pre>
+
+<p>
+The <em>solve</em> functions subtracts from everybody the amount that each person is
+supposed to spend (the average); the map now has the amount each person is
+supposed to pay (negative) or receive (positive). When the amount in the map is
+near 0, the person will not be involved in further transactions and is removed
+from the map. "Near" here has a precise meaning: we take the number of persons
+as the error (plus one), as we had to divide the total amount spent by it in
+order to get the average spent - we will not be able to be more precise that
+that using integers. Well, we are talking about money, it's useless to be more
+precise than a cent anyway.
+</p>
+<p>
+The <em>solve'</em> function recursively registers payments and removes persons from
+the map until it is empty. That does not guarantee the least amount of payments,
+but we get good enough results most of the times - and it is a lot simpler than
+linear programming.
+</p>
+
+</section>
+<section>
+<h1>Plumbing</h1>
+
+<p>
+The function <code>sharedexpenses</code> is the one that glues the eDSL and the state
+monad, while the <code>main</code> function is the one that plugs it with
+the <code>solve</code> function and prints the results:
+</p>
+
+<pre>
+
+&gt; sharedexpenses :: State (Map Person Int) () -&gt; Map Person Int
+&gt; sharedexpenses f = execState f empty
+
+&gt; main = mapM_ putStrLn $ solve trip
+
+</pre>
+
+<p>
+Running this program provides us the following results:
+</p>
+
+<pre>
+Debra pays 4350 to Angel
+Harry pays 3650 to Dexter
+Harry pays 100 to Angel
+</pre>
+
+</section>
+<section>
+<h1>Conclusions</h1>
+
+<p>
+We have seen what is an eDSL by building a solution to a real, day-to-day
+problem. No hidden enchantments or dark arts involved: you don't have to build a
+custom monad or start with something that looks like
+<em>data Expr a = ...</em>; you can just define how you want your language to look
+like, think about what the state needs to store and build the plumbing around
+the state monad - or even around the
+<a href="http://hackage.haskell.org/package/mtl/docs/Control-Monad-Writer.html">writer monad</a>.
+You can also use nested state monads to define heterogeneous environments with
+different "syntaxes" verified by the type system. The only drawback is that
+every user of your language will need a haskell compiler installed, but with
+the <a href="http://www.haskell.org/platform/">haskell platform</a> available, that
+shouldn't be a problem.
+</p>
+
+</section>
+<section>
+<h1>Further reading</h1>
+
+<ul>
+<li><a href="http://paulspontifications.blogspot.com.br/2008/01/why-haskell-is-good-for-embedded-domain.html">http://paulspontifications.blogspot.com.br/2008/01/why-haskell-is-good-for-embedded-domain.html</a>:
+  Why Haskell is Good for Embedded Domain Specific Languages
+</li>
+<li><a href="https://donsbot.wordpress.com/2007/03/10/practical-haskell-shell-scripting-with-error-handling-and-privilege-separation/">https://donsbot.wordpress.com/2007/03/10/practical-haskell-shell-scripting-with-error-handling-and-privilege-separation/</a>:
+  Practical Haskell: shell scripting with error handling and privilege separation
+</li>
+<li><a href="http://gbacon.blogspot.com/2009/07/programmable-semicolon-explained.html">http://gbacon.blogspot.com/2009/07/programmable-semicolon-explained.html</a>:
+  Programmable semicolon explained
+</li>
+</ul>
+
+</section>
+</div>
+
+
+</div><!--container-->
+
+<div class="footer bg-dark text-light">
+	<div class="container">
+		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a>
+		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</div>
+</div>
+
+<!-- Other invisible stuff and javascripts: -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+<!-- vim: ft=html
+-->
+

@@ -1,0 +1,23 @@
+Articles
+
+
+
+
+The following articles are present in this page:
+
+| 2023-04-05 | [Rust snippets rust-snippets/index.html] | //rust// |
+| 2022-05-22 | [Using GPG and signing git commits gpg/index.html] | //linux//, //cryptography//, //gpg//, //git// |
+| 2021-07-11 | [github project structure best practices github-project-struct/index.html] | //git//, //github//, //python//, //rust//, //github-action//, //ci// |
+| 2021-06-05 | [Creating a pmount-compatible encrypted USB drive cryptusb/index.html] | //linux//, //cryptography// |
+| 2020-03-22 | [Creating an encrypted directory-in-a-file luksfile/index.html] | //linux//, //cryptography// |
+| 2019-07-07 | [Creating a static nix channel nixchannel/index.html] | //cache//, //github//, //nix//, //nixos//, //nixpkgs//, //nix-channel//, //repository//, //travis-ci// |
+| 2019-01-08 | [Provisioning a Raspberry Pi using ansible ansiblerpi/index.html] | //linux//, //raspberrypi// |
+| 2015-10-04 | [Create a debian bootable live USB liveusb/index.html] | //linux// |
+| 2013-12-09 | [Probabilistic bug hunting bugprobhunt/index.html] | //programming//, //R//, //statistics// |
+| 2011-06-23 | [Hard drive occupation prediction with R - part 3 df0pred-3/index.html] | //R//, //montecarlo//, //statistics// |
+| 2011-02-02 | [Haskell eDSL Tutorial - Shared expenses hedsl-sharedexpenses/index.html] | //haskell//, //dsl// |
+| 2011-01-22 | [Hard drive occupation prediction with R - part 2 df0pred-2/index.html] | //R//, //montecarlo//, //statistics// |
+| 2010-08-15 | [Hard drive occupation prediction with R df0pred-1/index.html] | //R//, //statistics// |
+| 2010-04-11 | [Debianization with git-buildpackage debgit/index.html] | //debian//, //git// |
+
+

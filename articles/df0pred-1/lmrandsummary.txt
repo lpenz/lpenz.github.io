@@ -1,0 +1,17 @@
+
+Call:
+lm(formula = drand$usd ~ drand$day)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1012.97  -442.62   -96.19   532.27  1025.01 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)
+(Intercept) 17977.185  33351.017   0.539    0.591
+drand$day       2.228      2.323   0.959    0.340
+
+Residual standard error: 589.7 on 84 degrees of freedom
+Multiple R-squared:  0.01083,	Adjusted R-squared:  -0.0009487 
+F-statistic: 0.9194 on 1 and 84 DF,  p-value: 0.3404
+
