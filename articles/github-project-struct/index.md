@@ -88,9 +88,9 @@ Use [coveralls](https://coveralls.io/) for code coverage reports. It
 has its quirks, but it can be made to work fine with just about any
 language - and it supports build matrices natively.
 
-I've also used *codecov* for a while, but it didn't work very well
-with my [workflow](#workflow) - where a branch is constantly forwarded
-to commits that exist in another branch.
+I also used *codecov* in some more recent repositories. It didn't work
+very well with my [workflow](#workflow) in the past, but it seems to
+be working better than coveralls lately.
 
 Add a test result and a coverage shield to the top of `README.md`.
 That allows visitors to see that you project cares about test coverage
