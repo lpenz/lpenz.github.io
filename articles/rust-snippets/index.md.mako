@@ -116,6 +116,20 @@ crate if you want to use a standard CI that includes
 [cargo-semver-checks] like [ghworkflow-rust].
 
 
+# Tests
+
+To be able to see the traces in tests, the easiest way is to use:
+
+```bash
+cargo add --dev env_logger
+cargo add --dev test-log
+```
+
+`test-log` takes care of initializing the tracing infra in accordance
+with the [`RUST_LOG`] environment variable when we use its `test`
+macro.
+
+
 # Errors
 
 
