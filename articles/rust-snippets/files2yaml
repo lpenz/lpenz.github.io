@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+
+import argparse
+import os.path
+import re
+import sys
+
+import yaml
+
+
+def main(outputfile, files):
+    data = {}
+    mydir = os.path.dirname(__file__)
+    for filename in files:
+        fullname = os.path.abspath(filename)
+        key = re.sub("[._/-]", "_", os.path.relpath(fullname, mydir))
+        with open(filename) as fd:
+            data[key] = fd.read()
+    with open(outputfile, "w") as fd:
+        yaml.dump(data, fd, indent=4)
+    return 0
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("-o", dest="outputfile")
+    parser.add_argument("files", nargs="+")
+    args = parser.parse_args()
+    sys.exit(main(args.outputfile, args.files))

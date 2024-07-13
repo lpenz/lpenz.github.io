@@ -1,0 +1,27 @@
+<%inherit file='feed.xml'/>
+
+<%def name='title()'>Avulsos by Penz - Articles tagged as ${tag} </%def>
+<%def name='description()'>Articles tagged as ${tag} in Avulsos by Penz page.</%def>
+<%def name='pubdate()'><% x = max([i['date'] for i in sub['articles']['sub'].values() if tag in i['tags']]) %>${caller.show(x)}</%def>
+<%def name='link()'>http://www.lpenz.org/feeds/articles.xml</%def>
+<%def name='items()'>
+<%
+	j = []
+	for i,v in sub['articles']['sub'].items():
+		if v.get('disabled',False):
+			continue
+		if tag in v['tags']:
+			f = renderarticle(i)
+			cwd = home+'/articles/'+i
+			n = { 'title': v['title'], 'date': v['date'], 'description': f.replace('$cwd$', cwd), 'link': cwd }
+			if 'subtitle' in v:
+				n['subtitle'] = ' - ' + v['subtitle']
+			else:
+				n['subtitle'] = ''
+			j.append(n)
+%>
+% for i in j:
+${caller.show(i)}
+% endfor
+</%def>
+

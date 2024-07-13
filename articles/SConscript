@@ -1,0 +1,30 @@
+import os
+import glob
+
+if False:
+    Import = None
+    env = None
+Import(["env"])
+
+articles = []
+
+# Articles:
+for i in glob.glob("*"):
+    if not os.path.isdir(i):
+        continue
+    if not os.path.exists(os.path.join(i, "info.yaml")):
+        continue
+    env.SConscript("%s/SConscript" % i)
+    articles.append("%s" % i)
+
+# Index:
+indexbuild = env.File("indexbuild")
+env.Command(
+    "index.t2t",
+    [a + "/info.yaml" for a in articles],
+    indexbuild.abspath + " $TARGET $SOURCES",
+)
+
+env.T2TBHTML("index.bhtml.mako", "index.t2t")
+env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/index.html")

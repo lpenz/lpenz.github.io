@@ -1,0 +1,7 @@
+plot(fday, dssim[1,], ylim=c(min(dssim[1:5,]), max(dssim[1:5,])), ylab='usd', xlab='day', xaxt='n', type='l')
+axis.Date(1, day, at=seq(min(fday), max(fday), 'week'), format='%F')
+lines(fday, dssim[2,])
+lines(fday, dssim[3,])
+lines(fday, dssim[4,])
+lines(fday, dssim[5,])
+abline(h=totalspace, col='gray')

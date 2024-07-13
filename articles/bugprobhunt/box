@@ -1,0 +1,101 @@
+#!/usr/bin/python3
+
+import sys
+import os
+from optparse import OptionParser
+
+
+def buildresults(opts):
+    balls = []
+    i = 0
+    for _ in range(0, opts.red):
+        balls.append((i, "red"))
+        i = i + 1
+    for _ in range(0, opts.green):
+        balls.append((i, "green"))
+        i = i + 1
+    results = [[b] for b in balls]
+    for t in range(1, opts.n):
+        results0 = list(results)
+        results = []
+        for r0 in results0:
+            for b in balls:
+                r = list(r0)
+                r.append(b)
+                results.append(r)
+    probs = {}
+    if opts.outprobabilities:
+        for trial in results:
+            k = 0
+            for t in trial:
+                if t[1] == "red":
+                    k = k + 1
+            probs.setdefault(k, 0)
+            probs[k] = probs[k] + 1
+    return balls, results, probs
+
+
+def outputResults(opts, balls, results):
+    if opts.outresults == "-":
+        out = sys.stdout
+    elif opts.outresults:
+        out = open(opts.outresults + ".tmp", "w")
+    for i in range(1, opts.n + 1):
+        out.write('"trial %d",' % i)
+    out.write(r'"\(p\) estimate"\n')
+    for trial in results:
+        k = 0
+        for t in trial:
+            if t[1] == "red":
+                k = k + 1
+            out.write('"%d-%s",' % t)
+        out.write('"%d%%"\n' % (100.0 * k / 4))
+    if opts.outresults != "-":
+        out.close()
+        os.rename(opts.outresults + ".tmp", opts.outresults)
+
+
+def outputProbabilities(opts, balls, results, probs):
+    if opts.outprobabilities == "-":
+        out = sys.stdout
+    elif opts.outprobabilities:
+        out = open(opts.outprobabilities + ".tmp", "w")
+    out.write('"k","rows","%"\n')
+    for k, rows in probs.items():
+        out.write('%d,%d,"%0.2f%%"\n' % (k, rows, 100.0 * rows / len(results)))
+    if opts.outprobabilities != "-":
+        out.close()
+        os.rename(opts.outprobabilities + ".tmp", opts.outprobabilities)
+
+
+def main():
+    parser = OptionParser("usage: %prog")
+    parser.add_option("-r", "--red", dest="red", type="int", help="Number of red balls")
+    parser.add_option(
+        "-w", "--green", dest="green", type="int", help="Number of green balls"
+    )
+    parser.add_option("-n", "", dest="n", type="int", help="Number trials")
+    parser.add_option(
+        "",
+        "--output-results",
+        dest="outresults",
+        help="Output file for results, or - for stdout",
+    )
+    parser.add_option(
+        "",
+        "--output-probabilities",
+        dest="outprobabilities",
+        help="Output file for probabilities, or - for stdout",
+    )
+    opts, args = parser.parse_args()
+    if len(args) != 0:
+        parser.error("wrong number of arguments")
+    balls, results, probs = buildresults(opts)
+    if opts.outresults:
+        outputResults(opts, balls, results)
+    if opts.outprobabilities:
+        outputProbabilities(opts, balls, results, probs)
+
+
+if __name__ == "__main__":
+    main()

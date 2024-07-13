@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Create session logs for cryptusb"""
+
+import re
+import functools
+import argparse
+import yaml
+
+from lpenz.lpexpect import Session
+
+
+def logfix(passphrase, s):
+    s = re.sub("/tmp/tmp[a-z0-9_]{8}/", "", s)
+    s = re.sub(r"\s+\r", "", s)
+    return s
+
+
+def do_main(outputfile):
+    data = {}
+    passphrase = "mypassphrase"
+    p = Session(data=data, preproc=functools.partial(logfix, passphrase))
+    p.sendwait("dd if=/dev/zero of=/tmp/sdb bs=1M count=50")
+    dev = "/tmp/sdb1"
+    p.sendwait("dd if=/dev/zero of=%s bs=1M count=50" % dev)
+    with p.logging("fdisk"):
+        with p.prompt(": $"):
+            p.sendwait("sudo fdisk %s" % dev)
+            p.sendwait("n")
+            p.sendwait("p")
+            p.sendwait("")
+            p.sendwait("")
+            p.sendwait("")
+        p.sendwait("w")
+    with p.logging("luksformat"):
+        p.sendwait("part=%s" % dev)
+        with p.prompt(": $"):
+            p.sendwait('sudo cryptsetup luksFormat --label cryptflash "$part"')
+            p.sendwait("YES")
+            p.sendpass(passphrase)
+        p.sendpass(passphrase)
+    with p.logging("luksopen"):
+        p.sendwait('sudo cryptsetup luksOpen "$part" cryptdev', ": $")
+        p.sendpass(passphrase)
+    with p.logging("mkfs"):
+        p.sendwait("sudo mkfs.udf -l cryptflash /dev/mapper/cryptdev")
+    with p.logging("luksclose"):
+        p.sendwait("sudo cryptsetup luksClose cryptdev")
+    data["luksclose"] = data["luksclose"].split("\n")[0]
+    p.done()
+    for k in data:
+        data[k] = data[k].replace("/tmp/sdb", "/dev/sdb").rstrip()
+    data["fdisk"] = data["fdisk"].replace("/dev/sdb1", "/dev/sdb")
+    with open(outputfile, "w") as fd:
+        yaml.dump(data, fd, indent=4)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Process some integers.")
+    parser.add_argument("outputfile")
+    args = parser.parse_args()
+    do_main(args.outputfile)
+
+
+if __name__ == "__main__":
+    main()

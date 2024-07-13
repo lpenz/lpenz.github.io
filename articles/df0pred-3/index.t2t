@@ -1,0 +1,234 @@
+Hard drive occupation prediction - part 3
+Predicting future ranges
+2011-06-23
+%!preproc: <mcsimulations> 10000
+
+
+
+On the [second $cwd$/../df0pred-2/index.html] article, we saw how to use a Monte
+Carlo simulation generate sample of disk space delta for future dates and
+calculate the distribution probability of zeroing free space in the future.
+
+In this article, we will see how we can plot the evolution of predicted
+distribution for the occupied disk space. Instead of answering que question "how
+likely is that my disk space will zero before date X?," we will answer
+"how much disk space will I need by date X, and with what probability?"
+
+
+
+= The input data =
+
+[This file $cwd$/duinfospike.dat] has the dataset we will use as example. It's
+the same we used in the second part. The graph below shows it:
+
+ [$cwd$/usd.png] 
+
+We now import this data into R:
+
+%!include: ``datain.R``
+
+We then build our simulations for the next 4 months:
+
+%!include: ``mcscalc.R``
+
+
+
+= Visualizing the possible scenarios =
+
+What king of data have we built in our simulations? Each simulation is
+built by sampling from the delta samples and adding to the current disk space
+for each day in the simulated period. We can say that each individual simulation
+is a possible scenario for the next 4 months. The graph bellow shows the
+first 5 simulations:
+
+%!include: ``mcs3plot.R``
+
+ [$cwd$/mcs3.png] 
+
+From this graph we can clearly see that the range of possible values for the
+used disk space grows with time. All simulations start with the same value - the
+used disk space for today - and grow apart as we sample from the delta pool.
+
+We can also plot all simulations in a single graph:
+
+%!include: ``mcsplot.R``
+
+ [$cwd$/mcs.png] 
+
+This plot gives us an idea of the overall spread of the data, but it fails to
+show the density. There are <mcsimulations> black lines there, with many of them
+overlapping one another.
+
+
+
+= Visualizing the distribution for specific days =
+
+There is another way to look at our data: we have created, for each day, a
+sample of the possible used disk spaces. We can take any day of the simulation
+and look at the density:
+
+%!include: ``mcsdaydensplot.R``
+
+ [$cwd$/mcsdaydens.png] 
+
+
+By looking at this graph we can see the trend:
+- The curves are getting flatter: we are getting more possible values for
+  occupied disk space.
+- The curves are moving to the right: we have more simulations with higher
+  occupied disk space values.
+
+
+
+= Visualizing the evolution of the distribution =
+
+So far, we have seen how we can visualize some simulations along the 4 months
+and how we can visualize the distribution for some specific days.
+
+We can also plot the distribution of the values for each day in the simulated 4
+months. We can't use the kernel density plot or the histogram, as they use both
+axes, but there are other options, most of them involving some abuse of the
+built-in plot functions.
+
+
+
+== Boxplot ==
+
+We can use the //boxplot// function to create a boxplot for each day in R in a
+very straightforward way:
+
+%!include:``mcsboxplot.R``
+
+ [$cwd$/mcsbox.png] 
+
+The boxplots glued together form a shape that shows us the distribution of our
+simulations at any day:
+- The thick line in the middle of the graph is the median
+- The darker area goes from the first quartile to the third - which means that
+  50% of the samples are in that range
+- The lighter area has the maximum and minimum points, if they are within 1.5
+  [IQR https://en.wikipedia.org/wiki/Interquartile_range] of the upper/lower
+  quartile.  Points out of this range are considered outliers and are not
+  plotted.
+
+
+
+== Quantile lines ==
+
+We can use the //quantile// function to calculate the values of each
+[quantile https://en.wikipedia.org/wiki/Quantile] per day, and plot the lines:
+
+%!include:``mcsquantplot.R``
+
+ [$cwd$/mcsquant.png] 
+
+The advantage of this type of graph over the boxplot is that it is parameterized
+by //q//. This variable tells us the number of parts that we should divide our
+sample in. The lines above show us the division. If //q// is odd, the middle
+line is exactly the median. If //q// is 4, the lines will draw a shape similar
+to that of the boxplot, the only difference being the top and bottom line, that
+will include outliers - the boxplot filters outliers by using the IQR as
+explained above.
+
+In the code above, we have used the //colorsDouble// function to generate a
+sequence of colors that folds in the middle:
+
+%!include:``funcs.R``
+
+
+
+== Quantile areas ==
+
+We can also abuse the //barplots// function to create an area graph. We have to
+eliminate the bar borders, zero the distance between them and plot a white bar
+from the axis to the first quartile, if appropriate:
+
+%!include:``mcsquantbarplot.R``
+
+ [$cwd$/mcsquantbar.png] 
+
+In this case, using an odd //q// makes more sense, as we want to use the same
+colors for the symmetric intervals. With an even //q//, there would either be a
+larger middle interval with two quantiles or a broken symmetry. The code above
+builds a larger middle interval when given an even //q//.
+
+
+== Quantile heat map ==
+
+If we increase //q// and use //heat.colors// in a quantile area plot, we get
+something similar to a heat map:
+
+%!include:``mcsquantheatplot.R``
+
+ [$cwd$/mcsquantheat.png] 
+
+
+
+= Visualizing past, present and future =
+
+We can also plot our data in the same graph as our simulations, by extending the
+axis of the //barplot// and using the //points// function:
+
+%!include:``quantheatplotfunc.R``
+%!include:``mcspf1plot.R``
+
+ [$cwd$/mcspf1.png] 
+
+
+
+= Training set, validation set =
+
+[Cross-validation https://en.wikipedia.org/wiki/Cross-validation] is
+a technique that we can use to validate the use of Monte Carlo on our data.
+
+We first split our data in two sets: the training set and the validation set. We
+than use only the first in our simulations, and plot the second over. We can
+then see graphically if the data fits our simulation.
+
+Let's use the first two months as the training set, and the other three months
+as the validation set:
+
+%!include:``mcscv1calc.R``
+%!include:``mcscv1plot.R``
+
+ [$cwd$/mcscv1.png] 
+
+Looks like using only the first two months already gives us a fair simulation.
+What if we used only a single month, when no disk cleanup was performed?
+
+%!include:``mcscv2calc.R``
+%!include:``mcscv2plot.R``
+
+ [$cwd$/mcscv2.png] 
+
+If we do regular disk cleanups, we must have at least one of them in our
+training set to get realistic results. Our training set is not representative
+without it.
+
+This also tests our cross-validation code. A common mistake is using the
+whole data set as the training set and as the validation set. That is not
+cross-validation.
+
+
+
+= Conclusions =
+
+We can use Monte Carlo simulations not only to generate a distribution
+probability of an event as we did in the [previous $cwd$/../df0pred-2/index.html]
+article, but also to predict a possible range of future values. In this article,
+disk space occupation is not the most interesting example, as we are usually
+more interested in knowing when our used disk space will reach a certain value
+than in knowing the most probable values in time. But imagine that the data
+represents the number of miles traveled in a road trip or race. You can then not
+only see when you will arrive at your destination, but also the region where you
+will probably be at any day.
+
+There are plenty of other uses for this kind of prediction. Collect the data,
+look at it and think if it would be useful to predict future ranges, and if it
+makes sense with the data you have. Predictions based on the evidence can be
+even used to support a decision or a point of view, just keep mind that
+you can only use the past if you honestly don't think anything different is
+going to happen.
+
+
+

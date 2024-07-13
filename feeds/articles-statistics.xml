@@ -1,0 +1,1737 @@
+<?xml version="1.0"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Avulsos by Penz - Articles tagged as statistics </title>
+        <link>http://www.lpenz.org</link>
+        <description>Articles tagged as statistics in Avulsos by Penz page.</description>
+        <managingEditor>lpenz@lpenz.org (Leandro Lisboa Penz)</managingEditor>
+        <webMaster>lpenz@lpenz.org (Leandro Lisboa Penz)</webMaster>
+        <docs>http://www.rssboard.org/rss-specification</docs>
+
+        <pubDate>Mon, 09 Dec 2013 00:00:00 +0000</pubDate>
+        <lastBuildDate>Mon, 09 Dec 2013 00:00:00 +0000</lastBuildDate>
+
+        <language>en</language>
+        <image>
+            <title>Avulsos by Penz - Articles tagged as statistics </title>
+            <link>http://www.lpenz.org</link>
+            <url>http://www.lpenz.org/logo-black.png</url>
+        </image>
+        <atom:link href="http://www.lpenz.org/feeds/articles.xml" rel="self" type="application/rss+xml"/>
+
+
+
+		<item>
+			<title>Probabilistic bug hunting</title>
+			<link>http://www.lpenz.org/articles/bugprobhunt</link>
+			<guid>http://www.lpenz.org/articles/bugprobhunt</guid>
+			<pubDate>Mon, 09 Dec 2013 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+Have you ever run into a bug that, no matter how careful you are trying to
+reproduce it, it only happens sometimes? And then, you think you've got it, and
+finally solved it - and tested a couple of times without any manifestation. How
+do you know that you have tested enough? Are you sure you were not "lucky" in
+your tests?
+</p>
+<p>
+In this article we will see how to answer those questions and the math
+behind it without going into too much detail. This is a pragmatic guide.
+</p>
+
+<section~A~>
+<h1></h1>
+<section id="thebug">
+<h2>The Bug</h2>
+
+<p>
+The following program is supposed to generate two random 8-bit integer and print
+them on stdout:
+</p>
+
+<pre>
+
+#include &lt;stdio.h&gt;
+#include &lt;fcntl.h&gt;
+#include &lt;unistd.h&gt;
+
+/* Returns -1 if error, other number if ok. */
+int get_random_chars(char *r1, char*r2)
+{
+	int f = open("/dev/urandom", O_RDONLY);
+
+	if (f &lt; 0)
+		return -1;
+	if (read(f, r1, sizeof(*r1)) &lt; 0)
+		return -1;
+	if (read(f, r2, sizeof(*r2)) &lt; 0)
+		return -1;
+	close(f);
+
+	return *r1 &amp; *r2;
+}
+
+int main(void)
+{
+	char r1;
+	char r2;
+	int ret;
+
+	ret = get_random_chars(&amp;r1, &amp;r2);
+
+	if (ret &lt; 0)
+		fprintf(stderr, "error");
+	else
+		printf("%d %d\n", r1, r2);
+
+	return ret &lt; 0;
+}
+
+</pre>
+
+<p>
+On my architecture (Linux on IA-32) it has a bug that makes it print "error"
+instead of the numbers sometimes.
+</p>
+
+</section>
+</section>
+<section>
+<h1>The Model</h1>
+
+<p>
+Every time we run the program, the bug can either show up or not. It has a
+non-deterministic behaviour that requires statistical analysis.
+</p>
+<p>
+We will model a single program run as a
+<a href="https://en.wikipedia.org/wiki/Bernoulli_trial">Bernoulli trial</a>, with success
+defined as "seeing the bug", as that is the event we are interested in. We have
+the following parameters when using this model:
+</p>
+
+<ul>
+<li>\(n\): the number of tests made;
+</li>
+<li>\(k\): the number of times the bug was observed in the \(n\) tests;
+</li>
+<li>\(p\): the unknown (and, most of the time, unknowable) probability of seeing
+  the bug.
+</li>
+</ul>
+
+<p>
+As a Bernoulli trial, the number of errors \(k\) of running the program \(n\)
+times follows a
+<a href="https://en.wikipedia.org/wiki/Binomial_distribution">binomial distribution</a>
+\(k \sim B(n,p)\). We will use this model to estimate \(p\) and to confirm the
+hypotheses that the bug no longer exists, after fixing the bug in whichever
+way we can.
+</p>
+<p>
+By using this model we are implicitly assuming that all our tests are performed
+independently and identically. In order words: if the bug happens more ofter in
+one environment, we either test always in that environment or never; if the bug
+gets more and more frequent the longer the computer is running, we reset the
+computer after each trial. If we don't do that, we are effectively estimating
+the value of \(p\) with trials from different experiments, while in truth each
+experiment has its own \(p\). We will find a single value anyway, but it has no
+meaning and can lead us to wrong conclusions.
+</p>
+
+<section>
+<h2>Physical analogy</h2>
+
+<p>
+Another way of thinking about the model and the strategy is by creating a
+physical analogy with a box that has an unknown number of green and red balls:
+</p>
+
+<ul>
+<li>Bernoulli trial: taking a single ball out of the box and looking at its
+  color - if it is red, we have observed the bug, otherwise we haven't. We then
+  put the ball back in the box.
+</li>
+<li>\(n\): the total number of trials we have performed.
+</li>
+<li>\(k\): the total number of red balls seen.
+</li>
+<li>\(p\): the total number of red balls in the box divided by the total number of
+  green balls in the box.
+</li>
+</ul>
+
+<p>
+Some things become clearer when we think about this analogy:
+</p>
+
+<ul>
+<li>If we open the box and count the balls, we can know \(p\), in contrast with
+  our original problem.
+</li>
+<li>Without opening the box, we can estimate \(p\) by repeating the trial. As
+  \(n\) increases, our estimate for \(p\) improves. Mathematically:
+  \[p = \lim_{n\to\infty}\frac{k}{n}\]
+</li>
+<li>Performing the trials in different conditions is like taking balls out of
+  several different boxes. The results tell us nothing about any single box.
+</li>
+</ul>
+
+<p>
+ <img class="img-responsive" class="center" src="boxballs.png" alt=""> 
+</p>
+
+</section>
+</section>
+<section>
+<h1>Estimating \(p\)</h1>
+
+<p>
+Before we try fixing anything, we have to know more about the bug, starting by
+the probability \(p\) of reproducing it. We can estimate this probability by
+dividing the number of times we see the bug \(k\) by the number of times we
+tested for it \(n\). Let's try that with our sample bug:
+</p>
+
+<pre>
+$ ./hasbug
+67 -68
+$ ./hasbug
+79 -101
+$ ./hasbug
+error
+</pre>
+
+<p>
+We know from the source code that \(p=25%\), but let's pretend that we don't, as
+will be the case with practically every non-deterministic bug. We tested 3
+times, so \(k=1, n=3 \Rightarrow p \sim 33%\), right? It would be better if we
+tested more, but how much more, and exactly what would be better?
+</p>
+
+<section>
+<h2>\(p\) precision</h2>
+
+<p>
+Let's go back to our box analogy: imagine that there are 4 balls in the box, one
+red and three green. That means that \(p = 1/4\). What are the possible results
+when we test three times?
+</p>
+
+<table class="table table-bordered">
+<tr>
+<th>Red balls</th>
+<th>Green balls</th>
+<th>\(p\) estimate</th>
+</tr>
+<tr>
+<td>0</td>
+<td>3</td>
+<td>0%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>33%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1</td>
+<td>66%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>0</td>
+<td>100%</td>
+</tr>
+</table>
+
+<p>
+The less we test, the smaller our precision is. Roughly, \(p\) precision will
+be at most \(1/n\) - in this case, 33%. That's the step of values we can find
+for \(p\), and the minimal value for it.
+</p>
+<p>
+Testing more improves the precision of our estimate.
+</p>
+
+</section>
+<section>
+<h2>\(p\) likelihood</h2>
+
+<p>
+Let's now approach the problem from another angle: if \(p = 1/4\), what are the
+odds of seeing one error in four tests? Let's name the 4 balls as 0-red,
+1-green, 2-green and 3-green:
+</p>
+<p>
+<iframe src="r1w3_n4_results.html" style="width:100%;height:500px;"></iframe>
+</p>
+<p>
+The table above has all the possible results for getting 4 balls out of the
+box. That's \(4^4=256\) rows, generated by <a href="http://www.lpenz.org/articles/bugprobhunt/box">this</a> python script.
+The same script counts the number of red balls in each row, and outputs the
+following table:
+</p>
+
+<table class="table table-bordered">
+<tr>
+<th>k</th>
+<th>rows</th>
+<th>%</th>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>0.39%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>12</td>
+<td>4.69%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>54</td>
+<td>21.09%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>108</td>
+<td>42.19%</td>
+</tr>
+<tr>
+<td>0</td>
+<td>81</td>
+<td>31.64%</td>
+</tr>
+</table>
+
+<p>
+That means that, for \(p=1/4\), we see 1 red ball and 3 green balls only 42% of
+the time when getting out 4 balls.
+</p>
+<p>
+What if \(p = 1/3\) - one red ball and two green balls? We would get the
+following table:
+</p>
+
+<table class="table table-bordered">
+<tr>
+<th>k</th>
+<th>rows</th>
+<th>%</th>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>1.23%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8</td>
+<td>9.88%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>24</td>
+<td>29.63%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>32</td>
+<td>39.51%</td>
+</tr>
+<tr>
+<td>0</td>
+<td>16</td>
+<td>19.75%</td>
+</tr>
+</table>
+
+<p>
+What about \(p = 1/2\)?
+</p>
+
+<table class="table table-bordered">
+<tr>
+<th>k</th>
+<th>rows</th>
+<th>%</th>
+</tr>
+<tr>
+<td>4</td>
+<td>1</td>
+<td>6.25%</td>
+</tr>
+<tr>
+<td>3</td>
+<td>4</td>
+<td>25.00%</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6</td>
+<td>37.50%</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>25.00%</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>6.25%</td>
+</tr>
+</table>
+
+<p>
+So, let's assume that you've seen the bug once in 4 trials. What is the value of
+\(p\)? You know that can happen 42% of the time if \(p=1/4\), but you also know
+it can happen 39% of the time if \(p=1/3\), and 25% of the time if \(p=1/2\).
+Which one is it?
+</p>
+<p>
+The graph bellow shows the discrete likelihood for all \(p\) percentual values
+for getting 1 red and 3 green balls:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="r1w3_dist.png" alt=""> 
+</p>
+<p>
+The fact is that, <em>given the data</em>, the estimate for \(p\)
+follows a <a href="https://en.wikipedia.org/wiki/Beta_distribution">beta distribution</a>
+\(Beta(k+1, n-k+1) = Beta(2, 4)\)
+(<a href="http://stats.stackexchange.com/questions/13225/what-is-the-distribution-of-the-binomial-distribution-parameter-p-given-a-samp">1</a>)
+The graph below shows the probability distribution density of \(p\):
+</p>
+<p>
+ <img class="img-responsive" class="center" src="r1w3_dens.png" alt=""> 
+</p>
+<p>
+The R script used to generate the first plot is <a href="http://www.lpenz.org/articles/bugprobhunt/pdistplot.R">here</a>, the
+one used for the second plot is <a href="http://www.lpenz.org/articles/bugprobhunt/pdensplot.R">here</a>.
+</p>
+
+</section>
+<section>
+<h2>Increasing \(n\), narrowing down the interval</h2>
+
+<p>
+What happens when we test more? We obviously increase our precision, as it is at
+most \(1/n\), as we said before - there is no way to estimate that \(p=1/3\) when we
+only test twice. But there is also another effect: the distribution for \(p\)
+gets taller and narrower around the observed ratio \(k/n\):
+</p>
+<p>
+ <img class="img-responsive" class="center" src="pdens_many.png" alt=""> 
+</p>
+
+</section>
+<section>
+<h2>Investigation framework</h2>
+
+<p>
+So, which value will we use for \(p\)?
+</p>
+
+<ul>
+<li>The smaller the value of \(p\), the more we have to test to reach a given
+  confidence in the bug solution.
+</li>
+<li>We must, then, choose the probability of error that we want to tolerate, and
+  take the <em>smallest</em> value of \(p\) that we can.
+<p></p>
+  A usual value for the probability of error is 5% (2.5% on each side).
+</li>
+<li>That means that we take the value of \(p\) that leaves 2.5% of the area of the
+  density curve out on the left side. Let's call this value
+  \(p_{min}\).
+</li>
+<li>That way, if the observed \(k/n\) remains somewhat constant,
+  \(p_{min}\) will raise, converging to the "real" \(p\) value.
+</li>
+<li>As \(p_{min}\) raises, the amount of testing we have to do after fixing the
+  bug decreases.
+</li>
+</ul>
+
+<p>
+By using this framework we have direct, visual and tangible incentives to test
+more. We can objectively measure the potential contribution of each test.
+</p>
+<p>
+In order to calculate \(p_{min}\) with the mentioned properties, we have
+to solve the following equation:
+</p>
+<p>
+\[\sum_{k=0}^{k}{n\choose{k}}p_{min} ^k(1-p_{min})^{n-k}=\frac{\alpha}{2} \]
+</p>
+<p>
+\(alpha\) here is twice the error we want to tolerate: 5% for an error of 2.5%.
+</p>
+<p>
+That's not a trivial equation to solve for \(p_{min}\). Fortunately, that's
+the formula for the confidence interval of the binomial distribution, and there
+are a lot of sites that can calculate it:
+</p>
+
+<ul>
+<li><a href="http://statpages.info/confint.html">http://statpages.info/confint.html</a>: \(\alpha\) here is 5%.
+</li>
+<li><a href="http://www.danielsoper.com/statcalc3/calc.aspx?id=85:">http://www.danielsoper.com/statcalc3/calc.aspx?id=85:</a> results for \(\alpha\)
+  1%, 5% and 10%.
+</li>
+<li><a href="https://www.google.com.br/search?q=binomial+confidence+interval+calculator:">https://www.google.com.br/search?q=binomial+confidence+interval+calculator:</a>
+  google search.
+</li>
+</ul>
+
+</section>
+</section>
+<section>
+<h1>Is the bug fixed?</h1>
+
+<p>
+So, you have tested a lot and calculated \(p_{min}\). The next step is fixing
+the bug.
+</p>
+<p>
+After fixing the bug, you will want to test again, in order to
+confirm that the bug is fixed. How much testing is enough testing?
+</p>
+<p>
+Let's say that \(t\) is the number of times we test the bug after it is fixed.
+Then, if our fix is not effective and the bug still presents itself with
+a probability greater than the \(p_{min}\) that we calculated, the probability
+of <em>not</em> seeing the bug after \(t\) tests is:
+</p>
+<p>
+\[\alpha = (1-p_{min})^t \]
+</p>
+<p>
+Here, \(\alpha\) is also the probability of making a
+<a href="https://en.wikipedia.org/wiki/Type_I_and_type_II_errors#Type_I_error">type I error</a>,
+while \(1 - \alpha\) is the <em>statistical significance</em> of our tests.
+</p>
+<p>
+We now have two options:
+</p>
+
+<ul>
+<li>arbitrarily determining a standard statistical significance and testing enough
+  times to assert it.
+</li>
+<li>test as much as we can and report the achieved statistical significance.
+</li>
+</ul>
+
+<p>
+Both options are valid. The first one is not always feasible, as the cost of
+each trial can be high in time and/or other kind of resources.
+</p>
+<p>
+The standard statistical significance in the industry is 5%, we recommend either
+that or less.
+</p>
+<p>
+Formally, this is very similar to a
+<a href="https://en.wikipedia.org/wiki/Hypothesis_testing">statistical hypothesis testing</a>.
+</p>
+
+</section>
+<section>
+<h1>Back to the Bug</h1>
+
+<section>
+<h2>Testing 20 times</h2>
+
+<p>
+<a href="trials.csv">This file</a> has the results found after running our program 5000
+times. We must never throw out data, but let's pretend that we have tested our
+program only 20 times. The observed \(k/n\) ration and the calculated
+\(p_{min}\) evolved as shown in the following graph:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="trials20.png" alt=""> 
+</p>
+<p>
+After those 20 tests, our \(p_{min}\) is about 12%.
+</p>
+<p>
+Suppose that we fix the bug and test it again. The following graph shows the
+statistical significance corresponding to the number of tests we do:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="after20.png" alt=""> 
+</p>
+<p>
+In words: we have to test 24 times after fixing the bug to reach 95% statistical
+significance, and 35 to reach 99%.
+</p>
+<p>
+Now, what happens if we test more before fixing the bug?
+</p>
+
+</section>
+<section>
+<h2>Testing 5000 times</h2>
+
+<p>
+Let's now use all the results and assume that we tested 5000 times before fixing
+the bug. The graph bellow shows \(k/n\) and \(p_{min}\):
+</p>
+<p>
+ <img class="img-responsive" class="center" src="trials5000.png" alt=""> 
+</p>
+<p>
+After those 5000 tests, our \(p_{min}\) is about 23% - much closer
+to the real \(p\).
+</p>
+<p>
+The following graph shows the statistical significance corresponding to the
+number of tests we do after fixing the bug:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="after5000.png" alt=""> 
+</p>
+<p>
+We can see in that graph that after about 11 tests we reach 95%, and after about
+16 we get to 99%. As we have tested more before fixing the bug, we found a
+higher \(p_{min}\), and that allowed us to test less after fixing the
+bug.
+</p>
+
+</section>
+</section>
+<section>
+<h1>Optimal testing</h1>
+
+<p>
+We have seen that we decrease \(t\) as we increase \(n\), as that can
+potentially increases our lower estimate for \(p\). Of course, that value can
+decrease as we test, but that means that we "got lucky" in the first trials and
+we are getting to know the bug better - the estimate is approaching the real
+value in a non-deterministic way, after all.
+</p>
+<p>
+But, how much should we test before fixing the bug? Which value is an ideal
+value for \(n\)?
+</p>
+<p>
+To define an optimal value for \(n\), we will minimize the sum \(n+t\). This
+objective gives us the benefit of minimizing the total amount of testing without
+compromising our guarantees. Minimizing the testing can be fundamental if each
+test costs significant time and/or resources.
+</p>
+<p>
+The graph bellow shows us the evolution of the value of \(t\) and \(t+n\) using
+the data we generated for our bug:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="tbyn.png" alt=""> 
+</p>
+<p>
+We can see clearly that there are some low values of \(n\) and \(t\) that give
+us the guarantees we need. Those values are \(n = 15\) and \(t = 24\), which
+gives us \(t+n = 39\).
+</p>
+<p>
+While you can use this technique to minimize the total number of tests performed
+(even more so when testing is expensive), testing more is always a good thing,
+as it always improves our guarantee, be it in \(n\) by providing us with a
+better \(p\) or in \(t\) by increasing the statistical significance of the
+conclusion that the bug is fixed. So, before fixing the bug, test until you see
+the bug at least once, and then at least the amount specified by this
+technique - but also test more if you can, there is no upper bound, specially
+after fixing the bug. You can then report a higher confidence in the solution.
+</p>
+
+</section>
+<section>
+<h1>Conclusions</h1>
+
+<p>
+When a programmer finds a bug that behaves in a non-deterministic way, he
+knows he should test enough to know more about the bug, and then even more
+after fixing it. In this article we have presented a framework that provides
+criteria to define numerically how much testing is "enough" and "even more." The
+same technique also provides a method to objectively measure the guarantee that
+the amount of testing performed provides, when it is not possible to test
+"enough."
+</p>
+<p>
+We have also provided a real example (even though the bug itself is artificial)
+where the framework is applied.
+</p>
+<p>
+As usual, the source code of this page (R scripts, etc) can be found and
+downloaded in <a href="https://github.com/lpenz/lpenz.github.io">https://github.com/lpenz/lpenz.github.io</a>
+</p>
+</section>
+</div>
+]]></description>
+		</item>
+
+
+		<item>
+			<title>Hard drive occupation prediction with R - The linear regression</title>
+			<link>http://www.lpenz.org/articles/df0pred-1</link>
+			<guid>http://www.lpenz.org/articles/df0pred-1</guid>
+			<pubDate>Sun, 15 Aug 2010 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+On some environments, disk space usage can be pretty predictable. In this post,
+we will see how to do a linear regression to estimate when free space will reach
+zero, and how to assess the quality of such regression, all using
+<a href="https://en.wikipedia.org/wiki/R_programming_language">R</a> - the
+statistical software environment.
+</p>
+
+<section>
+<h1>Prerequisites</h1>
+
+<p>
+The first thing we need is the data. By running a simple
+<code>(date --utc; df -k; echo) &gt;&gt; /var/dflog.txt</code>
+everyday at 00:00 by cron, we will have more than enough, as that will store the
+date along with total, free and used space for all mounted devices.
+</p>
+<p>
+On the other hand, that is not really easy to parse in R, unless we learn more
+about the language. In order to keep this post short, we invite the reader to
+use his favorite scripting language (or python) to process that into a file with
+the day in the first column and the occupied space in the second, and a row for
+each day:
+</p>
+
+<pre>
+YYYY-MM-DD free space
+YYYY-MM-DD free space
+(...)
+</pre>
+
+<p>
+This format can be read and parsed in R with a single command.
+</p>
+<p>
+<a href="http://www.lpenz.org/articles/df0pred-1/duinfo.dat">This</a> is the data file we will use as source for the results
+provided in this article. Feel free to download it and repeat the process.
+All number in the file are in MB units, and we assume an HD of 500GB. We will
+call the date the free space reaches 0 as the <strong>df0</strong>.
+</p>
+
+</section>
+<section>
+<h1>Starting up</h1>
+
+<p>
+After running <strong>R</strong> in the shell prompt, we get the usual license and basic help
+information.
+</p>
+<p>
+The first step is to import the data:
+</p>
+
+<pre>
+&gt; duinfo &lt;- read.table('duinfo.dat', colClasses=c("Date","numeric"), col.names=c("day","usd"))
+&gt; attach(duinfo)
+&gt; totalspace &lt;- 500000
+</pre>
+
+<p>
+The variable <em>duinfo</em> is now a list with two columns: <em>day</em> and <em>usd</em>. The
+<code>attach</code> command allows us to use the column names directly. The
+<em>totalspace</em> variable is there just for clarity in the code.
+</p>
+<p>
+We can check the data graphically by issuing:
+</p>
+
+<pre>
+&gt; plot(usd ~ day, xaxt='n')
+&gt; axis.Date(1, day, format='%F')
+</pre>
+
+<p>
+That gives us an idea on how predictable the usage of our hard drive is.
+</p>
+<p>
+From our example, we get:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-1/pointplot.png" alt=""> 
+</p>
+
+</section>
+<section>
+<h1>Linear model</h1>
+
+<p>
+We can now create and take a look at our linear model object:
+</p>
+
+<pre>
+&gt; model &lt;- lm(usd ~ day)
+&gt; model
+</pre>
+
+<pre>
+
+Call:
+lm(formula = usd ~ day)
+
+Coefficients:
+(Intercept)          day  
+ -6424661.2        466.7  
+
+</pre>
+
+<p>
+The second coefficient in the example tells us that we are consuming about 559 MB of disk space per day.
+</p>
+<p>
+We can also plot the linear model over our data:
+</p>
+
+<pre>
+&gt; abline(model)
+</pre>
+
+<p>
+The example plot, with the line:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-1/lmplot.png" alt=""> 
+</p>
+
+</section>
+<section>
+<h1>Evaluating the model</h1>
+
+<p>
+R provides us with a very generic command that generates statistical information
+about objects: <strong>summary</strong>. Let's use it on our linear model objects:
+</p>
+
+<pre>
+&gt; summary(model)
+</pre>
+
+<pre>
+
+Call:
+lm(formula = usd ~ day)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3612.1 -1412.8   300.7  1278.9  3301.0 
+
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) -6.425e+06  3.904e+04  -164.6   &lt;2e-16 ***
+day          4.667e+02  2.686e+00   173.7   &lt;2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 1697 on 161 degrees of freedom
+Multiple R-squared:  0.9947,	Adjusted R-squared:  0.9947 
+F-statistic: 3.019e+04 on 1 and 161 DF,  p-value: &lt; 2.2e-16
+
+</pre>
+
+<p>
+To check the quality of a linear regression, we focus on the <strong>residuals</strong>, as
+they represent the error of our model. We calculate them by subtracting the
+expected value (from the model) from the sampled value, for every sample.
+</p>
+<p>
+Let's see what each piece of information above means: the first is the
+<a href="https://en.wikipedia.org/wiki/Five-number_summary">five-number summary</a>
+of the residuals. That tells us the maximum and minimum error, and that 75% of
+the errors are between -1.4 GB and 1.3 GB. We then get the results of a
+<a href="https://en.wikipedia.org/wiki/Student%27s_t-test">Student's t-test</a> of
+the model coefficients against the data. The last column tells us roughly how
+probable seeing the given residuals is, assuming that the disk space does not
+depend on the date - it's the
+<a href="https://en.wikipedia.org/wiki/P-value">p-value</a>. We usually accept an
+hypothesis when the p-value is less than 5%; in this example, we have a large
+margin for both coefficients. The last three lines of the summary give us more
+measures of fit: the
+<a href="https://en.wikipedia.org/wiki/R-squared">r-squared</a> values - the closest
+to 1, the better; and the general p-value from the f-statistics, less than 5%
+again.
+</p>
+<p>
+In order to show how bad a linear model can be, the summary bellow was generated
+by using 50GB as the disk space and adding a random value between -1GB and 1GB
+each day:
+</p>
+
+<pre>
+
+Call:
+lm(formula = drand$usd ~ drand$day)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1012.97  -442.62   -96.19   532.27  1025.01 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept) 17977.185  33351.017   0.539    0.591
+drand$day       2.228      2.323   0.959    0.340
+
+Residual standard error: 589.7 on 84 degrees of freedom
+Multiple R-squared:  0.01083,	Adjusted R-squared:  -0.0009487 
+F-statistic: 0.9194 on 1 and 84 DF,  p-value: 0.3404
+
+</pre>
+
+<p>
+It's easy to notice that, even though the five-number summary is narrower, the
+p-values are greater than 5%, and the r-squared values are very far from 1. That
+happened because the residuals are not normally distributed.
+</p>
+<p>
+Now that we are (hopefully) convinced that our linear model fits our data
+well, we can use it to predict hard-disk shortage.
+</p>
+
+</section>
+<section>
+<h1>Predicting disk-free-zero</h1>
+
+<p>
+Until now, we represented disk space as a function of time, creating a model
+that allows us to predict the used disk space given the date. But what we really
+want now is to predict the date our disk will be full. In order to do that, we
+have to invert the model. Fortunately, all statistical properties (t-tests,
+f-statistics) hold in the inverted model.
+</p>
+
+<pre>
+&gt; model2 &lt;- lm(day ~ usd)
+</pre>
+
+<p>
+We now use the <strong>predict</strong> function to extrapolate the model.
+</p>
+
+<pre>
+&gt; predict(model2, data.frame(usd = totalspace))
+       1 
+14837.44 
+</pre>
+
+<p>
+But... when is that? Well, that is the numeric representation of a day in R:
+the number of days since 1970-01-01. To get the human-readable day, we
+use:
+</p>
+
+<pre>
+&gt; as.Date(predict(model2, data.frame(usd = totalspace)), origin="1970-01-01")
+           1 
+"2010-08-16" 
+</pre>
+
+<p>
+There we are: df0 will be at the above date <strong>if</strong> the
+current pattern holds until then.
+</p>
+
+</section>
+<section>
+<h1>Conclusion</h1>
+
+<p>
+The linear model can give us the predicted hard disk space usage at any future
+date, as long as collected data pattern <strong>is linear</strong>. If the data we collected
+has a break point - some disk cleanup or software installation - the model will
+not give good results. We will usually see that in the analysis, but we should
+also always look at the graph.
+</p>
+<p>
+This article is focused on teaching R basics - data input and plotting. We skip
+most of the formalities of science here, and linear regression is certainly not
+a proper df0 prediction method in the general case.
+</p>
+<p>
+On the other hand, in the <a href="http://www.lpenz.org/articles/df0pred-1/../df0pred-2/index.html">next part</a> of this
+article we will see a more robust method for df0 prediction. We will also
+sacrifice our ability to see the used space vs time to get a
+statistical distribution for the date of exhaustion, which is a lot more useful
+in general.
+</p>
+
+</section>
+<section>
+<h1>Further reading</h1>
+
+<ul>
+<li><a href="http://www.cyclismo.org/tutorial/R/index.html">http://www.cyclismo.org/tutorial/R/index.html</a>: R tutorial
+</li>
+<li><a href="http://www.r-tutor.com/">http://www.r-tutor.com/</a>: An R introduction to statistics
+</li>
+<li><a href="https://www.datacamp.com/courses/free-introduction-to-r">https://www.datacamp.com/courses/free-introduction-to-r</a>: Datacamp's
+  Introduction to R course
+</li>
+<li><a href="http://cran.r-project.org/doc/contrib/Lemon-kickstart/index.html">http://cran.r-project.org/doc/contrib/Lemon-kickstart/index.html</a>: Kickstarting R
+</li>
+<li><a href="http://data.princeton.edu/R/linearModels.html">http://data.princeton.edu/R/linearModels.html</a>: "Linear models" page of
+  Introduction to R.
+</li>
+<li><a href="http://www.r-bloggers.com/">http://www.r-bloggers.com/</a>: daily news and tutorials about R, very good to
+  learn the language and see what people are doing with it.
+</li>
+</ul>
+
+</section>
+</div>
+]]></description>
+		</item>
+
+
+		<item>
+			<title>Hard drive occupation prediction with R - part 2 - Getting the probability distribution</title>
+			<link>http://www.lpenz.org/articles/df0pred-2</link>
+			<guid>http://www.lpenz.org/articles/df0pred-2</guid>
+			<pubDate>Sat, 22 Jan 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+On the <a href="http://www.lpenz.org/articles/df0pred-2/../df0pred-1/index.html">first</a> article, we saw a quick-and-dirty method to
+predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
+importing our data into <a href="https://en.wikipedia.org/wiki/R_programming_language">R</a>
+and making a linear regression.
+</p>
+<p>
+In this article we will see the problems with that method, and deploy a
+more robust solution. Besides robustness, we will also see how we can generate a
+probability distribution for the date of disk space exhaustion instead of
+calculating a single day.
+</p>
+
+<section>
+<h1>The problem with the linear regression</h1>
+
+<p>
+The linear regression used in the first article has a serious
+lack of <a href="https://en.wikipedia.org/wiki/Robust_statistics">robustness</a>.
+That means that it is very sensitive to even single departures
+from the linear pattern. For instance, if we periodically delete some big
+files in the hard disk, we end up breaking the sample in parts that cannot be
+analysed together. If we plot the line given by the linear model, we can see
+clearly that it does not fit our overall data very well:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-2/lm.png" alt=""> 
+</p>
+<p>
+(<a href="http://www.lpenz.org/articles/df0pred-2/duinfospike.dat">Data file</a>)
+</p>
+<p>
+We can see in the graph that the linear model gives us a line that our free disk
+space is increasing instead of decreasing! If we use this model, we will reach
+the conclusion that we will never reach df0.
+</p>
+<p>
+If we keep analysing used disk space, there is not much we can do besides
+discarding the data gathered before the last cleanup. There is no way to easily
+ignore only the cleanup.
+</p>
+<p>
+In fact, we can only use the linear regression method when our disk consumption
+pattern is linear for the analysed period - and that rarely is the case
+when there is human intervention. We should always look at the graph to see if
+the model makes sense.
+</p>
+
+</section>
+<section>
+<h1>A na&iuml;ve new method: averaging the difference</h1>
+
+<p>
+Instead of using the daily used disk space as input, we will use the
+daily <strong>difference</strong> (or delta) of used disk space. By itself, this reduces a
+big disk cleanup to a single outlier instead of breaking our sample. We could
+then just filter out the outliers, calculate the average daily increment in used
+disk space and divide the current free space by it. That would give us the
+average number of days left until disk exhaustion. Well, that would also give us
+some new problems to solve.
+</p>
+<p>
+The first problem is that filtering out the outliers is neither
+straightforward nor recommended. Afterall, we are throwing out data that might
+be meaningful: it could be a regular monthly process that we should take into
+account to generate a better prediction.
+</p>
+<p>
+Besides, by averaging disk consumption and dividing free disk space by it,  we
+would still not have the probability distribution for the date, only a single
+value.
+</p>
+
+</section>
+<section>
+<h1>The real new method: days left by Monte Carlo simulation</h1>
+
+<p>
+Instead of calculating the number of days left from the data, we will use a
+technique called <a href="https://en.wikipedia.org/wiki/Monte_carlo_simulation">Monte Carlo simulation</a>
+to generate the distribution of days left. The idea is simple: we sample the
+data we have - daily used disk space - until the sum is above the free disk
+space; the number of samples taken is the number of days left. By doing that
+repeatedly, we get the set of "possible days left" with a distribution that
+corresponds to the data we have collected. Let's how we can do that in R.
+</p>
+<p>
+First, let's load the data file that we will use (same one used in the
+introduction) along with a variable that holds the size of the disk (500GB; all
+units are in MB):
+</p>
+
+<pre>
+
+duinfo &lt;- read.table('duinfospike.dat',
+		colClasses=c("Date","numeric"),
+		col.names=c("day","usd"))
+attach(duinfo)
+totalspace &lt;- 500000
+today &lt;- tail(day, 1)
+
+</pre>
+
+<p>
+We now get the delta of the disk usage. Let's take a look at it:
+</p>
+
+<pre>
+dudelta &lt;- diff(usd)
+</pre>
+
+<pre>
+plot(dudelta, xaxt='n', xlab='')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-2/delta.png" alt=""> 
+</p>
+<p>
+The summary function gives us the five-number summary, while the boxplot shows
+us how the data is distributed graphically:
+</p>
+
+<pre>
+summary(dudelta)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-29583.00      5.25    301.00    123.37    713.00   4136.00 
+</pre>
+
+<pre>
+boxplot(dudelta)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-2/deltabox.png" alt=""> 
+</p>
+<p>
+The kernel density plot gives us about the same, but in another visual format:
+</p>
+
+<pre>
+plot(density(dudelta))
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-2/deltakd.png" alt=""> 
+</p>
+<p>
+We can see the cleanups right there, as the lower points.
+</p>
+<p>
+The next step is the creation of the sample of the number of days left until
+exhaustion. In order to do that, we create an R function that sums values taken
+randomly from our delta sample until our free space zeroes, and returns the
+number of samples taken:
+</p>
+
+<pre>
+
+f &lt;- function(spaceleft) {
+    days &lt;- 0
+    while(spaceleft &gt; 0) {
+        days &lt;- days + 1
+        spaceleft &lt;- spaceleft - sample(dudelta, 1, replace=TRUE)
+    }
+    days
+}
+
+</pre>
+
+<p>
+By repeatedly running this function and gathering the results, we generate a set
+of number-of-days-until-exhaustion that is robust and corresponds to the data we
+have observed. This robustness means that we don't even need to remove outliers,
+as they will not disproportionally bias out results:
+</p>
+
+<pre>
+freespace &lt;- totalspace - tail(usd, 1)
+daysleft &lt;- replicate(5000, f(freespace))
+</pre>
+
+<pre>
+plot(daysleft)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-2/daysleft.png" alt=""> 
+</p>
+<p>
+What we want now is the
+<a href="https://en.wikipedia.org/wiki/Empirical_distribution_function">empirical cumulative distribution</a>.
+This function gives us the probability that we will reach df0 <strong>before</strong> the
+given date.
+</p>
+
+<pre>
+df0day &lt;- sort(daysleft + today)
+df0ecdfunc &lt;- ecdf(df0day)
+df0prob &lt;- df0ecdfunc(df0day)
+</pre>
+
+<pre>
+plot(df0day, df0prob, xaxt='n', type='l')
+axis.Date(1, df0day, at=seq(min(df0day), max(df0day), 'year'), format='%F')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-2/df0ecdf.png" alt=""> 
+</p>
+<p>
+With the cumulative probability estimate, we can see when we have to start
+worrying about the disk by looking at the first day that the probability of df0
+is above 0:
+</p>
+
+<pre>
+df0day[1]
+[1] "2010-06-13"
+df0ecdfunc(df0day[1])
+[1] 2e-04
+</pre>
+
+<p>
+Well, we can also be a bit more bold and wait until the chances of reaching df0
+rise above 5%:
+</p>
+
+<pre>
+df0day[which(df0prob &gt; 0.05)[1]]
+[1] "2010-08-16"
+</pre>
+
+<p>
+Mix and match and see what a good convention for your case is.
+</p>
+
+</section>
+<section>
+<h1>Conclusion</h1>
+
+<p>
+This and the <a href="http://www.lpenz.org/articles/df0pred-2/../df0pred-1/index.html">previous article</a> showed how to use
+statistics in R to predict when free hard-disk space will zero.
+</p>
+<p>
+The first article was main purpose was to serve as an introduction to R. There
+are many reasons that make linear regression an unsuitable technique for
+df0 prediction - the underlying process of disk consumption is certainly not
+linear. But, if the graph shows you that the line fits, there is no reason to
+ignore it.
+</p>
+<p>
+Monte Carlo simulation, on the other hand, is a powerful and general technique.
+It assumes little about the data (non-parameterized), and it can give you
+probability distributions. If you want to forecast something, you can always
+start recording data and use Monte Carlo in some way to make predictions
+<strong>based on the evidence</strong>. Personally, I think we don't do this nearly as often
+as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html">Joel is even using it to make schedules</a>.
+</p>
+
+</section>
+<section>
+<h1>Further reading</h1>
+
+<ul>
+<li><a href="http://www.joelonsoftware.com/items/2007/10/26.html">http://www.joelonsoftware.com/items/2007/10/26.html</a>: Joel's use of Monte Carlo
+  to make schedules.
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29">https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29</a>: Wikipedia's page
+  on bootstrapping, which is clearer than the one on Monte Carlo simulations.
+</li>
+<li><a href="http://www.r-bloggers.com/">http://www.r-bloggers.com/</a>: daily news and tutorials about R, very good to
+  learn the language and see what people are doing with it.
+</li>
+</ul>
+
+</section>
+</div>
+]]></description>
+		</item>
+
+
+		<item>
+			<title>Hard drive occupation prediction with R - part 3 - Predicting future ranges</title>
+			<link>http://www.lpenz.org/articles/df0pred-3</link>
+			<guid>http://www.lpenz.org/articles/df0pred-3</guid>
+			<pubDate>Thu, 23 Jun 2011 00:00:00 +0000</pubDate>
+			<description><![CDATA[<div class="body" id="body">
+<p>
+On the <a href="http://www.lpenz.org/articles/df0pred-3/../df0pred-2/index.html">second</a> article, we saw how to use a Monte
+Carlo simulation generate sample of disk space delta for future dates and
+calculate the distribution probability of zeroing free space in the future.
+</p>
+<p>
+In this article, we will see how we can plot the evolution of predicted
+distribution for the occupied disk space. Instead of answering que question "how
+likely is that my disk space will zero before date X?," we will answer
+"how much disk space will I need by date X, and with what probability?"
+</p>
+
+<section>
+<h1>The input data</h1>
+
+<p>
+<a href="http://www.lpenz.org/articles/df0pred-3/duinfospike.dat">This file</a> has the dataset we will use as example. It's
+the same we used in the second part. The graph below shows it:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/usd.png" alt=""> 
+</p>
+<p>
+We now import this data into R:
+</p>
+
+<pre>
+
+duinfo &lt;- read.table('duinfospike.dat',
+		colClasses=c("Date","numeric"),
+		col.names=c("day","usd"))
+attach(duinfo)
+totalspace &lt;- 450000
+today &lt;- tail(day, 1)
+
+</pre>
+
+<p>
+We then build our simulations for the next 4 months:
+</p>
+
+<pre>
+# Number of Monte Carlo samples
+numsimulations &lt;- 10000
+
+# Number of days to simulate
+numdays    &lt;- 240
+
+# Simulate:
+simulate &lt;- function(data, ndays) {
+	delta &lt;- diff(data)
+	dssimtmp0 &lt;- replicate(numsimulations, tail(data, 1))
+	dssimtmp  &lt;- dssimtmp0
+	f &lt;- function(i) dssimtmp &lt;&lt;- dssimtmp + replicate(numsimulations, sample(delta, 1, replace=TRUE))
+	cbind(dssimtmp0, mapply(f, seq(1, ndays)))
+}
+dssim &lt;- simulate(usd, numdays)
+
+# Future days:
+fday &lt;- seq(today, today+numdays, by='day')
+
+</pre>
+
+</section>
+<section>
+<h1>Visualizing the possible scenarios</h1>
+
+<p>
+What king of data have we built in our simulations? Each simulation is
+built by sampling from the delta samples and adding to the current disk space
+for each day in the simulated period. We can say that each individual simulation
+is a possible scenario for the next 4 months. The graph bellow shows the
+first 5 simulations:
+</p>
+
+<pre>
+plot(fday, dssim[1,], ylim=c(min(dssim[1:5,]), max(dssim[1:5,])), ylab='usd', xlab='day', xaxt='n', type='l')
+axis.Date(1, day, at=seq(min(fday), max(fday), 'week'), format='%F')
+lines(fday, dssim[2,])
+lines(fday, dssim[3,])
+lines(fday, dssim[4,])
+lines(fday, dssim[5,])
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcs3.png" alt=""> 
+</p>
+<p>
+From this graph we can clearly see that the range of possible values for the
+used disk space grows with time. All simulations start with the same value - the
+used disk space for today - and grow apart as we sample from the delta pool.
+</p>
+<p>
+We can also plot all simulations in a single graph:
+</p>
+
+<pre>
+plot(fday, dssim[1,], ylim=c(min(dssim), max(dssim)), ylab='usd', xlab='', xaxt='n', type='l')
+axis.Date(1, day, at=seq(min(fday), max(fday), 'week'), format='%F')
+f &lt;- function(i) lines(fday, dssim[i,])
+mapply(f, seq(2, numdays))
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcs.png" alt=""> 
+</p>
+<p>
+This plot gives us an idea of the overall spread of the data, but it fails to
+show the density. There are 10000 black lines there, with many of them
+overlapping one another.
+</p>
+
+</section>
+<section>
+<h1>Visualizing the distribution for specific days</h1>
+
+<p>
+There is another way to look at our data: we have created, for each day, a
+sample of the possible used disk spaces. We can take any day of the simulation
+and look at the density:
+</p>
+
+<pre>
+dssimchosen &lt;- list(density(dssim[,5]), density(dssim[,15]), density(dssim[,45]), density(dssim[,120]))
+colors &lt;- rainbow(length(dssimchosen))
+xs &lt;- c(mapply(function(d) d$x, dssimchosen))
+ys &lt;- c(mapply(function(d) d$y, dssimchosen))
+plot(dssimchosen[[1]], xlab='usd', ylab='dens',
+	xlim=c(min(xs),max(xs)), ylim=c(min(ys),max(ys)), col=colors[1], main='')
+lines(dssimchosen[[2]], col=colors[2])
+lines(dssimchosen[[3]], col=colors[3])
+lines(dssimchosen[[4]], col=colors[4])
+abline(v=totalspace, col='gray')
+legend('top', c('5 day', '15 days', '45 days', '120 days'), fill=colors)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcsdaydens.png" alt=""> 
+</p>
+<p>
+By looking at this graph we can see the trend:
+</p>
+
+<ul>
+<li>The curves are getting flatter: we are getting more possible values for
+  occupied disk space.
+</li>
+<li>The curves are moving to the right: we have more simulations with higher
+  occupied disk space values.
+</li>
+</ul>
+
+</section>
+<section>
+<h1>Visualizing the evolution of the distribution</h1>
+
+<p>
+So far, we have seen how we can visualize some simulations along the 4 months
+and how we can visualize the distribution for some specific days.
+</p>
+<p>
+We can also plot the distribution of the values for each day in the simulated 4
+months. We can't use the kernel density plot or the histogram, as they use both
+axes, but there are other options, most of them involving some abuse of the
+built-in plot functions.
+</p>
+
+<section>
+<h2>Boxplot</h2>
+
+<p>
+We can use the <em>boxplot</em> function to create a boxplot for each day in R in a
+very straightforward way:
+</p>
+
+<pre>
+boxplot(dssim, outline=F, names=seq(today, as.Date(today+numdays), by='day'), ylab='usd', xlab='day', xaxt='n')
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcsbox.png" alt=""> 
+</p>
+<p>
+The boxplots glued together form a shape that shows us the distribution of our
+simulations at any day:
+</p>
+
+<ul>
+<li>The thick line in the middle of the graph is the median
+</li>
+<li>The darker area goes from the first quartile to the third - which means that
+  50% of the samples are in that range
+</li>
+<li>The lighter area has the maximum and minimum points, if they are within 1.5
+  <a href="https://en.wikipedia.org/wiki/Interquartile_range">IQR</a> of the upper/lower
+  quartile.  Points out of this range are considered outliers and are not
+  plotted.
+</li>
+</ul>
+
+</section>
+<section>
+<h2>Quantile lines</h2>
+
+<p>
+We can use the <em>quantile</em> function to calculate the values of each
+<a href="https://en.wikipedia.org/wiki/Quantile">quantile</a> per day, and plot the lines:
+</p>
+
+<pre>
+q &lt;- 6
+f &lt;- function(i) quantile(dssim[,i], seq(0, 1, 1.0/q))
+qvals &lt;- mapply(f, seq(1, numdays+1))
+colors &lt;- colorsDouble(rainbow, q+1)
+plot(fday, qvals[1,], ylab='usd', xlab='day', xaxt='n', type='l', col=colors[1], ylim=c(min(qvals), max(qvals)))
+mapply(function(i) lines(fday, qvals[i,], col=colors[i]), seq(2, q+1))
+axis.Date(1, day, at=seq(min(fday), max(fday), 'week'), format='%F')
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcsquant.png" alt=""> 
+</p>
+<p>
+The advantage of this type of graph over the boxplot is that it is parameterized
+by <em>q</em>. This variable tells us the number of parts that we should divide our
+sample in. The lines above show us the division. If <em>q</em> is odd, the middle
+line is exactly the median. If <em>q</em> is 4, the lines will draw a shape similar
+to that of the boxplot, the only difference being the top and bottom line, that
+will include outliers - the boxplot filters outliers by using the IQR as
+explained above.
+</p>
+<p>
+In the code above, we have used the <em>colorsDouble</em> function to generate a
+sequence of colors that folds in the middle:
+</p>
+
+<pre>
+colorsDouble &lt;- function(colorfunc, numcolors) {
+	colors0 &lt;- rev(colorfunc((1+numcolors)/2))
+	c(colors0, rev(if (numcolors %% 2 == 0) colors0 else head(colors0, -1)))
+}
+</pre>
+
+</section>
+<section>
+<h2>Quantile areas</h2>
+
+<p>
+We can also abuse the <em>barplots</em> function to create an area graph. We have to
+eliminate the bar borders, zero the distance between them and plot a white bar
+from the axis to the first quartile, if appropriate:
+</p>
+
+<pre>
+q &lt;- 7
+f &lt;- function(i) {
+	qa &lt;- quantile(dssim[,i], seq(0, 1, 1.0/q))
+	c(qa[1], diff(qa))
+}
+qvals &lt;- mapply(f, seq(1, numdays+1))
+colors &lt;- c('white', colorsDouble(rainbow, q))
+barplot(qvals, ylab='usd', xlab='day', col=colors, border=NA, space=0,
+	names.arg=seq(min(fday), max(fday), 'day'), ylim=c(min(dssim), max(dssim)))
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcsquantbar.png" alt=""> 
+</p>
+<p>
+In this case, using an odd <em>q</em> makes more sense, as we want to use the same
+colors for the symmetric intervals. With an even <em>q</em>, there would either be a
+larger middle interval with two quantiles or a broken symmetry. The code above
+builds a larger middle interval when given an even <em>q</em>.
+</p>
+
+</section>
+<section>
+<h2>Quantile heat map</h2>
+
+<p>
+If we increase <em>q</em> and use <em>heat.colors</em> in a quantile area plot, we get
+something similar to a heat map:
+</p>
+
+<pre>
+q &lt;- 25
+f &lt;- function(i) {
+	qa &lt;- quantile(dssim[,i], seq(0, 1, 1.0/q))
+	c(qa[1], mapply(function(j) qa[j] - qa[j-1], seq(2, q+1)))
+}
+qvals &lt;- mapply(f, seq(1, numdays+1))
+colors &lt;- c('white', colorsDouble(heat.colors, q))
+barplot(qvals, ylab='usd', xlab='day', col=colors, border=NA, space=0,
+	names.arg=seq(min(fday), max(fday), 'day'), ylim=c(min(dssim), max(dssim)))
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcsquantheat.png" alt=""> 
+</p>
+
+</section>
+</section>
+<section>
+<h1>Visualizing past, present and future</h1>
+
+<p>
+We can also plot our data in the same graph as our simulations, by extending the
+axis of the <em>barplot</em> and using the <em>points</em> function:
+</p>
+
+<pre>
+quantheatplot &lt;- function(x, sim, ylim) {
+	q &lt;- 25
+	simstart &lt;- length(x) - length(sim[1,])
+	f &lt;- function(i) {
+		if (i &lt; simstart)
+			replicate(q+1, 0)
+		else {
+			qa &lt;- quantile(sim[,i-simstart], seq(0, 1, 1.0/q))
+			c(qa[1], diff(qa))
+		}
+	}
+	qvals &lt;- mapply(f, seq(1, length(x)))
+	colors &lt;- c('white', colorsDouble(heat.colors, q))
+	barplot(qvals, ylab='usd', xlab='day', col=colors, border=NA, space=0,
+		names.arg=x, ylim=ylim)
+	abline(h=totalspace, col='gray')
+}
+</pre>
+
+<pre>
+quantheatplot(c(day, seq(min(fday), max(fday), 'day')), dssim, ylim=c(min(c(usd, dssim)), max(dssim)))
+points(usd)
+abline(h=totalspace, col='gray')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcspf1.png" alt=""> 
+</p>
+
+</section>
+<section>
+<h1>Training set, validation set</h1>
+
+<p>
+<a href="https://en.wikipedia.org/wiki/Cross-validation">Cross-validation</a> is
+a technique that we can use to validate the use of Monte Carlo on our data.
+</p>
+<p>
+We first split our data in two sets: the training set and the validation set. We
+than use only the first in our simulations, and plot the second over. We can
+then see graphically if the data fits our simulation.
+</p>
+<p>
+Let's use the first two months as the training set, and the other three months
+as the validation set:
+</p>
+
+<pre>
+# Number of days to use in the training set
+numdaysTrain &lt;- 60
+numdaysVal   &lt;- length(day) - numdaysTrain
+
+dssim2 &lt;- simulate(usd[seq(1, numdaysTrain)], numdaysVal-1)
+</pre>
+
+<pre>
+allvals &lt;- c(usd, dssim2)
+quantheatplot(day, dssim2, c(min(allvals), max(allvals)))
+points(usd)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcscv1.png" alt=""> 
+</p>
+<p>
+Looks like using only the first two months already gives us a fair simulation.
+What if we used only a single month, when no disk cleanup was performed?
+</p>
+
+<pre>
+# Number of days to use in the training set
+numdaysTrain &lt;- 30
+numdaysVal   &lt;- length(day) - numdaysTrain
+
+dssim3 &lt;- simulate(usd[seq(1, numdaysTrain)], numdaysVal-1)
+</pre>
+
+<pre>
+allvals &lt;- c(usd, dssim3)
+quantheatplot(day, dssim3, c(min(allvals), max(allvals)))
+points(usd)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="http://www.lpenz.org/articles/df0pred-3/mcscv2.png" alt=""> 
+</p>
+<p>
+If we do regular disk cleanups, we must have at least one of them in our
+training set to get realistic results. Our training set is not representative
+without it.
+</p>
+<p>
+This also tests our cross-validation code. A common mistake is using the
+whole data set as the training set and as the validation set. That is not
+cross-validation.
+</p>
+
+</section>
+<section>
+<h1>Conclusions</h1>
+
+<p>
+We can use Monte Carlo simulations not only to generate a distribution
+probability of an event as we did in the <a href="http://www.lpenz.org/articles/df0pred-3/../df0pred-2/index.html">previous</a>
+article, but also to predict a possible range of future values. In this article,
+disk space occupation is not the most interesting example, as we are usually
+more interested in knowing when our used disk space will reach a certain value
+than in knowing the most probable values in time. But imagine that the data
+represents the number of miles traveled in a road trip or race. You can then not
+only see when you will arrive at your destination, but also the region where you
+will probably be at any day.
+</p>
+<p>
+There are plenty of other uses for this kind of prediction. Collect the data,
+look at it and think if it would be useful to predict future ranges, and if it
+makes sense with the data you have. Predictions based on the evidence can be
+even used to support a decision or a point of view, just keep mind that
+you can only use the past if you honestly don't think anything different is
+going to happen.
+</p>
+</section>
+</div>
+]]></description>
+		</item>
+
+
+    </channel>
+</rss>

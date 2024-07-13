@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Hard drive occupation prediction with R - part 2</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="me" href="https://cv.lpenz.org" />
+<link rel="me" href="https://twitter.com/lpenz" />
+<link rel="me" href="https://www.linkedin.com/in/lpenz" />
+<link rel="me" href="https://github.com/lpenz" />
+<link rel="me" href="https://stackoverflow.com/cv/lpenz" />
+<link rel="me" href="mailto:lpenz@lpenz.org" />
+<meta name="author" content="Leandro Lisboa Penz"/>
+<meta name="description" content="Avulsos by Penz"/>
+<style>
+html { /* get footer on bottom: */
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin-bottom: 30px; /* Margin bottom by footer height */
+}
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30px; /* Set the fixed height of the footer here */
+    line-height: 30px; /* Vertically center the text there */
+    /* background-color: #f5f5f5; */
+}
+nav.navbar {
+    margin-bottom: 2em; /* space between navbar and contents */
+}
+pre {
+    background-color: #f1f1f1;
+    border-left: 4px solid #d9d9d9;
+    padding: 15px;
+}
+#title {
+    text-align: center;
+    margin-bottom: 1em;
+    font-size: 2.5rem;
+}
+h1, h2, h3, h4, h5, h6 { margin-top: 1em; margin-bottom: 1em; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.4rem; }
+h3, h4, h5, h6 { font-size: 1.2rem; }
+td > ul { margin-bottom: 0px; }
+em {
+    color: indigo;
+}
+div#main {
+    padding-bottom: 1em;
+}
+div.center > img { margin: 0 auto; } /* center images by default */
+div#toc {
+    background: #f9f9f9 none repeat scroll 0 0;
+    border: 1px solid #aaa;
+    display: table;
+}
+div#toc .toctitle {
+    font-weight: 700;
+    text-align: center;
+    margin-top: 1em;
+}
+div#toc ul {
+    padding-right: 1em;
+}
+div#toc li, div#toc ul, div#toc ul li {
+    list-style: outside none none !important;
+}
+</style>
+<link rel="alternate" type="application/rss+xml" title="Whatsnew feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/whatsnew.xml"/>
+<link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>
+<link rel="icon" type="image/png" href="../../media/logo-black.png" />
+<meta name="p:domain_verify" content="629162357f7580ddc473183d74c50ef8"/>
+<meta name="generator" content="http://txt2tags.sf.net" />
+
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container">
+    <a class="navbar-brand" href="../../index.html"><img alt="Avulsos by Penz" src="../../media/logo-white.png" width="20" height="20" class="d-inline-block align-middle" />&nbsp;&nbsp;&nbsp;Avulsos by Penz</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse auto" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../index.html">Home</a></li>
+		<li
+		class="nav-item active"
+		><a class="nav-link" href="../../articles/index.html">Articles</a></li>
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../debian/index.html">Debian</a></li>
+		<li
+		class="nav-item"
+		><a class="nav-link" href="../../about/index.html">About</a></li>
+    </div>
+    </div>
+</nav>
+
+<div class="container" id="main">
+
+<h1 id="title">Hard drive occupation prediction with R - part 2</h1>
+
+
+<div class="body" id="body">
+<p>
+On the <a href="../df0pred-1/index.html">first</a> article, we saw a quick-and-dirty method to
+predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
+importing our data into <a href="https://en.wikipedia.org/wiki/R_programming_language">R</a>
+and making a linear regression.
+</p>
+<p>
+In this article we will see the problems with that method, and deploy a
+more robust solution. Besides robustness, we will also see how we can generate a
+probability distribution for the date of disk space exhaustion instead of
+calculating a single day.
+</p>
+
+<section>
+<h1>The problem with the linear regression</h1>
+
+<p>
+The linear regression used in the first article has a serious
+lack of <a href="https://en.wikipedia.org/wiki/Robust_statistics">robustness</a>.
+That means that it is very sensitive to even single departures
+from the linear pattern. For instance, if we periodically delete some big
+files in the hard disk, we end up breaking the sample in parts that cannot be
+analysed together. If we plot the line given by the linear model, we can see
+clearly that it does not fit our overall data very well:
+</p>
+<p>
+ <img class="img-responsive" class="center" src="lm.png" alt="">
+</p>
+<p>
+(<a href="duinfospike.dat">Data file</a>)
+</p>
+<p>
+We can see in the graph that the linear model gives us a line that our free disk
+space is increasing instead of decreasing! If we use this model, we will reach
+the conclusion that we will never reach df0.
+</p>
+<p>
+If we keep analysing used disk space, there is not much we can do besides
+discarding the data gathered before the last cleanup. There is no way to easily
+ignore only the cleanup.
+</p>
+<p>
+In fact, we can only use the linear regression method when our disk consumption
+pattern is linear for the analysed period - and that rarely is the case
+when there is human intervention. We should always look at the graph to see if
+the model makes sense.
+</p>
+
+</section>
+<section>
+<h1>A na&iuml;ve new method: averaging the difference</h1>
+
+<p>
+Instead of using the daily used disk space as input, we will use the
+daily <strong>difference</strong> (or delta) of used disk space. By itself, this reduces a
+big disk cleanup to a single outlier instead of breaking our sample. We could
+then just filter out the outliers, calculate the average daily increment in used
+disk space and divide the current free space by it. That would give us the
+average number of days left until disk exhaustion. Well, that would also give us
+some new problems to solve.
+</p>
+<p>
+The first problem is that filtering out the outliers is neither
+straightforward nor recommended. Afterall, we are throwing out data that might
+be meaningful: it could be a regular monthly process that we should take into
+account to generate a better prediction.
+</p>
+<p>
+Besides, by averaging disk consumption and dividing free disk space by it,  we
+would still not have the probability distribution for the date, only a single
+value.
+</p>
+
+</section>
+<section>
+<h1>The real new method: days left by Monte Carlo simulation</h1>
+
+<p>
+Instead of calculating the number of days left from the data, we will use a
+technique called <a href="https://en.wikipedia.org/wiki/Monte_carlo_simulation">Monte Carlo simulation</a>
+to generate the distribution of days left. The idea is simple: we sample the
+data we have - daily used disk space - until the sum is above the free disk
+space; the number of samples taken is the number of days left. By doing that
+repeatedly, we get the set of "possible days left" with a distribution that
+corresponds to the data we have collected. Let's how we can do that in R.
+</p>
+<p>
+First, let's load the data file that we will use (same one used in the
+introduction) along with a variable that holds the size of the disk (500GB; all
+units are in MB):
+</p>
+
+<pre>
+
+duinfo &lt;- read.table('duinfospike.dat',
+		colClasses=c("Date","numeric"),
+		col.names=c("day","usd"))
+attach(duinfo)
+totalspace &lt;- 500000
+today &lt;- tail(day, 1)
+
+</pre>
+
+<p>
+We now get the delta of the disk usage. Let's take a look at it:
+</p>
+
+<pre>
+dudelta &lt;- diff(usd)
+</pre>
+
+<pre>
+plot(dudelta, xaxt='n', xlab='')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="delta.png" alt="">
+</p>
+<p>
+The summary function gives us the five-number summary, while the boxplot shows
+us how the data is distributed graphically:
+</p>
+
+<pre>
+summary(dudelta)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max.
+-29583.00      5.25    301.00    123.37    713.00   4136.00
+</pre>
+
+<pre>
+boxplot(dudelta)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="deltabox.png" alt="">
+</p>
+<p>
+The kernel density plot gives us about the same, but in another visual format:
+</p>
+
+<pre>
+plot(density(dudelta))
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="deltakd.png" alt="">
+</p>
+<p>
+We can see the cleanups right there, as the lower points.
+</p>
+<p>
+The next step is the creation of the sample of the number of days left until
+exhaustion. In order to do that, we create an R function that sums values taken
+randomly from our delta sample until our free space zeroes, and returns the
+number of samples taken:
+</p>
+
+<pre>
+
+f &lt;- function(spaceleft) {
+    days &lt;- 0
+    while(spaceleft &gt; 0) {
+        days &lt;- days + 1
+        spaceleft &lt;- spaceleft - sample(dudelta, 1, replace=TRUE)
+    }
+    days
+}
+
+</pre>
+
+<p>
+By repeatedly running this function and gathering the results, we generate a set
+of number-of-days-until-exhaustion that is robust and corresponds to the data we
+have observed. This robustness means that we don't even need to remove outliers,
+as they will not disproportionally bias out results:
+</p>
+
+<pre>
+freespace &lt;- totalspace - tail(usd, 1)
+daysleft &lt;- replicate(5000, f(freespace))
+</pre>
+
+<pre>
+plot(daysleft)
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="daysleft.png" alt="">
+</p>
+<p>
+What we want now is the
+<a href="https://en.wikipedia.org/wiki/Empirical_distribution_function">empirical cumulative distribution</a>.
+This function gives us the probability that we will reach df0 <strong>before</strong> the
+given date.
+</p>
+
+<pre>
+df0day &lt;- sort(daysleft + today)
+df0ecdfunc &lt;- ecdf(df0day)
+df0prob &lt;- df0ecdfunc(df0day)
+</pre>
+
+<pre>
+plot(df0day, df0prob, xaxt='n', type='l')
+axis.Date(1, df0day, at=seq(min(df0day), max(df0day), 'year'), format='%F')
+</pre>
+
+<p>
+ <img class="img-responsive" class="center" src="df0ecdf.png" alt="">
+</p>
+<p>
+With the cumulative probability estimate, we can see when we have to start
+worrying about the disk by looking at the first day that the probability of df0
+is above 0:
+</p>
+
+<pre>
+df0day[1]
+[1] "2010-06-13"
+df0ecdfunc(df0day[1])
+[1] 2e-04
+</pre>
+
+<p>
+Well, we can also be a bit more bold and wait until the chances of reaching df0
+rise above 5%:
+</p>
+
+<pre>
+df0day[which(df0prob &gt; 0.05)[1]]
+[1] "2010-08-16"
+</pre>
+
+<p>
+Mix and match and see what a good convention for your case is.
+</p>
+
+</section>
+<section>
+<h1>Conclusion</h1>
+
+<p>
+This and the <a href="../df0pred-1/index.html">previous article</a> showed how to use
+statistics in R to predict when free hard-disk space will zero.
+</p>
+<p>
+The first article was main purpose was to serve as an introduction to R. There
+are many reasons that make linear regression an unsuitable technique for
+df0 prediction - the underlying process of disk consumption is certainly not
+linear. But, if the graph shows you that the line fits, there is no reason to
+ignore it.
+</p>
+<p>
+Monte Carlo simulation, on the other hand, is a powerful and general technique.
+It assumes little about the data (non-parameterized), and it can give you
+probability distributions. If you want to forecast something, you can always
+start recording data and use Monte Carlo in some way to make predictions
+<strong>based on the evidence</strong>. Personally, I think we don't do this nearly as often
+as we could. Well, <a href="http://www.joelonsoftware.com/items/2007/10/26.html">Joel is even using it to make schedules</a>.
+</p>
+
+</section>
+<section>
+<h1>Further reading</h1>
+
+<ul>
+<li><a href="http://www.joelonsoftware.com/items/2007/10/26.html">http://www.joelonsoftware.com/items/2007/10/26.html</a>: Joel's use of Monte Carlo
+  to make schedules.
+</li>
+<li><a href="https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29">https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29</a>: Wikipedia's page
+  on bootstrapping, which is clearer than the one on Monte Carlo simulations.
+</li>
+<li><a href="http://www.r-bloggers.com/">http://www.r-bloggers.com/</a>: daily news and tutorials about R, very good to
+  learn the language and see what people are doing with it.
+</li>
+</ul>
+
+</section>
+</div>
+
+
+</div><!--container-->
+
+<div class="footer bg-dark text-light">
+	<div class="container">
+		<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons License" style="border-width:0; vertical-align:middle;" src="https://licensebuttons.net/l/by-sa/3.0/80x15.png" /></a>
+		This work by <a href="mailto:lpenz@lpenz.org">Leandro Lisboa Penz</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+	</div>
+</div>
+
+<!-- Other invisible stuff and javascripts: -->
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
+<!-- vim: ft=html
+-->
+
