@@ -5,7 +5,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
       - uses: ./.github/actions/build
   build-deploy:
     if: github.ref == 'refs/heads/publish'
@@ -14,11 +14,11 @@ jobs:
       - omnilint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4.1.7
       - uses: ./.github/actions/build
       - run: rm -f .gitignore
       - name: deploy
-        uses: JamesIves/github-pages-deploy-action@4.1.4
+        uses: JamesIves/github-pages-deploy-action@v4.6.3
         with:
           branch: master
           folder: .
@@ -27,5 +27,5 @@ jobs:
   omnilint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: docker://lpenz/omnilint:latest
+      - uses: actions/checkout@v4.1.7
+      - uses: docker://lpenz/omnilint:0.5.2
