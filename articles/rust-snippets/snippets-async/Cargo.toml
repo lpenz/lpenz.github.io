@@ -8,6 +8,6 @@ edition = "2021"
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
 color-eyre = "0.6.3"
-tokio = { version = "1.37.0", features = ["macros", "rt", "rt-multi-thread", "process"] }
+tokio = { version = "1.38.2", features = ["macros", "rt", "rt-multi-thread", "process"] }
 tracing = "0.1.40"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "tracing-log"] }
