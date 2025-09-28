@@ -1,6 +1,5 @@
 """Misc functions"""
 
-
 import os
 import subprocess
 from contextlib import contextmanager

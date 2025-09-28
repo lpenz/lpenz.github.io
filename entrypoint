@@ -2,6 +2,6 @@
 
 set -e -x
 
-su -c "useradd -M -u $UID user"
+su -c "useradd -o -M -u $UID user"
 export PYTHONPATH="$PWD/site_python"
 ./tests

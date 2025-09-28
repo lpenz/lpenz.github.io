@@ -1,6 +1,5 @@
 """Create gnupg logs for gpg article"""
 
-
 import sys
 import re
 from contextlib import contextmanager

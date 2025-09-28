@@ -1,4 +1,4 @@
-FROM debian:bookworm
+FROM debian:trixie-slim
 MAINTAINER Leandro Lisboa Penz <lpenz@lpenz.org>
 
 # install debian packages:
@@ -12,7 +12,7 @@ RUN set -e -x; \
         pandoc \
         inkscape \
         python3-pip python3-setuptools python3-wheel \
-        python3-mako python3-yaml python3-nose flake8 black \
+        python3-mako python3-yaml python3-nose2 flake8 black \
         sudo python3-pexpect \
         cryptsetup fdisk udftools \
         gnupg gpg gpg-agent \
