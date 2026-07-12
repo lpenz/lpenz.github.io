@@ -1,20 +1,19 @@
 #!/usr/bin/python3
 
-import sys
 import os
 import csv
 
 
 def main():
-    from optparse import OptionParser
+    import argparse
 
-    parser = OptionParser("usage: %prog <input> <output>")
-    opts, args = parser.parse_args(sys.argv[1:])
-    if len(args) != 2:
-        parser.error("wrong number of arguments")  # Will exit
+    parser = argparse.ArgumentParser(description="usage: <input> <output>")
+    parser.add_argument("input", help="Input CSV file")
+    parser.add_argument("output", help="Output file")
+    args = parser.parse_args()
 
-    ifilename = args[0]
-    ofilename = args[1]
+    ifilename = args.input
+    ofilename = args.output
 
     o = open(ofilename + ".tmp", "w")
     o.write("\n\n\n\n")

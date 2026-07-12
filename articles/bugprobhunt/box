@@ -2,7 +2,7 @@
 
 import sys
 import os
-from optparse import OptionParser
+import argparse
 
 
 def buildresults(opts):
@@ -69,32 +69,28 @@ def outputProbabilities(opts, balls, results, probs):
 
 
 def main():
-    parser = OptionParser("usage: %prog")
-    parser.add_option("-r", "--red", dest="red", type="int", help="Number of red balls")
-    parser.add_option(
-        "-w", "--green", dest="green", type="int", help="Number of green balls"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-r", "--red", dest="red", type=int, help="Number of red balls")
+    parser.add_argument(
+        "-w", "--green", dest="green", type=int, help="Number of green balls"
     )
-    parser.add_option("-n", "", dest="n", type="int", help="Number trials")
-    parser.add_option(
-        "",
+    parser.add_argument("-n", dest="n", type=int, help="Number trials")
+    parser.add_argument(
         "--output-results",
         dest="outresults",
         help="Output file for results, or - for stdout",
     )
-    parser.add_option(
-        "",
+    parser.add_argument(
         "--output-probabilities",
         dest="outprobabilities",
         help="Output file for probabilities, or - for stdout",
     )
-    opts, args = parser.parse_args()
-    if len(args) != 0:
-        parser.error("wrong number of arguments")
-    balls, results, probs = buildresults(opts)
-    if opts.outresults:
-        outputResults(opts, balls, results)
-    if opts.outprobabilities:
-        outputProbabilities(opts, balls, results, probs)
+    args = parser.parse_args()
+    balls, results, probs = buildresults(args)
+    if args.outresults:
+        outputResults(args, balls, results)
+    if args.outprobabilities:
+        outputProbabilities(args, balls, results, probs)
 
 
 if __name__ == "__main__":

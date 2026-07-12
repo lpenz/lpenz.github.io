@@ -3,22 +3,21 @@
 import sys
 import os
 import yaml
-from optparse import OptionParser
+import argparse
 
 
 def main(argv=None):
     if argv is None:
         argv = sys.argv
 
-    parser = OptionParser("usage: %prog <output.yaml> <files.yaml...>")
-
-    opts, args = parser.parse_args(argv[1:])
-    if len(args) < 2:
-        parser.error("wrong number of arguments")  # Will exit
-    outputfilename = args[0]
+    parser = argparse.ArgumentParser(description="<output.yaml> <files.yaml...>")
+    parser.add_argument("output", help="Output YAML file")
+    parser.add_argument("files", nargs="+", help="Input YAML files")
+    args = parser.parse_args(argv[1:])
+    outputfilename = args.output
 
     top = {"sub": {}}
-    for filename in args[1:]:
+    for filename in args.files:
         dirname = os.path.dirname(filename)
         cur = top
         if dirname != "":

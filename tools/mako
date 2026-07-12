@@ -150,14 +150,14 @@ def dirscalc(infilename):
     return top, breadcrumbs
 
 
-def infoget(opts, infilename):
+def infoget(args, infilename):
     indirname = os.path.dirname(infilename)
     y = yaml.safe_load(open("infotree.yaml").read())
     y.update(yamlget("."))
     y.update(yamlget(indirname))
     y["top"], y["breadcrumbs"] = dirscalc(infilename)
     y["url"] = os.path.join(y["home"], indirname, "index.html")
-    for d in opts.define:
+    for d in args.define:
         if "=" not in d:
             raise SystemExit("error: --define argument missing '=': %s" % d)
         k, v = d.split("=", 1)
@@ -209,13 +209,13 @@ def makorender(data, y):
 
 
 def main():
-    from optparse import OptionParser
+    import argparse
 
-    parser = OptionParser("usage: %prog [-t template] <input> <output>")
-    parser.add_option(
-        "-t", "--template", dest="template", help="Template to use, if any"
-    )
-    parser.add_option(
+    parser = argparse.ArgumentParser(description="<input> <output>")
+    parser.add_argument("input", help="Input file")
+    parser.add_argument("output", help="Output file")
+    parser.add_argument("-t", "--template", help="Template to use, if any")
+    parser.add_argument(
         "-d",
         "--define",
         dest="define",
@@ -223,7 +223,7 @@ def main():
         default=[],
         help="Extra definitions for rendering",
     )
-    parser.add_option(
+    parser.add_argument(
         "-r",
         "--replace",
         dest="replace",
@@ -231,7 +231,7 @@ def main():
         default=[],
         help="Raw strings to replace at the last step",
     )
-    parser.add_option(
+    parser.add_argument(
         "-i",
         "--import",
         dest="importfile",
@@ -239,21 +239,19 @@ def main():
         help="Import data from yaml file",
         default=[],
     )
-    opts, args = parser.parse_args(sys.argv[1:])
-    if len(args) != 2:
-        parser.error("wrong number of arguments")  # Will exit
+    args = parser.parse_args()
 
-    infilename = args[0]
-    outfilename = args[1]
+    infilename = args.input
+    outfilename = args.output
 
-    info = infoget(opts, infilename)
-    for filename in opts.importfile:
+    info = infoget(args, infilename)
+    for filename in args.importfile:
         d = yaml.safe_load(open(filename))
         info.update(d)
-    htmlstr = templated(infilename, opts.template, info).replace("$cwd$/", "")
+    htmlstr = templated(infilename, args.template, info).replace("$cwd$/", "")
     out = open(outfilename, "w", encoding="utf-8")
     final = makorender(htmlstr, info).replace("$backslash$", "\\")
-    for rep in opts.replace:
+    for rep in args.replace:
         if "=" not in rep:
             raise SystemExit("error: --replace argument missing '=': %s" % rep)
         k, v = rep.split("=", 1)

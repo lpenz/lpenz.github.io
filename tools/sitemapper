@@ -36,13 +36,13 @@ def doit(outfile, files):
 
 
 def main():
-    from optparse import OptionParser
+    import argparse
 
-    parser = OptionParser("usage: %prog <output> <sitefiles>")
-    opts, args = parser.parse_args(sys.argv[1:])
-    if len(args) < 2:
-        parser.error("wrong number of arguments")  # Will exit
-    doit(args[0], args[1:])
+    parser = argparse.ArgumentParser(description="usage: <output> <sitefiles>")
+    parser.add_argument("output", help="Output file")
+    parser.add_argument("sitefiles", nargs="+", help="Site files")
+    args = parser.parse_args()
+    doit(args.output, args.sitefiles)
 
 
 if __name__ == "__main__":
