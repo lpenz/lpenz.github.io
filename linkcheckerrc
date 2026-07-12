@@ -196,7 +196,7 @@ checkcss=0
 # and ignore all mailto: URLs
 #  ^mailto:
 # do not recurse into the following URLs
-ignore=(^mailto:|^https://www.linkedin.com/|^https://plus.google.com/u/0|\.asc$|bootstrap\.min\.js$)
+ignore=(^mailto:|^https://www.linkedin.com/|\.asc$|bootstrap\.min\.js$)
 
 #nofollow=
 # just an example
