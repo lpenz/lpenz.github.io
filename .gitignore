@@ -1,15 +1,14 @@
 # Always ignore:
 _*
 .sconsign.dblite
-_*
 *.hi
 *.o
 *.pyc
+__pycache__/
 *.Rinc
 *.bhtml
 *.bhtml.mako
 /.Rbuildignore
-/travis-tool.sh
 /index.t2t
 /infotree.yaml
 /articles0.xml
