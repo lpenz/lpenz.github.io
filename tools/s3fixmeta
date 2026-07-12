@@ -47,7 +47,7 @@ def main():
             mimet = "text/html"
         elif key.name.endswith(".dat"):
             mimet = ms.file(key.name)
-        else:  # dicover:
+        else:  # discover:
             mimet, _ = mimetypes.guess_type(key.name)
             if not mimet:
                 mimet = ms.file(key.name)
