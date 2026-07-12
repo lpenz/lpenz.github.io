@@ -1,8 +1,8 @@
 FROM debian:trixie-slim
-MAINTAINER Leandro Lisboa Penz <lpenz@lpenz.org>
+LABEL maintainer="Leandro Lisboa Penz <lpenz@lpenz.org>"
 
 # install debian packages:
-ENV DEBIAN_FRONTEND noninteractive
+ENV DEBIAN_FRONTEND=noninteractive
 RUN set -e -x; \
     apt-get update; \
     apt-get install -y --no-install-recommends locales \
@@ -31,4 +31,4 @@ ENV LC_ALL=en_US.UTF-8 \
     HOME=/tmp
 
 COPY entrypoint /
-CMD /entrypoint
+CMD ["/entrypoint"]
