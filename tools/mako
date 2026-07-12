@@ -158,8 +158,10 @@ def infoget(opts, infilename):
     y["top"], y["breadcrumbs"] = dirscalc(infilename)
     y["url"] = os.path.join(y["home"], indirname, "index.html")
     for d in opts.define:
-        kv = d.split("=")
-        y[kv[0]] = kv[1]
+        if "=" not in d:
+            raise SystemExit("error: --define argument missing '=': %s" % d)
+        k, v = d.split("=", 1)
+        y[k] = v
     return y
 
 
@@ -252,8 +254,10 @@ def main():
     out = open(outfilename, "w", encoding="utf-8")
     final = makorender(htmlstr, info).replace("$backslash$", "\\")
     for rep in opts.replace:
-        kv = rep.split("=")
-        final = final.replace(kv[0], kv[1])
+        if "=" not in rep:
+            raise SystemExit("error: --replace argument missing '=': %s" % rep)
+        k, v = rep.split("=", 1)
+        final = final.replace(k, v)
     out.write(final)
 
 
