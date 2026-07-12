@@ -8,6 +8,6 @@ set -e -x -o pipefail
 scons
 nose2-3
 "${findfiles[@]}" "${pyfilter[@]}" -exec flake8 {} +
-"${findfiles[@]}" -exec grep -lI '[#]!/usr/bin/python' {} + | xargs flake8
+"${findfiles[@]}" -exec grep -lI '^#!/usr/bin/python' {} + | xargs -r flake8
 "${findfiles[@]}" "${pyfilter[@]}" -exec black --check --diff {} +
-"${findfiles[@]}" -exec grep -lI '[#]!/usr/bin/python' {} + | xargs black --check --diff
+"${findfiles[@]}" -exec grep -lI '^#!/usr/bin/python' {} + | xargs -r black --check --diff
