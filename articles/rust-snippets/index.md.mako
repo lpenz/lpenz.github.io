@@ -19,31 +19,29 @@ For the examples below, we are using an example crate called
 
 # Top level
 
-${"##"} Tool-specific `main` function
-
-When creating a tool, we can write a placeholder `src/bin/tool.rs`
-file that calls a few default initialization functions that should
-only be called once, and then calls a tool-specific `main` function
-coming from somewhere referenced by `lib.rs`.
-
-This tool-specific `main` function does all initialization and
-looks like the following:
-
-```rust
-${snippets_src_libmain_rs}
-```
-
-We can also put this code in the top-level `main` function (example
-below) when it's more convenient.
-
-
 ${"##"} Top-level `main` function
 
-The top-level `main` function that goes in the `src/bin/tool.rs` is
-pretty much always like the following:
+When creating a tool, we can write a placeholder `src/bin/tool.rs`
+that defines a top-level `main` function that just calls a
+tool-specific `main` function:
 
 ```rust
 ${snippets_src_bin_tool_rs}
+```
+
+The tool-specific `main` can live somewhere referenced by `lib.rs`, or
+in `lib.rs` itself.
+
+${"##"} Tool-specific `main` function
+
+When creating a tool, we can write a placeholder `src/bin/tool.rs`
+file that just calls a tool-specific `main` function coming from
+somewhere referenced by `lib.rs`.
+
+This tool-specific `main` function does all initialization, argument parsing, etc. It looks like the following:
+
+```rust
+${snippets_src_libmain_rs}
 ```
 
 It's worth making this `main` function the only `pub` in the crate if
@@ -99,16 +97,16 @@ Async versions are not so different. Add the crate:
 cargo add tokio --features=macros,rt,rt-multi-thread
 ```
 
-Add `async` to the tool-specific `main`:
-
-```rust
-${snippets_async_src_libmain_rs}
-```
-
 And add `#[tokio::main]` and `async` to the top-level `main`:
 
 ```rust
 ${snippets_async_src_bin_tool_rs}
+```
+
+Add `async` to the tool-specific `main`:
+
+```rust
+${snippets_async_src_libmain_rs}
 ```
 
 Again, it's worth making this `main` function the only `pub` in the

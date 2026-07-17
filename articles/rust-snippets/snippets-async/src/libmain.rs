@@ -1,15 +1,13 @@
 // Copyright information ...
-use clap::Parser;
 use color_eyre::Result;
-
-#[derive(Parser, Debug)]
-#[command(author, version, about, long_about = None)]
-struct Cli {
-    // Add command-line arguments to this struct, with documentation
-}
 
 #[tracing::instrument]
 pub async fn main() -> Result<()> {
+    color_eyre::install()?;
+    tracing_subscriber::fmt()
+        .with_span_events(tracing_subscriber::fmt::format::FmtSpan::ACTIVE)
+        .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
+        .init();
     let args = Cli::parse();
     // Program goes here
     // Example trace:
