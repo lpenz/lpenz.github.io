@@ -11,7 +11,7 @@ rust with no clear theme. They include "raw" rust and state-of-the-art
 crates.
 
 I'll probably change this article as things evolve. I plan on removing
-snippets about crates that are no longer a consensus, for intance.
+snippets about crates that are no longer a consensus, for instance.
 
 For the examples below, we are using an example crate called
 `snippets`, with a binary called `tool`.
@@ -29,16 +29,11 @@ tool-specific `main` function:
 ${snippets_src_bin_tool_rs}
 ```
 
-The tool-specific `main` can live somewhere referenced by `lib.rs`, or
-in `lib.rs` itself.
-
 ${"##"} Tool-specific `main` function
 
-When creating a tool, we can write a placeholder `src/bin/tool.rs`
-file that just calls a tool-specific `main` function coming from
-somewhere referenced by `lib.rs`.
-
-This tool-specific `main` function does all initialization, argument parsing, etc. It looks like the following:
+The tool-specific `main` can live somewhere referenced by `lib.rs`, or
+in `lib.rs` itself. This function does all initialization,
+argument parsing, etc. It looks like the following:
 
 ```rust
 ${snippets_src_libmain_rs}
@@ -51,7 +46,7 @@ you want to use a standard CI that includes [cargo-semver-checks] like
 
 ${"##"} Crates
 
-For these the functions above to compile, we need some crates:
+For the functions above to compile, we need some crates:
 
 ```bash
 cargo add clap --features derive
@@ -80,11 +75,12 @@ It's worth noting that there is a whole lot that can be done with
 tracing, including directing it to
 [OpenTelemetry](https://docs.rs/tracing-opentelemetry/latest/tracing_opentelemetry/)
 and/or using it for
-[profiling](https://docs.rs/tracing-timing/latest/tracing_timing/),
+[profiling](https://docs.rs/tracing-timing/latest/tracing_timing/)
+(archived; consider [tracing-statistical](https://crates.io/crates/tracing-statistical)),
 maybe with [flamegraphs](https://crates.io/crates/tracing-flame).
 
 Be aware, though, that the setup above directs logs to the tracing
-infra and not the other way around - meaning that if we increment the
+infra and not the other way around - meaning that if we modify the
 setup above to direct traces to the logging infra, we then effectively
 set up a tracing-logging loop.
 
@@ -125,7 +121,8 @@ cargo add --dev test-log
 
 `test-log` takes care of initializing the tracing infra in accordance
 with the [`RUST_LOG`] environment variable when we use its `test`
-macro.
+macro. `env_logger` is a dependency that `test-log` uses internally for
+the environment-based log configuration.
 
 
 # Errors
@@ -134,7 +131,7 @@ macro.
 ${"##"} Error type creation, crateless
 
 - Built-in error trait: <https://doc.rust-lang.org/std/error/trait.Error.html>
-- Example adapted from: <https://web.mit.edu/rust-lang_v1.25/arch/amd64_ubuntu1404/share/doc/rust/html/book/first-edition/error-handling.html>
+- Example adapted from: <https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html>
 
 ```rust
 ${snippets_src_myerrorcrateless_rs}
@@ -359,6 +356,7 @@ hashmap.entry(key).or_insert_with(|| vec![]).push(9);
 [clap]: https://docs.rs/clap/latest/clap/
 [tracing]: https://docs.rs/tracing/latest/tracing/
 [tracing-subscriber]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber
+[eyre]: https://docs.rs/eyre/latest/eyre/
 [color_eyre]: https://docs.rs/color-eyre/latest/color_eyre/
 [`RUST_LOG`]: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html
 [cargo-semver-checks]: https://crates.io/crates/cargo-semver-checks
