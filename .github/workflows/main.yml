@@ -22,6 +22,28 @@ jobs:
           folder: .
           single-commit: true
           clean: true
+  rust-snippets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.0
+      - uses: dtolnay/rust-toolchain@stable
+      - run: >
+          set -e -x;
+          cd articles/rust-snippets/snippets/;
+          cargo test;
+          cargo clippy;
+          cargo fmt --check;
+  rust-snippets-async:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.0
+      - uses: dtolnay/rust-toolchain@stable
+      - run: >
+          set -e -x;
+          cd articles/rust-snippets/snippets-async/;
+          cargo test;
+          cargo clippy;
+          cargo fmt --check;
   omnilint:
     runs-on: ubuntu-latest
     steps:

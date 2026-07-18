@@ -4,7 +4,7 @@ use std::io;
 use std::num;
 
 #[derive(Debug)]
-enum MyError {
+pub enum MyError {
     Io(io::Error),
     Parse(num::ParseIntError),
 }
