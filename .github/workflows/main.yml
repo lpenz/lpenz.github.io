@@ -1,24 +1,22 @@
 ---
 name: CI
-on: [push, pull_request, workflow_dispatch]
+on: [workflow_dispatch, push, pull_request]  # yamllint disable-line rule:truthy
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/build
   build-deploy:
     if: github.ref == 'refs/heads/publish'
-    needs:
-      - build
-      - omnilint
+    needs: [build, omnilint]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/build
       - run: rm -f .gitignore
       - name: deploy
-        uses: JamesIves/github-pages-deploy-action@v4.6.3
+        uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
           branch: master
           folder: .
@@ -27,5 +25,5 @@ jobs:
   omnilint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.7
+      - uses: actions/checkout@v7.0.0
       - uses: docker://lpenz/omnilint:0.5.2
