@@ -1,5 +1,8 @@
 // Copyright information ...
+use clap::Parser;
 use color_eyre::Result;
+
+use crate::cli::Cli;
 
 #[tracing::instrument]
 pub async fn main() -> Result<()> {
