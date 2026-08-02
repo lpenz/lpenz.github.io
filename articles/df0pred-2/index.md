@@ -1,14 +1,12 @@
-Hard drive occupation prediction - part 2
-Getting the probability distribution
-2011-01-22
+---
+title: Hard drive occupation prediction with R - part 2
+subtitle: Getting the probability distribution
+date: 2011-01-22
+...
 
-%!postproc(html): 'naive' 'na&iuml;ve'
-
-
-
-On the [first $cwd$/../df0pred-1/index.html] article, we saw a quick-and-dirty method to
+On the [first]($cwd$/../df0pred-1/index.html) article, we saw a quick-and-dirty method to
 predict disk space exhaustion when the usage pattern is rigorously linear. We did that by
-importing our data into [R https://en.wikipedia.org/wiki/R_programming_language]
+importing our data into [R](https://en.wikipedia.org/wiki/R_programming_language)
 and making a linear regression.
 
 In this article we will see the problems with that method, and deploy a
@@ -17,20 +15,19 @@ probability distribution for the date of disk space exhaustion instead of
 calculating a single day.
 
 
-
-= The problem with the linear regression =
+# The problem with the linear regression
 
 The linear regression used in the first article has a serious
-lack of [robustness https://en.wikipedia.org/wiki/Robust_statistics].
+lack of [robustness](https://en.wikipedia.org/wiki/Robust_statistics).
 That means that it is very sensitive to even single departures
 from the linear pattern. For instance, if we periodically delete some big
 files in the hard disk, we end up breaking the sample in parts that cannot be
 analysed together. If we plot the line given by the linear model, we can see
 clearly that it does not fit our overall data very well:
 
- [$cwd$/lm.png] 
+![]($cwd$/lm.png)
 
-([Data file $cwd$/duinfospike.dat])
+([Data file]($cwd$/duinfospike.dat))
 
 We can see in the graph that the linear model gives us a line that our free disk
 space is increasing instead of decreasing! If we use this model, we will reach
@@ -46,8 +43,7 @@ when there is human intervention. We should always look at the graph to see if
 the model makes sense.
 
 
-
-= A naive new method: averaging the difference =
+# A naïve new method: averaging the difference
 
 Instead of using the daily used disk space as input, we will use the
 daily **difference** (or delta) of used disk space. By itself, this reduces a
@@ -67,11 +63,10 @@ would still not have the probability distribution for the date, only a single
 value.
 
 
-
-= The real new method: days left by Monte Carlo simulation =
+# The real new method: days left by Monte Carlo simulation
 
 Instead of calculating the number of days left from the data, we will use a
-technique called [Monte Carlo simulation https://en.wikipedia.org/wiki/Monte_carlo_simulation]
+technique called [Monte Carlo simulation](https://en.wikipedia.org/wiki/Monte_carlo_simulation)
 to generate the distribution of days left. The idea is simple: we sample the
 data we have - daily used disk space - until the sum is above the free disk
 space; the number of samples taken is the number of days left. By doing that
@@ -82,34 +77,51 @@ First, let's load the data file that we will use (same one used in the
 introduction) along with a variable that holds the size of the disk (500GB; all
 units are in MB):
 
-%!include: ``datain.R``
+```
+duinfo <- read.table('duinfospike.dat',
+		colClasses=c("Date","numeric"),
+		col.names=c("day","usd"))
+attach(duinfo)
+totalspace <- 500000
+today <- tail(day, 1)
+```
 
 We now get the delta of the disk usage. Let's take a look at it:
 
-%!include: ``deltacalc.R``
-%!include: ``deltaplot.R``
+```
+dudelta <- diff(usd)
+```
 
+```
+plot(dudelta, xaxt='n', xlab='')
+```
 
- [$cwd$/delta.png] 
+![]($cwd$/delta.png)
 
 
 The summary function gives us the five-number summary, while the boxplot shows
 us how the data is distributed graphically:
 
-%!include: ``deltasummary.txt``
+```
+summary(dudelta)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-29583.00      5.25    301.00    123.37    713.00   4136.00 
+```
 
-%!include: ``deltaboxplot.R``
+```
+boxplot(dudelta)
+```
 
-
- [$cwd$/deltabox.png] 
+![]($cwd$/deltabox.png)
 
 
 The kernel density plot gives us about the same, but in another visual format:
 
-%!include: ``deltakdplot.R``
+```
+plot(density(dudelta))
+```
 
-
- [$cwd$/deltakd.png] 
+![]($cwd$/deltakd.png)
 
 
 We can see the cleanups right there, as the lower points.
@@ -119,47 +131,77 @@ exhaustion. In order to do that, we create an R function that sums values taken
 randomly from our delta sample until our free space zeroes, and returns the
 number of samples taken:
 
-%!include: ``func.R``
+```
+f <- function(spaceleft) {
+    days <- 0
+    while(spaceleft > 0) {
+        days <- days + 1
+        spaceleft <- spaceleft - sample(dudelta, 1, replace=TRUE)
+    }
+    days
+}
+```
 
 By repeatedly running this function and gathering the results, we generate a set
 of number-of-days-until-exhaustion that is robust and corresponds to the data we
 have observed. This robustness means that we don't even need to remove outliers,
 as they will not disproportionally bias out results:
 
-%!include: ``daysleftcalc.R``
-%!include: ``daysleftplot.R``
+```
+freespace <- totalspace - tail(usd, 1)
+daysleft <- replicate(5000, f(freespace))
+```
 
- [$cwd$/daysleft.png] 
+```
+plot(daysleft)
+```
+
+![]($cwd$/daysleft.png)
 
 What we want now is the
-[empirical cumulative distribution https://en.wikipedia.org/wiki/Empirical_distribution_function].
+[empirical cumulative distribution](https://en.wikipedia.org/wiki/Empirical_distribution_function).
 This function gives us the probability that we will reach df0 **before** the
 given date.
 
-%!include: ``df0ecdfcalc.R``
-%!include: ``df0ecdfplot.R``
+```
+df0day <- sort(daysleft + today)
+df0ecdfunc <- ecdf(df0day)
+df0prob <- df0ecdfunc(df0day)
+```
 
- [$cwd$/df0ecdf.png] 
+```
+plot(df0day, df0prob, xaxt='n', type='l')
+axis.Date(1, df0day, at=seq(min(df0day), max(df0day), 'year'), format='%F')
+```
+
+![]($cwd$/df0ecdf.png)
 
 
 With the cumulative probability estimate, we can see when we have to start
 worrying about the disk by looking at the first day that the probability of df0
 is above 0:
 
-%!include: ``df0first.txt``
+```
+df0day[1]
+[1] "2010-06-13"
+df0ecdfunc(df0day[1])
+[1] 2e-04
+```
 
 Well, we can also be a bit more bold and wait until the chances of reaching df0
 rise above 5%:
 
-%!include: ``df0above5.txt``
+```
+df0day[which(df0prob > 0.05)[1]]
+[1] "2010-08-16"
+```
 
 Mix and match and see what a good convention for your case is.
 
 
+# Conclusion
 
-= Conclusion =
-
-This and the [previous article $cwd$/../df0pred-1/index.html] showed how to use
+This and the [previous article]($cwd$/../df0pred-1/index.html) showed how to use
 statistics in R to predict when free hard-disk space will zero.
 
 The first article was main purpose was to serve as an introduction to R. There
@@ -173,18 +215,14 @@ It assumes little about the data (non-parameterized), and it can give you
 probability distributions. If you want to forecast something, you can always
 start recording data and use Monte Carlo in some way to make predictions
 **based on the evidence**. Personally, I think we don't do this nearly as often
-as we could. Well, [Joel is even using it to make schedules http://www.joelonsoftware.com/items/2007/10/26.html].
+as we could. Well, [Joel is even using it to make schedules](http://www.joelonsoftware.com/items/2007/10/26.html).
 
 
+# Further reading
 
-= Further reading =
-
-- http://www.joelonsoftware.com/items/2007/10/26.html: Joel's use of Monte Carlo
+- <http://www.joelonsoftware.com/items/2007/10/26.html>: Joel's use of Monte Carlo
   to make schedules.
-- https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29: Wikipedia's page
+- <https://en.wikipedia.org/wiki/Bootstrapping_%28statistics%29>: Wikipedia's page
   on bootstrapping, which is clearer than the one on Monte Carlo simulations.
-- http://www.r-bloggers.com/: daily news and tutorials about R, very good to
+- <http://www.r-bloggers.com/>: daily news and tutorials about R, very good to
   learn the language and see what people are doing with it.
-
-
-

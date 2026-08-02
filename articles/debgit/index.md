@@ -1,13 +1,9 @@
-Debianization with git-buildpackage
+---
+title: Debianization with git-buildpackage
+date: 2010-04-11
+...
 
-2010-04-11
-
-%!PostProc(html): '<table[^>]+>' '<table class="table table-bordered">'
-%!PostProc: '\${([^}]+)}' '<%text>${\1}</%text>'
-
-
-
-**Updated 2018-04-03**: //git-buildpackage//'s commands have changed, so this
+**Updated 2018-04-03**: *git-buildpackage*'s commands have changed, so this
 article had to be fixed; I took the opportunity to improve a few things as
 well.
 
@@ -16,21 +12,20 @@ deploy it. In UNIX, the standard way to do that is by publishing the source
 code in .tar.gz format and requiring users to compile it.
 
 In Debian there is an alternative: using a .deb package. With a .deb package, a
-single ``dpkg -i ${PACKAGE}.deb`` installs the software.
+single ``dpkg -i #dollar#{PACKAGE}.deb`` installs the software.
 
 This article explains how to create and support a .deb package for a simple
 software maintained in git, by tracking the packaging scheme in a specific
 branch on the same repository.
 
 
-
-= Prerequisites =
+# Prerequisites
 
 In order to ease the packaging and keep our package warning-free, it should
 have in its main repository:
 
 - An ``AUTHORS`` file with copyright information.
-- A manual: ``${PACKAGE}.1`` or similar.
+- A manual: ``#dollar#{PACKAGE}.1`` or similar.
 - A ``COPYING`` file with GPL information or some other license.
 - An appropriate build file for the package. For C/C++ programs, I recommend
   using ``cmake``; for python, ``setup.py``, etc.
@@ -39,20 +34,21 @@ have in its main repository:
 These items are not debian-specific and are useful for everyone.
 
 
+# Initial packaging setup
 
-= Initial packaging setup =
-
-The first step is creating the ``${PACKAGE}_${VERSION}.orig.tar.gz`` file. You
+The first step is creating the ``#dollar#{PACKAGE}_#dollar#{VERSION}.orig.tar.gz`` file. You
 can use git itself for that, by running the following commands in the
 repository:
+
 ```
-PREFIX=${PACKAGE}_${VERSION}
+PREFIX=#dollar#{PACKAGE}_#dollar#{VERSION}
 git archive --format=tar --prefix=$PREFIX/ $VERSION | gzip -c > ../$PREFIX.orig.tar.gz
 ```
 
-You can check the contents of the archive with //tar//. If there are extraneous
+You can check the contents of the archive with *tar*. If there are extraneous
 files in the archive, you can configure git-archove to exclude them by creating
 a ``.gitattributes`` file; for example:
+
 ```
 .gitignore      export-ignore
 .gitattributes  export-ignore
@@ -67,6 +63,7 @@ that affect the software from the changes in the packaging.
 
 In order to create these branches, we issue the following commands in the git
 repository:
+
 ```
 git checkout --orphan debian-upstream
 git rm --cached -r .
@@ -77,11 +74,13 @@ git checkout -b debian-debian
 
 That creates both branches as orphans, pointing to an empty root commit.
 
-We now use the ``../${PACKAGE}_${VERSION}.orig.tar.gz`` file to create the
+We now use the ``../#dollar#{PACKAGE}_#dollar#{VERSION}.orig.tar.gz`` file to create the
 initial ``debian`` directory in the debian-debian branch:
+
 ```
-dh_make -s -p ${PACKAGE}_${VERSION}
+dh_make -s -p #dollar#{PACKAGE}_#dollar#{VERSION}
 ```
+
 We can now customize the standard ``debian`` directory created. You must edit
 the following files: ``changelog``, ``control``, ``copyright`` and ``rules``.
 Besides those, the ``compat`` file must be present; the other files can be
@@ -89,6 +88,7 @@ safely removed.
 
 After changing the files that ``dh_make`` created, you should create a
 ``debian/gbp.conf`` with the following contents:
+
 ```
 [DEFAULT]
 upstream-branch=debian-upstream
@@ -99,56 +99,57 @@ debian-branch=debian-debian
 We can now commit the debian directory in the debian-debian branch.
 
 
-
-= Importing the sources =
+# Importing the sources
 
 In the debian-debian branch:
+
 ```
-gbp import-orig --no-interactive ../${PACKAGE}_${VERSION}.orig.tar.gz
+gbp import-orig --no-interactive ../#dollar#{PACKAGE}_#dollar#{VERSION}.orig.tar.gz
 ```
+
 That imports the original sources to the debian-upstream branch, and merge
 it into the debian-debian branch.
 
 
-
-= Creating the package =
+# Creating the package
 
 To create the debian package:
+
 ```
 gbp buildpackage -us -uc --git-tag
 ```
 
 
-= Importing further versions =
+# Importing further versions
 
-Create the new ``../${PACKAGE}_${VERSION}/.orig.tar.gz`` and then:
+Create the new ``../#dollar#{PACKAGE}_#dollar#{VERSION}/.orig.tar.gz`` and then:
+
 ```
-gbp import-orig --no-interactive ../${PACKAGE}_${VERSION}.orig.tar.gz
+gbp import-orig --no-interactive ../#dollar#{PACKAGE}_#dollar#{VERSION}.orig.tar.gz
 ```
+
 Edit the ``debian/changelog`` file (we can use ``dch -i -v $VERSION`` for
 that), and create a new package:
+
 ```
 gbp buildpackage -us -uc --git-tag
 ```
+
 Yes, it's that easy.
 
 
-
-= Final remarks =
+# Final remarks
 
 After an initial expensive setup, package creation of further versions is
 mostly painless, which is the whole point of git-buildpackage and friends.
 
 Besides this article, we should check the ``debian`` dir of some already packaged
 software for reference. We can look at the
-[execpermfix https://github.com/lpenz/execpermfix] repository at
-[github https://github.com] when first trying to package something.
+[execpermfix](https://github.com/lpenz/execpermfix) repository at
+[github](https://github.com) when first trying to package something.
 
 Further information:
 
-- https://www.eyrie.org/~eagle/notes/debian/git.html
-- http://honk.sigxcpu.org/projects/git-buildpackage/manual-html/gbp.html
-- http://www.debian-administration.org/article/Rolling_your_own_Debian_packages_part_1
-
-
-
+- <https://www.eyrie.org/~eagle/notes/debian/git.html>
+- <http://honk.sigxcpu.org/projects/git-buildpackage/manual-html/gbp.html>
+- <http://www.debian-administration.org/article/Rolling_your_own_Debian_packages_part_1>

@@ -15,7 +15,9 @@ def doit(outfile, files):
     for f in files:
         if not f.endswith("index.html"):
             continue
-        s = f.replace(".html", ".t2t")
+        s = f.replace("index.html", "index.md")
+        if not os.path.exists(s):
+            s = f.replace("index.html", "index.md.mako")
         if not os.path.exists(s):
             s = f
         o.write("  <url>\n")

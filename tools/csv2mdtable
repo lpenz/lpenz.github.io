@@ -16,13 +16,14 @@ def main():
     ofilename = args.output
 
     o = open(ofilename + ".tmp", "w")
-    o.write("\n\n\n\n")
     first = True
     for line in csv.reader(open(ifilename)):
         if first:
-            o.write("|")
+            o.write("| " + " | ".join(line) + " |\n")
+            o.write("| " + " | ".join(["---"] * len(line)) + " |\n")
             first = False
-        o.write("| " + " | ".join(line) + " |\n")
+        else:
+            o.write("| " + " | ".join(line) + " |\n")
     o.close()
     os.rename(ofilename + ".tmp", ofilename)
 

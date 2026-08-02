@@ -6,7 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN set -e -x; \
     apt-get update; \
     apt-get install -y --no-install-recommends locales \
-        graphviz txt2tags \
+        graphviz \
         ghc \
         r-cran-ggplot2 r-cran-reshape \
         pandoc \

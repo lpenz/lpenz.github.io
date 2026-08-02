@@ -1,11 +1,4 @@
-Debian
-
-
-%!PostProc(html): 'img ' 'img height="20" '
-
-
-
-= Moved to packagecloud =
+# Moved to packagecloud
 
 I used to keep a Debian repository under this path. It was sort of a
 manual process. Nowadays, though, there free artifact repositories
@@ -13,6 +6,6 @@ that can be connected to CI servers that can be connected to the
 github directly, so this lost the appeal.
 
 The packages that were here can now all be found under
-my page in packagecloud: https://packagecloud.io/lpenz/lpenz
+my page in packagecloud: [packagecloud.io/lpenz/lpenz](https://packagecloud.io/lpenz/lpenz)
 
-The sources are still all in https://github.com/lpenz
+The sources are still all in [lpenz](https://github.com/lpenz)

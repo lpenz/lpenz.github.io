@@ -146,7 +146,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="alternate" type="application/rss+xml" title="Articles feed of Avulsos by Penz" href="http://feeds.feedburner.com/lpenz/avulsos/articles.xml"/>
 <link rel="icon" type="image/png" href="${top}/media/logo-black.png" />
 <meta name="p:domain_verify" content="629162357f7580ddc473183d74c50ef8"/>
-<meta name="generator" content="http://txt2tags.sf.net" />
+<meta name="generator" content="pandoc" />
 % if disabled:
 <script type="text/javascript">
 	//<![CDATA[

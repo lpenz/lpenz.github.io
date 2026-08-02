@@ -1,18 +1,11 @@
-Avulsos by Penz
-
-
 This page is basically my blog. My interests wander mostly around math,
 statistics and software.
 
-= Posts =
+${"#"} Posts
 
 <% whatsnew.reverse() %>
 % for i in whatsnew:
-: ${i['date']}
-${i['news'].replace('$home$/', '')}
+${i['date']}
+: ${i['news'].replace('$home$/', '')}
 
 % endfor
-
-
-%% vim: ft=txt2tags
-

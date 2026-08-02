@@ -1,26 +1,24 @@
-Provisioning a Raspberry Pi using ansible
-From first steps
-2019-01-08
-
-
+---
+title: Provisioning a Raspberry Pi using ansible
+subtitle: From first steps
+date: 2019-01-08
+...
 
 These are my notes on how to get started provisioning Raspbian with
 ansible.
 
 
-
-= Before using ansible =
+# Before using ansible
 
 We have to get a working Raspbian installation before using ansible on
 the device.
 
 
-
-== Installing Raspbian ==
+## Installing Raspbian
 
 The first step is downloading and installing Raspbian in the SD card
 you're going to use in the Pi. You can find the Raspbian image here:
-https://www.raspberrypi.org/downloads/raspbian/. Prefer the "lite"
+<https://www.raspberrypi.org/downloads/raspbian/>. Prefer the "lite"
 image, as it allows you to start from a cleaner point.
 
 To install the image, use an adapter to plug the SD card into a
@@ -36,8 +34,7 @@ unzip -p *-raspbian-stretch-lite.zip | sudo dd of=/dev/sdc bs=4M oflag=dsync sta
 You can now insert the card into the Raspberry Pi board.
 
 
-
-== Initial Raspbian setup ==
+## Initial Raspbian setup
 
 Raspbian comes with a initial user **pi**, password **raspberry**,
 that can use sudo freely.  **ssh** is installed, but
@@ -58,54 +55,55 @@ sudo systemctl enable ssh.service
 ```
 
 
-
-== Alternative initial setup ==
+## Alternative initial setup
 
 Another way to do the initial image setup is by mounting in your system and
 changing the required files before writting it in the SD card. To mount the
 image:
+
 - Extract it from the zip file:
 
-```
-unzip *-raspbian-*-lite.zip
-```
+  ```
+  unzip *-raspbian-*-lite.zip
+  ```
 
 - Using ``losetup``, map the file to a loopback device, and list the loopback
   devices to figure out where it was mapped:
 
-```
-sudo losetup -f *-raspbian-*-lite.img
-sudo losetup -l
-> NAME       SIZELIMIT OFFSET AUTOCLEAR RO BACK-FILE             DIO LOG-SEC
-> /dev/loop0         0      0         0  0 *-raspbian-*-lite.img   0     512
-```
+  ```
+  sudo losetup -f *-raspbian-*-lite.img
+  sudo losetup -l
+  > NAME       SIZELIMIT OFFSET AUTOCLEAR RO BACK-FILE             DIO LOG-SEC
+  > /dev/loop0         0      0         0  0 *-raspbian-*-lite.img   0     512
+  ```
 
-From here on we assume that the file was mapped to ``/dev/loop0``.
+  From here on we assume that the file was mapped to ``/dev/loop0``.
 
 - Tell the kernel to make the partitions available at ``/dev/`` using
   ``partx``, figure out where they are using ``lsblk``:
 
-```
-sudo partx -a /dev/loop0
-lsblk /dev/loop0
-> NAME      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
-> loop0       7:0    0  1.8G  0 loop
-> ├─loop0p1 259:0    0 43.8M  0 loop
-> └─loop0p2 259:1    0  1.7G  0 loop
-```
+  ```
+  sudo partx -a /dev/loop0
+  lsblk /dev/loop0
+  > NAME      MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+  > loop0       7:0    0  1.8G  0 loop
+  > ├─loop0p1 259:0    0 43.8M  0 loop
+  > └─loop0p2 259:1    0  1.7G  0 loop
+  ```
 
 - Mount the partition in a temporary directory:
 
-```
-mkdir rpi
-sudo mount /dev/loop0p2 rpi
-```
+  ```
+  mkdir rpi
+  sudo mount /dev/loop0p2 rpi
+  ```
 
 - You can now modify the files in the ``rpi`` directory. Use
   ``openssl passwd -1 <password>`` to get the string to use in the
   ``etc/shadow`` file as the password of the ``pi`` user. You can also change
   also change the name of the user, just be careful to change it everywhere
   needed:
+
   - ``/etc/passwd``
   - ``/etc/shadow``
   - ``/etc/subuid``
@@ -113,22 +111,21 @@ sudo mount /dev/loop0p2 rpi
   - ``/etc/gshadow``
   - ``/etc/subgid``
   - And rename ``/home/pi``
-  -
 
   To enable ssh, you should create init and systemd links:
 
-```
-sudo ln -s /lib/systemd/system/ssh.service rpi/etc/systemd/system/sshd.service
-sudo ln -s /lib/systemd/system/ssh.service rpi/etc/systemd/system/multi-user.target.wants/ssh.service
-for d in rc2.d rc3.d rc4.d rc5.d; do (cd rpi/etc/$d; sudo ln -sf ../init.d/ssh S01ssh); done
-find rpi/etc/rc* -name 'K*ssh' -exec sudo rm {} +
-```
+  ```
+  sudo ln -s /lib/systemd/system/ssh.service rpi/etc/systemd/system/sshd.service
+  sudo ln -s /lib/systemd/system/ssh.service rpi/etc/systemd/system/multi-user.target.wants/ssh.service
+  for d in rc2.d rc3.d rc4.d rc5.d; do (cd rpi/etc/$d; sudo ln -sf ../init.d/ssh S01ssh); done
+  find rpi/etc/rc* -name 'K*ssh' -exec sudo rm {} +
+  ```
 
   Other, security related things to do:
 
-```
-sudo rm rpi/etc/sudoers.d/010_pi-nopasswd
-```
+  ```
+  sudo rm rpi/etc/sudoers.d/010_pi-nopasswd
+  ```
 
   You can also change other things if you want. When you are done, proceed to
   the next item.
@@ -136,24 +133,23 @@ sudo rm rpi/etc/sudoers.d/010_pi-nopasswd
 - Unmount the partition, remove the temporary directory and unmap the loopback
   device:
 
-```
-sudo umount rpi
-rmdir rpi
-sudo losetup -d /dev/loop0
-```
+  ```
+  sudo umount rpi
+  rmdir rpi
+  sudo losetup -d /dev/loop0
+  ```
 
 - Write the image to the SD card as before:
 
-```
-sudo dd if=*-raspbian-*-lite.img of=/dev/sdc bs=4M oflag=dsync status=progress
-```
+  ```
+  sudo dd if=*-raspbian-*-lite.img of=/dev/sdc bs=4M oflag=dsync status=progress
+  ```
 
 
-
-= Using ansible =
+# Using ansible
 
 You can now use ansible from any computer to provision the Pi. I'd
-recommend, though, using //python3// as the interpreter on the Pi, as
+recommend, though, using *python3* as the interpreter on the Pi, as
 it has more modules available - *apt_repository*, for instance, is not
 directly usable with the default python2 interpreter.
 
@@ -174,19 +170,21 @@ A basic playbook that runs tasks as root looks like the following
 Assuming that the playbook as available as ``playbook.yml``, and that
 ``raspberrypi`` is a name that can be resolved to the device, you can
 run the playbook with the following command:
+
 ```
 ansible-playbook -i raspberrypi, -u pi playbook-sudo-rpi.yml -K
 ```
+
 (you can also replace ``raspberrypi`` with the actual IP address of
 the device)
 
 
-
-== Setting up Debian repositories ==
+## Setting up Debian repositories
 
 Because Raspbian is based on Debian and upstream Debian has support for the
 architecture of the Raspberry Pi B+, you can configure and use upstream Debian
 repositories and packages in the Pi. To do that, use the follwing snippet:
+
 ```
 (...)
   tasks:
@@ -208,8 +206,30 @@ repositories and packages in the Pi. To do that, use the follwing snippet:
       apt: update-cache=yes
 ```
 
-The [apt-pinning apt-pinning] file should contain something like the following:
+The [apt-pinning](apt-pinning) file should contain something like the following:
 
-%!include: ``apt-pinning``
+```
+Package: *
+Pin: release o=Raspberry Pi Foundation
+Pin-Priority: 600
 
+Package: *
+Pin: release o=Raspbian
+Pin-Priority: 600
 
+Package: *
+Pin: release a=stable
+Pin-Priority: 510
+
+Package: *
+Pin: release a=testing
+Pin-Priority: 520
+
+Package: *
+Pin: release a=unstable
+Pin-Priority: 150
+
+Package: *
+Pin: release a=experimental
+Pin-Priority: 120
+```

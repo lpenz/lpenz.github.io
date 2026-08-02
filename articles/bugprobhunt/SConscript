@@ -7,6 +7,9 @@ if False:
     env = None
 Import(["env"])
 
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+env["PANDOC_TABLE_LUA"] = env.File("../../tools/tableclass.lua")
+
 env.Program("hasbug.c", CPPFLAGS="-g -Wall -Werror -Wextra -W")
 
 env.Command(
@@ -16,29 +19,42 @@ env.Command(
     chdir=False,
 )
 env.Command(
-    "r1w3_n4_results.t2t",
+    "r1w3_n4_results.md",
     ["r1w3_n4_results.csv"],
-    "./tools/csvt2ttable $SOURCE $TARGET",
+    "./tools/csv2mdtable $SOURCE $TARGET",
 )
-env.Depends("r1w3_n4_results.t2t", "../../tools/csvt2ttable")
-env.T2TBHTML("r1w3_n4_results.bhtml.mako", "r1w3_n4_results.t2t")
-env.MAKO("r1w3_n4_results.html", "r1w3_n4_results.bhtml.mako", MAKOFLAGS="-t htmlbare")
+env.Depends("r1w3_n4_results.md", "../../tools/csv2mdtable")
+env.PANDOC(
+    "_r1w3_n4_results.bhtml.mako.sed",
+    "r1w3_n4_results.md",
+    PANDOCFLAGS="--mathjax --lua-filter=$PANDOC_TABLE_LUA -s -t html"
+    + " --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_r1w3_n4_results.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
+env.Depends("_r1w3_n4_results.bhtml.mako.sed", env["PANDOC_TABLE_LUA"])
+env.Command(
+    "_r1w3_n4_results.bhtml.mako",
+    "_r1w3_n4_results.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("r1w3_n4_results.html", "_r1w3_n4_results.bhtml.mako", MAKOFLAGS="-t htmlbare")
 env.HTMLSITEFILES.add(pjoin("articles/bugprobhunt", "r1w3_n4_results.html"))
 
-for rw in [(1, 3), (1, 2), (1, 1)]:
-    b = "r%dw%d_n4_probabilities" % rw
-    env.Command(
-        b + ".csv",
-        ["box"],
-        "$SOURCE -r %d -w %d -n 4 --output-probabilities $TARGET" % rw,
-        chdir=False,
-    )
-    env.Command(b + ".t2t", [b + ".csv"], "./tools/csvt2ttable $SOURCE $TARGET")
-    env.Depends(b + ".t2t", "../../tools/csvt2ttable")
-    env.Depends("index.bhtml", b + ".t2t")
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "index.md",
+    PANDOCFLAGS="--mathjax --lua-filter=$PANDOC_TABLE_LUA"
+    + " -N -s -t html --toc --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TABLE_LUA"])
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
 
-env.T2TBHTML("index.bhtml.mako", "index.t2t")
-env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
 env.HTMLSITEFILES.add("articles/bugprobhunt/index.html")
 
 

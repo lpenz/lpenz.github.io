@@ -9,50 +9,6 @@ from subprocess import Popen
 pjoin = os.path.join
 
 
-# txt2tags render: ###########################################################
-
-
-def txt2tagsfd(t2tinfilename, t2tinfd):
-    t2tinfd.flush()
-    t2toutfd = TemporaryFile(mode="w+", encoding="utf-8")
-    try:
-        t2t = Popen(
-            [
-                "txt2tags",
-                "-t",
-                "html",
-                "--config-file",
-                "t2tconfig",
-                "-H",
-                "-i",
-                t2tinfilename,
-                "-o",
-                "-",
-            ],
-            stdout=t2toutfd,
-        )
-        retcode = t2t.wait()
-        if retcode < 0:
-            sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
-        elif retcode != 0:
-            sys.stderr.write("Child returned %d\n" % retcode)
-    except OSError as e:
-        sys.stderr.write("Execution failed: %s\n" % str(e))
-    t2toutfd.seek(0)
-    return t2toutfd.read()
-
-
-def txt2tagsfile(infilename):
-    t2tinfd = open(infilename, encoding="utf-8")
-    return txt2tagsfd(infilename, t2tinfd)
-
-
-def txt2tags(intext):
-    t2tinfd = NamedTemporaryFile(mode="w+", encoding="utf-8")
-    t2tinfd.write("\n\n\n\n" + intext)
-    return txt2tagsfd(t2tinfd.name, t2tinfd)
-
-
 # markdown render: ###########################################################
 
 
@@ -60,7 +16,10 @@ def markdownfd(mdinfilename, mdinfd):
     mdinfd.flush()
     mdoutfd = TemporaryFile(mode="w+", encoding="utf-8")
     try:
-        md = Popen(["pandoc", mdinfilename], stdout=mdoutfd)
+        md = Popen(
+            ["pandoc", "-f", "markdown", "-t", "html", mdinfilename],
+            stdout=mdoutfd,
+        )
         retcode = md.wait()
         if retcode < 0:
             sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
@@ -88,9 +47,6 @@ def markdown(intext):
 
 def renderarticle(article):
     path = pjoin("articles", article)
-    t2tfile = pjoin(path, "index.t2t")
-    if os.path.exists(t2tfile):
-        return txt2tagsfile(t2tfile)
     mdfile = pjoin(path, "index.md")
     if os.path.exists(mdfile):
         return markdownfile(mdfile)
@@ -194,8 +150,8 @@ def makorender(data, y):
 
     lookup = TemplateLookup(["templates"])
     return Template(data, lookup=lookup).render_unicode(
-        txt2tags=txt2tags,
-        txt2tagsfile=txt2tagsfile,
+        markdown=markdown,
+        markdownfile=markdownfile,
         includefile=includefile,
         renderarticle=renderarticle,
         rfctime=rfctime,

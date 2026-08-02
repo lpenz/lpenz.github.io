@@ -20,11 +20,27 @@ for i in glob.glob("*"):
 # Index:
 indexbuild = env.File("indexbuild")
 env.Command(
-    "index.t2t",
+    "index.md",
     [a + "/info.yaml" for a in articles],
     indexbuild.abspath + " $TARGET $SOURCES",
 )
 
-env.T2TBHTML("index.bhtml.mako", "index.t2t")
-env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env["PANDOC_TEMPLATE"] = env.File("../templates/pandoctoc.tmpl.html")
+env["PANDOC_TABLE_LUA"] = env.File("../tools/tableclass.lua")
+
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "index.md",
+    PANDOCFLAGS="--lua-filter=$PANDOC_TABLE_LUA"
+    + " -N -s -t html --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TABLE_LUA"])
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+
 env.HTMLSITEFILES.add("articles/index.html")

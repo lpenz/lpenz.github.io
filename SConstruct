@@ -7,7 +7,7 @@ env = Environment(ENV=os.environ, TOP=os.path.abspath(os.path.curdir))
 env.HTMLSITEFILES = set()
 env.Export("env")
 
-for t in ["haskell", "pandoc", "t2tbhtml", "mako", "R", "gcc"]:
+for t in ["haskell", "pandoc", "mako", "R", "gcc"]:
     env.Tool(t)
 
 # infotree:
@@ -29,10 +29,21 @@ env.Command("infotree.yaml", infofiles, "tools/infotreebuild $TARGET $SOURCES")
 env.Depends("infotree.yaml", "tools/infotreebuild")
 
 # Main page:
-env.Command("index.t2t", "index.bt2t", "tools/mako $SOURCE $TARGET")
-env.Depends("index.t2t", "infotree.yaml")
-env.T2TBHTML("index.bhtml.mako", "index.t2t")
-env.MAKO("index.html", "index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env["PANDOC_TEMPLATE"] = env.File("templates/pandoctoc.tmpl.html")
+env.Command("_index.md", "index.md.mako", "tools/mako $SOURCE $TARGET")
+env.Depends("_index.md", "infotree.yaml")
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "_index.md",
+    PANDOCFLAGS="-s -t html --template=$PANDOC_TEMPLATE",
+)
+env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
 env.HTMLSITEFILES.add("index.html")
 
 # Logo:

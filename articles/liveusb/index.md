@@ -1,8 +1,8 @@
-Create a Debian bootable live USB
-How to create a customized bootable live USB with Debian
-2015-10-04
-
-
+---
+title: Create a Debian bootable live USB
+subtitle: How to create a customized bootable live USB with Debian
+date: 2015-10-04
+...
 
 **Updated 2019-06-25**: use Debian Stretch explicitly (already implied
 by kernel version); suggest testing with qemu.
@@ -12,29 +12,28 @@ system. That is called a "live USB," and it can be used for recovery, as a
 portable environment, etc.
 
 In this article we explain how to install a Debian GNU/Linux OS in a USB drive
-as if it was a hard disk. We will use Debian's own //debootstrap// to populate
-the root partition and //syslinux// as a bootloader (it is simpler than the
-standard //grub//).
+as if it was a hard disk. We will use Debian's own *debootstrap* to populate
+the root partition and *syslinux* as a bootloader (it is simpler than the
+standard *grub*).
 
 Obs: to ease copy-and-pasting, we show the commands without prompt, and
-prepend ``>`` to the output of commands on most examples.
+prepend `>` to the output of commands on most examples.
 
 
+# Partitioning
 
-= 1 Partitioning =
-
-After inserting the USB drive, it will appear as a block device under ///dev//,
-usually //sd[a-z]//. Take a note on the device name. We will use ///dev/sdc//
+After inserting the USB drive, it will appear as a block device under */dev*,
+usually *sd[a-z]*. Take a note on the device name. We will use */dev/sdc*
 through the examples.
 
-Create two partitions on our USB drive: one with 256MB for the ///boot// that
-will hold the //syslinux// bootloader and the Linux kernel; and another with all
+Create two partitions on our USB drive: one with 256MB for the */boot* that
+will hold the *syslinux* bootloader and the Linux kernel; and another with all
 the rest of the space, that will hold the root filesystem.
 
-There are many utilities you can use to partition the USB drive: //parted//,
-//fdisk//, etc.
+There are many utilities you can use to partition the USB drive: *parted*,
+*fdisk*, etc.
 
-For example, using fdisk, run it on ///dev/sdc//:
+For example, using fdisk, run it on */dev/sdc*:
 
 ```
 fdisk /dev/sdc
@@ -43,7 +42,7 @@ fdisk /dev/sdc
 > Be careful before using the write command.
 ```
 
-You are left at //fdisk//'s command prompt. Create the boot partition:
+You are left at *fdisk*'s command prompt. Create the boot partition:
 ```
 Command (m for help): n
 > Partition type
@@ -57,7 +56,7 @@ Command (m for help): n
 > Created a new partition 1 of type 'Linux' and of size 256 MiB.
 ```
 
-Set its type to //FAT16//:
+Set its type to *FAT16*:
 ```
 Command (m for help): t
 > Selected partition 1
@@ -66,7 +65,7 @@ Command (m for help): t
 > Changed type of partition 'Linux' to 'FAT16'.
 ```
 
-Mark it as //active//:
+Mark it as *active*:
 ```
 Command (m for help): a
 > The bootable flag on partition 1 is enabled now.
@@ -109,16 +108,15 @@ Command (m for help): w
 > Syncing disks.
 ```
 
-We now have a ///dev/sdc1// that will be our ///boot//, and ///dev/sdc2// that
+We now have a */dev/sdc1* that will be our */boot*, and */dev/sdc2* that
 will be our root file system. Observe that the boot partition has a MS-DOS
-type - that is required //syslinux//.
+type - that is required *syslinux*.
 
 (the instructions above are heavily based on
-[using-syslinux-to-boot-debootstraped http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html])
+[using-syslinux-to-boot-debootstraped](http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html))
 
 
-
-= 2 Installing the bootloader =
+# Installing the bootloader
 
 Create a FAT16 filesystem on the boot device:
 ```
@@ -126,14 +124,13 @@ mkdosfs -n LINUXBOOT /dev/sdc1
 > mkfs.fat 3.0.27 (2014-11-12)
 ```
 
-Install //syslinux// on it:
+Install *syslinux* on it:
 ```
 syslinux /dev/sdc1
 ```
 
 
-
-= 3 Installing the base system in the root partition =
+# Installing the base system in the root partition
 
 Create the filesystem:
 ```
@@ -153,7 +150,7 @@ mkfs.ext4 /dev/sdc2
 You can use any filesystem here, as long as it is supported by your future
 kernel.
 
-Mount both partitions and use //debootstrap// to install the base files on it:
+Mount both partitions and use *debootstrap* to install the base files on it:
 ```
 mkdir -p usbroot
 mount -t auto /dev/sdc2 usbroot
@@ -178,10 +175,9 @@ debootstrap stretch usbroot http://ftp.debian.org/debian
 ```
 
 
+# On-root configuration
 
-= 4 On-root configuration =
-
-We will have to //chroot// into our root filesystem to configure it further.
+We will have to *chroot* into our root filesystem to configure it further.
 
 Mount the boot device and the default ones inside the root mount point:
 ```
@@ -191,7 +187,7 @@ mount -t proc     proc      usbroot/proc
 mount -t sysfs    sysfs     usbroot/sys
 ```
 
-//chroot// into root:
+*chroot* into root:
 ```
 chroot usbroot /bin/bash
 ```
@@ -227,11 +223,11 @@ apt-get install --no-install-recommends -y linux-image-amd64 syslinux busybox-st
 > update-initramfs: Generating /boot/initrd.img-4.9.0-9-amd64
 ```
 
-We now have to set up our mount points in the ///etc/fstab// of the USB drive,
-but if we simply use ///dev/sdc*// as the devices, we will have trouble mounting
+We now have to set up our mount points in the */etc/fstab* of the USB drive,
+but if we simply use */dev/sdc\** as the devices, we will have trouble mounting
 it on other systems with a different number of hard drives. To have stable mount
-points, we use the //UUID// - universal unique identifiers - of the filesystems.
-Use //blkid// to find out the values of your identifiers:
+points, we use the *UUID* - universal unique identifiers - of the filesystems.
+Use *blkid* to find out the values of your identifiers:
 ```
 blkid
 > (...)
@@ -239,9 +235,9 @@ blkid
 > /dev/sdc2: UUID="68d66fd5-97f2-46ed-aee6-dad6f228a172" TYPE="ext4" PARTUUID="13090bb3-02"
 ```
 
-In this example, the //UUID// of the boot filesystem is ``2420-26B1``, and the
-//UUID// of the root filesystem is ``68d66fd5-97f2-46ed-aee6-dad6f228a172``. Use
-them to populate ///etc/fstab//:
+In this example, the *UUID* of the boot filesystem is `2420-26B1`, and the
+*UUID* of the root filesystem is `68d66fd5-97f2-46ed-aee6-dad6f228a172`. Use
+them to populate */etc/fstab*:
 ```
 echo 'UUID=68d66fd5-97f2-46ed-aee6-dad6f228a172 /     ext4 defaults,noatime 0 0' >  etc/fstab
 echo 'UUID=2420-26B1                            /boot vfat defaults         0 0' >> etc/fstab
@@ -253,7 +249,7 @@ ls boot/vmlinuz* boot/initrd*
 > boot/initrd.img-4.9.0-9-amd64  boot/vmlinuz-4.9.0-9-amd64
 ```
 
-And use them with the //UUID//s to create the ``boot/syslinux.cfg`` file, with
+And use them with the *UUID*s to create the `boot/syslinux.cfg` file, with
 the following contents:
 ```
 default linux
@@ -265,16 +261,15 @@ label linux
     append initrd=initrd.img-4.9.0-9-amd64 root=UUID=68d66fd5-97f2-46ed-aee6-dad6f228a172 ro
 ```
 
-Finally, write //syslinux//'s master boot record on the USB drive:
+Finally, write *syslinux*'s master boot record on the USB drive:
 ```
 cat /usr/lib/SYSLINUX/mbr.bin > /dev/sdc
 ```
 
 
+# Closing up
 
-= 5 Closing up =
-
-We are now ready to leave the //chroot// and umount all devices:
+We are now ready to leave the *chroot* and umount all devices:
 ```
 exit
 umount usbroot/dev/pts
@@ -290,22 +285,21 @@ We can test our system using qemu:
 qemu-system-x86_64 -m 512 -hda /dev/sdc
 ```
 
-We should be able to login as //root//, with the password we set above.
+We should be able to login as *root*, with the password we set above.
 
 If everything is working as expected, we can now remove the USB drive
 and use it to boot any computer.
 
 
-
-= References =
+# References
 
 This article is, in fact, basically a rehash of the following references with
-the //UUID// part added.
+the *UUID* part added.
 
-- http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html
-- http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick
+- <http://allskyee.blogspot.com.br/2014/01/using-syslinux-to-boot-debootstraped.html>
+- <http://quietsche-entchen.de/cgi-bin/wiki.cgi/ariane/BootableUsbStick>
 
 
 I've also created a
-[gist https://gist.github.com/lpenz/e7339a0b309e29698186baee92370104]
+[gist](https://gist.github.com/lpenz/e7339a0b309e29698186baee92370104)
 that's easy to change, with the commands in this article.

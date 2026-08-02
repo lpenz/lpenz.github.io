@@ -19,7 +19,7 @@ env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
 env.PANDOC(
     "_index.bhtml.mako.sed",
     "_index.md",
-    PANDOCFLAGS="-N -s --toc --template=$PANDOC_TEMPLATE",
+    PANDOCFLAGS="-N -s -t html --toc --template=$PANDOC_TEMPLATE",
 )
 env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Command(

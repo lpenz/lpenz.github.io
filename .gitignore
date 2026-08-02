@@ -9,7 +9,6 @@ __pycache__/
 *.bhtml
 *.bhtml.mako
 /.Rbuildignore
-/index.t2t
 /infotree.yaml
 /articles0.xml
 /whatsnew0.xml
@@ -28,14 +27,10 @@ __pycache__/
 /articles/hedsl-sharedexpenses/results.txt
 /articles/hedsl-sharedexpenses/sharedexpenses
 # /articles/hedsl-sharedexpenses/sharedexpenses.lhs # Commited to fix weird cycle
-/articles/index.t2t
+/articles/index.md
 /articles/bugprobhunt/hasbug
-/articles/bugprobhunt/r1w1_n4_probabilities.t2t
-/articles/bugprobhunt/r1w2_n4_probabilities.t2t
-/articles/bugprobhunt/r1w3_n4_probabilities.t2t
-/articles/bugprobhunt/r1w3_n4_results.t2t
-/articles/bugprobhunt/r1w*_probabilities.csv
 /articles/bugprobhunt/r1w*_results.csv
+/articles/bugprobhunt/r1w3_n4_results.md
 /articles/gpg/index.md
 /articles/rust-snippets/*/target
 
