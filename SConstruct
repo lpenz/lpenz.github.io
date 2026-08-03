@@ -35,9 +35,8 @@ env.Depends("_index.md", "infotree.yaml")
 env.PANDOC(
     "_index.bhtml.mako.sed",
     "_index.md",
-    PANDOCFLAGS="-s -t html --template=$PANDOC_TEMPLATE",
+    PANDOCFLAGS="-s -t html",
 )
-env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Command(
     "_index.bhtml.mako",
     "_index.bhtml.mako.sed",

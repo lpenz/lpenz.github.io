@@ -31,10 +31,8 @@ env["PANDOC_TABLE_LUA"] = env.File("../tools/tableclass.lua")
 env.PANDOC(
     "_index.bhtml.mako.sed",
     "index.md",
-    PANDOCFLAGS="--lua-filter=$PANDOC_TABLE_LUA"
-    + " -N -s -t html --template=$PANDOC_TEMPLATE",
+    PANDOCFLAGS="--lua-filter=$PANDOC_TABLE_LUA" + " -N -s -t html",
 )
-env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Depends("_index.bhtml.mako.sed", env["PANDOC_TABLE_LUA"])
 env.Command(
     "_index.bhtml.mako",

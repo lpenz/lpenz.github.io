@@ -27,10 +27,8 @@ env.Depends("r1w3_n4_results.md", "../../tools/csv2mdtable")
 env.PANDOC(
     "_r1w3_n4_results.bhtml.mako.sed",
     "r1w3_n4_results.md",
-    PANDOCFLAGS="--mathjax --lua-filter=$PANDOC_TABLE_LUA -s -t html"
-    + " --template=$PANDOC_TEMPLATE",
+    PANDOCFLAGS="--mathjax --lua-filter=$PANDOC_TABLE_LUA -s -t html",
 )
-env.Depends("_r1w3_n4_results.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Depends("_r1w3_n4_results.bhtml.mako.sed", env["PANDOC_TABLE_LUA"])
 env.Command(
     "_r1w3_n4_results.bhtml.mako",
@@ -43,10 +41,8 @@ env.HTMLSITEFILES.add(pjoin("articles/bugprobhunt", "r1w3_n4_results.html"))
 env.PANDOC(
     "_index.bhtml.mako.sed",
     "index.md",
-    PANDOCFLAGS="--mathjax --lua-filter=$PANDOC_TABLE_LUA"
-    + " -N -s -t html --toc --template=$PANDOC_TEMPLATE",
+    PANDOCFLAGS="--mathjax --lua-filter=$PANDOC_TABLE_LUA" + " -N -s -t html --toc",
 )
-env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Depends("_index.bhtml.mako.sed", env["PANDOC_TABLE_LUA"])
 env.Command(
     "_index.bhtml.mako",

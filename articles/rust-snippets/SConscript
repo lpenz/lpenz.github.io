@@ -34,9 +34,8 @@ env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
 env.PANDOC(
     "_index.bhtml.mako.sed",
     "_index.md",
-    PANDOCFLAGS="-N -s -f markdown -t html --toc --template=$PANDOC_TEMPLATE",
+    PANDOCFLAGS="-N -s -f markdown -t html --toc",
 )
-env.Depends("_index.bhtml.mako.sed", env["PANDOC_TEMPLATE"])
 env.Command(
     "_index.bhtml.mako",
     "_index.bhtml.mako.sed",
