@@ -1,0 +1,239 @@
+adduid: '$ {b}gpg --quick-add-uid "$FULLNAME <$EMAIL>" "$FULLNAME <llpenz@gmail.com>"{/b}
+
+    Enter passphrase: {b}mypassphrase{/b}
+
+    '
+genkey: "$ {b}gpg --quick-gen-key \"$FULLNAME <$EMAIL>\" default sign 0{/b}\ngpg:\
+    \ keybox 'pubring.kbx' created\r\nWe need to generate a lot of random bytes. It\
+    \ is a good idea to perform\r\nsome other action (type on the keyboard, move the\
+    \ mouse, utilize the\r\ndisks) during the prime generation; this gives the random\
+    \ number\r\ngenerator a better chance to gain enough entropy.\r\nEnter passphrase:\
+    \ {b}mypassphrase{/b}\ngpg: trustdb.gpg: trustdb created\r\ngpg: directory 'openpgp-revocs.d'\
+    \ created\r\ngpg: revocation certificate stored as 'openpgp-revocs.d/D6F57B3CE55D0CE481525268A59EF4105E6E41F0.rev'\r\
+    \npublic and secret key created and signed.\npub   ed25519/A59EF4105E6E41F0 2026-08-04\
+    \ [SC]\r\n      Key fingerprint = D6F5 7B3C E55D 0CE4 8152  5268 A59E F410 5E6E\
+    \ 41F0\r\nuid                            Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\n"
+gitcommit: "$ {b}git commit -S -m 'Add a commit message here'{/b}\n[main (root-commit)\
+    \ 725e15f] Add a commit message here\r\n 1 file changed, 1 insertion(+)\r\n create\
+    \ mode 100644 test.txt\r\n"
+gitlogsign: "$ {b}git log -1 --show-signature{/b}\ncommit 725e15fe7059c8ccc148138736f5b8215f52ffb3\
+    \ (HEAD -> main)\r\ngpg: Signature made Tue Aug  4 18:37:50 2026 UTC\r\ngpg: \
+    \               using RSA key DAB3D7BD12546645D2614662677DAE600EF4AABC\r\ngpg:\
+    \ Good signature from \"Leandro Lisboa Penz <lpenz@lpenz.org>\" [ultimate]\r\n\
+    gpg:                 aka \"Leandro Lisboa Penz <llpenz@gmail.com>\" [ultimate]\r\
+    \nPrimary key fingerprint: D6F5 7B3C E55D 0CE4 8152  5268 A59E F410 5E6E 41F0\r\
+    \n     Subkey fingerprint: DAB3 D7BD 1254 6645 D261  4662 677D AE60 0EF4 AABC\r\
+    \nAuthor: Leandro Lisboa Penz <lpenz@lpenz.org>\r\nDate:   Tue Aug 4 18:37:50\
+    \ 2026 +0000\n    Add a commit message here\r\n"
+gpglist1: "$ {b}gpg -k{/b}\ngpg: checking the trustdb\r\ngpg: marginals needed: 3\
+    \  completes needed: 1  trust model: pgp\r\ngpg: depth: 0  valid:   1  signed:\
+    \   0  trust: 0-, 0q, 0n, 0m, 0f, 1u\r\npubring.kbx\r\n----------------------------\r\
+    \npub   ed25519/A59EF4105E6E41F0 2026-08-04 [SC]\r\n      Key fingerprint = D6F5\
+    \ 7B3C E55D 0CE4 8152  5268 A59E F410 5E6E 41F0\r\nuid                 [ultimate]\
+    \ Leandro Lisboa Penz <lpenz@lpenz.org>\r\nsig 3        A59EF4105E6E41F0 2026-08-04\
+    \  [self-signature]\n"
+gpglist2: "$ {b}gpg -k{/b}\npubring.kbx\r\n----------------------------\r\npub   ed25519/A59EF4105E6E41F0\
+    \ 2026-08-04 [SC]\r\n      Key fingerprint = D6F5 7B3C E55D 0CE4 8152  5268 A59E\
+    \ F410 5E6E 41F0\r\nuid                 [ unknown] Leandro Lisboa Penz <llpenz@gmail.com>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\nuid          \
+    \       [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>\r\nsig 3        A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\n"
+gpglist3: "$ {b}gpg -k{/b}\npubring.kbx\r\n----------------------------\r\npub   ed25519/A59EF4105E6E41F0\
+    \ 2026-08-04 [SC]\r\n      Key fingerprint = D6F5 7B3C E55D 0CE4 8152  5268 A59E\
+    \ F410 5E6E 41F0\r\nuid                 [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\nuid          \
+    \       [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\nsig 3        A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\n"
+gpglistmasterimport: "$ {b}gpg -k{/b}\ngpg: checking the trustdb\r\ngpg: marginals\
+    \ needed: 3  completes needed: 1  trust model: pgp\r\ngpg: depth: 0  valid:  \
+    \ 1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u\r\npubring.kbx\r\n----------------------------\r\
+    \npub   ed25519/A59EF4105E6E41F0 2026-08-04 [SC]\r\n      Key fingerprint = D6F5\
+    \ 7B3C E55D 0CE4 8152  5268 A59E F410 5E6E 41F0\r\nuid                 [ultimate]\
+    \ Leandro Lisboa Penz <lpenz@lpenz.org>\r\nsig 3        A59EF4105E6E41F0 2026-08-04\
+    \  [self-signature]\r\nuid                 [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\n"
+gpgprintkey: "$ {b}gpg --armor --export 677DAE600EF4AABC{/b}\n-----BEGIN PGP PUBLIC\
+    \ KEY BLOCK-----\n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\r\nyWPEEaK6Br20/38+DQ==\r\
+    \n=BMBb\r\n-----END PGP PUBLIC KEY BLOCK-----\r\n"
+gpgprivlist3: "$ {b}gpg -K{/b}\npubring.kbx\r\n----------------------------\r\nsec\
+    \   ed25519/A59EF4105E6E41F0 2026-08-04 [SC]\r\n      Key fingerprint = D6F5 7B3C\
+    \ E55D 0CE4 8152  5268 A59E F410 5E6E 41F0\r\nuid                 [ultimate] Leandro\
+    \ Lisboa Penz <lpenz@lpenz.org>\r\nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \nuid                 [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\nsig\
+    \ 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\n"
+gpgprivlistmasterimport: '$ {b}gpg -K{/b}
+
+    '
+gpgsigntest: "$ {b}echo \"test\" | gpg --clearsign{/b}\n-----BEGIN PGP SIGNED MESSAGE-----\r\
+    \nHash: SHA512\ntest\r\nEnter passphrase: {b}mypassphrase{/b}\n-----BEGIN PGP\
+    \ SIGNATURE-----\niQGzBAEBCgAdFiEE2rPXvRJUZkXSYUZiZ32uYA70qrwFAmpyMX0ACgkQZ32uYA70\r\
+    \nqrzJ3gwAr5aoWO+iURiWSHePbjOFh2nPfVE2J6C5ILICevNIWnMauRFnUXJj8nWK\r\nz/zPMfnD30BoNSSmhMNtVpjgYZv9a48vjBGMCcdf1QuXnVtv9gsjJLdbswue52ZD\r\
+    \nNdCcernnJ+4AHhuBAPE0AT1mIxvmomt725ZtwUuxLYU+kp4NkJt24QSv++R4P8mQ\r\n/d8fRfKIKhEQzgbOfbbIXzozswcocyfQO9KAbuEjU8riP5DBeX8La4zw9g8t9tzY\r\
+    \nSVuL4vhRRC1FapMdq7FvRQ+HvsKBiOvCDZti9JyFCxqifjx7iUZI6gBiZG7s1Tm4\r\n2BPfD90aLLt5qs6tlGsLF4iqFGxEz5MLPHTrUcBWM3hZfkg5Ad378l+TQx08mHX/\r\
+    \nvz+IEL0s8fkgZMQasybAGyU/3M8CsS6D/TbnjApE+rHbJHa7ytfBv/E6eLHRePIz\r\n2il/6DjrjYyiGCYocNXIhKyH7dvxINi/jFr/WRuakjxxAxx1g+5UqLM/Cr7EChEP\r\
+    \nVR7FztP0\r\n=s0VL\r\n-----END PGP SIGNATURE-----\r\n"
+listpriv: "$ {b}gpg -K{/b}\npubring.kbx\r\n----------------------------\r\nsec   ed25519/A59EF4105E6E41F0\
+    \ 2026-08-04 [SC]\r\n      Key fingerprint = D6F5 7B3C E55D 0CE4 8152  5268 A59E\
+    \ F410 5E6E 41F0\r\nuid                 [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\nuid          \
+    \       [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\nsig 3        A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\r\nssb   rsa3072/677DAE600EF4AABC 2026-08-04 [S]\r\
+    \nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\n   Signature notation:\
+    \ host@lpenz.org=darkstar\r\n   Signature notation: service@lpenz.org=github\r\
+    \nssb   rsa3072/6F5FCC4AF89A4550 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\r\n   Signature notation: host@lpenz.org=redplanet\r\
+    \n   Signature notation: service@lpenz.org=github\r\nssb   rsa3072/D13A690485C01EAA\
+    \ 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \n   Signature notation: host@lpenz.org=redplanet\r\n   Signature notation: service@lpenz.org=email\r\
+    \nssb   rsa3072/648066CFDB9EF34E 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\r\n   Signature notation: host@lpenz.org=brightmoon\r\
+    \n   Signature notation: service@lpenz.org=github\r\nssb   rsa3072/40E1795F01E156A4\
+    \ 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \n   Signature notation: host@lpenz.org=brightmoon\r\n   Signature notation: service@lpenz.org=email\n"
+listpub: "$ {b}gpg -k{/b}\npubring.kbx\r\n----------------------------\r\npub   ed25519/A59EF4105E6E41F0\
+    \ 2026-08-04 [SC]\r\n      Key fingerprint = D6F5 7B3C E55D 0CE4 8152  5268 A59E\
+    \ F410 5E6E 41F0\r\nuid                 [ultimate] Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\nuid          \
+    \       [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\nsig 3        A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\r\nsub   rsa3072/677DAE600EF4AABC 2026-08-04 [S]\r\
+    \nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\n   Signature notation:\
+    \ host@lpenz.org=darkstar\r\n   Signature notation: service@lpenz.org=github\r\
+    \nsub   rsa3072/6F5FCC4AF89A4550 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\r\n   Signature notation: host@lpenz.org=redplanet\r\
+    \n   Signature notation: service@lpenz.org=github\r\nsub   rsa3072/D13A690485C01EAA\
+    \ 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \n   Signature notation: host@lpenz.org=redplanet\r\n   Signature notation: service@lpenz.org=email\r\
+    \nsub   rsa3072/648066CFDB9EF34E 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0\
+    \ 2026-08-04  [self-signature]\r\n   Signature notation: host@lpenz.org=brightmoon\r\
+    \n   Signature notation: service@lpenz.org=github\r\nsub   rsa3072/40E1795F01E156A4\
+    \ 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \n   Signature notation: host@lpenz.org=brightmoon\r\n   Signature notation: service@lpenz.org=email\n"
+masterfpr: D6F5 7B3C E55D 0CE4 8152  5268 A59E F410 5E6E 41F0
+masterkeyexport: '$ {b}gpg --armor --output /tmp/master.pub.gpg --export "$masterkeyid"{/b}
+
+    '
+masterkeyimport: "$ {b}gpg --import /tmp/master.pub.gpg{/b}\ngpg: keybox 'pubring.kbx'\
+    \ created\r\ngpg: trustdb.gpg: trustdb created\r\ngpg: key A59EF4105E6E41F0: public\
+    \ key \"Leandro Lisboa Penz <lpenz@lpenz.org>\" imported\r\ngpg: Total number\
+    \ processed: 1\r\ngpg:               imported: 1\r\n"
+masterkeytrust: "$ {b}gpg --edit-key \"$masterkeyid\" trust save{/b}\ngpg (GnuPG)\
+    \ 2.4.7; Copyright (C) 2024 g10 Code GmbH\r\nThis is free software: you are free\
+    \ to change and redistribute it.\r\nThere is NO WARRANTY, to the extent permitted\
+    \ by law.\npub  ed25519/A59EF4105E6E41F0\r\n     created: 2026-08-04  expires:\
+    \ never       usage: SC\n     trust: unknown       validity: unknown\r\n[ unknown]\
+    \ (1). Leandro Lisboa Penz <lpenz@lpenz.org>\r\n[ unknown] (2)  Leandro Lisboa\
+    \ Penz <llpenz@gmail.com>\npub  ed25519/A59EF4105E6E41F0\r\n     created: 2026-08-04\
+    \  expires: never       usage: SC\n     trust: unknown       validity: unknown\r\
+    \n[ unknown] (1). Leandro Lisboa Penz <lpenz@lpenz.org>\r\n[ unknown] (2)  Leandro\
+    \ Lisboa Penz <llpenz@gmail.com>\nPlease decide how far you trust this user to\
+    \ correctly verify other users' keys\r\n(by looking at passports, checking fingerprints\
+    \ from different sources, etc.)\n  1 = I don't know or won't say\r\n  2 = I do\
+    \ NOT trust\r\n  3 = I trust marginally\r\n  4 = I trust fully\r\n  5 = I trust\
+    \ ultimately\r\n  m = back to the main menu\nYour decision? {b}5{/b}\nDo you really\
+    \ want to set this key to ultimate trust? (y/N) {b}y{/b}\npub  ed25519/A59EF4105E6E41F0\r\
+    \n     created: 2026-08-04  expires: never       usage: SC\n     trust: ultimate\
+    \      validity: unknown\r\n[ unknown] (1). Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \n[ unknown] (2)  Leandro Lisboa Penz <llpenz@gmail.com>\r\nPlease note that the\
+    \ shown key validity is not necessarily correct\r\nunless you restart the program.\n\
+    Key not changed so no update needed.\r\n"
+masteruuid: A59EF4105E6E41F0
+subkeyadd: "$ {b}gpg --cert-notation host@lpenz.org=darkstar --cert-notation service@lpenz.org=github\
+    \ --edit-key \"$masterkeyid\" addkey save{/b}\ngpg (GnuPG) 2.4.7; Copyright (C)\
+    \ 2024 g10 Code GmbH\r\nThis is free software: you are free to change and redistribute\
+    \ it.\r\nThere is NO WARRANTY, to the extent permitted by law.\nSecret key is\
+    \ available.\nsec  ed25519/A59EF4105E6E41F0\r\n     created: 2026-08-04  expires:\
+    \ never       usage: SC\n     trust: ultimate      validity: ultimate\r\n[ultimate]\
+    \ (1). Leandro Lisboa Penz <lpenz@lpenz.org>\r\n[ultimate] (2)  Leandro Lisboa\
+    \ Penz <llpenz@gmail.com>\nPlease select what kind of key you want:\r\n   (3)\
+    \ DSA (sign only)\r\n   (4) RSA (sign only)\r\n   (5) Elgamal (encrypt only)\r\
+    \n   (6) RSA (encrypt only)\r\n  (10) ECC (sign only)\r\n  (12) ECC (encrypt only)\r\
+    \n  (14) Existing key from card\r\nYour selection? {b}4{/b}\nRSA keys may be between\
+    \ 1024 and 4096 bits long.\r\nWhat keysize do you want? (3072) {b}{/b}\nRequested\
+    \ keysize is 3072 bits\r\nPlease specify how long the key should be valid.\r\n\
+    \         0 = key does not expire\r\n      <n>  = key expires in n days\r\n  \
+    \    <n>w = key expires in n weeks\r\n      <n>m = key expires in n months\r\n\
+    \      <n>y = key expires in n years\r\nKey is valid for? (0) {b}{/b}\nKey does\
+    \ not expire at all\r\nIs this correct? (y/N) {b}y{/b}\nReally create? (y/N) {b}y{/b}\n\
+    Enter passphrase: {b}mypassphrase{/b}\nWe need to generate a lot of random bytes.\
+    \ It is a good idea to perform\r\nsome other action (type on the keyboard, move\
+    \ the mouse, utilize the\r\ndisks) during the prime generation; this gives the\
+    \ random number\r\ngenerator a better chance to gain enough entropy.\nsec  ed25519/A59EF4105E6E41F0\r\
+    \n     created: 2026-08-04  expires: never       usage: SC\n     trust: ultimate\
+    \      validity: ultimate\r\nssb  rsa3072/677DAE600EF4AABC\r\n     created: 2026-08-04\
+    \  expires: never       usage: S\n[ultimate] (1). Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \n[ultimate] (2)  Leandro Lisboa Penz <llpenz@gmail.com>\n"
+subkeyaddfail: "$ {b}gpg --edit-key \"$masterkeyid\" addkey save{/b}\ngpg (GnuPG)\
+    \ 2.4.7; Copyright (C) 2024 g10 Code GmbH\r\nThis is free software: you are free\
+    \ to change and redistribute it.\r\nThere is NO WARRANTY, to the extent permitted\
+    \ by law.\nSecret subkeys are available.\npub  ed25519/A59EF4105E6E41F0\r\n  \
+    \   created: 2026-08-04  expires: never       usage: SC\n     trust: ultimate\
+    \      validity: ultimate\r\nssb  rsa3072/677DAE600EF4AABC\r\n     created: 2026-08-04\
+    \  expires: never       usage: S\n[ultimate] (1). Leandro Lisboa Penz <lpenz@lpenz.org>\r\
+    \n[ultimate] (2)  Leandro Lisboa Penz <llpenz@gmail.com>\nNeed the secret key\
+    \ to do this.\nKey not changed so no update needed.\r\n"
+subkeyexport: '$ {b}gpg --armor --output /tmp/newkey.sec.gpg --export-secret-subkey
+    677DAE600EF4AABC!{/b}
+
+    Enter passphrase: {b}mypassphrase{/b}
+
+    '
+subkeyimport: "$ {b}gpg --import /tmp/newkey.sec.gpg{/b}\ngpg: key A59EF4105E6E41F0:\
+    \ \"Leandro Lisboa Penz <lpenz@lpenz.org>\" 1 new signature\r\ngpg: key A59EF4105E6E41F0:\
+    \ \"Leandro Lisboa Penz <lpenz@lpenz.org>\" 1 new subkey\r\nEnter passphrase:\
+    \ {b}mypassphrase{/b}\ngpg: To migrate 'secring.gpg', with each smartcard, run:\
+    \ gpg --card-status\r\ngpg: key A59EF4105E6E41F0: secret key imported\r\ngpg:\
+    \ Total number processed: 1\r\ngpg:            new subkeys: 1\r\ngpg:        \
+    \ new signatures: 1\r\ngpg:       secret keys read: 1\r\ngpg:   secret keys imported:\
+    \ 1\r\ngpg: marginals needed: 3  completes needed: 1  trust model: pgp\r\ngpg:\
+    \ depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u\r\n"
+subkeylist: "$ {b}gpg -k{/b}\npubring.kbx\r\n----------------------------\r\npub \
+    \  ed25519/A59EF4105E6E41F0 2026-08-04 [SC]\r\n      Key fingerprint = D6F5 7B3C\
+    \ E55D 0CE4 8152  5268 A59E F410 5E6E 41F0\r\nuid                 [ultimate] Leandro\
+    \ Lisboa Penz <lpenz@lpenz.org>\r\nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \nuid                 [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\nsig\
+    \ 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\nsub   rsa3072/677DAE600EF4AABC\
+    \ 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \n   Signature notation: host@lpenz.org=darkstar\r\n   Signature notation: service@lpenz.org=github\n"
+subkeyprivlist: "$ {b}gpg -K{/b}\npubring.kbx\r\n----------------------------\r\n\
+    sec#  ed25519/A59EF4105E6E41F0 2026-08-04 [SC]\r\n      Key fingerprint = D6F5\
+    \ 7B3C E55D 0CE4 8152  5268 A59E F410 5E6E 41F0\r\nuid                 [ultimate]\
+    \ Leandro Lisboa Penz <lpenz@lpenz.org>\r\nsig 3        A59EF4105E6E41F0 2026-08-04\
+    \  [self-signature]\r\nuid                 [ultimate] Leandro Lisboa Penz <llpenz@gmail.com>\r\
+    \nsig 3        A59EF4105E6E41F0 2026-08-04  [self-signature]\r\nssb   rsa3072/677DAE600EF4AABC\
+    \ 2026-08-04 [S]\r\nsig      N   A59EF4105E6E41F0 2026-08-04  [self-signature]\r\
+    \n   Signature notation: host@lpenz.org=darkstar\r\n   Signature notation: service@lpenz.org=github\n"
+subkeyuuid: 677DAE600EF4AABC
+uidprimary: "$ {b}gpg --edit-key \"$masterkeyid\" uid 2 primary save{/b}\ngpg (GnuPG)\
+    \ 2.4.7; Copyright (C) 2024 g10 Code GmbH\r\nThis is free software: you are free\
+    \ to change and redistribute it.\r\nThere is NO WARRANTY, to the extent permitted\
+    \ by law.\nSecret key is available.\nsec  ed25519/A59EF4105E6E41F0\r\n     created:\
+    \ 2026-08-04  expires: never       usage: SC\n     trust: ultimate      validity:\
+    \ ultimate\r\n[ unknown] (1). Leandro Lisboa Penz <llpenz@gmail.com>\r\n[ultimate]\
+    \ (2)  Leandro Lisboa Penz <lpenz@lpenz.org>\nsec  ed25519/A59EF4105E6E41F0\r\n\
+    \     created: 2026-08-04  expires: never       usage: SC\n     trust: ultimate\
+    \      validity: ultimate\r\n[ unknown] (1). Leandro Lisboa Penz <llpenz@gmail.com>\r\
+    \n[ultimate] (2)  Leandro Lisboa Penz <lpenz@lpenz.org>\nsec  ed25519/A59EF4105E6E41F0\r\
+    \n     created: 2026-08-04  expires: never       usage: SC\n     trust: ultimate\
+    \      validity: ultimate\r\n[ unknown] (1). Leandro Lisboa Penz <llpenz@gmail.com>\r\
+    \n[ultimate] (2)* Leandro Lisboa Penz <lpenz@lpenz.org>\nsec  ed25519/A59EF4105E6E41F0\r\
+    \n     created: 2026-08-04  expires: never       usage: SC\n     trust: ultimate\
+    \      validity: ultimate\r\n[ unknown] (1)  Leandro Lisboa Penz <llpenz@gmail.com>\r\
+    \n[ultimate] (2)* Leandro Lisboa Penz <lpenz@lpenz.org>\n$ {b}gpg --check-trustdb{/b}\n\
+    gpg: marginals needed: 3  completes needed: 1  trust model: pgp\r\ngpg: depth:\
+    \ 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u\r\n"

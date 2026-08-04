@@ -1,0 +1,49 @@
+#!/usr/bin/python3
+
+import os
+import yaml
+import argparse
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="<output.md> <articles directories...>"
+    )
+    parser.add_argument("output", help="Output file")
+    parser.add_argument("articles", nargs="+", help="Article info.yaml files")
+    args = parser.parse_args()
+    outputfilename = args.output
+
+    articlesinfo = []
+
+    for a in args.articles:
+        base = "".join(a.split("/")[1])
+        y = yaml.safe_load(open(a).read())
+        if y.get("disabled", False):
+            continue
+        articlesinfo.append(((y["date"], y["title"], base), y["tags"]))
+    articlesinfo.sort()
+    articlesinfo.reverse()
+
+    fd = open("%s.tmp" % outputfilename, "w")
+    fd.write(
+        """The following articles are present in this page:
+
+| Date | Title | Tags |
+|------|-------|------|
+"""
+    )
+
+    for a in articlesinfo:
+        fd.write(
+            "| %s | [%s](%s/index.html) | %s |\n"
+            % (a[0][0], a[0][1], a[0][2], ", ".join(["*%s*" % t for t in a[1]]))
+        )
+    fd.write("\n")
+
+    fd.close()
+    os.rename("%s.tmp" % outputfilename, outputfilename)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,25 @@
+import os
+
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+
+Import(["env"])
+
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "index.md",
+    PANDOCFLAGS="-N -s -t html --toc",
+)
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+
+env.HTMLSITEFILES.add("articles/ansiblerpi/index.html")

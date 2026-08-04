@@ -1,0 +1,3 @@
+summary(dudelta)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-29583.00      5.25    301.00    123.37    713.00   4136.00 

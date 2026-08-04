@@ -1,0 +1,32 @@
+#!/usr/bin/python3
+
+import os
+import csv
+
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="usage: <input> <output>")
+    parser.add_argument("input", help="Input CSV file")
+    parser.add_argument("output", help="Output file")
+    args = parser.parse_args()
+
+    ifilename = args.input
+    ofilename = args.output
+
+    o = open(ofilename + ".tmp", "w")
+    first = True
+    for line in csv.reader(open(ifilename)):
+        if first:
+            o.write("| " + " | ".join(line) + " |\n")
+            o.write("| " + " | ".join(["---"] * len(line)) + " |\n")
+            first = False
+        else:
+            o.write("| " + " | ".join(line) + " |\n")
+    o.close()
+    os.rename(ofilename + ".tmp", ofilename)
+
+
+if __name__ == "__main__":
+    main()

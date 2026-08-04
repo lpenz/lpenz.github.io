@@ -1,0 +1,18 @@
+import os
+
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+Import(["env"])
+
+env.MAKO("_index.md", "index.md.mako")
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+env.PANDOC(
+    "_index.bhtml.mako",
+    "_index.md",
+    PANDOCFLAGS="-N -s -t html --toc",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+env.HTMLSITEFILES.add("articles/luksfile/index.html")

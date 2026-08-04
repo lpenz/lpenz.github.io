@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>${self.title()}</title>
+        <link>http://www.lpenz.org</link>
+        <description>${self.description()}</description>
+        <managingEditor>lpenz@lpenz.org (Leandro Lisboa Penz)</managingEditor>
+        <webMaster>lpenz@lpenz.org (Leandro Lisboa Penz)</webMaster>
+        <docs>http://www.rssboard.org/rss-specification</docs>
+<%self:pubdate>
+<%def name="show(i)">
+        <pubDate>${rfctime(i)} +0000</pubDate>
+        <lastBuildDate>${rfctime(i)} +0000</lastBuildDate>
+</%def>
+</%self:pubdate>
+        <language>en</language>
+        <image>
+            <title>${self.title()}</title>
+            <link>http://www.lpenz.org</link>
+            <url>http://www.lpenz.org/logo-black.png</url>
+        </image>
+        <atom:link href="${self.link()}" rel="self" type="application/rss+xml"/>
+<%self:items>
+<%!
+    def rerender(text):
+        from mako.template import Template
+        mytemplate = Template(text)
+        return mytemplate.render()
+%>
+<%def name="show(i)">
+		<item>
+			<title>${i['title']}${i['subtitle']}</title>
+			<link>${i['link']}</link>
+			<guid>${i['link']}</guid>
+			<pubDate>${rfctime(i['date'])} +0000</pubDate>
+			<description><![CDATA[${(i['description']) | rerender}]]></description>
+		</item>
+</%def>
+</%self:items>
+    </channel>
+</rss>

@@ -1,0 +1,8 @@
+
+Call:
+lm(formula = usd ~ day)
+
+Coefficients:
+(Intercept)          day  
+ -6424661.2        466.7  
+

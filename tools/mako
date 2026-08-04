@@ -1,0 +1,219 @@
+#!/usr/bin/python3
+
+import sys
+import yaml
+import os
+from tempfile import TemporaryFile, NamedTemporaryFile
+from subprocess import Popen
+
+pjoin = os.path.join
+
+
+# markdown render: ###########################################################
+
+
+def markdownfd(mdinfilename, mdinfd):
+    mdinfd.flush()
+    mdoutfd = TemporaryFile(mode="w+", encoding="utf-8")
+    try:
+        md = Popen(
+            ["pandoc", "-f", "markdown", "-t", "html", mdinfilename],
+            stdout=mdoutfd,
+        )
+        retcode = md.wait()
+        if retcode < 0:
+            sys.stderr.write("Child was terminated by signal %d\n" % -retcode)
+        elif retcode != 0:
+            sys.stderr.write("Child returned %d\n" % retcode)
+    except OSError as e:
+        sys.stderr.write("Execution failed: %s\n" % str(e))
+    mdoutfd.seek(0)
+    return mdoutfd.read()
+
+
+def markdownfile(infilename):
+    mdinfd = open(infilename, encoding="utf-8")
+    return markdownfd(infilename, mdinfd)
+
+
+def markdown(intext):
+    mdinfd = NamedTemporaryFile(mode="w+", encoding="utf-8")
+    mdinfd.write("\n\n\n\n" + intext)
+    return markdownfd(mdinfd.name, mdinfd)
+
+
+# Renderer dispatcher: #######################################################
+
+
+def renderarticle(article):
+    path = pjoin("articles", article)
+    mdfile = pjoin(path, "index.md")
+    if os.path.exists(mdfile):
+        return markdownfile(mdfile)
+    return ""
+
+
+# Renderer dispatcher: #######################################################
+
+
+def includefile(infilename):
+    with open(infilename, encoding="utf-8") as fd:
+        return fd.read()
+
+
+# Misc functions: ############################################################
+
+
+def rfctime(d):
+    return d.strftime("%a, %d %b %Y %H:%M:%S")
+
+
+# Info get: ##################################################################
+
+
+def yamlget(d):
+    yfilename = os.path.join(d, "info.yaml")
+    if not os.path.isfile(yfilename):
+        return {}
+    return yaml.safe_load(open(yfilename).read())
+
+
+def dirscalc(infilename):
+    dirname = os.path.join(".", os.path.dirname(infilename))
+    top = ""
+    breadcrumbs = []
+    dirs = dirname.split(os.sep)
+    dirs = [d for d in dirs if d != ""]
+    lvl = len(dirs) - 1
+    yt = yaml.safe_load(open("infotree.yaml", encoding="utf-8").read())
+    yc = yt
+    p = ""
+    first = True
+    for d in dirs:
+        if d != "." and d in yc["sub"]:
+            yc = yc["sub"][d]
+        p = os.path.join(p, d)
+        i = "index.html"
+        for _ in range(lvl, 0, -1):
+            i = os.path.join("..", i)
+        breadcrumbs.append({"title": yc["title"], "url": i, "first": first})
+        first = False
+        if lvl > 0:
+            top = os.path.join(top, "..")
+        lvl = lvl - 1
+    if top == "":
+        top = "."
+    return top, breadcrumbs
+
+
+def infoget(args, infilename):
+    indirname = os.path.dirname(infilename)
+    y = yaml.safe_load(open("infotree.yaml").read())
+    y.update(yamlget("."))
+    y.update(yamlget(indirname))
+    y["top"], y["breadcrumbs"] = dirscalc(infilename)
+    y["url"] = os.path.join(y["home"], indirname, "index.html")
+    for d in args.define:
+        if "=" not in d:
+            raise SystemExit("error: --define argument missing '=': %s" % d)
+        k, v = d.split("=", 1)
+        y[k] = v
+    return y
+
+
+# Process input file: ########################################################
+
+
+def templated(infilename, template, y):
+    from tempfile import TemporaryFile
+    from os.path import isfile
+
+    if not isfile(infilename):
+        raise SystemExit("error: can't find %s" % infilename)
+    infd = open(infilename, encoding="utf-8")
+    outfd = TemporaryFile(mode="w+", encoding="utf-8")
+    if template:
+        templateline = '<%%inherit file="%s.html.mako"/>\n' % template
+        outfd.write(templateline)
+    for line in infd:
+        outfd.write(line)
+    outfd.seek(0)
+    return outfd.read()
+
+
+# Render output: #############################################################
+
+
+def makorender(data, y):
+    from mako.template import Template
+    from mako.lookup import TemplateLookup
+
+    lookup = TemplateLookup(["templates"])
+    return Template(data, lookup=lookup).render_unicode(
+        markdown=markdown,
+        markdownfile=markdownfile,
+        includefile=includefile,
+        renderarticle=renderarticle,
+        rfctime=rfctime,
+        ini_bold="<b>",
+        end_bold="</b>",
+        **y
+    )
+
+
+# Main: ######################################################################
+
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="<input> <output>")
+    parser.add_argument("input", help="Input file")
+    parser.add_argument("output", help="Output file")
+    parser.add_argument("-t", "--template", help="Template to use, if any")
+    parser.add_argument(
+        "-d",
+        "--define",
+        dest="define",
+        action="append",
+        default=[],
+        help="Extra definitions for rendering",
+    )
+    parser.add_argument(
+        "-r",
+        "--replace",
+        dest="replace",
+        action="append",
+        default=[],
+        help="Raw strings to replace at the last step",
+    )
+    parser.add_argument(
+        "-i",
+        "--import",
+        dest="importfile",
+        action="append",
+        help="Import data from yaml file",
+        default=[],
+    )
+    args = parser.parse_args()
+
+    infilename = args.input
+    outfilename = args.output
+
+    info = infoget(args, infilename)
+    for filename in args.importfile:
+        d = yaml.safe_load(open(filename))
+        info.update(d)
+    htmlstr = templated(infilename, args.template, info).replace("$cwd$/", "")
+    out = open(outfilename, "w", encoding="utf-8")
+    final = makorender(htmlstr, info).replace("$backslash$", "\\")
+    for rep in args.replace:
+        if "=" not in rep:
+            raise SystemExit("error: --replace argument missing '=': %s" % rep)
+        k, v = rep.split("=", 1)
+        final = final.replace(k, v)
+    out.write(final)
+
+
+if __name__ == "__main__":
+    main()

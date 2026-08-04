@@ -1,0 +1,35 @@
+import os
+
+pjoin = os.path.join
+
+if False:
+    Import = None
+    env = None
+
+Import(["env"])
+
+# env.Command('sharedexpenses.lhs', 'index.md', 'cp $SOURCE $TARGET')
+env.HASKELL_EXECUTABLE(
+    "sharedexpenses.lhs",
+    HASKELLFLAGS="--make -cpp -Werror -Wall -fno-warn-missing-signatures",
+)
+env.Command("results.txt", "sharedexpenses", "$SOURCE > $TARGET")
+
+env.MAKO("_index.md", "index.md.mako", MAKOFLAGS="")
+env.Depends("_index.md", "results.txt")
+
+env["PANDOC_TEMPLATE"] = env.File("../../templates/pandoctoc.tmpl.html")
+
+env.PANDOC(
+    "_index.bhtml.mako.sed",
+    "_index.md",
+    PANDOCFLAGS="-N -s -t html --toc",
+)
+env.Command(
+    "_index.bhtml.mako",
+    "_index.bhtml.mako.sed",
+    r"""sed -e 's@{\(.\?\)b}@<\1b>@g' $SOURCE > $TARGET""",
+)
+env.MAKO("index.html", "_index.bhtml.mako", MAKOFLAGS="-t htmlpage")
+
+env.HTMLSITEFILES.add("articles/hedsl-sharedexpenses/index.html")

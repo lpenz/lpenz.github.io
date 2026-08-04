@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+import sys
+import os
+import subprocess
+
+
+def doit(outfile, files):
+    if outfile != "-":
+        o = open(outfile + ".tmp", "w")
+    else:
+        o = sys.stdout
+    o.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+    o.write('<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">\n')
+    for f in files:
+        if not f.endswith("index.html"):
+            continue
+        s = f.replace("index.html", "index.md")
+        if not os.path.exists(s):
+            s = f.replace("index.html", "index.md.mako")
+        if not os.path.exists(s):
+            s = f
+        o.write("  <url>\n")
+        o.write("    <loc>http://www.lpenz.org/%s</loc>\n" % f)
+        d = subprocess.check_output(
+            'git log -1 --format=%%ai "%s"' % s, shell=True, text=True
+        )
+        if len(d) > 0:
+            o.write("    <lastmod>%s</lastmod>\n" % d[0:10])
+        o.write("  </url>\n")
+    o.write("</urlset>\n")
+    if outfile != "-":
+        o.close()
+        os.rename(outfile + ".tmp", outfile)
+
+
+# Main: ######################################################################
+
+
+def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(description="usage: <output> <sitefiles>")
+    parser.add_argument("output", help="Output file")
+    parser.add_argument("sitefiles", nargs="+", help="Site files")
+    args = parser.parse_args()
+    doit(args.output, args.sitefiles)
+
+
+if __name__ == "__main__":
+    main()

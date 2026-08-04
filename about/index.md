@@ -1,0 +1,16 @@
+# About me
+
+I keep my Curriculum Vitae in the subdomain [cv.lpenz.org](http://cv.lpenz.org/),
+rendered from [lpenz/cv](http://github.com/lpenz/cv) with continuous deployment.
+
+For professional and academic formation in general, you can check my
+[LinkedIn profile](https://www.linkedin.com/in/lpenz).
+
+For more specific academic details, there is my
+[Lattes academic curriculum](http://lattes.cnpq.br/0824061646899870).
+
+To check software that I built, there is my
+[software repositories at github](https://github.com/lpenz). Only small snippets
+there - no big free projects.
+
+Email contact: lpenz at lpenz.org.

@@ -1,0 +1,36 @@
+#!/usr/bin/python3
+
+import sys
+import os
+import yaml
+import argparse
+
+
+def main(argv=None):
+    if argv is None:
+        argv = sys.argv
+
+    parser = argparse.ArgumentParser(description="<output.yaml> <files.yaml...>")
+    parser.add_argument("output", help="Output YAML file")
+    parser.add_argument("files", nargs="+", help="Input YAML files")
+    args = parser.parse_args(argv[1:])
+    outputfilename = args.output
+
+    top = {"sub": {}}
+    for filename in args.files:
+        dirname = os.path.dirname(filename)
+        cur = top
+        if dirname != "":
+            for d in dirname.split(os.sep):
+                if d not in cur["sub"]:
+                    cur["sub"][d] = {"sub": {}}
+                cur = cur["sub"][d]
+        y = yaml.safe_load(open(filename).read())
+        for k in y:
+            cur[k] = y[k]
+    out = open(outputfilename, "w")
+    yaml.dump(top, stream=out)
+
+
+if __name__ == "__main__":
+    main()
